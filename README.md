@@ -1,6 +1,6 @@
 # RecyThing - Website (Admin)
 
-## Table of Contents
+### Table of Contents
 
 - [RecyThing - Website (Admin)](#recything---website-admin)
   - [Table of Contents](#table-of-contents)
@@ -79,21 +79,15 @@ _How to re-export our modules?_
        └── Page.js
    ```
 
----
-
 ## Naming Conventions
 
 > In this project, we use [PascalCase](https://en.wikipedia.org/wiki/PascalCase) for naming our files and we use [kebab-case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for naming our folders.
-
----
 
 ## Project Documents
 
 - [Figma](https://www.figma.com/file/MNMdvvfmCZVFc6HRsjrcCy/Recything-Design?type=design&node-id=1-3&mode=design&t=pimRrZcLkCqLhSpF-0)
 - [Trello](https://trello.com/b/QBUvaFOh/recything-web)
 - [Software Requirement Specification](https://docs.google.com/document/d/1xQdsNs_42wmlnQ73Ue3aHJNr0KqgJbSCxgM5B0stt7k/edit#heading=h.1erwhldcnuec)
-
----
 
 ## References
 
