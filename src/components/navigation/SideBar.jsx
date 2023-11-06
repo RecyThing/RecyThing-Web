@@ -3,7 +3,7 @@ import recyThingLogo from "../assets/recything-logo.png";
 import communityLogo from "../assets/community-logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function SideBar() {
+export function SideBar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -58,5 +58,3 @@ function SideBar() {
     </div>
   )
 }
-
-export default SideBar;

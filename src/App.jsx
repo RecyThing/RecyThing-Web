@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom/dist";
-import AdminRoot from "./components/AdminRoot";
+import AdminRoot from "./pages/AdminRoot";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
