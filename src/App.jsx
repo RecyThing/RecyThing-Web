@@ -1,13 +1,23 @@
-import { Container } from "@chakra-ui/react";
+import { Route, Routes } from "react-router-dom/dist";
+import AdminRoot from "./components/AdminRoot";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
 	return (
-		<Container
-			maxW="container.xl"
-			centerContent
-		>
-			Recything Web
-		</Container>
+		<Routes>
+			<Route path="/" element={<AdminRoot />}>
+				<Route index element={<Dashboard />} />
+				<Route path="user-detail" element={<></>} />
+				<Route path="content" element={<></>} />
+				<Route path="report" element={<></>} />
+				<Route path="mission" element={<></>} />
+				<Route path="achievement" element={<></>} />
+				<Route path="community" element={<></>} />
+				<Route path="transaction" element={<></>} />
+				<Route path="custom-data" element={<></>} />
+				<Route path="setting" element={<></>} />
+			</Route>
+		</Routes>
 	);
 }
 
