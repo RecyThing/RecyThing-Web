@@ -1,1 +1,2 @@
-export { SideBar} from "./SideBar";
+export { SideBar } from "./SideBar";
+export { SearchBar } from "./SearchBar";
