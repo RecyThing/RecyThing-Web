@@ -10,7 +10,7 @@ export function Pagination({
 	totalItems,
 }) {
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
-	const startPage = Math.max(1, currentPage - 2);
+	const startPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
 	const endPage = Math.min(totalPages, startPage + 4);
 
 	const startItem = totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
