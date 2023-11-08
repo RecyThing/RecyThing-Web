@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom/dist";
 import AdminRoot from "./pages/AdminRoot";
 import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
+import Download from "./pages/Download";
 
 function App() {
 	return (
@@ -49,6 +50,10 @@ function App() {
 				<Route
 					path="setting"
 					element={<></>}
+				/>
+				<Route 
+					path="download" 
+					element={<Download />}
 				/>
 			</Route>
 		</Routes>
