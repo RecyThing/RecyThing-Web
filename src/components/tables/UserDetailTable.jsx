@@ -11,26 +11,51 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { Eye, Trash } from "iconsax-react";
-import { UserDetailModal } from "@/components/modal";
+import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { useState } from "react";
 
 const TableHead = ["No", "Username", "Email", "No. telp", "Action"];
 
 export function UserDetailTable({ data, currentPage, itemsPerPage }) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const {
+		isOpen: isOpenView,
+		onOpen: onOpenView,
+		onClose: onCloseView,
+	} = useDisclosure();
+	const {
+		isOpen: isOpenDelete,
+		onOpen: onOpenDelete,
+		onClose: onCloseDelete,
+	} = useDisclosure();
 	const [selectedRow, setSelectedRow] = useState(null);
 
-	const handleSelectRow = (row) => {
+	const handleViewModal = (row) => {
 		setSelectedRow(row);
-		onOpen();
+		onOpenView();
+	};
+
+	const handleDeleteModal = (row) => {
+		setSelectedRow(row);
+		onOpenDelete();
+	};
+
+	const handleDelete = (row) => {
+		console.log("deleted!", row);
+		onCloseDelete();
 	};
 
 	return (
 		<>
 			<UserDetailModal
-				isOpen={isOpen}
-				onClose={onClose}
+				isOpen={isOpenView}
+				onClose={onCloseView}
 				data={selectedRow}
+			/>
+			<DeleteModal
+				isOpen={isOpenDelete}
+				onClose={onCloseDelete}
+				target={selectedRow}
+				onDelete={handleDelete}
 			/>
 			<TableContainer>
 				<Table>
@@ -92,7 +117,7 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 										color={"#828282"}
 										_hover={{ bg: "transparent", color: "#333333" }}
 										_focus={{ boxShadow: "none" }}
-										onClick={() => handleSelectRow(row)}
+										onClick={() => handleViewModal(row)}
 									/>
 									<IconButton
 										icon={<Trash />}
@@ -101,6 +126,7 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 										color={"#E53535"}
 										_hover={{ bg: "transparent", color: "#B22222" }}
 										_focus={{ boxShadow: "none" }}
+										onClick={() => handleDeleteModal(row)}
 									/>
 								</Td>
 							</Tr>
