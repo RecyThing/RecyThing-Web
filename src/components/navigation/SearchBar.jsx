@@ -14,7 +14,7 @@ export function SearchBar({ onSearch }) {
 	return (
 		<InputGroup
 			borderRadius={"2xl"}
-			w={"35%"}
+			w={"full"}
 		>
 			<InputLeftElement
 				height={"100%"}

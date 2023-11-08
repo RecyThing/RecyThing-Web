@@ -1,16 +1,8 @@
+import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { UserDetailTable } from "@/components/tables";
-import {
-	Button,
-	ButtonGroup,
-	Container,
-	Flex,
-	Heading,
-} from "@chakra-ui/react";
 import { useState } from "react";
-
-const buttonLabel = ["Semua", "Terbaru", "Paling Awal"];
 
 // dummy
 const DummyData = [];
@@ -42,15 +34,11 @@ for (let i = 0; i < 50; i++) {
 // end dummy
 
 function UserDetail() {
-	const [isActive, setIsActive] = useState("Semua");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
-	// will be changed later
-	const data = DummyData; // full data
 	const tableData = DummyData.map((row) => row.slice(0, row.length - 1)); // remove date
-	// end
 
 	const filteredData = tableData.filter(([username]) =>
 		username.toLowerCase().includes(searchTerm.toLowerCase())
@@ -64,22 +52,6 @@ function UserDetail() {
 	const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
-	};
-
-	const sortData = (a, b, label) => {
-		if (label === "Terbaru" || label === "Semua") {
-			return new Date(b[b.length - 1]) - new Date(a[a.length - 1]);
-		} else if (label === "Paling Awal") {
-			return new Date(a[a.length - 1]) - new Date(b[b.length - 1]);
-		} else {
-			return 0;
-		}
-	};
-
-	const handleSort = (label) => {
-		setIsActive(label);
-		setCurrentPage(1);
-		data.sort((a, b) => sortData(a, b, label));
 	};
 
 	return (
@@ -106,35 +78,7 @@ function UserDetail() {
 				gap={"1.5rem"}
 				p={"1.5rem"}
 			>
-				<Flex
-					alignItems={"center"}
-					justifyContent={"space-between"}
-				>
-					<ButtonGroup
-						variant={"solid"}
-						spacing={"0"}
-					>
-						{buttonLabel.map((label) => (
-							<Button
-								key={label}
-								isActive={label === isActive}
-								color={"black"}
-								bg={"#A7A19E0D"}
-								borderRadius={"lg"}
-								px={"2.5rem"}
-								py={"1.75rem"}
-								_active={{
-									bg: "#35CC33",
-									color: "white",
-								}}
-								onClick={() => handleSort(label)}
-							>
-								{label}
-							</Button>
-						))}
-					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
-				</Flex>
+				<SearchBar onSearch={handleSearch} />
 				<UserDetailTable
 					currentPage={currentPage}
 					data={paginatedData}
