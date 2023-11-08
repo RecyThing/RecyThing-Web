@@ -9,6 +9,8 @@ export function Pagination({
 	onChangePage,
 	totalItems,
 }) {
+	const options = [5, 10, 25];
+
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	const startPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
 	const endPage = Math.min(totalPages, startPage + 4);
@@ -100,5 +102,3 @@ export function Pagination({
 		</Flex>
 	);
 }
-
-const options = [10, 25, 50];
