@@ -3,6 +3,7 @@ import {
 	Avatar,
 	Button,
 	Flex,
+	Grid,
 	GridItem,
 	IconButton,
 	Modal,
@@ -12,29 +13,34 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Table,
+	TableContainer,
+	Tbody,
+	Td,
 	Text,
+	Th,
+	Thead,
+	Tr,
 } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
 
 const dummy = {
 	username: "John Doe",
 	email: "johndoe@gmail.com",
-	telp: "08123456789",
-	birthdate: "22 November 2000",
-	address: "Jl. Diponegoro No. 789, Surabaya",
 	point: 3000,
-	goal: "Ingin berkontribusi untuk kebersihan lingkungan",
+	birthdate: "22 November 2000",
+	goal: "Melaporkan Pelanggaran Sampah",
+	address: "Jl. Diponegoro No. 789, Surabaya",
 	createdAt: "2023-09-23T10:12:35+08:00",
 };
 
 const dataTitle = {
 	username: "Username",
 	email: "Email",
-	telp: "No. Telp",
-	birthdate: "Tanggal Lahir",
-	address: "Alamat",
 	point: "Total Poin",
+	birthdate: "Tanggal Lahir",
 	goal: "Tujuan Penggunaan",
+	address: "Alamat",
 	createdAt: "Akun Terdaftar",
 };
 
@@ -63,7 +69,7 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={"3xl"}
+			size={"4xl"}
 			isCentered
 		>
 			<ModalOverlay />
@@ -103,16 +109,68 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 					/>
 				</ModalHeader>
 
-				<ModalBody
-					p={0}
-					display={"grid"}
-					gridTemplate={"repeat(3, 1fr) / 0.65fr 1fr 0.4fr"}
-					gridGap={"32px"}
-					columnGap={"32px"}
-				>
-					{Object.entries(data).map(([key, value]) => (
+				<ModalBody p={0}>
+					<TableContainer>
+						<Table>
+							<Thead>
+								<Tr>
+									{Object.keys(dataTitle).map((key) => {
+										if (
+											key !== "goal" &&
+											key !== "address" &&
+											key !== "createdAt"
+										) {
+											return (
+												<Th
+													key={key}
+													color={"#7F7F7F"}
+													textTransform={"capitalize"}
+													fontSize={"md"}
+												>
+													{dataTitle[key]}
+												</Th>
+											);
+										}
+										return null;
+									})}
+								</Tr>
+							</Thead>
+							<Tbody>
+								<Tr
+									bg={"#F2F2F5"}
+									borderBlock={"2px solid #C4C4C4"}
+								>
+									{Object.keys(data).map((key) => {
+										if (
+											key !== "goal" &&
+											key !== "address" &&
+											key !== "createdAt"
+										) {
+											return (
+												<Td
+													key={key}
+													color={"#333333"}
+													w={"12rem"}
+													wordBreak={"break-word"}
+													whiteSpace={"normal"}
+												>
+													{data[key]}
+												</Td>
+											);
+										}
+										return null;
+									})}
+								</Tr>
+							</Tbody>
+						</Table>
+					</TableContainer>
+
+					<Grid
+						templateColumns={"repeat(3, 1fr)"}
+						gap={"1rem"}
+						mt={"2rem"}
+					>
 						<GridItem
-							key={key}
 							display={"flex"}
 							justifyContent={"flex-start"}
 							flexDirection={"column"}
@@ -122,7 +180,7 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 								color={"#828282"}
 								letterSpacing={"tight"}
 							>
-								{dataTitle[key]}
+								{dataTitle.goal}
 							</Text>
 							<Text
 								fontWeight={"bold"}
@@ -130,13 +188,57 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 								letterSpacing={"tight"}
 								wordBreak={"break-word"}
 							>
-								{key === "createdAt" ? formatDate(value) : value}
-								{key === "point" && " Poin"}
+								{data.goal}
 							</Text>
 						</GridItem>
-					))}
+						<GridItem
+							display={"flex"}
+							justifyContent={"flex-start"}
+							flexDirection={"column"}
+						>
+							<Text
+								fontWeight={"medium"}
+								color={"#828282"}
+								letterSpacing={"tight"}
+							>
+								{dataTitle.address}
+							</Text>
+							<Text
+								fontWeight={"bold"}
+								color={"#333333"}
+								letterSpacing={"tight"}
+								wordBreak={"break-word"}
+							>
+								{data.address}
+							</Text>
+						</GridItem>
+					</Grid>
 				</ModalBody>
-				<ModalFooter p={0}>
+				<ModalFooter
+					p={0}
+					display={"flex"}
+					justifyContent={"space-between"}
+				>
+					<Flex
+						justifyContent={"flex-start"}
+						flexDirection={"column"}
+					>
+						<Text
+							fontWeight={"medium"}
+							color={"#828282"}
+							letterSpacing={"tight"}
+						>
+							{dataTitle.createdAt}
+						</Text>
+						<Text
+							fontWeight={"bold"}
+							color={"#333333"}
+							letterSpacing={"tight"}
+							wordBreak={"break-word"}
+						>
+							{formatDate(data.createdAt)}
+						</Text>
+					</Flex>
 					<Button
 						color={"white"}
 						bg={"#828282"}
