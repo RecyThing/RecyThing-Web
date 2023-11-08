@@ -26,12 +26,16 @@ export function DeleteModal({ isOpen, onClose, target, onDelete }) {
 			size={"sm"}
 			isCentered
 		>
-			<ModalOverlay />
+			<ModalOverlay
+				bg={"#0000000D"}
+				backdropFilter={"blur(5px)"}
+			/>
 			<ModalContent
 				borderRadius={"3xl"}
 				display={"flex"}
 				gap={"1.5rem"}
 				py={"0.5rem"}
+				shadow={"lg"}
 			>
 				<ModalHeader pb={0}>
 					<Center>

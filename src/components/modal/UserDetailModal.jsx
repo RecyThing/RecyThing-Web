@@ -72,11 +72,15 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 			size={"4xl"}
 			isCentered
 		>
-			<ModalOverlay />
+			<ModalOverlay
+				bg={"#0000000D"}
+				backdropFilter={"blur(5px)"}
+			/>
 			<ModalContent
 				p={"1.5rem"}
 				gap={"2rem"}
 				borderRadius={"3xl"}
+				shadow={"lg"}
 			>
 				<ModalHeader p={0}>
 					<Flex
