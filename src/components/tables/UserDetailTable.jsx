@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
-	Button,
-	Flex,
+	IconButton,
 	Table,
 	TableContainer,
 	Tbody,
@@ -11,7 +10,7 @@ import {
 	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { Trash } from "iconsax-react";
+import { Eye, Trash } from "iconsax-react";
 import { UserDetailModal } from "@/components/modal";
 import { useState } from "react";
 
@@ -70,9 +69,6 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 								key={rowIndex}
 								bg={rowIndex % 2 === 0 ? "#F2F2F5" : "white"}
 								borderBlock={"2px solid #C4C4C4"}
-								onClick={() => handleSelectRow(row)}
-								cursor={"pointer"}
-								_hover={{ bg: "#E0F4FF" }}
 							>
 								<Td textAlign="center">
 									{(currentPage - 1) * itemsPerPage + rowIndex + 1}
@@ -89,20 +85,23 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 									</Td>
 								))}
 								<Td textAlign="center">
-									<Button
-										variant="unstyled"
-										onClick={() => {
-											console.log("delete id", rowIndex + 1);
-										}}
-									>
-										<Flex
-											justifyContent={"center"}
-											color={"#E53535"}
-											_hover={{ color: "#B22222" }}
-										>
-											<Trash />
-										</Flex>
-									</Button>
+									<IconButton
+										icon={<Eye />}
+										size={"sm"}
+										bg={"transparent"}
+										color={"#828282"}
+										_hover={{ bg: "transparent", color: "#333333" }}
+										_focus={{ boxShadow: "none" }}
+										onClick={() => handleSelectRow(row)}
+									/>
+									<IconButton
+										icon={<Trash />}
+										size={"sm"}
+										bg={"transparent"}
+										color={"#E53535"}
+										_hover={{ bg: "transparent", color: "#B22222" }}
+										_focus={{ boxShadow: "none" }}
+									/>
 								</Td>
 							</Tr>
 						))}
