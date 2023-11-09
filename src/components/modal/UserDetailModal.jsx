@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import {
 	Avatar,
+	Box,
 	Button,
 	Flex,
 	Grid,
 	GridItem,
+	Icon,
 	IconButton,
 	Modal,
 	ModalBody,
@@ -13,38 +15,43 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	Table,
-	TableContainer,
-	Tbody,
-	Td,
 	Text,
-	Th,
-	Thead,
-	Tr,
 } from "@chakra-ui/react";
-import { CloseSquare } from "react-iconly";
+import {
+	Calendar,
+	CloseSquare,
+	Location,
+	Message,
+	TicketStar,
+	TickSquare,
+	User,
+} from "react-iconly";
+import { CopyIcon } from "../icons";
+import { useState } from "react";
 
 const dummy = {
 	username: "John Doe",
 	email: "johndoe@gmail.com",
-	point: 3000,
 	birthdate: "22 November 2000",
+	point: 3000,
 	goal: "Melaporkan Pelanggaran Sampah",
 	address: "Jl. Diponegoro No. 789, Surabaya",
 	createdAt: "2023-09-23T10:12:35+08:00",
 };
 
-const dataTitle = {
-	username: "Username",
-	email: "Email",
-	point: "Total Poin",
-	birthdate: "Tanggal Lahir",
-	goal: "Tujuan Penggunaan",
-	address: "Alamat",
-	createdAt: "Akun Terdaftar",
+const labels = {
+	username: { title: "Username", icon: <User /> },
+	email: { title: "Email", icon: <Message /> },
+	birthdate: { title: "Tanggal Lahir", icon: <Calendar /> },
+	point: { title: "Total Poin", icon: <TicketStar /> },
+	goal: { title: "Tujuan Pengguna", icon: <TickSquare /> },
+	address: { title: "Alamat", icon: <Location /> },
+	createdAt: { title: "Akun Terdaftar", icon: null },
 };
 
 export function UserDetailModal({ isOpen, onClose, data }) {
+	const [hoveredItem, setHoveredItem] = useState(null);
+
 	// will be changed later
 	data = dummy;
 
@@ -65,11 +72,23 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 			})
 		);
 	};
+
+	const handleMouseEnter = (key) => {
+		setHoveredItem(key);
+	};
+
+	const handleMouseLeave = () => {
+		setHoveredItem(null);
+	};
+
+	const handleCopy = (text) => {
+		navigator.clipboard.writeText(text);
+	};
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={"4xl"}
+			size={"5xl"}
 			isCentered
 		>
 			<ModalOverlay
@@ -91,13 +110,36 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 							size={"lg"}
 							src="https://bit.ly/sage-adebayo"
 						/>
-						<Text
-							ml={"1.25rem"}
-							fontWeight={"bold"}
-							fontSize={"lg"}
+						<Flex
+							ml={"1.5rem"}
+							flexDirection={"column"}
 						>
-							{data.username}
-						</Text>
+							<Text
+								fontWeight={"bold"}
+								fontSize={"3xl"}
+							>
+								{data.username}
+							</Text>
+							<Box
+								as={"p"}
+								fontSize={"md"}
+							>
+								<Text
+									as={"span"}
+									fontWeight={"medium"}
+									color={"#828282"}
+								>
+									{labels.createdAt.title} :{" "}
+								</Text>
+								<Text
+									as={"span"}
+									fontWeight={"bold"}
+									color={"#333333"}
+								>
+									{formatDate(data.createdAt)}
+								</Text>
+							</Box>
+						</Flex>
 					</Flex>
 					<IconButton
 						as={ModalCloseButton}
@@ -113,136 +155,109 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 					/>
 				</ModalHeader>
 
-				<ModalBody p={0}>
-					<TableContainer>
-						<Table>
-							<Thead>
-								<Tr>
-									{Object.keys(dataTitle).map((key) => {
-										if (
-											key !== "goal" &&
-											key !== "address" &&
-											key !== "createdAt"
-										) {
-											return (
-												<Th
-													key={key}
-													color={"#7F7F7F"}
-													textTransform={"capitalize"}
-													fontSize={"md"}
-												>
-													{dataTitle[key]}
-												</Th>
-											);
-										}
-										return null;
-									})}
-								</Tr>
-							</Thead>
-							<Tbody>
-								<Tr
-									bg={"#F2F2F5"}
-									borderBlock={"2px solid #C4C4C4"}
-								>
-									{Object.keys(data).map((key) => {
-										if (
-											key !== "goal" &&
-											key !== "address" &&
-											key !== "createdAt"
-										) {
-											return (
-												<Td
-													key={key}
-													color={"#333333"}
-													w={"12rem"}
-													wordBreak={"break-word"}
-													whiteSpace={"normal"}
-												>
-													{data[key]}
-												</Td>
-											);
-										}
-										return null;
-									})}
-								</Tr>
-							</Tbody>
-						</Table>
-					</TableContainer>
-
-					<Grid
-						templateColumns={"repeat(3, 1fr)"}
-						gap={"1rem"}
-						mt={"2rem"}
-					>
-						<GridItem
-							display={"flex"}
-							justifyContent={"flex-start"}
-							flexDirection={"column"}
-						>
-							<Text
-								fontWeight={"medium"}
-								color={"#828282"}
-								letterSpacing={"tight"}
-							>
-								{dataTitle.goal}
-							</Text>
-							<Text
-								fontWeight={"bold"}
-								color={"#333333"}
-								letterSpacing={"tight"}
-								wordBreak={"break-word"}
-							>
-								{data.goal}
-							</Text>
-						</GridItem>
-						<GridItem
-							display={"flex"}
-							justifyContent={"flex-start"}
-							flexDirection={"column"}
-						>
-							<Text
-								fontWeight={"medium"}
-								color={"#828282"}
-								letterSpacing={"tight"}
-							>
-								{dataTitle.address}
-							</Text>
-							<Text
-								fontWeight={"bold"}
-								color={"#333333"}
-								letterSpacing={"tight"}
-								wordBreak={"break-word"}
-							>
-								{data.address}
-							</Text>
-						</GridItem>
-					</Grid>
-				</ModalBody>
-				<ModalFooter
+				<ModalBody
 					p={0}
 					display={"flex"}
-					justifyContent={"space-between"}
+					flexDirection={"column"}
+					gap={"1rem"}
 				>
-					<Flex
-						justifyContent={"flex-start"}
-						flexDirection={"column"}
+					<Text
+						fontSize={"lg"}
+						fontWeight={"bold"}
 					>
-						<Text
-							fontWeight={"medium"}
-							color={"#828282"}
-							letterSpacing={"tight"}
-						>
-							{dataTitle.createdAt}
-						</Text>
-						<Text
-							fontWeight={"bold"}
-							color={"#333333"}
-							letterSpacing={"tight"}
-							wordBreak={"break-word"}
-						>
-							{formatDate(data.createdAt)}
-						</Text>
-					</Flex>
+						Detail Informasi
+					</Text>
+					<Grid
+						gridTemplate={{
+							base: "repeat(3, 1fr) / repeat(2, 1fr)",
+							md: "repeat(2, 1fr) / repeat(3, 1fr)",
+						}}
+						gap={"1rem"}
+					>
+						{Object.entries(labels).map(([key, value]) => {
+							if (
+								[
+									"username",
+									"email",
+									"birthdate",
+									"point",
+									"goal",
+									"address",
+								].includes(key)
+							) {
+								return (
+									<GridItem
+										key={key}
+										display={"flex"}
+										justifyContent={"space-between"}
+										alignItems={"center"}
+										flexDirection={"row"}
+										gap={"0.5rem"}
+										p={"1rem"}
+										onMouseEnter={() => handleMouseEnter(key)}
+										onMouseLeave={handleMouseLeave}
+										_hover={{
+											bg: "#F2F2F2",
+											cursor: "pointer",
+										}}
+										borderRadius={"lg"}
+										onClick={() => handleCopy(data[key])}
+										_active={{ bg: "#E0E0E0" }}
+									>
+										<Flex
+											flexDirection={"row"}
+											alignItems={"center"}
+											w={"100%"}
+										>
+											<Icon
+												color={"#949494"}
+												boxSize={"1.5rem"}
+											>
+												{value.icon}
+											</Icon>
+											<Flex
+												flexDirection={"row"}
+												alignItems={"center"}
+												justifyContent={"space-between"}
+												w={"100%"}
+											>
+												<Box
+													w={"14rem"}
+													ml={"0.5rem"}
+												>
+													<Text
+														fontWeight={"medium"}
+														color={"#828282"}
+														letterSpacing={"tight"}
+													>
+														{value.title}
+													</Text>
+													<Text
+														fontWeight={"bold"}
+														color={"#333333"}
+														letterSpacing={"tight"}
+														isTruncated
+													>
+														{data[key]}
+													</Text>
+												</Box>
+												{hoveredItem === key && (
+													<Icon
+														as={CopyIcon}
+														color={"#828282"}
+														boxSize={"1rem"}
+													/>
+												)}
+											</Flex>
+										</Flex>
+									</GridItem>
+								);
+							}
+							return null;
+						})}
+					</Grid>
+				</ModalBody>
+				<ModalFooter p={0}>
 					<Button
 						color={"white"}
 						bg={"#828282"}
