@@ -26,16 +26,14 @@ import {
 	TickSquare,
 	User,
 } from "react-iconly";
-import { CopyIcon } from "../icons";
-import { useState } from "react";
 
 const dummy = {
 	username: "John Doe",
 	email: "johndoe@gmail.com",
 	birthdate: "22 November 2000",
 	point: 3000,
-	goal: "Melaporkan Pelanggaran Sampah",
-	address: "Jl. Diponegoro No. 789, Surabaya",
+	goal: "Mengurangi sampah plastik, Mengurangi sampah elektronik, dan Mengurangi sampah makanan",
+	address: "Jl. Diponegoro No. 789, Surabaya, Jawa Timur",
 	createdAt: "2023-09-23T10:12:35+08:00",
 };
 
@@ -50,8 +48,6 @@ const labels = {
 };
 
 export function UserDetailModal({ isOpen, onClose, data }) {
-	const [hoveredItem, setHoveredItem] = useState(null);
-
 	// will be changed later
 	data = dummy;
 
@@ -73,17 +69,6 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 		);
 	};
 
-	const handleMouseEnter = (key) => {
-		setHoveredItem(key);
-	};
-
-	const handleMouseLeave = () => {
-		setHoveredItem(null);
-	};
-
-	const handleCopy = (text) => {
-		navigator.clipboard.writeText(text);
-	};
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -189,66 +174,57 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 									<GridItem
 										key={key}
 										display={"flex"}
-										justifyContent={"space-between"}
 										alignItems={"center"}
 										flexDirection={"row"}
 										gap={"0.5rem"}
 										p={"1rem"}
-										onMouseEnter={() => handleMouseEnter(key)}
-										onMouseLeave={handleMouseLeave}
 										_hover={{
 											bg: "#F2F2F2",
-											cursor: "pointer",
 										}}
-										borderRadius={"lg"}
-										onClick={() => handleCopy(data[key])}
-										_active={{ bg: "#E0E0E0" }}
+										overflowX={"auto"}
 									>
-										<Flex
-											flexDirection={"row"}
-											alignItems={"center"}
-											w={"100%"}
+										<Icon
+											color={"#949494"}
+											boxSize={"1.5rem"}
 										>
-											<Icon
-												color={"#949494"}
-												boxSize={"1.5rem"}
+											{value.icon}
+										</Icon>
+										<Flex
+											flexDirection={"column"}
+											position={"relative"}
+											overflowX={"auto"}
+											sx={{
+												"&::-webkit-scrollbar": {
+													height: "10px",
+												},
+												"&::-webkit-scrollbar-track": {
+													background: "#f1f1f1",
+												},
+												"&::-webkit-scrollbar-thumb": {
+													background: "#888",
+													borderRadius: "10px",
+												},
+												"&::-webkit-scrollbar-thumb:hover": {
+													background: "#555",
+												},
+											}}
+										>
+											<Text
+												fontWeight={"medium"}
+												color={"#828282"}
+												letterSpacing={"tight"}
 											>
-												{value.icon}
-											</Icon>
-											<Flex
-												flexDirection={"row"}
-												alignItems={"center"}
-												justifyContent={"space-between"}
-												w={"100%"}
+												{value.title}
+											</Text>
+
+											<Text
+												fontWeight={"bold"}
+												color={"#333333"}
+												letterSpacing={"tight"}
+												whiteSpace={"nowrap"}
 											>
-												<Box
-													w={"14rem"}
-													ml={"0.5rem"}
-												>
-													<Text
-														fontWeight={"medium"}
-														color={"#828282"}
-														letterSpacing={"tight"}
-													>
-														{value.title}
-													</Text>
-													<Text
-														fontWeight={"bold"}
-														color={"#333333"}
-														letterSpacing={"tight"}
-														isTruncated
-													>
-														{data[key]}
-													</Text>
-												</Box>
-												{hoveredItem === key && (
-													<Icon
-														as={CopyIcon}
-														color={"#828282"}
-														boxSize={"1rem"}
-													/>
-												)}
-											</Flex>
+												{data[key]}
+											</Text>
 										</Flex>
 									</GridItem>
 								);
