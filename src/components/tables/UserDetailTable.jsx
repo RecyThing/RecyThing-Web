@@ -94,6 +94,7 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 								key={rowIndex}
 								bg={rowIndex % 2 === 0 ? "#F2F2F5" : "white"}
 								borderBlock={"2px solid #C4C4C4"}
+								_hover={{ bg: "#E0F3FF" }}
 							>
 								<Td textAlign="center">
 									{(currentPage - 1) * itemsPerPage + rowIndex + 1}
