@@ -14,22 +14,14 @@ const names = [
 	"Charlie Davis",
 ];
 const domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
-const dates = [
-	"11/11/2021",
-	"12/12/2021",
-	"01/01/2022",
-	"02/02/2022",
-	"03/03/2022",
-];
 
 for (let i = 0; i < 50; i++) {
 	const name = names[Math.floor(Math.random() * names.length)];
 	const email = `${name.replace(" ", ".").toLowerCase()}@${
 		domains[Math.floor(Math.random() * domains.length)]
 	}`;
-	const phone = "081234567" + Math.floor(Math.random() * 10).toString();
-	const date = dates[Math.floor(Math.random() * dates.length)];
-	DummyData.push([name, email, phone, date]);
+	const points = Math.floor(Math.random() * 10000);
+	DummyData.push([name, email, points]);
 }
 // end dummy
 
@@ -38,9 +30,7 @@ function UserDetail() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
-	const tableData = DummyData.map((row) => row.slice(0, row.length - 1)); // remove date
-
-	const filteredData = tableData.filter(([username]) =>
+	const filteredData = DummyData.filter(([username]) =>
 		username.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 

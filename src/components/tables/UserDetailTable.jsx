@@ -14,7 +14,7 @@ import { Eye, Trash } from "iconsax-react";
 import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { useState } from "react";
 
-const TableHead = ["No", "Username", "Email", "No. telp", "Action"];
+const TableHead = ["No", "Username", "Email", "Total Poin", "Aksi"];
 
 export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 	const {
@@ -66,12 +66,12 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 									key={head}
 									color={"#7F7F7F"}
 									textAlign={
-										head !== "No" && head !== "Action" ? "left" : "center"
+										head !== "No" && head !== "Aksi" ? "left" : "center"
 									}
 									textTransform={"capitalize"}
 									fontSize={"md"}
 									{...(head === "No" && { width: "5%" })}
-									{...(head === "Action" && { width: "10%" })}
+									{...(head === "Aksi" && { width: "10%" })}
 								>
 									{head}
 								</Th>
