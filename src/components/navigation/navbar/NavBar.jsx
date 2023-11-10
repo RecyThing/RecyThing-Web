@@ -1,17 +1,30 @@
-import logo from "../../assets/recything-logo.png";
-import hamburger_active from "../../assets/hamburger-active.svg";
-import hamburger_non_active from "../../assets/hamburger-non-active.svg";
+import logo from "@/assets/recything-logo.png";
+import hamburger_active from "@/assets/hamburger-active.svg";
+import hamburger_non_active from "@/assets/hamburger-non-active.svg";
 import { useState } from "react";
+
+import "./NavBar.css";
 
 function Navbar() {
   const [toggleNavbar, setToggleNavbar] = useState(false);
 
+  const [color, SetColor] = useState(false);
+  const changeColor = () => {
+    if (window.scrollY >= 72) {
+      SetColor(true);
+    } else {
+      SetColor(false);
+    }
+  };
+
+  window.addEventListener("scroll", changeColor);
+
   return (
     <>
-      <nav className="bg-transparent">
+      <nav className={color ? "header header-bg" : "header"}>
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
-            <img src={logo} alt="" />
+            <img src={logo} alt="navbar-logo" />
           </div>
           <div
             className="cursor-pointer order-2 sm:order-1 lg:hidden"
@@ -25,11 +38,21 @@ function Navbar() {
           </div>
           <div className="hidden lg:block lg:order-2">
             <ul className="flex gap-14">
-              <li className="text-green-500 font-semibold">Beranda</li>
-              <li>Tentang</li>
-              <li>Fitur</li>
-              <li>Promo</li>
-              <li>FaQ</li>
+              <li className="text-green-500 font-semibold">
+                <a href="#">Beranda</a>
+              </li>
+              <li>
+                <a href="#">Tentang</a>
+              </li>
+              <li>
+                <a href="#">Fitur</a>
+              </li>
+              <li>
+                <a href="#">Promo</a>
+              </li>
+              <li>
+                <a href="#">FaQ</a>
+              </li>
             </ul>
           </div>
           <div className="hidden sm:block order-3 lg:order-3">
@@ -47,12 +70,20 @@ function Navbar() {
               Download
             </li>
             <li className="text-green-500 font-semibold px-4 sm:px-8 py-2">
-              Beranda
+              <a href="#">Beranda</a>
             </li>
-            <li className="px-4 sm:px-8 py-2">Tentang</li>
-            <li className="px-4 sm:px-8 py-2">Fitur</li>
-            <li className="px-4 sm:px-8 py-2">Promo</li>
-            <li className="px-4 sm:px-8 py-2">FaQ</li>
+            <li className="px-4 sm:px-8 py-2">
+              <a href="#">Tentang</a>
+            </li>
+            <li className="px-4 sm:px-8 py-2">
+              <a href="#">Fitur</a>
+            </li>
+            <li className="px-4 sm:px-8 py-2">
+              <a href="#">Promo</a>
+            </li>
+            <li className="px-4 sm:px-8 py-2">
+              <a href="#">FaQ</a>
+            </li>
           </ul>
         </div>
       </nav>
