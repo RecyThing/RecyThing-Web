@@ -86,7 +86,7 @@ function Footer() {
           <div className="flex text-sm gap-9 lg:gap-20 sm:grid-cols-4">
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
-                <p className="font-bold">Pintasan</p>
+                <p className="font-bold leading-none">Pintasan</p>
                 <li>
                   <a rel="noopener noreferrer" href="#">
                     Beranda
@@ -111,7 +111,7 @@ function Footer() {
             </div>
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
-                <p className="font-bold">Eksternal</p>
+                <p className="font-bold leading-none">Eksternal</p>
                 <li>
                   <a rel="noopener noreferrer" href="#">
                     RecyThing
@@ -131,7 +131,7 @@ function Footer() {
             </div>
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
-                <p className="font-bold">Media Sosial</p>
+                <p className="font-bold leading-none">Media Sosial</p>
                 <li>
                   <a rel="noopener noreferrer" href="#">
                     Instagram
