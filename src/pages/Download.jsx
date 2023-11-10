@@ -23,7 +23,7 @@ export default function Download() {
         boxShadow={"md"}
         direction={"column"}
         gap={"1.5rem"}
-        p={"1.5rem"}
+        p={"1rem"}
       >
         <DownloadTable dummyData={dummyData}/>
       </Flex>

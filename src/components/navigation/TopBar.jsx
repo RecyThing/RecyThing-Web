@@ -1,11 +1,24 @@
 import { ArrowDown2 } from "iconsax-react";
-import { ArrowLeftSquare } from "react-iconly";
+import { ArrowLeftSquare, ArrowRightSquare } from "react-iconly";
 
-export default function TopBar() {
+// eslint-disable-next-line react/prop-types
+export default function TopBar({ onHide, hide }) {
   return (
     <div className="flex items-center bg-white fixed z-50" style={topBarStyle}>
       <nav className="flex items-center w-full my-2 mx-3 h-11 gap-x-1">
-        <ArrowLeftSquare color="gray"/>
+        {hide ? (
+          <ArrowRightSquare
+            className="cursor-pointer"
+            color="gray"
+            onClick={() => onHide(false)}
+          />
+        ) : (
+          <ArrowLeftSquare
+            className="cursor-pointer"
+            color="gray"
+            onClick={() => onHide(true)}
+          />
+        )}
         <div className="flex justify-end items-center w-full gap-x-1">
           <div className="flex items-center gap-x-2">
             <img
@@ -14,11 +27,11 @@ export default function TopBar() {
               alt="profile"
             />
             <div className="text-info">
-                <p className="text-xs font-medium">Admin Recything</p>
-                <p style={emailStyle}>admin123@gmail.com</p>
+              <p className="text-xs font-medium">Admin Recything</p>
+              <p style={emailStyle}>admin123@gmail.com</p>
             </div>
           </div>
-          <ArrowDown2 color="gray" size={16}/>
+          <ArrowDown2 color="gray" size={16} />
         </div>
       </nav>
     </div>
@@ -26,9 +39,9 @@ export default function TopBar() {
 }
 
 const emailStyle = {
-    fontSize: "10px"
-} 
+  fontSize: "10px",
+};
 const topBarStyle = {
-    width: "-webkit-fill-available",
-    borderBottom: "1px solid #C7C9D9"
-}
+  width: "-webkit-fill-available",
+  borderBottom: "1px solid #C7C9D9",
+};
