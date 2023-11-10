@@ -28,7 +28,7 @@ function Download() {
                 className="order-1 lg:order-2 focus:outline-none text-black bg-white hover:bg-gray-200 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center"
               >
                 <div>
-                  <img className="w-8" src={app_store} alt="..." />
+                  <img className="w-8" src={app_store} alt="app-store-icon" />
                 </div>
                 <div className="ml-4">
                   <p className="flex flex-col text-left">
@@ -44,7 +44,7 @@ function Download() {
                 className="order-2 lg:order-1 focus:outline-none text-black bg-white hover:bg-gray-200 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center"
               >
                 <div>
-                  <img className="w-8" src={play_store} alt="..." />
+                  <img className="w-8" src={play_store} alt="play-store-icon" />
                 </div>
                 <div className="ml-4">
                   <p className="flex flex-col text-left">
