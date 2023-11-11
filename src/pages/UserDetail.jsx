@@ -1,19 +1,31 @@
+import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { UserDetailTable } from "@/components/tables";
-import {
-	Button,
-	ButtonGroup,
-	Container,
-	Flex,
-	Heading,
-} from "@chakra-ui/react";
 import { useState } from "react";
 
-const buttonLabel = ["Semua", "Terbaru", "Paling Awal"]; // will be refactored later
+// dummy
+const DummyData = [];
+const names = [
+	"John Doe",
+	"Jane Doe",
+	"Alice Smith",
+	"Bob Johnson",
+	"Charlie Davis",
+];
+const domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
+
+for (let i = 0; i < 50; i++) {
+	const name = names[Math.floor(Math.random() * names.length)];
+	const email = `${name.replace(" ", ".").toLowerCase()}@${
+		domains[Math.floor(Math.random() * domains.length)]
+	}`;
+	const points = Math.floor(Math.random() * 10000);
+	DummyData.push([name, email, points]);
+}
+// end dummy
 
 function UserDetail() {
-	const [isActive, setIsActive] = useState("Semua");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -56,35 +68,7 @@ function UserDetail() {
 				gap={"1.5rem"}
 				p={"1.5rem"}
 			>
-				<Flex
-					alignItems={"center"}
-					justifyContent={"space-between"}
-				>
-					<ButtonGroup
-						variant={"solid"}
-						spacing={"0"}
-					>
-						{buttonLabel.map((label) => (
-							<Button
-								key={label}
-								isActive={label === isActive}
-								color={"black"}
-								bg={"#A7A19E0D"}
-								borderRadius={"lg"}
-								px={"2.5rem"}
-								py={"1.75rem"}
-								_active={{
-									bg: "#35CC33",
-									color: "white",
-								}}
-								onClick={() => setIsActive(label)}
-							>
-								{label}
-							</Button>
-						))}
-					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
-				</Flex>
+				<SearchBar onSearch={handleSearch} />
 				<UserDetailTable
 					currentPage={currentPage}
 					data={paginatedData}
@@ -103,28 +87,3 @@ function UserDetail() {
 }
 
 export default UserDetail;
-
-const DummyData = [
-	["I Made Sudarsana Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawa", "123@gmail.com", "08123456789"],
-	["Taksa Wibawadwadwa", "123@gmail.com", "08123456789"],
-];
