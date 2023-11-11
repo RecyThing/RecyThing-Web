@@ -5,7 +5,7 @@ import { ArrowLeftSquare, ArrowRightSquare } from "react-iconly";
 export default function TopBar({ onHide, hide }) {
   return (
     <div className="flex items-center bg-white fixed z-50" style={topBarStyle}>
-      <nav className="flex items-center w-full my-2 mx-3 h-11 gap-x-1">
+      <nav className="flex items-center w-full my-2 mx-4 h-11 gap-x-1">
         {hide ? (
           <ArrowRightSquare
             className="cursor-pointer"
@@ -19,15 +19,15 @@ export default function TopBar({ onHide, hide }) {
             onClick={() => onHide(true)}
           />
         )}
-        <div className="flex justify-end items-center w-full gap-x-1">
+        <div className="flex justify-end items-center w-full gap-x-2">
           <div className="flex items-center gap-x-2">
             <img
-              className="h-8 w-8 rounded-full"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIwRBD9gNuA2GjcOf6mpL-WuBhJADTWC3QVQ&usqp=CAU"
+              className="h-9 w-9 rounded-full"
+              src="https://i.ibb.co/4s1Pzd9/image.png"
               alt="profile"
             />
             <div className="text-info">
-              <p className="text-xs font-medium">Admin Recything</p>
+              <p className="text-xs font-medium" style={nameStyle}>Admin Recything</p>
               <p style={emailStyle}>admin123@gmail.com</p>
             </div>
           </div>
@@ -37,9 +37,14 @@ export default function TopBar({ onHide, hide }) {
     </div>
   );
 }
+const nameStyle = {
+  lineHeight: "1.2rem"
+}
 
 const emailStyle = {
   fontSize: "10px",
+  color: "#828282",
+  lineHeight: "1rem"
 };
 const topBarStyle = {
   width: "-webkit-fill-available",
