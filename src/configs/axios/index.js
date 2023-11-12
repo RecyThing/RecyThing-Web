@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import axios from "axios";
-import { CONST } from "utils/constant";
+import { CONST } from "../../utils/constant";
 
 
 export const axiosInstance = axios.create({
