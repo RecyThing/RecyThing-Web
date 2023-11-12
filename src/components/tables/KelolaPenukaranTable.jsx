@@ -2,7 +2,7 @@
 import { IconButton, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
 import { Eye, Trash } from "iconsax-react";
 import KelolaSampahModal from "@/components/modal/KelolaSampahModal";
-import DeleteSampahModal from "@/components/modal/DeleteSampahModal";
+import DeleteModal from "@/components/modal/DeleteModal";
 import { useState } from "react";
 
 const TableHead = ["ID Penukaran", "Nama Lengkap", "Email", "Lokasi Drop Point", "Aksi"];
@@ -28,7 +28,7 @@ export default function KelolaPenukaranTable({ data, currentPage, itemsPerPage }
         setSelectedRowData(row);
         onOpenDelete();
         setIsDeleteModalOpen(true);
-    };    
+    };        
 
     const handleDetailModal = (row) => {
         setSelectedRowData(row);
@@ -51,10 +51,12 @@ export default function KelolaPenukaranTable({ data, currentPage, itemsPerPage }
                 />
             )}
             {isDeleteModalOpen && (
-                <DeleteSampahModal
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
-                    rowData={selectedRowData}
-                />
+                    target={selectedRowData}
+                    onDelete={handleDelete}
+                />            
             )}
             <TableContainer>
                 <Table>
