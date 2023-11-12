@@ -2,6 +2,10 @@ import { Route, Routes } from "react-router-dom/dist";
 import AdminRoot from "./pages/AdminRoot";
 import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
+import DaftarTransaksiTukerPoin from "./pages/daftar-tuker-poin";
+import DataTerbaru from "./components/DaftarTukerPoin/DataTerbaru";
+import DataDiproses from "./components/DaftarTukerPoin/DataDiproses";
+import DataSelesai from "./components/DaftarTukerPoin/DataSelesai";
 
 function App() {
 	return (
@@ -40,7 +44,19 @@ function App() {
 				/>
 				<Route
 					path="transaction"
-					element={<></>}
+					element={<DaftarTransaksiTukerPoin/>}
+				/>
+				<Route
+					path="transaction/terbaru"
+					element={<DataTerbaru/>}
+				/>
+				<Route
+					path="transaction/diproses"
+					element={<DataDiproses/>}
+				/>
+				<Route
+					path="transaction/selesai"
+					element={<DataSelesai/>}
 				/>
 				<Route
 					path="custom-data"
@@ -50,6 +66,7 @@ function App() {
 					path="setting"
 					element={<></>}
 				/>
+				
 			</Route>
 		</Routes>
 	);
