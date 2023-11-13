@@ -1,4 +1,4 @@
-import { PiCaretDown } from "react-icons/pi";
+import { PiCaretDown, PiCaretUp } from "react-icons/pi";
 import { useNavigate, useLocation } from "react-router-dom"
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,8 @@ export function SideBarItem({ name, logo, path, subMenu, sideBarCollapse, setCol
     if (path) {
       navigate(path);
       setExpandedMenu("");
-    } else setExpandedMenu(name);
+      
+    } else setExpandedMenu(prev => prev === name ? "" : name);
     setCollapse(false);
   }
 
@@ -31,10 +32,11 @@ export function SideBarItem({ name, logo, path, subMenu, sideBarCollapse, setCol
           {logo}
           <p className="font-medium">{name}</p>
         </div>
-        {!path ? <PiCaretDown className="my-auto" /> : <></> }
+        {!path ? (expandedMenu === name || isSubMenuSelected) ? <PiCaretUp className="my-auto" /> : <PiCaretDown className="my-auto" /> : <></> }
       </div>
  
-      <div className={`overflow-hidden transition-all duration-[400ms] ${((!path && expandedMenu === name) || isSubMenuSelected) ? `mt-2 max-h-[120px]` : 'w-0 max-h-0'}`}>
+      <div className={`overflow-hidden transition-all duration-[350ms] ${((!path && expandedMenu === name) || isSubMenuSelected) ?
+         `mt-2 ${subMenu.length > 2 ? 'h-[120px]' : 'h-20'}` : 'w-0 h-0'}`}>
         {subMenu?.map((item, index) => (
           <div onClick={() => navigate(item.path)} key={index} className={`pl-12 flex gap-4 py-2 rounded-lg 
           ${item.path === pathname ? 'text-white bg-[#35CC33]' : 'hover:bg-slate-100'}`}>
