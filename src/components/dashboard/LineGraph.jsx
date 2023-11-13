@@ -34,6 +34,7 @@ function LineGraph() {
 
   const options =  {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         grid: {
@@ -61,7 +62,7 @@ function LineGraph() {
 
   return (
     <div>
-      <Line className='max-h-[252px]' options={options} data={data} />
+      <Line className='!h-[252px]' options={options} data={data} />
     </div>
   )
 }

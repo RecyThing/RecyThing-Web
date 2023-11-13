@@ -14,14 +14,16 @@ function App() {
       <Route path="/dashboard" element={<AdminRoot />}>
         <Route index element={<Dashboard />} />
         <Route path="user-detail" element={<UserDetail />} />
-        <Route path="content" element={<></>} />
+        <Route path="admin-list" element={<></>} />
+        <Route path="badge" element={<></>} />
         <Route path="report" element={<></>} />
-        <Route path="mission" element={<></>} />
-        <Route path="achievement" element={<></>} />
+        <Route path="mission-list" element={<></>} />
+        <Route path="mission-approval" element={<></>} />
+        <Route path="voucher-list" element={<></>} />
+        <Route path="transaction-list" element={<></>} />
+        <Route path="drop-point-transaction" element={<></>} />
         <Route path="community" element={<></>} />
-        <Route path="transaction" element={<></>} />
-        <Route path="custom-data" element={<></>} />
-        <Route path="setting" element={<></>} />
+        <Route path="customize-data" element={<></>} />
       </Route>
     </Routes>
   );
