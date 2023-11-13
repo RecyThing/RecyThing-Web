@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Table, TableContainer, Tbody, Thead } from "@chakra-ui/react";
 import { TableBodyRow, TableHeadRow } from "./TableRows";
-import { NotFoundCell } from "./TableCell";
+import { NotFoundCell } from "./TableCells";
 
 export function BaseTable({ data, heads, children }) {
 	return (
