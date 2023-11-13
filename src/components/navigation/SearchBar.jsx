@@ -1,13 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-iconly";
-import { useState } from "react";
 
 export function SearchBar({ onSearch }) {
-	const [searchTerm, setSearchTerm] = useState("");
-
 	const handleSearch = (e) => {
-		setSearchTerm(e.target.value);
 		onSearch(e.target.value);
 	};
 
@@ -33,7 +29,6 @@ export function SearchBar({ onSearch }) {
 				borderColor={"#C4C4C4"}
 				px={"2.5rem"}
 				py={"1.75rem"}
-				value={searchTerm}
 				onChange={handleSearch}
 			/>
 		</InputGroup>
