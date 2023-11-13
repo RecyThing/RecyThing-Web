@@ -1,17 +1,11 @@
 /* eslint-disable react/prop-types */
-import {
-	IconButton,
-	Table,
-	TableContainer,
-	Tbody,
-	Td,
-	Th,
-	Thead,
-	Tr,
-	useDisclosure,
-} from "@chakra-ui/react";
-import { Eye, Trash } from "iconsax-react";
+import { BaseTable } from "./base-table/BaseTable";
+import { CenteredCell, TextCell } from "./base-table/TableCells";
+import { TableBodyRow } from "./base-table/TableRows";
+import { CustomIconButton } from "@/components/buttons";
 import { DeleteModal, UserDetailModal } from "@/components/modal";
+import { Eye, Trash } from "iconsax-react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
 const TableHead = ["No", "Username", "Email", "Total Poin", "Aksi"];
@@ -57,84 +51,41 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 				target={selectedRow}
 				onDelete={handleDelete}
 			/>
-			<TableContainer>
-				<Table>
-					<Thead>
-						<Tr>
-							{TableHead.map((head) => (
-								<Th
-									key={head}
-									color={"#7F7F7F"}
-									textAlign={
-										head !== "No" && head !== "Aksi" ? "left" : "center"
-									}
-									textTransform={"capitalize"}
-									fontSize={"md"}
-									{...(head === "No" && { width: "5%" })}
-									{...(head === "Aksi" && { width: "10%" })}
-								>
-									{head}
-								</Th>
-							))}
-						</Tr>
-					</Thead>
-					<Tbody>
-						{data.length === 0 && (
-							<Tr>
-								<Td
-									colSpan={TableHead.length}
-									textAlign={"center"}
-								>
-									Data tidak ditemukan
-								</Td>
-							</Tr>
-						)}
-						{data.map((row, rowIndex) => (
-							<Tr
-								key={rowIndex}
-								bg={rowIndex % 2 === 0 ? "#F2F2F5" : "white"}
-								borderBlock={"2px solid #C4C4C4"}
-								_hover={{ bg: "#E0F3FF" }}
-							>
-								<Td textAlign="center">
-									{(currentPage - 1) * itemsPerPage + rowIndex + 1}
-								</Td>
-								{row.map((cell, cellIndex) => (
-									<Td
-										key={cellIndex}
-										color={"#383838"}
-										w={"12.5rem"}
-										overflowWrap={"break-word"}
-										whiteSpace={"normal"}
-									>
-										{cell}
-									</Td>
-								))}
-								<Td textAlign="center">
-									<IconButton
-										icon={<Eye />}
-										size={"sm"}
-										bg={"transparent"}
-										color={"#828282"}
-										_hover={{ bg: "transparent", color: "#333333" }}
-										_focus={{ boxShadow: "none" }}
-										onClick={() => handleViewModal(row)}
-									/>
-									<IconButton
-										icon={<Trash />}
-										size={"sm"}
-										bg={"transparent"}
-										color={"#E53535"}
-										_hover={{ bg: "transparent", color: "#B22222" }}
-										_focus={{ boxShadow: "none" }}
-										onClick={() => handleDeleteModal(row)}
-									/>
-								</Td>
-							</Tr>
+			<BaseTable
+				data={data}
+				heads={TableHead}
+			>
+				{data.map((row, rowIndex) => (
+					<TableBodyRow
+						key={rowIndex}
+						index={rowIndex}
+					>
+						<CenteredCell>
+							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
+						</CenteredCell>
+						{row.map((cell, cellIndex) => (
+							<TextCell
+								key={cellIndex}
+								content={cell}
+							/>
 						))}
-					</Tbody>
-				</Table>
-			</TableContainer>
+						<CenteredCell>
+							<CustomIconButton
+								icon={<Eye />}
+								color={"#828282"}
+								hoverColor={"#333333"}
+								onClick={() => handleViewModal(row)}
+							/>
+							<CustomIconButton
+								icon={<Trash />}
+								color={"#E53535"}
+								hoverColor={"#B22222"}
+								onClick={() => handleDeleteModal(row)}
+							/>
+						</CenteredCell>
+					</TableBodyRow>
+				))}
+			</BaseTable>
 		</>
 	);
 }

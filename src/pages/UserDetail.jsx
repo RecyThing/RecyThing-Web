@@ -47,9 +47,9 @@ function UserDetail() {
 	return (
 		<Container
 			as={"section"}
-			maxW={"container.xl"}
+			maxW={"container.2xl"}
 			bg={"#EBEBF0"}
-			py={"3rem"}
+			p={"1.5rem"}
 		>
 			<Heading
 				as="h1"
