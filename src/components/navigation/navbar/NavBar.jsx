@@ -22,8 +22,8 @@ function Navbar() {
       <nav
         className={
             color
-            ? "sticky top-0 shadow z-50 bg-white transition duration-200 ease-in-out "
-            : "absolute w-full z-50 transition duration-200 ease-in-out "
+            ? "sticky top-0 shadow z-50 bg-white"
+            : "absolute w-full z-50"
         }
       >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
