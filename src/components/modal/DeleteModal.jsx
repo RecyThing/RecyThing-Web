@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
 
-export default function DeleteModal({ isOpen, onClose, target, onDelete }) {
+export function DeleteModal({ isOpen, onClose, target, onDelete }) {
 	const handleDelete = () => {
 		onDelete(target);
 		onClose();
