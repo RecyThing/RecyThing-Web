@@ -59,12 +59,12 @@ function KelolaPenukaranSampah() {
             <Heading as="h1" color={"#201A18"} fontSize={"2xl"} fontWeight="bold" mb={"1.5rem"}>
 				Kelola Penukaran Sampah
 			</Heading>
-            <div className="bg-white rounded-lg shadow-md mt-4 p-4 h-90%">
-                <div className="flex justify-between items-center mb-4 ml-2">
-                    <div className="w-96">
+            <div className="bg-white rounded-lg shadow-md mt-4 p-4 h-90% w-full">
+                <div className="flex justify-between items-center mb-4 ml-2 w-full">
+                    <div style={{width: "35%"}}>
                         <SearchBar onSearch={handleSearch}/>
                     </div>
-                    <div className={`text-white font-inter font-medium text-lg flex items-center gap-2 mr-2 p-3 w-44 h-12 rounded-lg cursor-pointer ${isFocused ? 'ml-3' : ''}`} style={{ backgroundColor: "rgba(53, 204, 51, 1)" }} onClick={openForm}>
+                    <div className={`text-white font-inter font-medium text-lg flex items-center gap-2 mr-2 p-3 h-12 rounded-lg cursor-pointer ${isFocused ? 'ml-3' : ''}`} style={{ backgroundColor: "rgba(53, 204, 51, 1)" }} onClick={openForm}>
                         <Add size="24" color="rgba(255, 255, 255, 1)" />
                         <p>Tambah Data</p>
                     </div>
