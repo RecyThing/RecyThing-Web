@@ -6,6 +6,8 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
+import ErrorNotFound from "./error/ErrorNotFound";
+
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="customize-data" element={<></>} />
         <Route path="download" element={<Download />} />
       </Route>
+
+      <Route path="*" element={<ErrorNotFound />} />
     </Routes>
   );
 }

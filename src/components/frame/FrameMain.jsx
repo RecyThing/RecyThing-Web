@@ -3,10 +3,10 @@ import imgFrame2 from "@/assets/LandingPage/frame/frame2.png";
 import imgFrame3 from "@/assets/LandingPage/frame/frame3.png";
 import imgFrame4 from "@/assets/LandingPage/frame/frame4.png";
 
-export const FrameOne = () => {
+export const FramePahlawan = () => {
   return (
     <>
-      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center my-20 p-10 gap-20">
+      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-row-1 justify-center items-center my-20 p-10 gap-20">
         <div className="left">
           <img src={imgFrame1} alt="" className="mx-auto" />
         </div>
@@ -34,10 +34,10 @@ export const FrameOne = () => {
   );
 };
 
-export const FrameTwo = () => {
+export const FrameDaurUlang = () => {
   return (
     <>
-      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center bg-green-50 my-20 p-10 gap-20">
+      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center bg-green-50 my-20 p-10 gap-10">
         <div className="left">
           <p className="text-5xl font-semibold my-3 w-3/5">
             <span className="text-green-500">Daur Ulang </span>
@@ -66,7 +66,7 @@ export const FrameTwo = () => {
             </svg>
           </button>
         </div>
-        <div className="right bg-green-200 rounded-[1rem]">
+        <div className="right bg-green-200 rounded-[1rem] md:row-auto sm:row-start-1 ">
           <img src={imgFrame2} alt="" className="mx-auto pt-10 " />
         </div>
       </div>
@@ -74,7 +74,7 @@ export const FrameTwo = () => {
   );
 };
 
-export const FrameThree = () => {
+export const FrameLaporkan = () => {
   return (
     <>
       <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center my-20 p-10 gap-20">
@@ -114,7 +114,7 @@ export const FrameThree = () => {
   );
 };
 
-export const FrameFour = () => {
+export const FrameDapatkanPoin = () => {
   return (
     <>
       <div className="grid  lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center bg-green-50 my-20 p-10 gap-20">
@@ -146,7 +146,7 @@ export const FrameFour = () => {
             </svg>
           </button>
         </div>
-        <div className="right pt-10 bg-green-200 rounded-[1rem]">
+        <div className="right pt-10 bg-green-200 rounded-[1rem] md:row-auto sm:row-start-1 ">
           <img src={imgFrame4} alt="" className="mx-auto" />
         </div>
       </div>
@@ -154,7 +154,7 @@ export const FrameFour = () => {
   );
 };
 
-export const FrameFive = () => {
+export const FrameTukar = () => {
   return (
     <>
       <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center my-20 p-10 gap-20">
@@ -193,3 +193,5 @@ export const FrameFive = () => {
     </>
   );
 };
+
+
