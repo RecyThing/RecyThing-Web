@@ -6,7 +6,7 @@ import Footer from "@/components/footer/Footer";
 const LandingPage = () => {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Jumbotron />
       <AboutListCard />
       <Frame />
