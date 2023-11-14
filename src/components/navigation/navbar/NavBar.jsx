@@ -6,22 +6,22 @@ import { useState } from "react";
 function Navbar() {
   const [toggleNavbar, setToggleNavbar] = useState(false);
 
-  const [color, SetColor] = useState(false);
-  const changeColor = () => {
-    if (window.scrollY >= 72) {
-      SetColor(true);
-    } else {
-      SetColor(false);
-    }
-  };
+  // const [color, SetColor] = useState(false);
+  // const changeColor = () => {
+  //   if (window.scrollY >= 72) {
+  //     SetColor(true);
+  //   } else {
+  //     SetColor(false);
+  //   }
+  // };
 
-  window.addEventListener("scroll", changeColor);
+  // window.addEventListener("scroll", changeColor);
 
   return (
     <>
       <nav
         className={
-          color
+            window.scrollY >= 72
             ? "sticky top-0 shadow z-50 bg-white transition duration-200 ease-in-out "
             : "absolute w-full z-50 transition duration-200 ease-in-out "
         }
