@@ -1,13 +1,14 @@
 import { DownloadTable } from "@/components/tables/DownloadTable";
-import {
-  Container,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
+import { Button, Container, Flex, Heading } from "@chakra-ui/react";
 
 export default function Download() {
   return (
-    <Container as={"section"} maxW={"container.xl"} bg={"#EBEBF0"} py={"3rem"}>
+    <Container
+      as={"section"}
+      maxW={"container.2xl"}
+      bg={"#EBEBF0"}
+      p={"1.5rem"}
+    >
       <Heading
         as="h1"
         color={"#201A18"}
@@ -23,23 +24,33 @@ export default function Download() {
         boxShadow={"md"}
         direction={"column"}
         gap={"1.5rem"}
-        p={"1rem"}
+        p={"1.5rem"}
       >
-        <DownloadTable dummyData={dummyData}/>
+        <DownloadTable TableHead={TableHead} data={data} />
+        <Button
+          width={"fit-content"}
+          alignSelf={"flex-end"}
+          color={"white"}
+          background={"#828282"}
+          fontSize={12}
+          px={10}
+        >
+          Kembali
+        </Button>
       </Flex>
     </Container>
   );
 }
+const TableHead = ["No.", "Kategori", "File", "Download"];
 
-
-const dummyData = [
-    ["Pengguna Aktif", "Excel"],
-    ["Total Komunitas", "Excel"],
-    ["Sampah Diterima", "Excel"],
-    ["Samoah Dikelola", "Excel"],
-    ["Acara Komunitas mendatang", "Excel"],
-    ["Artikel Populer", "Excel"],
-    ["Rubbish", "Excel"],
-    ["Peringkat Pengguna", "Excel"],
-    ["Aktivitas Laporan Pengguna", "Excel"],
-  ];
+const data = [
+  ["Pengguna Aktif", "Excel"],
+  ["Total Komunitas", "Excel"],
+  ["Sampah Diterima", "Excel"],
+  ["Sampah Dikelola", "Excel"],
+  ["Acara Komunitas mendatang", "Excel"],
+  ["Artikel Populer", "Excel"],
+  ["Rubbish", "Excel"],
+  ["Peringkat Pengguna", "Excel"],
+  ["Aktivitas Laporan Pengguna", "Excel"],
+];
