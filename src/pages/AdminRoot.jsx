@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { SideBar } from "@/components/navigation";
-
+import TopBar from "@/components/navigation/TopBar";
 function AdminRoot() {
 	const [collapse, setCollapse] = useState(false);
 
@@ -9,10 +9,15 @@ function AdminRoot() {
 		<div className="flex">
 			<SideBar collapse={collapse} setCollapse={setCollapse} />
 			<div className={`w-full ${collapse ? 'ml-[96px]' : 'ml-[312px]'}`}>
-				<Outlet />
+        <TopBar collapse={collapse} setCollapse={setCollapse}/>
+        <div className="mt-12 border">
+          <Outlet />
+        </div>
 			</div>
 		</div>
 	);
+  
+
 }
 
 export default AdminRoot;

@@ -5,6 +5,7 @@ import UserDetail from "./pages/UserDetail";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
+import Download from "./pages/Download";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="drop-point-transaction" element={<KelolaPenukaranSampah/>} />
         <Route path="community" element={<></>} />
         <Route path="customize-data" element={<></>} />
+        <Route path="download" element={<Download />} />
       </Route>
     </Routes>
   );
