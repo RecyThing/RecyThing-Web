@@ -4,15 +4,17 @@ import { Th, Tr } from "@chakra-ui/react";
 export function TableHeadRow({ heads }) {
 	return (
 		<Tr>
-			{heads.map((head) => (
+			{heads.map((head, index) => (
 				<Th
 					key={head}
 					color={"#7F7F7F"}
-					textAlign={head !== "No" && head !== "Aksi" ? "left" : "center"}
+					textAlign={
+						index === 0 || index === heads.length - 1 ? "center" : "left"
+					}
 					textTransform={"capitalize"}
 					fontSize={"md"}
-					{...(head === "No" && { width: "5%" })}
-					{...(head === "Aksi" && { width: "10%" })}
+					{...(index === 0 && { width: "5%" })}
+					{...(index === heads.length - 1 && { width: "10%" })}
 				>
 					{head}
 				</Th>
