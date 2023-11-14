@@ -57,6 +57,7 @@ export default function TopBar({ setCollapse, collapse }) {
                 fontSize={10}
                 color={"#828282"}
                 _hover={{ bg: "#F2F2F5", color: "red" }}
+                cursor={"pointer"}
               >
                 <PopoverBody>
                   <Flex justifyContent={"space-between"} alignItems={"center"}>
