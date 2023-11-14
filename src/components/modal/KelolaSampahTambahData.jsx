@@ -33,7 +33,7 @@ export function KelolaSampahTambahData({ onClose, setIsTambahData  }){
 
     return(
         <div className="fixed top-0 left-0 w-full h-full bg-opacity-5 backdrop-blur flex justify-center items-center z-10" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
-            <div className="bg-white p-6 rounded-lg">
+            <div className="bg-white p-6 rounded-lg max-h-[90vh] overflow-y-auto">
                 <h4 className="text-gray-800 text-2xl font-bold font-inter mb-6">Tambah Data Penukaran Sampah</h4>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex gap-x-6">

@@ -80,7 +80,7 @@ export function KelolaSampahDetailModal({ isOpen, onClose, data }) {
 
     return (
         <div className={`fixed top-0 left-0 w-full h-full bg-opacity-5 backdrop-blur flex justify-center items-center z-10 ${isOpen ? 'block' : 'hidden'}`} style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-            <div className="bg-white p-6 rounded-lg">
+            <div className="bg-white p-6 rounded-lg max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between font-medium">
                     <h5 className="text-xl font-inter mb-6" style={{color:"#828282"}}>{judulData.idPenukaran} : 
                         <span className="text-xl font-inter ml-2" style={{color:"#333"}}>{isiDataTabel.idPenukaran}</span>
