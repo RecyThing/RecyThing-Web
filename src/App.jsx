@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
         <Route path="transaction-list" element={<></>} />
-        <Route path="drop-point-transaction" element={<></>} />
+        <Route path="drop-point-transaction" element={<KelolaPenukaranSampah/>} />
         <Route path="community" element={<></>} />
         <Route path="customize-data" element={<></>} />
       </Route>
