@@ -1,23 +1,52 @@
-import Banner from "@/assets/LandingPage//banner-img.png";
+import Banner from "@/assets/LandingPage/banner-img.png";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Show, Hide } from "react-iconly";
 
 const Login = () => {
-  const handleShowPassword = () => {
-    let x = document.getElementById("password");
-    if (x.type === "password") {
-      x.type = "text";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
+  const navigate = useNavigate();
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    const dummyUser = { email: "admin", password: "123" };
+    // const user = JSON.parse(localStorage.getItem("user"));
+
+    if (email === email && password === password) {
+      localStorage.setItem("isLoggedIn", true);
+      navigate("/");
+      window.location.reload();
+    } else if (email === dummyUser.email && password === dummyUser.password) {
+      localStorage.setItem("user", JSON.stringify(dummyUser));
+      localStorage.setItem("isLoggedIn", true);
+      window.location.reload();
     } else {
-      x.type = "password";
+      setErrorMessage("Invalid username or password");
+    }
+  };
+
+  const handleShowPassword = (e) => {
+    // Mencegah pengiriman formulir default
+    e.preventDefault();
+
+    // Toggle tampilan password
+    if (passwordType === "password") {
+      setPasswordType("text");
+    } else {
+      setPasswordType("password");
     }
   };
   return (
     <>
-
       <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-1 items-center p-5 h-screen">
         <div className=" banner rounded-md bg-green-500 flex justify-center items-center h-full p-10">
           <img src={Banner} alt="" className="w-4/5" />
         </div>
-        <form className=" p-10 w-2/3 mx-auto ">
-          <p className="text-3xl font-bold">Selamat Datang</p>
+        <form className=" p-10 w-3/4 mx-auto" onSubmit={handleLogin}>
+          <p className="text-3xl font-bold">Selamat Datang👋 </p>
           <p className="font-regular text-gray-400 my-3 w-2/3">
             Login terlebih dahulu untuk mengakses halaman Admin
           </p>
@@ -42,6 +71,9 @@ const Login = () => {
               </div>
               <input
                 type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="input-group-1"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
                 placeholder="Masukan Email"
@@ -66,17 +98,34 @@ const Login = () => {
                 </svg>
               </div>
               <input
-                type="password"
+                type={passwordType}
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
                 placeholder="Masukan Kata Sandi"
               />
-              <input
-                type="checkbox"
-                className="absolute inset-y-0 z-50 right-5 flex items-center pl-3.5 "
-                onChange={handleShowPassword}
-              />
+<button
+  className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
+  onClick={handleShowPassword}
+>
+  {passwordType === "password" ? <Show /> : <Hide />}
+</button>
             </div>
+          </div>
+          <div>
+            {" "}
+            {errorMessage?.email && (
+              <p className="error py-2" style={{ color: "red" }}>
+                {errorMessage?.email}
+              </p>
+            )}
+            {errorMessage?.password && (
+              <p className="error py-2" style={{ color: "red" }}>
+                {errorMessage?.password}
+              </p>
+            )}
           </div>
           <button
             type="submit"

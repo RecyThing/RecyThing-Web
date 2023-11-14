@@ -1,21 +1,21 @@
 import {
-  FrameFive,
-  FrameFour,
-  FrameOne,
-  FrameThree,
-  FrameTwo,
+  FrameTukar,
+  FrameDapatkanPoin,
+  FramePahlawan,
+  FrameLaporkan,
+  FrameDaurUlang,
 } from "./FrameMain";
 
-const CompleteFrame = () => {
+const index = () => {
   return (
     <>
-      <FrameOne />
-      <FrameTwo />
-      <FrameThree />
-      <FrameFour />
-      <FrameFive />
+      <FramePahlawan />
+      <FrameDaurUlang />
+      <FrameLaporkan />
+      <FrameDapatkanPoin />
+      <FrameTukar />
     </>
   );
 };
 
-export default CompleteFrame;
+export default index;

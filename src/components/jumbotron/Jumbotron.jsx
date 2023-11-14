@@ -3,8 +3,8 @@ import JumbotronImg from "@/assets/LandingPage/jumbotron img.png";
 const Jumbotron = () => {
   return (
     <>
-      <div className="jumbotron grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center h-full items-center  mb-24">
-        <div className="text-group p-10 ">
+      <div className="jumbotron grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center h-screen sm:h-full items-center  mb-24">
+        <div className="text-group p-10">
           <p className="text-4xl font-bold my-5 ">
             Mulai Langkahmu untuk Lingkungan yang Lebih Baik
           </p>
@@ -27,8 +27,13 @@ const Jumbotron = () => {
             </button>
           </div>
         </div>
-        <div className="h-screen relative bg-green-50 rounded-bl-[5em] "></div>
-        <img src={JumbotronImg} alt="" className="mx-auto w-2/6 absolute lg:right-24 md:right-10 sm:right-40  " />
+        <div className="h-screen relative md:bg-green-50 sm:bg-white rounded-bl-[5em] sm:pt-24 sm:h-full md:row-auto sm:row-start-1 ">
+          <img
+            src={JumbotronImg}
+            alt=""
+            className="mx-auto w-2/6 relative   sm:w-3/4 "
+          />
+        </div>
       </div>
     </>
   );

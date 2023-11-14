@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import ErrorNotFound from "./error/ErrorNotFound";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="community" element={<></>} />
         <Route path="customize-data" element={<></>} />
       </Route>
+
+      <Route path="*" element={<ErrorNotFound />} />
     </Routes>
   );
 }
