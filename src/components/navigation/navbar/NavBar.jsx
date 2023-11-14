@@ -19,12 +19,22 @@ function Navbar() {
 
   window.addEventListener("scroll", changeColor);
 
+  const menuItems = [
+    { text: "Beranda", link: "#" },
+    { text: "Tentang", link: "#" },
+    { text: "Fitur", link: "#" },
+    { text: "Promo", link: "#" },
+    { text: "FaQ", link: "#" },
+  ];
+
   return (
     <>
       <nav className={color ? "header header-bg" : "header"}>
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
-            <img src={logo} alt="navbar-logo" />
+            <a href="/">
+              <img src={logo} alt="navbar-logo" />
+            </a>
           </div>
           <div
             className="cursor-pointer order-2 sm:order-1 lg:hidden"
@@ -38,21 +48,20 @@ function Navbar() {
           </div>
           <div className="hidden lg:block lg:order-2">
             <ul className="flex gap-14">
-              <li className="text-green-500 font-semibold">
-                <a href="#">Beranda</a>
-              </li>
-              <li>
-                <a href="#">Tentang</a>
-              </li>
-              <li>
-                <a href="#">Fitur</a>
-              </li>
-              <li>
-                <a href="#">Promo</a>
-              </li>
-              <li>
-                <a href="#">FaQ</a>
-              </li>
+              {menuItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={
+                    index === 0
+                      ? "text-[#35CC33] font-semibold"
+                      : ""
+                  }
+                >
+                  <a className="hover:text-green-600" href={item.link}>
+                    {item.text}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="hidden sm:block order-3 lg:order-3">
@@ -69,21 +78,18 @@ function Navbar() {
             <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-2 sm:hidden">
               Download
             </li>
-            <li className="text-green-500 font-semibold px-4 sm:px-8 py-2">
-              <a href="#">Beranda</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Tentang</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Fitur</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Promo</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">FaQ</a>
-            </li>
+            {menuItems.map((item, index) => (
+              <li
+                key={index}
+                className={`${
+                  index === 0 ? "text-[#35CC33] font-semibold" : ""
+                } px-4 sm:px-8 py-2`}
+              >
+                <a className="hover:text-[#35CC33]" href={item.link}>
+                  {item.text}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </nav>
