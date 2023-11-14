@@ -1,23 +1,27 @@
-import logo from "@/assets/recything-logo.png";
+import Logo from "@/assets/recything-logo.png";
 import hamburger_active from "@/assets/hamburger-active.svg";
 import hamburger_non_active from "@/assets/hamburger-non-active.svg";
-import { useState } from "react";
-
-import "./NavBar.css";
+import { useEffect, useState } from "react";
 
 function Navbar() {
-  const [toggleNavbar, setToggleNavbar] = useState(false);
+	const [toggleNavbar, setToggleNavbar] = useState(false);
 
-  const [color, SetColor] = useState(false);
-  const changeColor = () => {
-    if (window.scrollY >= 72) {
-      SetColor(true);
-    } else {
-      SetColor(false);
-    }
-  };
+	const [color, setColor] = useState(false);
+	const changeColor = () => {
+		if (window.scrollY >= 72) {
+			setColor(true);
+		} else {
+			setColor(false);
+		}
+	};
 
-  window.addEventListener("scroll", changeColor);
+	useEffect(() => {
+		window.addEventListener("scroll", changeColor);
+
+		return () => {
+			window.removeEventListener("scroll", changeColor);
+		};
+	}, []);
 
   const menuItems = [
     { text: "Beranda", link: "#" },
@@ -29,12 +33,15 @@ function Navbar() {
 
   return (
     <>
-      <nav className={color ? "header header-bg" : "header"}>
+			<nav
+				className={
+					"fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
+					(color ? "bg-white shadow" : "bg-transparent ")
+				}
+			>
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
-            <a href="/">
-              <img src={logo} alt="navbar-logo" />
-            </a>
+            <img src={Logo} alt="navbar-logo" />
           </div>
           <div
             className="cursor-pointer order-2 sm:order-1 lg:hidden"
