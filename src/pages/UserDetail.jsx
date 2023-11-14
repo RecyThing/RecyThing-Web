@@ -58,7 +58,7 @@ function UserDetail() {
 				fontWeight="bold"
 				mb={"1.5rem"}
 			>
-				Manage User
+				Kelola Data Pengguna
 			</Heading>
 			<Flex
 				bg={"white"}

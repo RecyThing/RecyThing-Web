@@ -29,16 +29,19 @@ import {
 
 const dummy = {
 	username: "John Doe",
+	fullname: "John Doe Wibawa",
 	email: "johndoe@gmail.com",
 	birthdate: "22 November 2000",
 	point: 3000,
-	goal: "Mengurangi sampah plastik, Mengurangi sampah elektronik, dan Mengurangi sampah makanan",
-	address: "Jl. Diponegoro No. 789, Surabaya, Jawa Timur",
+	goal: "Melaporkan Pelanggaran Sampah",
+	address:
+		"Jl. Gunung Anyar Tengah (Gunung Anyar) No. 789 RT 09 RW 12, Surabaya, Jawa Timur, Indonesia",
 	createdAt: "2023-09-23T10:12:35+08:00",
 };
 
 const labels = {
-	username: { title: "Username", icon: <User /> },
+	username: { title: "Username", icon: null },
+	fullname: { title: "Nama Pengguna", icon: <User /> },
 	email: { title: "Email", icon: <Message /> },
 	birthdate: { title: "Tanggal Lahir", icon: <Calendar /> },
 	point: { title: "Total Poin", icon: <TicketStar /> },
@@ -73,7 +76,7 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={"5xl"}
+			size={"3xl"}
 			isCentered
 		>
 			<ModalOverlay
@@ -82,7 +85,7 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 			/>
 			<ModalContent
 				p={"1.5rem"}
-				gap={"2rem"}
+				gap={"1.5rem"}
 				borderRadius={"3xl"}
 				shadow={"lg"}
 			>
@@ -148,40 +151,34 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 				>
 					<Text
 						fontSize={"lg"}
-						fontWeight={"bold"}
+						fontWeight={"semibold"}
+						color={"#828282"}
+						letterSpacing={"tight"}
 					>
 						Detail Informasi
 					</Text>
-					<Grid
-						gridTemplate={{
-							base: "repeat(3, 1fr) / repeat(2, 1fr)",
-							md: "repeat(2, 1fr) / repeat(3, 1fr)",
-						}}
-						gap={"1rem"}
-					>
-						{Object.entries(labels).map(([key, value]) => {
-							if (
-								[
-									"username",
-									"email",
-									"birthdate",
-									"point",
-									"goal",
-									"address",
-								].includes(key)
-							) {
-								return (
+					{Object.entries(labels).map(([key, value]) => {
+						if (
+							[
+								"fullname",
+								"email",
+								"birthdate",
+								"point",
+								"goal",
+								"address",
+							].includes(key)
+						) {
+							return (
+								<Grid
+									key={key}
+									templateColumns="0.4fr 1fr"
+									_hover={{ bg: "#F2F2F2" }}
+									gap={"3rem"}
+								>
 									<GridItem
-										key={key}
 										display={"flex"}
-										alignItems={"center"}
-										flexDirection={"row"}
 										gap={"0.5rem"}
-										p={"1rem"}
-										_hover={{
-											bg: "#F2F2F2",
-										}}
-										overflowX={"auto"}
+										p={"0.5rem"}
 									>
 										<Icon
 											color={"#949494"}
@@ -189,49 +186,28 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 										>
 											{value.icon}
 										</Icon>
-										<Flex
-											flexDirection={"column"}
-											position={"relative"}
-											overflowX={"auto"}
-											sx={{
-												"&::-webkit-scrollbar": {
-													height: "10px",
-												},
-												"&::-webkit-scrollbar-track": {
-													background: "#f1f1f1",
-												},
-												"&::-webkit-scrollbar-thumb": {
-													background: "#888",
-													borderRadius: "10px",
-												},
-												"&::-webkit-scrollbar-thumb:hover": {
-													background: "#555",
-												},
-											}}
+										<Text
+											fontWeight={"medium"}
+											color={"#828282"}
+											letterSpacing={"tight"}
 										>
-											<Text
-												fontWeight={"medium"}
-												color={"#828282"}
-												letterSpacing={"tight"}
-											>
-												{value.title}
-											</Text>
-
-											<Text
-												fontWeight={"bold"}
-												color={"#333333"}
-												letterSpacing={"tight"}
-												whiteSpace={"nowrap"}
-											>
-												{data[key]}
-											</Text>
-										</Flex>
+											{value.title}
+										</Text>
 									</GridItem>
-								);
-							}
-							return null;
-						})}
-					</Grid>
+									<GridItem p={"0.5rem"}>
+										<Text
+											fontWeight={"bold"}
+											color={"#333333"}
+											letterSpacing={"tight"}
+										>
+											{data[key]}
+										</Text>
+									</GridItem>
+								</Grid>
+							);
+						}
+						return null;
+					})}
 				</ModalBody>
 				<ModalFooter p={0}>
 					<Button
