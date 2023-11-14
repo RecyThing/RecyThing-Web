@@ -1,9 +1,9 @@
-import logo from "@/assets/recything-logo.png";
+import Logo from "@/assets/recything-logo.png";
 import hamburger_active from "@/assets/hamburger-active.svg";
 import hamburger_non_active from "@/assets/hamburger-non-active.svg";
 import { useState } from "react";
 
-import "./NavBar.css";
+// import "./NavBar.css";
 
 function Navbar() {
   const [toggleNavbar, setToggleNavbar] = useState(false);
@@ -24,7 +24,7 @@ function Navbar() {
       <nav className={color ? "header header-bg" : "header"}>
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
-            <img src={logo} alt="navbar-logo" />
+            <img src={Logo} alt="navbar-logo" />
           </div>
           <div
             className="cursor-pointer order-2 sm:order-1 lg:hidden"

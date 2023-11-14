@@ -1,5 +1,5 @@
 import Jumbotron from "@/components/jumbotron/Jumbotron";
-import Navbar from "@/components/navigation/navbar/NavBar";
+import Navbar from "@/components/navigation/NavBar";
 import Card from "@/components/card/Card";
 import Frame from "@/components/frame";
 import Footer from "@/components/footer/Footer";
