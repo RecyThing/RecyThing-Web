@@ -9,7 +9,8 @@ export function SideBar({ collapse, setCollapse }) {
 	const [expandedMenu, setExpandedMenu] = useState("");
 
 	return (
-		<div className={`fixed px-6 pt-8 transition-all ${collapse ? 'w-[96px] min-w-[96px]' : 'w-[312px] min-w-[312px]'} bg-white z-10 min-h-screen border-r border-[#C7C9D9]`}>
+		<div className={`fixed px-6 pt-8 pb-6 hide-scrollbar transition-all overflow-scroll ${collapse ? 'w-[96px] min-w-[96px]' : 'w-[312px] min-w-[312px]'}
+	bg-white z-10 min-h-screen max-h-screen border-r border-[#C7C9D9]`}>
 			<img onClick={() => setCollapse(prev => !prev)} className="mx-auto transition-all" src={collapse ? miniLogo : recyThingLogo} alt="recyThingLogo" />
 			<div className="my-8 h-[1px] w-full bg-[#3BA639]" />
 			<div className="flex flex-col gap-4">
