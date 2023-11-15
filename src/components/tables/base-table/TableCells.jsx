@@ -102,6 +102,10 @@ export function CenteredCell({ children }) {
 	return <Td textAlign="center">{children}</Td>;
 }
 
+export function LeftAlignCell({ children }) {
+	return <Td maxWidth={"max-content"} textAlign="left">{children}</Td>;
+}
+
 export function LinkCell({ key, content, onClick }) {
 	return (
 		<Td

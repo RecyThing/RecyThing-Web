@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
+import DataDropPoint from "./pages/DataDropPoint";
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Route path="report" element={<></>} />
         <Route path="content-article" element={<></>} />
         <Route path="rubbish-category" element={<></>} />
-        <Route path="data-drop-point" element={<></>} />
+        <Route path="data-drop-point" element={<DataDropPoint />} />
         <Route path="mission-list" element={<></>} />
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
