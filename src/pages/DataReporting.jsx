@@ -1,7 +1,6 @@
 import { Container, Flex, Heading, Button } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { UserDetailTable } from "@/components/tables";
 import { useState } from "react";
 import { DataReportingTable } from "@/components/tables/DataReportingTable";
 import TabButton from "@/components/buttons/TabButton";
@@ -54,14 +53,18 @@ function DataReporting() {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    document.body.style.backgroundColor = "green";
     if (tab === "semua") {
       document.getElementById("semuaButton").style.backgroundColor = "green";
     }
   };
 
   return (
-    <Container as={"section"} maxW={"container.xl"} bg={"#EBEBF0"} py={"3rem"}>
+    <Container
+      as={"section"}
+      maxW={"container2.xl"}
+      bg={"#EBEBF0"}
+      p={"1.5rem"}
+    >
       <Heading
         as="h1"
         color={"#201A18"}
