@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import DataReporting from "./pages/DataReporting";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route index element={<Dashboard />} />
         <Route path="user-detail" element={<UserDetail />} />
         <Route path="content" element={<></>} />
-        <Route path="report" element={<></>} />
+        <Route path="report" element={<DataReporting />} />
         <Route path="mission" element={<></>} />
         <Route path="achievement" element={<></>} />
         <Route path="community" element={<></>} />
