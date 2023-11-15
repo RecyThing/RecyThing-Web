@@ -1,30 +1,47 @@
-import logo from "@/assets/recything-logo.png";
+import Logo from "@/assets/recything-logo.png";
 import hamburger_active from "@/assets/hamburger-active.svg";
 import hamburger_non_active from "@/assets/hamburger-non-active.svg";
-import { useState } from "react";
-
-import "./NavBar.css";
+import { useEffect, useState } from "react";
 
 function Navbar() {
-  const [toggleNavbar, setToggleNavbar] = useState(false);
+	const [toggleNavbar, setToggleNavbar] = useState(false);
 
-  const [color, SetColor] = useState(false);
-  const changeColor = () => {
-    if (window.scrollY >= 72) {
-      SetColor(true);
-    } else {
-      SetColor(false);
-    }
-  };
+	const [color, setColor] = useState(false);
+	const changeColor = () => {
+		if (window.scrollY >= 72) {
+			setColor(true);
+		} else {
+			setColor(false);
+		}
+	};
 
-  window.addEventListener("scroll", changeColor);
+	useEffect(() => {
+		window.addEventListener("scroll", changeColor);
+
+		return () => {
+			window.removeEventListener("scroll", changeColor);
+		};
+	}, []);
+
+  const menuItems = [
+    { text: "Beranda", link: "#" },
+    { text: "Tentang", link: "#" },
+    { text: "Fitur", link: "#" },
+    { text: "Promo", link: "#" },
+    { text: "FaQ", link: "#" },
+  ];
 
   return (
     <>
-      <nav className={color ? "header header-bg" : "header"}>
+			<nav
+				className={
+					"fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
+					(color ? "bg-white shadow" : "bg-transparent ")
+				}
+			>
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
-            <img src={logo} alt="navbar-logo" />
+            <img src={Logo} alt="navbar-logo" />
           </div>
           <div
             className="cursor-pointer order-2 sm:order-1 lg:hidden"
@@ -38,21 +55,20 @@ function Navbar() {
           </div>
           <div className="hidden lg:block lg:order-2">
             <ul className="flex gap-14">
-              <li className="text-green-500 font-semibold">
-                <a href="#">Beranda</a>
-              </li>
-              <li>
-                <a href="#">Tentang</a>
-              </li>
-              <li>
-                <a href="#">Fitur</a>
-              </li>
-              <li>
-                <a href="#">Promo</a>
-              </li>
-              <li>
-                <a href="#">FaQ</a>
-              </li>
+              {menuItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={
+                    index === 0
+                      ? "text-[#35CC33] font-semibold"
+                      : ""
+                  }
+                >
+                  <a className="hover:text-green-600" href={item.link}>
+                    {item.text}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="hidden sm:block order-3 lg:order-3">
@@ -69,21 +85,18 @@ function Navbar() {
             <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-2 sm:hidden">
               Download
             </li>
-            <li className="text-green-500 font-semibold px-4 sm:px-8 py-2">
-              <a href="#">Beranda</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Tentang</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Fitur</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">Promo</a>
-            </li>
-            <li className="px-4 sm:px-8 py-2">
-              <a href="#">FaQ</a>
-            </li>
+            {menuItems.map((item, index) => (
+              <li
+                key={index}
+                className={`${
+                  index === 0 ? "text-[#35CC33] font-semibold" : ""
+                } px-4 sm:px-8 py-2`}
+              >
+                <a className="hover:text-[#35CC33]" href={item.link}>
+                  {item.text}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </nav>

@@ -7,7 +7,7 @@ function InfoCard({ title, count, image, percentage }) {
     <div className={"basis-1/4 h-[146px] p-4 shadow-md rounded-xl bg-white"}>
       <div className="flex justify-between">
         <p className="font-medium text-[#777980]">{title}</p>
-        <img src={image} alt="" />
+        <img className='shrink-0 h-fit' src={image} alt="" />
       </div>
       <p className="text-[32px] font-semibold"><CountUp start={0} end={count} /></p>
 

@@ -1,16 +1,15 @@
-/* eslint-disable react/prop-types */
 import { BaseTable } from "./base-table/BaseTable";
 import { CenteredCell, TextCell } from "./base-table/TableCells";
 import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-import { DeleteModal, UserDetailModal } from "@/components/modal";
+import { KelolaSampahDetailModal, DeleteModal } from "@/components/modal";
 import { Eye, Trash } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
-const TableHead = ["No", "Username", "Email", "Total Poin", "Aksi"];
+const TableHead = ["ID Penukaran", "Nama Lengkap", "Email", "Lokasi Drop Point", "Aksi"];
 
-export function UserDetailTable({ data, currentPage, itemsPerPage }) {
+export function KelolaPenukaranTable({ data, currentPage, itemsPerPage }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -38,9 +37,15 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 		onCloseDelete();
 	};
 
+    const formatId = (id) => {
+        const desiredLength = 3;
+        const paddedId = String(id).padStart(desiredLength, '0');
+        return `PS${paddedId}`;
+    };
+
 	return (
 		<>
-			<UserDetailModal
+			<KelolaSampahDetailModal
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				data={selectedRow}
@@ -60,9 +65,8 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>
-							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
-						</CenteredCell>
+						<CenteredCell>{formatId((currentPage - 1) * itemsPerPage + rowIndex + 1)}</CenteredCell>
+
 						{row.map((cell, cellIndex) => (
 							<TextCell
 								key={cellIndex}

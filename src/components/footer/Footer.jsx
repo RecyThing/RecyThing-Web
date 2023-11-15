@@ -3,6 +3,26 @@ import app_store_badge from "../../assets/app-store-badge.svg";
 import google_play_badge from "../../assets/google-play-badge.svg";
 
 function Footer() {
+  const shortcutLinks = [
+    { text: "Beranda", link: "#" },
+    { text: "Fitur", link: "#" },
+    { text: "Promo", link: "#" },
+    { text: "FAQ", link: "#" },
+  ];
+
+  const externalLinks = [
+    { text: "RecyThing", link: "#" },
+    { text: "RecyThing", link: "#" },
+    { text: "RecyThing", link: "#" },
+  ];
+
+  const socialMediaLinks = [
+    { text: "Instagram", link: "#" },
+    { text: "Facebook", link: "#" },
+    { text: "Twitter", link: "#" },
+    { text: "YouTube", link: "#" },
+  ];
+
   return (
     <>
       <footer className="px-4 divide-y bg-[#F6FEF6]">
@@ -16,15 +36,19 @@ function Footer() {
               <img className="w-[198px]" src={logo} alt="" />
             </a>
             <div className="flex gap-6 mt-6 text-[20px]">
-              <a href="">Download</a>
-              <a href="">Tentang Kami</a>
+              <a className="hover:text-[#35CC33]" href="">
+                Download
+              </a>
+              <a className="hover:text-[#35CC33]" href="">
+                Tentang Kami
+              </a>
             </div>
             <div className="flex justify-start space-x-3 gap-5 mt-6">
               <a
                 rel="noopener noreferrer"
                 href="#"
                 title="Instagram"
-                className="flex items-center p-[10px] bg-slate-300 rounded-full"
+                className="flex items-center p-[10px] bg-[#DEE5DD] hover:bg-[#C7C9D9] rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +63,7 @@ function Footer() {
                 rel="noopener noreferrer"
                 href="#"
                 title="Facebook"
-                className="flex items-center p-[10px] bg-slate-300 rounded-full"
+                className="flex items-center p-[10px] bg-[#DEE5DD] hover:bg-[#C7C9D9] rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +78,7 @@ function Footer() {
                 rel="noopener noreferrer"
                 href="#"
                 title="Twitter"
-                className="flex items-center p-[10px] bg-slate-300 rounded-full"
+                className="flex items-center p-[10px] bg-[#DEE5DD] hover:bg-[#C7C9D9] rounded-full"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -68,7 +92,7 @@ function Footer() {
                 rel="noopener noreferrer"
                 href="#"
                 title="Youtube"
-                className="flex items-center p-[10px] bg-slate-300 rounded-full"
+                className="flex items-center p-[10px] bg-[#DEE5DD] hover:bg-[#C7C9D9] rounded-full"
               >
                 <svg
                   viewBox="0 0 16 16"
@@ -87,71 +111,49 @@ function Footer() {
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
                 <p className="font-bold leading-none">Pintasan</p>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Beranda
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Fitur
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Promo
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    FAQ
-                  </a>
-                </li>
+                {shortcutLinks.map((link, index) => (
+                  <li key={index}>
+                    <a
+                      className="hover:text-[#35CC33]"
+                      rel="noopener noreferrer"
+                      href={link.link}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
                 <p className="font-bold leading-none">Eksternal</p>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    RecyThing
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    RecyThing
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    RecyThing
-                  </a>
-                </li>
+                {externalLinks.map((link, index) => (
+                  <li key={index}>
+                    <a
+                      className="hover:text-[#35CC33]"
+                      rel="noopener noreferrer"
+                      href={link.link}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="space-y-3">
               <ul className="flex flex-col gap-6 lg:text-lg">
                 <p className="font-bold leading-none">Media Sosial</p>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Facebook
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a rel="noopener noreferrer" href="#">
-                    YouTube
-                  </a>
-                </li>
+                {socialMediaLinks.map((link, index) => (
+                  <li key={index}>
+                    <a
+                      className="hover:text-[#35CC33]"
+                      rel="noopener noreferrer"
+                      href={link.link}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
