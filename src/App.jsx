@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
+// import AdminDetail from "./pages/ManageAdmin";
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
       <Route path="/dashboard" element={<AdminRoot />}>
         <Route index element={<Dashboard />} />
         <Route path="user-detail" element={<UserDetail />} />
-        <Route path="admin-list" element={<></>} />
+        {/* <Route path="/admin-detail" element={<AdminDetail />} /> */}
         <Route path="badge" element={<></>} />
         <Route path="report" element={<></>} />
         <Route path="mission-list" element={<></>} />

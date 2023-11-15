@@ -121,7 +121,7 @@ export function UserDetailModal({ isOpen, onClose, data }) {
 								</Text>
 								<Text
 									as={"span"}
-									fontWeight={"bold"}
+									fontWeight={"bold"}  
 									color={"#333333"}
 								>
 									{formatDate(data.createdAt)}

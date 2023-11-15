@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { SideBar } from "@/components/navigation";
 import TopBar from "@/components/navigation/TopBar";
+
 function AdminRoot() {
 	const [collapse, setCollapse] = useState(false);
 
