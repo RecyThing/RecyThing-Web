@@ -20,6 +20,7 @@ const TableHead = [
   "Pelapor",
   "Lokasi",
   "Tanggal",
+  "Status",
   "Aksi",
 ];
 
@@ -64,6 +65,7 @@ export function DataReportingTable({ data, currentPage, itemsPerPage }) {
         target={selectedRow}
         onDelete={handleDelete}
       />
+
       <TableContainer>
         <Table>
           <Thead>
@@ -116,7 +118,7 @@ export function DataReportingTable({ data, currentPage, itemsPerPage }) {
                 ))}
 
                 <Td textAlign="start">Ini Lokasi</Td>
-
+                <Td textAlign="start">Status</Td>
                 <Td textAlign="center">
                   <IconButton
                     icon={<Eye />}
@@ -126,15 +128,6 @@ export function DataReportingTable({ data, currentPage, itemsPerPage }) {
                     _hover={{ bg: "transparent", color: "#333333" }}
                     _focus={{ boxShadow: "none" }}
                     onClick={() => handleViewModal(row)}
-                  />
-                  <IconButton
-                    icon={<Trash />}
-                    size={"sm"}
-                    bg={"transparent"}
-                    color={"#E53535"}
-                    _hover={{ bg: "transparent", color: "#B22222" }}
-                    _focus={{ boxShadow: "none" }}
-                    onClick={() => handleDeleteModal(row)}
                   />
                 </Td>
               </Tr>

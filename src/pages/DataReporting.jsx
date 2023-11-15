@@ -1,9 +1,10 @@
-import { Container, Flex, Heading } from "@chakra-ui/react";
+import { Container, Flex, Heading, Button } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { UserDetailTable } from "@/components/tables";
 import { useState } from "react";
 import { DataReportingTable } from "@/components/tables/DataReportingTable";
+import TabButton from "@/components/buttons/TabButton";
 
 // dummy
 const DummyData = [];
@@ -25,11 +26,17 @@ for (let i = 0; i < 50; i++) {
   DummyData.push([name, email, points]);
 }
 // end dummy
+const handleButtonClick = () => {
+  // Logic to handle button click
+  console.log("Button clicked!");
+  // Add your custom logic here
+};
 
 function DataReporting() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [activeTab, setActiveTab] = useState(null);
 
   const filteredData = DummyData.filter(([username]) =>
     username.toLowerCase().includes(searchTerm.toLowerCase())
@@ -43,6 +50,14 @@ function DataReporting() {
   const handleSearch = (term) => {
     setSearchTerm(term);
     setCurrentPage(1);
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    document.body.style.backgroundColor = "green";
+    if (tab === "semua") {
+      document.getElementById("semuaButton").style.backgroundColor = "green";
+    }
   };
 
   return (
@@ -66,7 +81,37 @@ function DataReporting() {
         gap={"1.5rem"}
         p={"1.5rem"}
       >
-        <SearchBar onSearch={handleSearch} />
+        <Flex align="center" justify="space-between" mb="1.5rem">
+          {/* semua */}
+
+          <TabButton
+            id="semuaButton"
+            label="Semua"
+            count={420}
+            active={activeTab === "semua"}
+            onClick={() => handleTabClick("semua")}
+          />
+          <TabButton
+            label="Perlu Tinjauan"
+            count={69}
+            active={activeTab === "tinjauan"}
+            onClick={() => handleTabClick("tinjauan")}
+          />
+          <TabButton
+            label="Diterima"
+            count={300}
+            active={activeTab === "diterima"}
+            onClick={() => handleTabClick("diterima")}
+          />
+          <TabButton
+            label="Ditolak"
+            count={51}
+            active={activeTab === "ditolak"}
+            onClick={() => handleTabClick("ditolak")}
+          />
+
+          <SearchBar onSearch={handleSearch} />
+        </Flex>
 
         <DataReportingTable
           currentPage={currentPage}
