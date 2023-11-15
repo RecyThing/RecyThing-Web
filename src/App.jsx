@@ -21,6 +21,9 @@ function App() {
         <Route path="admin-list" element={<></>} />
         <Route path="badge" element={<></>} />
         <Route path="report" element={<></>} />
+        <Route path="content-article" element={<></>} />
+        <Route path="rubbish-category" element={<></>} />
+        <Route path="data-drop-point" element={<></>} />
         <Route path="mission-list" element={<></>} />
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
