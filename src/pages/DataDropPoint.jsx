@@ -3,6 +3,8 @@ import { SearchBar } from "@/components/navigation"
 import { BsPlus } from "react-icons/bs"
 import DataDropPointTable from '@/components/tables/DataDropPointTable';
 import { Pagination } from "@/components/pagination";
+import { useDisclosure } from "@chakra-ui/react";
+import { CreateDataDropPointModal } from '@/components/modal';
 
 const DummyData = [];
 const names = ["Ruko Gajah Mada Padang", "Stasiun Tabing Padang", "Ruko Khatib Sulaiman", "Ruko Panam Pekanbaru"];
@@ -18,6 +20,7 @@ function DataDropPoint() {
   const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const { isOpen: isOpenViewCreate, onOpen: onOpenViewCreate, onClose: onCloseViewCreate } = useDisclosure();
 
 	const filteredData = DummyData.filter(({ name: addressName }) => 
     addressName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -40,13 +43,14 @@ function DataDropPoint() {
       <div className="mt-4 p-6 rounded-2xl bg-white">
         <div className="flex justify-between">
           <SearchBar onSearch={handleSearch} className={"max-w-[407px]"} />
-          <button className="my-auto flex items-center h-fit py-4 px-5 gap-[10px] rounded-[10px] bg-[#35CC33] text-white">
+          <button onClick={onOpenViewCreate} className="my-auto flex items-center h-fit py-4 px-5 gap-[10px] rounded-[10px] bg-[#35CC33] text-white">
             <BsPlus className="text-2xl" />
             <p>Tambah Data</p>
           </button>
         </div>
 
-        <DataDropPointTable data={paginatedData} />
+				<CreateDataDropPointModal isOpen={isOpenViewCreate} onClose={onCloseViewCreate} />
+        <DataDropPointTable data={paginatedData} isOpenViewCreate={isOpenViewCreate} onCloseViewCreate={onCloseViewCreate} />
         <Pagination
 					currentPage={currentPage}
 					itemsPerPage={itemsPerPage}
