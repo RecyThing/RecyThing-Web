@@ -84,7 +84,7 @@ function VoucherList() {
 	return (
 		<Container
 			as={"section"}
-			maxW={"container.xl"}
+			maxW={"container.2xl"}
 			bg={"#EBEBF0"}
 			p={"1.5rem"}
 		>
