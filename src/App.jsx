@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
-
+import DataCustomization from "./pages/DataCustomization";
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
         <Route path="transaction-list" element={<></>} />
         <Route path="drop-point-transaction" element={<KelolaPenukaranSampah/>} />
         <Route path="community" element={<></>} />
-        <Route path="customize-data" element={<></>} />
+        <Route path="customize-data" element={<DataCustomization/>} />
         <Route path="download" element={<Download />} />
       </Route>
 
