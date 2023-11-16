@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
+import DaftarTransaksi from "./pages/DaftarTransaksi";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
         <Route path="mission-list" element={<></>} />
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
-        <Route path="transaction-list" element={<></>} />
+        <Route path="transaction-list" element={<DaftarTransaksi/>} />
         <Route path="drop-point-transaction" element={<KelolaPenukaranSampah/>} />
         <Route path="community" element={<></>} />
         <Route path="customize-data" element={<></>} />
