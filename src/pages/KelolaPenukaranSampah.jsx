@@ -46,10 +46,11 @@ function KelolaPenukaranSampah() {
     const filteredData = DummyData.filter(([username]) =>
 		username.toLowerCase().includes(filterSearch.toLowerCase())
 	);     
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedData = filteredData.slice(startIndex, endIndex);
+    
+	const paginatedData = filteredData.slice(
+		(currentPage - 1) * itemsPerPage,
+		currentPage * itemsPerPage
+	);
 
     return (
         <div className="p-6 w-full" style={{background: "#EBEBF0"}}>
@@ -95,37 +96,28 @@ function KelolaPenukaranSampah() {
 
 export default KelolaPenukaranSampah;
 
-const getPointsByType = (jenisSampah) => {
-    const pointsMap = {
-        logam: 500,
-        plastik: 400,
-        kertas: 300,
-        kaca: 200,
-    };
-    return pointsMap[jenisSampah] || 0;
-};
-
-const DummyData = [
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
-	["Putri Ramadhani", "123@gmail.com", "Drop Point A"],
+// dummy
+const DummyData = [];
+const names = [
+	"Courtney Henry",
+	"Bessie Cooper",
+	"Brooklyn Simmons",
+	"Theresa Webb",
+	"Jerome Bell",
+    "Cameron Williamson",
+	"Darrell Steward",
+	"Esther Howard",
+	"Jacob Jones",
+	"Eleanor Pena",
 ];
+const domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
+
+for (let i = 0; i < 50; i++) {
+	const name = names[Math.floor(Math.random() * names.length)];
+	const email = `${name.replace(" ", ".").toLowerCase()}@${
+		domains[Math.floor(Math.random() * domains.length)]
+	}`;
+	const location = "Drop Point A";
+	DummyData.push([name, email, location]);
+}
+// end dummy
