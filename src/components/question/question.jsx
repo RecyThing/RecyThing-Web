@@ -111,7 +111,7 @@ function Question() {
 
   return (
     <>
-      <div className="question px-4 lg:px-[72px] py-10 lg:py-16 bg-[#F6FEF6]">
+      <div id="question" className="question px-4 lg:px-[72px] py-10 lg:py-16 bg-[#F6FEF6]">
         <div className="question-title flex flex-col lg:flex lg:flex-row lg:justify-between gap-5">
           <div className="lg:flex lg:w-[500px] lg:items-center">
             <p className="text-lg lg:text-4xl lg:items-center font-semibold lg:font-bold">

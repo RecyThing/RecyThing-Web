@@ -3,7 +3,7 @@ import JumbotronImg from "@/assets/LandingPage/jumbotron img.png";
 const Jumbotron = () => {
   return (
     <>
-      <div className="jumbotron grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center lg:h-screen sm:h-full items-center  mb-24">
+      <div id="jumbotron" className="jumbotron grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center lg:h-screen sm:h-full items-center  mb-24">
         <div className="text-group p-10">
           <p className="text-4xl font-bold my-5 ">
             Mulai Langkahmu untuk Lingkungan yang Lebih Baik
