@@ -1,13 +1,14 @@
 import logo from "../../assets/recything-logo.png";
 import app_store_badge from "../../assets/app-store-badge.svg";
 import google_play_badge from "../../assets/google-play-badge.svg";
+import { Link } from "react-scroll";
 
 function Footer() {
   const shortcutLinks = [
-    { text: "Beranda", link: "#" },
-    { text: "Fitur", link: "#" },
-    { text: "Promo", link: "#" },
-    { text: "FAQ", link: "#" },
+    { text: "Beranda", link: "jumbotron" },
+    { text: "Fitur", link: "card" },
+    { text: "Eksplorasi", link: "frameDaurUlang" },
+    { text: "FAQ", link: "question" },
   ];
 
   const externalLinks = [
@@ -113,13 +114,18 @@ function Footer() {
                 <p className="font-bold leading-none">Pintasan</p>
                 {shortcutLinks.map((link, index) => (
                   <li key={index}>
-                    <a
-                      className="hover:text-[#35CC33]"
+                    <Link
+                      activeClass="active"
+                      className="hover:text-[#35CC33] cursor-pointer"
                       rel="noopener noreferrer"
-                      href={link.link}
+                      to={link.link}
+                      spy={true}
+                      smooth={true}
+                      offset={-70}
+                      duration={700}
                     >
                       {link.text}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
