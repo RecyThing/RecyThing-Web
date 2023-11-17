@@ -6,7 +6,7 @@ import imgFrame4 from "@/assets/LandingPage/frame/frame4.png";
 export const FramePahlawan = () => {
   return (
     <>
-      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-row-1 justify-center items-center my-20 p-10 gap-20">
+      <div id="framePahlawan" className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-row-1 justify-center items-center my-20 p-10 gap-20">
         <div className="left">
           <img src={imgFrame1} alt="" className="mx-auto" />
         </div>
@@ -37,7 +37,10 @@ export const FramePahlawan = () => {
 export const FrameDaurUlang = () => {
   return (
     <>
-      <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center bg-green-50 my-20 p-10 gap-10">
+      <div
+        id="frameDaurUlang"
+        className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center items-center bg-green-50 my-20 p-10 gap-10"
+      >
         <div className="left">
           <p className="text-5xl font-semibold my-3 w-3/5">
             <span className="text-green-500">Daur Ulang </span>

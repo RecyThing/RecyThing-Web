@@ -4,7 +4,7 @@ import {data} from "./CardList.js";
 const CardList = () => {
   return (
     <>
-      <div className="bg-green-100 p-16 ">
+      <div  id="card" className="bg-green-100 p-16 ">
         <div className="wrapper mx-auto my-10">
           <p className="text-4xl text-center font-semibold my-5">
             Jelajahi Aplikasi <span className="text-green-500">Recy</span>
