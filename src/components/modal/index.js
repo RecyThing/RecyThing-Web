@@ -1,7 +1,7 @@
 export { UserDetailModal } from "./UserDetailModal";
 export { DeleteModal } from "./DeleteModal";
-export { KelolaSampahTambahData } from "./KelolaSampahTambahData";
-export { KelolaSampahDetailModal } from "./KelolaSampahDetailModal";
+export { WasteExchangeAddData } from "./waste-exchange-modals/WasteExchangeAddData";
+export { WasteExchangeDetailModal } from "./waste-exchange-modals/WasteExchangeDetailModal";
 export { CreateDataDropPointModal } from "./data-drop-point/CreateDataDropPointModal";
 export { EditDataDropPointModal } from "./data-drop-point/EditDataDropPointModal";
 export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";

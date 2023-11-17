@@ -3,9 +3,9 @@ import AdminRoot from "./pages/AdminRoot";
 import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import ManageWasteExchange from "./pages/ManageWasteExchange";
 import UserDetail from "./pages/UserDetail";
 import VoucherList from "./pages/VoucherList";
-import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
 import DataDropPoint from "./pages/DataDropPoint";
@@ -21,7 +21,6 @@ function App() {
 				path="/login"
 				element={<Login />}
 			/>
-
 			<Route
 				path="/dashboard"
 				element={<AdminRoot />}
@@ -76,7 +75,7 @@ function App() {
 				/>
 				<Route
 					path="drop-point-transaction"
-					element={<KelolaPenukaranSampah />}
+					element={<ManageWasteExchange/>}
 				/>
 				<Route
 					path="community"
@@ -91,7 +90,6 @@ function App() {
 					element={<Download />}
 				/>
 			</Route>
-
 			<Route
 				path="*"
 				element={<ErrorNotFound />}
