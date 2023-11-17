@@ -145,7 +145,7 @@ const questions = [
 
 for (let i = 0; i < 20; i++) {
 	const topics = trash[Math.floor(Math.random() * trash.length)];
-	const questions = questions[Math.floor(Math.random() * questions.length)];
-	DummyData.push([topics, questions]);
+	const question = questions[Math.floor(Math.random() * questions.length)];
+	DummyData.push([topics, question]);
 }
 // end dummy
