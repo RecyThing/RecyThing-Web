@@ -4,7 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import UserDetail from "./pages/UserDetail";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
-import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
+import ManageWasteExchange from "./pages/ManageWasteExchange";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
 
@@ -25,7 +25,7 @@ function App() {
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
         <Route path="transaction-list" element={<></>} />
-        <Route path="drop-point-transaction" element={<KelolaPenukaranSampah/>} />
+        <Route path="drop-point-transaction" element={<ManageWasteExchange/>} />
         <Route path="community" element={<></>} />
         <Route path="customize-data" element={<></>} />
         <Route path="download" element={<Download />} />

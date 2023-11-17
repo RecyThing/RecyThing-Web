@@ -3,39 +3,22 @@ import { Add } from "iconsax-react";
 import { Flex, Heading } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { SearchBar } from "@/components/navigation";
-import { KelolaSampahTambahData } from "@/components/modal/KelolaSampahTambahData";
-import { KelolaPenukaranTable } from "@/components/tables";
+import { WasteExchangeAddData } from "@/components/modal/waste-exchange-modals/WasteExchangeAddData";
+import { WasteExchangeTable } from "@/components/tables";
 
-function KelolaPenukaranSampah() {
-    const [isTambahData, setIsTambahData] = useState(false);
+function ManageWasteExchange() {
+    const [isAddData, setIsAddData] = useState(false);
     const [filterSearch, setFilterSearch] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
     const [isFocused, setIsFocused] = useState(false);
 
     const openForm = () => {
-        setIsTambahData(true);
+        setIsAddData(true);
     };
     
     const closeForm = () => {
-        setIsTambahData(false);
-    };
-    
-    const clickPoint = useRef();
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleFocus = () => {
-        if (clickPoint.current) {
-          clickPoint.current.style.display = "none";
-        }
-        setIsFocused(true);
-    };
-      
-    const handleBlur = () => {
-        if (clickPoint.current) {
-            clickPoint.current.style.display = "block";
-        }
-        setIsFocused(false);
+        setIsAddData(false);
     };
 
     const handleSearch = (term) => {
@@ -54,8 +37,8 @@ function KelolaPenukaranSampah() {
 
     return (
         <div className="p-6 w-full" style={{background: "#EBEBF0"}}>
-        {isTambahData ? (
-            <KelolaSampahTambahData isOpen={isTambahData} onClose={closeForm} setIsTambahData={setIsTambahData}/>
+        {isAddData ? (
+            <WasteExchangeAddData isOpen={isAddData} onClose={closeForm} setIsAddData={setIsAddData}/>
         ) : null}
             <Heading as="h1" color={"#201A18"} fontSize={"2xl"} fontWeight="bold" mb={"1.5rem"}>
 				Kelola Penukaran Sampah
@@ -76,7 +59,7 @@ function KelolaPenukaranSampah() {
                     p={"0.5rem"}
                     marginTop={"16px"}
                 >
-                    <KelolaPenukaranTable
+                    <WasteExchangeTable
                         data={paginatedData}
                         currentPage={currentPage}
                         itemsPerPage={itemsPerPage}
@@ -94,7 +77,7 @@ function KelolaPenukaranSampah() {
     );
 }
 
-export default KelolaPenukaranSampah;
+export default ManageWasteExchange;
 
 // dummy
 const DummyData = [];

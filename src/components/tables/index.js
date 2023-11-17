@@ -1,2 +1,2 @@
 export { UserDetailTable } from "./UserDetailTable";
-export { KelolaPenukaranTable } from "./KelolaPenukaranTable";
+export { WasteExchangeTable } from "./WasteExchangeTable";
