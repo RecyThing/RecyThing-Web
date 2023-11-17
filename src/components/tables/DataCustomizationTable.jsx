@@ -74,7 +74,7 @@ export function DataCustomizationTable({ data }) {
 						<CenteredCell>{formatDate()}</CenteredCell>
 
 						{row.map((cell, cellIndex) => (
-							<TruncatedTextCell
+							<TruncatedQuestionCell
 								key={cellIndex}
 								content={cell}
 								maxWidth={17}
@@ -101,7 +101,7 @@ export function DataCustomizationTable({ data }) {
 	);
 }
 
-const TruncatedTextCell = ({ content, maxCharLength, maxWidth }) => {
+const TruncatedQuestionCell = ({ content, maxCharLength, maxWidth }) => {
 	const truncatedContent = content.length > maxCharLength
 		? `${content.substring(0, maxCharLength)}...`
 		: content;
