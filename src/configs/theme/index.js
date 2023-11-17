@@ -6,4 +6,9 @@ export const theme = extendTheme({
 		heading: "Inter, system-ui, sans-serif",
 		mono: "Menlo, monospace",
 	},
+	colors: {
+		mainGreen: {
+			500: "#35CC33",
+		},
+	}
 });
