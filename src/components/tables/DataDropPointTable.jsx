@@ -7,9 +7,11 @@ import { Eye, Trash } from "iconsax-react";
 import { Edit } from "react-iconly";
 import { useDisclosure } from "@chakra-ui/react";
 import { DeleteModal, EditDataDropPointModal } from "../modal";
+import { DetailDataDropPointModal } from '../modal/data-drop-point/DetailDataDropPointModal';
 
 function DataDropPointTable({ data }) {
   const TableHead = ["No", "Nama & Alamat Drop point", "Jam Operasional", "Aksi"];
+	const { isOpen: isOpenDetail, onOpen: onOpenDetail, onClose: onCloseDetail } = useDisclosure();
 	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
   const [selectedRow, setSelectedRow] = useState(null);
@@ -33,6 +35,7 @@ function DataDropPointTable({ data }) {
 				onDelete={handleDelete}
 			/>
       <EditDataDropPointModal isOpen={isOpenEdit} onClose={onCloseEdit}  />
+      <DetailDataDropPointModal isOpen={isOpenDetail} onClose={onCloseDetail}  />
 
       <BaseTable data={data} heads={TableHead}>
         {data.map((row, rowIndex) => (
@@ -51,7 +54,7 @@ function DataDropPointTable({ data }) {
               <div className="flex gap-2">
                 <CustomIconButton
                   icon={<Eye />}
-                  onClick={() => {}}
+                  onClick={onOpenDetail}
                 />
                 <CustomIconButton
                   icon={<Edit />}
