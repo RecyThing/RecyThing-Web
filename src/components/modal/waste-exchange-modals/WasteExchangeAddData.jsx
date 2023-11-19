@@ -185,7 +185,7 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
                                         <td>
                                             <input
                                                 {...register(`unit${index}`, { required: true, min: 0, pattern: /^[0-9]*$/ })}
-                                                type="text"
+                                                type="number"
                                                 className="w-32 mt-6"
                                                 style={{ color: "rgba(130, 130, 130, 1)", borderColor: "rgba(130, 130, 130, 1)", ...tableInputStyles }}
                                                 name={`unit${index}`}
