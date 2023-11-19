@@ -134,3 +134,18 @@ export function NotFoundCell({ count }) {
 		</Td>
 	);
 }
+
+export function TruncatedCell({ content, maxCharLength, maxWidth }) {
+    const truncatedContent =
+        content.length > maxCharLength
+            ? `${content.substring(0, maxCharLength)}...`
+            : content;
+
+    return (
+        <Td style={{ maxWidth: `${maxWidth}rem`, paddingLeft: "23px", paddingRight: "15px" }}>
+            <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {truncatedContent}
+            </div>
+        </Td>
+    );
+}

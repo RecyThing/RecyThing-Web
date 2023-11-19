@@ -1,5 +1,6 @@
 import { BaseTable } from "./base-table/BaseTable";
 import { CenteredCell } from "./base-table/TableCells";
+import { TruncatedCell } from "./base-table/TableCells";
 import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { EditDataCustomizationModal, DeleteModal } from "@/components/modal";
@@ -24,15 +25,17 @@ export function DataCustomizationTable({ data }) {
 		onClose: onCloseDelete,
 	} = useDisclosure();
 
-	const [selectedRow, setSelectedRow] = useState(null);
+	const [selectedQuestion, setSelectedQuestion] = useState(null);
+	const [selectedTopic, setSelectedTopic] = useState(null);
 
 	const handleEditModal = (row) => {
-		setSelectedRow(row);
-		onOpenEdit();
-	};
+        setSelectedQuestion(row);
+		setSelectedTopic(row);
+        onOpenEdit();
+    };
 
 	const handleDeleteModal = (row) => {
-		setSelectedRow(row);
+		setSelectedQuestion(row);
 		onOpenDelete();
 	};
 
@@ -55,11 +58,13 @@ export function DataCustomizationTable({ data }) {
 				isOpen={isOpenEdit} 
 				onClose={onCloseEdit} 
 				setIsEditData={setIsEditData}
+				topic={selectedTopic ? selectedTopic[0] : ''}
+				question={selectedQuestion ? selectedQuestion[1] : ''}
 			/>
 			<DeleteModal
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
-				target={selectedRow}
+				target={selectedQuestion}
 				onDelete={handleDelete}
 			/>
 			<BaseTable
@@ -74,7 +79,7 @@ export function DataCustomizationTable({ data }) {
 						<CenteredCell>{formatDate()}</CenteredCell>
 
 						{row.map((cell, cellIndex) => (
-							<TruncatedQuestionCell
+							<TruncatedCell
 								key={cellIndex}
 								content={cell}
 								maxWidth={17}
@@ -100,17 +105,3 @@ export function DataCustomizationTable({ data }) {
 		</>
 	);
 }
-
-const TruncatedQuestionCell = ({ content, maxCharLength, maxWidth }) => {
-	const truncatedContent = content.length > maxCharLength
-		? `${content.substring(0, maxCharLength)}...`
-		: content;
-  
-	return (
-	  <td style={{ maxWidth: `${maxWidth}rem`, paddingLeft: "25px", paddingRight: "25px" }}>
-			<div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-				{truncatedContent}
-			</div>
-	  </td>
-	);
-};

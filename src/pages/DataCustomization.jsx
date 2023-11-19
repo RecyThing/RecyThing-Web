@@ -1,10 +1,10 @@
-import { Pagination } from "@/components/pagination/Pagination";
-import { Add } from "iconsax-react";
-import { Flex, Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { SearchBar } from "@/components/navigation";
+import { Add } from "iconsax-react";
 import { AddDataCustomizationModal } from "@/components/modal/data-customization/AddDataCustomizationModal";
 import { DataCustomizationTable } from "@/components/tables";
+import { Flex, Heading } from "@chakra-ui/react";
+import { Pagination } from "@/components/pagination/Pagination";
+import { SearchBar } from "@/components/navigation";
 
 function DataCustomization() {
     const [isAddData, setIsAddData] = useState(false);
@@ -68,7 +68,7 @@ function DataCustomization() {
             <div className="bg-white rounded-lg shadow-md mt-4 p-4 h-90% w-full">
                 <div className="flex justify-between items-center mb-4 ml-2 w-full">
                     <div className="flex items-center">
-                    {["Semua", "Sampah Plastik", "Sampah Organik"].map((filter) => (
+                    {["Semua", "Sampah Anorganik", "Sampah Organik"].map((filter) => (
                         <div key={filter}
                             className="font-inter font-normal text-base flex items-center gap-2 py-7 px-5 h-10 rounded-xl cursor-pointer"
                             style={
@@ -136,12 +136,12 @@ export default DataCustomization;
 // dummy
 const DummyData = [];
 const trash = [
-	"Sampah Plastik",
+	"Sampah Anorganik",
 	"Sampah Organik",
 ];
 const questions = [
-    "1. Apa saja contoh sampah plastik? 2. Bagaimana mengelola sampah plastik? Mengapa sampah plastik dapat mencemari lingkungan? 3. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah plastik dengan baik? 4. Bagaimana cara mendaur ulang sampah plastik?", 
-    "1. Apa saja contoh sampah plastik? 2. Bagaimana mengelola sampah plastik? Mengapa sampah plastik dapat mencemari lingkungan? 3. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah plastik dengan baik? 4. Bagaimana cara mendaur ulang sampah plastik?"];
+    "1. Apa saja contoh sampah anorganik?\n2. Bagaimana mengelola sampah anorganik?\n3. Mengapa sampah anorganik dapat mencemari lingkungan?\n4. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah anorganik dengan baik?\n5. Bagaimana cara mendaur ulang sampah anorganik?", 
+    "1. Apa saja contoh sampah anorganik?\n2. Bagaimana mengelola sampah anorganik?\n3. Mengapa sampah anorganik dapat mencemari lingkungan?\n4. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah anorganik dengan baik?\n5. Bagaimana cara mendaur ulang sampah anorganik?"];
 
 for (let i = 0; i < 20; i++) {
 	const topics = trash[Math.floor(Math.random() * trash.length)];
