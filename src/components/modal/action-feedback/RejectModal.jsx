@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
 	Button,
 	Center,
@@ -13,9 +12,16 @@ import {
 } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
 
-export function DeleteModal({ isOpen, onClose, target, onDelete }) {
-	const handleDelete = () => {
-		onDelete(target);
+export function RejectModal({
+	isOpen,
+	onClose,
+	target,
+	onReject,
+	title,
+	message,
+}) {
+	const handleReject = () => {
+		onReject(target);
 		onClose();
 	};
 
@@ -23,7 +29,7 @@ export function DeleteModal({ isOpen, onClose, target, onDelete }) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={"sm"}
+			size={"md"}
 			isCentered
 		>
 			<ModalOverlay
@@ -54,21 +60,21 @@ export function DeleteModal({ isOpen, onClose, target, onDelete }) {
 							fontWeight={"medium"}
 							lineHeight={"1.875rem"}
 						>
-							Anda yakin ingin menghapus data ini?
+							{title}
 						</Text>
 						<Text
 							color={"#828282"}
 							fontWeight={"semibold"}
-							lineHeight={"0.4375rem"}
+							lineHeight={"1.5rem"}
 						>
-							Data yang dihapus tidak dapat dipulihkan
+							{message}
 						</Text>
 					</VStack>
 				</ModalBody>
 				<ModalFooter
 					pt={0}
 					display={"flex"}
-					justifyContent={"space-between"}
+					justifyContent={"space-around"}
 				>
 					<Button
 						color={"white"}
@@ -88,9 +94,9 @@ export function DeleteModal({ isOpen, onClose, target, onDelete }) {
 						px={"3.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#FF0000" }}
-						onClick={handleDelete}
+						onClick={handleReject}
 					>
-						Hapus
+						Tolak
 					</Button>
 				</ModalFooter>
 			</ModalContent>
