@@ -9,3 +9,5 @@ export { AddVoucherModal } from "./voucher-list/AddVoucherModal";
 export { EditVoucherModal } from "./voucher-list/EditVoucherModal";
 export { AddDataCustomizationModal } from "./data-customization/AddDataCustomizationModal";
 export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";
+export { AddAdminModal } from "./manage-admin/AddAdminModal";
+// export { EditAdminModal } from "./manage-admin/EditAdminModal";

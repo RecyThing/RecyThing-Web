@@ -10,6 +10,7 @@ import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
+import ManageAdmin from "./pages/ManageAdmin";
 
 function App() {
 	return (
@@ -36,7 +37,7 @@ function App() {
 				/>
 				<Route
 					path="admin-list"
-					element={<></>}
+					element={<ManageAdmin />}
 				/>
 				<Route
 					path="badge"

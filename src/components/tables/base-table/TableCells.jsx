@@ -2,146 +2,140 @@
 import { Badge, Td, Text } from "@chakra-ui/react";
 
 export function TextCell({ content }) {
-	return (
-		<Td
-			color={"#383838"}
-			maxW={"12.5rem"}
-			overflowWrap={"break-word"}
-			whiteSpace={"normal"}
-		>
-			{content}
-		</Td>
-	);
+  return (
+    <Td
+      color={"#383838"}
+      maxW={"12.5rem"}
+      overflowWrap={"break-word"}
+      whiteSpace={"normal"}
+    >
+      {content}
+    </Td>
+  );
 }
 
 export function BadgeCell({ colorScheme, content }) {
-	{
-		switch (colorScheme) {
-			case "green":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#154C3C"}
-							bg={"#C7EBD1"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "yellow":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#5F5207"}
-							bg={"#FBF5D0"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "red":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#76170F"}
-							bg={"#FADCD9"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
+  {
+    switch (colorScheme) {
+      case "green":
+        return (
+          <Td>
+            <Badge
+              px={"8px"}
+              py={"4px"}
+              fontSize={"xs"}
+              fontWeight={"medium"}
+              color={"#154C3C"}
+              bg={"#C7EBD1"}
+            >
+              {content}
+            </Badge>
+          </Td>
+        );
+      case "yellow":
+        return (
+          <Td>
+            <Badge
+              px={"8px"}
+              py={"4px"}
+              fontSize={"xs"}
+              fontWeight={"medium"}
+              color={"#5F5207"}
+              bg={"#FBF5D0"}
+            >
+              {content}
+            </Badge>
+          </Td>
+        );
+      case "red":
+        return (
+          <Td>
+            <Badge
+              px={"8px"}
+              py={"4px"}
+              fontSize={"xs"}
+              fontWeight={"medium"}
+              color={"#76170F"}
+              bg={"#FADCD9"}
+            >
+              {content}
+            </Badge>
+          </Td>
+        );
 
-			case "blue":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#19365D"}
-							bg={"#D4E4FA"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			default:
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#828282"}
-							bg={"#E0E0E0"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-		}
-	}
+      case "blue":
+        return (
+          <Td>
+            <Badge
+              px={"8px"}
+              py={"4px"}
+              fontSize={"xs"}
+              fontWeight={"medium"}
+              color={"#19365D"}
+              bg={"#D4E4FA"}
+            >
+              {content}
+            </Badge>
+          </Td>
+        );
+      default:
+        return (
+          <Td>
+            <Badge
+              px={"8px"}
+              py={"4px"}
+              fontSize={"xs"}
+              fontWeight={"medium"}
+              color={"#828282"}
+              bg={"#E0E0E0"}
+            >
+              {content}
+            </Badge>
+          </Td>
+        );
+    }
+  }
 }
 
 export function CenteredCell({ children }) {
-	return <Td textAlign="center">{children}</Td>;
+  return <Td textAlign="center">{children}</Td>;
 }
 
 export function LeftAlignCell({ children }) {
-	return (
-		<Td
-			maxWidth={"max-content"}
-			textAlign="left"
-		>
-			{children}
-		</Td>
-	);
+  return (
+    <Td maxWidth={"max-content"} textAlign="left">
+      {children}
+    </Td>
+  );
 }
 
 export function LinkCell({ content, onClick }) {
-	return (
-		<Td
-			color={"#5B79EF"}
-			maxW={"12.5rem"}
-			overflowWrap={"break-word"}
-			whiteSpace={"normal"}
-		>
-			<Text
-				textAlign={"left"}
-				as={"button"}
-				cursor={"pointer"}
-				_hover={{ color: "#2C5282", textDecoration: "underline" }}
-				onClick={onClick}
-			>
-				{content}
-			</Text>
-		</Td>
-	);
+  return (
+    <Td
+      color={"#5B79EF"}
+      maxW={"12.5rem"}
+      overflowWrap={"break-word"}
+      whiteSpace={"normal"}
+    >
+      <Text
+        textAlign={"left"}
+        as={"button"}
+        cursor={"pointer"}
+        _hover={{ color: "#2C5282", textDecoration: "underline" }}
+        onClick={onClick}
+      >
+        {content}
+      </Text>
+    </Td>
+  );
 }
 
 export function NotFoundCell({ count }) {
-	return (
-		<Td
-			colSpan={count}
-			textAlign={"center"}
-		>
-			Data tidak ditemukan
-		</Td>
-	);
+  return (
+    <Td colSpan={count} textAlign={"center"}>
+      Data tidak ditemukan
+    </Td>
+  );
 }
 
 export function TruncatedCell({ content, maxCharLength, maxWidth }) {
