@@ -2,6 +2,7 @@ import Logo from "@/assets/recything-logo.png";
 import hamburger_active from "@/assets/hamburger-active.svg";
 import hamburger_non_active from "@/assets/hamburger-non-active.svg";
 import { useEffect, useState } from "react";
+import { Link } from 'react-scroll';
 
 function Navbar() {
 	const [toggleNavbar, setToggleNavbar] = useState(false);
@@ -24,21 +25,21 @@ function Navbar() {
 	}, []);
 
   const menuItems = [
-    { text: "Beranda", link: "#" },
-    { text: "Tentang", link: "#" },
-    { text: "Fitur", link: "#" },
-    { text: "Promo", link: "#" },
-    { text: "FaQ", link: "#" },
+    { text: "Beranda", link: "jumbotron" },
+    { text: "Tentang", link: "framePahlawan" },
+    { text: "Fitur", link: "card" },
+    { text: "Eksplorasi", link: "frameDaurUlang" },
+    { text: "FaQ", link: "question" },
   ];
 
   return (
     <>
-			<nav
-				className={
-					"fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
-					(color ? "bg-white shadow" : "bg-transparent ")
-				}
-			>
+      <nav
+        className={
+          "fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
+          (color ? "bg-white shadow" : "bg-transparent ")
+        }
+      >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
             <img src={Logo} alt="navbar-logo" />
@@ -58,15 +59,19 @@ function Navbar() {
               {menuItems.map((item, index) => (
                 <li
                   key={index}
-                  className={
-                    index === 0
-                      ? "text-[#35CC33] font-semibold"
-                      : ""
-                  }
+                  className={index === 0 ? "text-[#35CC33] font-semibold" : ""}
                 >
-                  <a className="hover:text-green-600" href={item.link}>
+                  <Link
+                    activeClass="active"
+                    className="hover:text-green-600 cursor-pointer"
+                    to={item.link}
+                    spy={true}
+                    smooth={true}
+                    offset={-70}
+                    duration={700}
+                  >
                     {item.text}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -92,9 +97,17 @@ function Navbar() {
                   index === 0 ? "text-[#35CC33] font-semibold" : ""
                 } px-4 sm:px-8 py-2`}
               >
-                <a className="hover:text-[#35CC33]" href={item.link}>
+                <Link
+                  activeClass="active"
+                  className="hover:text-green-600 cursor-pointer"
+                  to={item.link}
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={700}
+                >
                   {item.text}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

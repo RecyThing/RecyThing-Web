@@ -2,6 +2,7 @@ import {
 	Category,
 	Chart,
 	Home,
+	Image,
 	Paper,
 	ShieldDone,
 	User,
@@ -36,6 +37,24 @@ export const sideBarMenuArray = [
 		name: "Pelaporan",
 		logo: <Chart size={24} className="shrink-0" />,
 		path: "/dashboard/report"
+	},
+	{
+		name: "Konten dan Informasi",
+		logo: <Image size={24} className="shrink-0" />,
+		subMenu: [
+			{
+				name: "Konten Artikel",
+				path: "/dashboard/content-article"
+			},
+			{
+				name: "Kategori Sampah",
+				path: "/dashboard/rubbish-category"
+			},
+			{
+				name: "Data Drop Point",
+				path: "/dashboard/data-drop-point"
+			},
+		]
 	},
 	{
 		name: "Manajemen Misi",

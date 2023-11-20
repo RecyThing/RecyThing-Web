@@ -1,7 +1,9 @@
 import { DownloadTable } from "@/components/tables/DownloadTable";
 import { Button, Container, Flex, Heading } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export default function Download() {
+  const navigate = useNavigate();
   return (
     <Container
       as={"section"}
@@ -34,6 +36,7 @@ export default function Download() {
           background={"#828282"}
           fontSize={12}
           px={10}
+          onClick={() => navigate("/dashboard")}
         >
           Kembali
         </Button>

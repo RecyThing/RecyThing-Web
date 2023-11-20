@@ -2,24 +2,26 @@ import { BaseTable } from "./base-table/BaseTable";
 import { CenteredCell, TextCell } from "./base-table/TableCells";
 import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-import { KelolaSampahDetailModal, DeleteModal } from "@/components/modal";
+import { WasteExchangeDetailModal, DeleteModal } from "@/components/modal";
 import { Eye, Trash } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
 const TableHead = ["ID Penukaran", "Nama Lengkap", "Email", "Lokasi Drop Point", "Aksi"];
 
-export function KelolaPenukaranTable({ data, currentPage, itemsPerPage }) {
+export function WasteExchangeTable({ data, currentPage, itemsPerPage }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
 		onClose: onCloseView,
 	} = useDisclosure();
+
 	const {
 		isOpen: isOpenDelete,
 		onOpen: onOpenDelete,
 		onClose: onCloseDelete,
 	} = useDisclosure();
+	
 	const [selectedRow, setSelectedRow] = useState(null);
 
 	const handleViewModal = (row) => {
@@ -45,7 +47,7 @@ export function KelolaPenukaranTable({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<KelolaSampahDetailModal
+			<WasteExchangeDetailModal
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				data={selectedRow}
