@@ -1,2 +1,4 @@
 export { UserDetailTable } from "./UserDetailTable";
-export { KelolaPenukaranTable } from "./KelolaPenukaranTable";
+export { VoucherListTable } from "./VoucherListTable";
+export { WasteExchangeTable } from "./WasteExchangeTable";
+export { DataCustomizationTable } from "./DataCustomizationTable";
