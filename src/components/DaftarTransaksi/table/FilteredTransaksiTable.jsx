@@ -2,7 +2,7 @@ import { DaftarTransaksiTable } from "@/components/DaftarTransaksi/table/DaftarT
 import { Pagination } from "@/components/pagination";
 import { useState } from "react";
 
-export function FilteredDaftarTransaksiTable({
+export function FilteredTable({
   onActiveTable,
   data,
   searchTerm,

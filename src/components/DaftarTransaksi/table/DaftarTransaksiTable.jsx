@@ -7,8 +7,8 @@ import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { Edit2, Eye } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { DetailDaftarTransaksiModal } from "../modal/DetailDaftarTransaksi";
-import { EdDetailDFTModal } from "../modal/EdDetailDaftarTransaksi";
+import { DetailModal } from "../modal/Detail";
+import { EditDetailModal } from "../modal/EditDetail";
 
 const TableHead = ["No", "Nama Pengguna", "Nama Reward" , "Tujuan Pengiriman", "Tanggal", "Status", "Aksi"];
 
@@ -42,13 +42,13 @@ export function DaftarTransaksiTable({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<DetailDaftarTransaksiModal
+			<DetailModal
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				data={selectedRow}
 			/>
 			
-			<EdDetailDFTModal
+			<EditDetailModal
 				isOpen={isOpenUpdate}
 				onClose={onCloseUpdate}
 				target={selectedRow}

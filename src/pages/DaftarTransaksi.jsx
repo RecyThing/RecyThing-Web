@@ -1,8 +1,8 @@
 import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import { SearchBar } from "@/components/navigation";
 import { useEffect, useState } from "react";
-import { DaftarTransaksiButton } from "@/components/DaftarTransaksi/Button";
-import { FilteredDaftarTransaksiTable } from "@/components/DaftarTransaksi/table/FilteredDaftarTransaksiTable";
+import { FilteredButton } from "@/components/DaftarTransaksi/Button";
+import { FilteredTable } from "@/components/DaftarTransaksi/table/FilteredTransaksiTable";
 
 // dummy
 const DummyData = [];
@@ -81,43 +81,43 @@ function DaftarTransaksi() {
       >
         <Flex direction={"row"}>
           <Box minWidth={"711px"} backgroundColor={"rgba(167, 161, 158, 0.05)"}>
-            <DaftarTransaksiButton
+            <FilteredButton
               onSelected={semuaButtonActive}
               name={"Semua"}
-              diClick={() => {
+              onClicked={() => {
                 setSemuaButtonActive("True"),
                   setDiprosesButtonActive("False"),
                   setTerbaruButtonAcive("False"),
                   setSelesaiButtonActive("False");
               }}
             />
-            <DaftarTransaksiButton
+            <FilteredButton
               onSelected={terbaruButtonAcive}
               name={"Terbaru"}
-              dLength={filteredDataTerbaru.length}
-              diClick={() => {
+              dataLength={filteredDataTerbaru.length}
+              onClicked={() => {
                 setSemuaButtonActive("False"),
                   setDiprosesButtonActive("False"),
                   setTerbaruButtonAcive("True"),
                   setSelesaiButtonActive("False");
               }}
             />
-            <DaftarTransaksiButton
+            <FilteredButton
               onSelected={diprosesButtonActive}
               name={"Diproses"}
-              dLength={filteredDataDiproses.length}
-              diClick={() => {
+              dataLength={filteredDataDiproses.length}
+              onClicked={() => {
                 setSemuaButtonActive("False"),
                   setDiprosesButtonActive("True"),
                   setTerbaruButtonAcive("False"),
                   setSelesaiButtonActive("False");
               }}
             />
-            <DaftarTransaksiButton
+            <FilteredButton
               onSelected={selesaiButtonActive}
               name={"Selesai"}
-              dLength={filteredDataSelesai.length}
-              diClick={() => {
+              dataLength={filteredDataSelesai.length}
+              onClicked={() => {
                 setSemuaButtonActive("False"),
                   setDiprosesButtonActive("False"),
                   setTerbaruButtonAcive("False"),
@@ -132,13 +132,13 @@ function DaftarTransaksi() {
         
         {
           semuaButtonActive === "True" ? 
-          <FilteredDaftarTransaksiTable data={DummyData} onActiveTable={"Semua"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
+          <FilteredTable data={DummyData} onActiveTable={"Semua"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
           : terbaruButtonAcive === "True" ?
-          <FilteredDaftarTransaksiTable data={filteredDataTerbaru} onActiveTable={"Terbaru"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
+          <FilteredTable data={filteredDataTerbaru} onActiveTable={"Terbaru"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
           : diprosesButtonActive === "True"?
-          <FilteredDaftarTransaksiTable data={filteredDataDiproses} onActiveTable={"Diproses"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
+          <FilteredTable data={filteredDataDiproses} onActiveTable={"Diproses"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
           : 
-          <FilteredDaftarTransaksiTable data={filteredDataSelesai} onActiveTable={"Selesai"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
+          <FilteredTable data={filteredDataSelesai} onActiveTable={"Selesai"} currentPage={currentPage} itemsPerPage={itemsPerPage} searchTerm={searchTerm}/>
         }
       </Flex>
     </Container>
