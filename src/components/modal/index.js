@@ -7,3 +7,5 @@ export { EditDataDropPointModal } from "./data-drop-point/EditDataDropPointModal
 export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
 export { AddVoucherModal } from "./voucher-list/AddVoucherModal";
 export { EditVoucherModal } from "./voucher-list/EditVoucherModal";
+export { AddDataCustomizationModal } from "./data-customization/AddDataCustomizationModal";
+export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";

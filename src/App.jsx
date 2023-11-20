@@ -9,6 +9,7 @@ import VoucherList from "./pages/VoucherList";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
 import DataDropPoint from "./pages/DataDropPoint";
+import DataCustomization from "./pages/DataCustomization";
 
 function App() {
 	return (
@@ -75,7 +76,7 @@ function App() {
 				/>
 				<Route
 					path="drop-point-transaction"
-					element={<ManageWasteExchange/>}
+					element={<ManageWasteExchange />}
 				/>
 				<Route
 					path="community"
@@ -83,7 +84,7 @@ function App() {
 				/>
 				<Route
 					path="customize-data"
-					element={<></>}
+					element={<DataCustomization />}
 				/>
 				<Route
 					path="download"
