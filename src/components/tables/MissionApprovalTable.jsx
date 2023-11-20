@@ -9,13 +9,17 @@ import {
 	MenuOptionGroup,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { BaseTable } from "./base-table/BaseTable";
-import { TableBodyRow } from "./base-table/TableRows";
 import { BadgeCell, CenteredCell, TextCell } from "./base-table/TableCells";
-import { CustomIconButton } from "@/components/buttons";
-import { ViewMissionApprovalModal } from "@/components/modal";
-import { Eye } from "iconsax-react";
+import { BaseTable } from "./base-table/BaseTable";
 import { ChevronDown } from "react-iconly";
+import { CustomIconButton } from "@/components/buttons";
+import { Eye } from "iconsax-react";
+import { TableBodyRow } from "./base-table/TableRows";
+import {
+	ApproveModal,
+	RejectModal,
+	ViewMissionApprovalModal,
+} from "@/components/modal";
 
 const TableHead = [
 	"ID Misi",
@@ -41,7 +45,24 @@ const rejectMenu = [
 
 export function MissionApprovalTable({ data }) {
 	const [selectedRow, setSelectedRow] = useState(null);
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [rejectReason, setRejectReason] = useState(null);
+	const {
+		isOpen: isOpenView,
+		onOpen: onOpenView,
+		onClose: onCloseView,
+	} = useDisclosure();
+
+	const {
+		isOpen: isOpenApprove,
+		onOpen: onOpenApprove,
+		onClose: onCloseApprove,
+	} = useDisclosure();
+
+	const {
+		isOpen: isOpenReject,
+		onOpen: onOpenReject,
+		onClose: onCloseReject,
+	} = useDisclosure();
 
 	const handleBadges = (status) => {
 		switch (status) {
@@ -56,29 +77,56 @@ export function MissionApprovalTable({ data }) {
 		}
 	};
 
-	const handleRejectStatus = (status) => {
-		rejectMenu.forEach((item) => {
-			if (item.label === status) {
-				console.log("reason: ", item.label);
-			}
-		});
-	};
-
-	const handleApproveMission = (id) => {
-		console.log("id: ", id);
-	};
-
 	const handleViewModal = (row) => {
 		setSelectedRow(row);
-		onOpen();
+		onOpenView();
+	};
+
+	const handleApproveModal = (row) => {
+		setSelectedRow(row);
+		onOpenApprove();
+	};
+
+	const handleApproveMission = () => {
+		console.log("id: ", selectedRow.id);
+	};
+
+	const handleRejectModal = (row, reason) => {
+		setSelectedRow(row);
+		setRejectReason(reason);
+		onOpenReject();
+	};
+
+	const handleRejectMission = () => {
+		console.log("id: ", selectedRow.id);
+		console.log("reason: ", rejectReason);
+		setRejectReason(null);
 	};
 
 	return (
 		<>
 			<ViewMissionApprovalModal
-				isOpen={isOpen}
-				onClose={onClose}
+				isOpen={isOpenView}
+				onClose={onCloseView}
 				data={tabsData} // changed later
+			/>
+
+			<ApproveModal
+				isOpen={isOpenApprove}
+				onClose={onCloseApprove}
+				onApprove={handleApproveMission}
+				target={selectedRow}
+				title={"Apakah anda yakin ingin Menerima Verifikasi Misi?"}
+				message={"Misi yang terverifikasi tidak dapat diubah kembali"}
+			/>
+
+			<RejectModal
+				isOpen={isOpenReject}
+				onClose={onCloseReject}
+				onReject={handleRejectMission}
+				target={selectedRow}
+				title={"Apakah anda yakin ingin Menolak Verifikasi Misi?"}
+				message={"Misi yang ditolak tidak dapat diubah kembali"}
 			/>
 
 			<BaseTable
@@ -119,7 +167,7 @@ export function MissionApprovalTable({ data }) {
 									<Button
 										colorScheme={"mainGreen"}
 										_hover={{ bg: "#2DA22D" }}
-										onClick={() => handleApproveMission(row.id)}
+										onClick={() => handleApproveModal(row)}
 									>
 										Setujui
 									</Button>
@@ -137,7 +185,7 @@ export function MissionApprovalTable({ data }) {
 													<MenuItemOption
 														key={index}
 														value={item.label}
-														onClick={() => handleRejectStatus(item.label)}
+														onClick={() => handleRejectModal(row, item.label)}
 														_hover={{ bg: "#EBEBF0" }}
 														_checked={{ bg: "#EBEBF0" }}
 														py={"0.5rem"}
