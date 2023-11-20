@@ -8,7 +8,7 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
     const { control, handleSubmit, register, watch } = useForm({
         defaultValues: {
             data: [
-                { wasteType: "logam", unit: 1 },
+                { wasteType: "logam"},
             ],
         },
     });
@@ -19,10 +19,39 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
     });
 
     const handleAddData = () => {
-        append({ wasteType: "logam", unit: 1});
+        append({ wasteType: "logam"});
     };
 
-    const watchUnit = watch("data", []);
+    const calculatePoints = (wasteType, unit) => {
+        let pointPerUnit = 0;
+    
+        switch (wasteType) {
+            case 'logam':
+                pointPerUnit = 500;
+                break;
+            case 'plastik':
+                pointPerUnit = 400;
+                break;
+            case 'kaca':
+                pointPerUnit = 500;
+                break;
+            case 'kertas':
+                pointPerUnit = 300;
+                break;
+            default:
+                pointPerUnit = 0;
+        }
+    
+        return pointPerUnit * unit;
+    };
+
+    const calculateTotalPoints = () => {
+        let totalPoints = 0;
+        fields.forEach((field, index) => {
+            totalPoints += calculatePoints(watch(`wasteType${index}`), parseInt(watch(`unit${index}`) || 0));
+        });
+        return totalPoints;
+    };
 
     const onSubmit = (data) => {
         console.log(data);
@@ -123,53 +152,53 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
                             <table className="w-full">
                                 <thead>
                                     <tr className="text-sm text-left" style={{ background: "#F2F2F5"}}>
-                                        <th className="font-medium  p-2">Jenis Sampah</th>
-                                        <th className="font-medium  w-52">Satuan</th>
+                                        <th className="font-medium p-2">Jenis Sampah</th>
+                                        <th className="font-medium w-52">Satuan</th>
                                         <th className="font-medium ">Poin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {fields.map((field, index) => (
-                                        <tr key={field.id}>
-                                            <td>
-                                                <div className="relative mt-6">
-                                                    <Controller
-                                                        name={`data[${index}].wasteType`}
-                                                        control={control}
-                                                        defaultValue="logam"
-                                                        render={({ field }) => (
-                                                            <select
-                                                                {...field}
-                                                                className="w-52"
-                                                                style={{ color: "rgba(79, 79, 79, 1)", borderColor: "rgba(79, 79, 79, 1)", ...tableInputStyles }}
-                                                            >
-                                                                <option value="logam">Logam</option>
-                                                                <option value="plastik">Plastik</option>
-                                                                <option value="kertas">Kertas</option>
-                                                                <option value="kaca">Kaca</option>
-                                                            </select>
-                                                        )}
-                                                    />
-                                                    <ArrowDown2 size="24" color="rgba(148, 148, 148, 1)" className="absolute inset-y-0 right-24 mt-2 items-center pointer-events-none"/>
-                                                </div>
-                                            </td>
-                                            <td key={field.id}>
-                                                <input
-                                                    {...register(`data[${index}].unit`)}
-                                                    type="text"
-                                                    className="w-32 mt-6"
-                                                    style={{ color: "rgba(130, 130, 130, 1)", borderColor: "rgba(130, 130, 130, 1)", ...tableInputStyles }}
-                                                    name={`data[${index}].unit`}
-                                                    min="0"
-                                                    step="1"
+                                {fields.map((field, index) => (
+                                    <tr key={field.id}>
+                                        <td>
+                                            <div className="relative mt-6">
+                                                <Controller
+                                                name={`wasteType${index}`} // Ubah nama ke wasteType
+                                                control={control}
+                                                defaultValue="logam"
+                                                render={({ field }) => (
+                                                    <select
+                                                        {...field}
+                                                        className="w-52"
+                                                        style={{ color: "rgba(79, 79, 79, 1)", borderColor: "rgba(79, 79, 79, 1)", ...tableInputStyles }}
+                                                        >
+                                                            <option value="logam">Logam</option>
+                                                            <option value="plastik">Plastik</option>
+                                                            <option value="kertas">Kertas</option>
+                                                            <option value="kaca">Kaca</option>
+                                                    </select>
+                                                )}
                                                 />
-                                            </td>
-                                            <td>
-                                                <div className="mt-6 w-24" style={{ color: "rgba(255, 205, 41, 1)", ...poinStyles }}>
-                                                    +{watchUnit[index]?.wasteType === "logam" ? 500 : 0} Poin
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                <ArrowDown2 size="24" color="rgba(148, 148, 148, 1)" className="absolute inset-y-0 right-24 mt-2 items-center pointer-events-none"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input
+                                                {...register(`unit${index}`, { required: true, min: 0, pattern: /^[0-9]*$/ })}
+                                                type="number"
+                                                className="w-32 mt-6"
+                                                style={{ color: "rgba(130, 130, 130, 1)", borderColor: "rgba(130, 130, 130, 1)", ...tableInputStyles }}
+                                                name={`unit${index}`}
+                                                min="0"
+                                                step="1"
+                                            />
+                                        </td>
+                                        <td>
+                                            <div className="mt-6 w-24" style={{ color: "rgba(255, 205, 41, 1)", ...poinStyles }}>
+                                                +{calculatePoints(watch(`wasteType${index}`), parseInt(watch(`unit${index}`) || 0))} Poin
+                                            </div>
+                                        </td>
+                                    </tr>
                                     ))}
                                 </tbody>
                             </table>
@@ -180,7 +209,7 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
                                 </div>
                                 <p className="text-right mr-1" style={{ ...poinStyles }}>Total Poin</p>
                                 <p style={{ color: "rgba(255, 205, 41, 1)", marginLeft: "36%", ...poinStyles}}>
-                                    +{watchUnit.reduce((acc, cur) => acc + (cur?.unit || 0) * (cur?.wasteType === "logam" ? 500 : 0), 0)} Poin
+                                    +{calculateTotalPoints()} Poin
                                 </p>
                             </div>
                         </div>
