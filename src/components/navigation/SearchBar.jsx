@@ -2,7 +2,7 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-iconly";
 
-export function SearchBar({ onSearch }) {
+export function SearchBar({ onSearch, className }) {
 	const handleSearch = (e) => {
 		onSearch(e.target.value);
 	};
@@ -11,6 +11,7 @@ export function SearchBar({ onSearch }) {
 		<InputGroup
 			borderRadius={"2xl"}
 			w={"full"}
+			className={className}
 		>
 			<InputLeftElement
 				height={"100%"}

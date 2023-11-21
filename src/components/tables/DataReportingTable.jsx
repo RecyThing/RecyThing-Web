@@ -1,18 +1,25 @@
-/* eslint-disable react/prop-types */
+import { useState } from "react";
 import {
-  IconButton,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  Button,
+  ButtonGroup,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Eye, Trash } from "iconsax-react";
-import { DeleteModal, UserDetailModal } from "@/components/modal";
-import { useState } from "react";
+import { BadgeCell, CenteredCell, TextCell } from "./base-table/TableCells";
+import { BaseTable } from "./base-table/BaseTable";
+import { ChevronDown } from "react-iconly";
+import { CustomIconButton } from "@/components/buttons";
+import { Eye } from "iconsax-react";
+import { TableBodyRow } from "./base-table/TableRows";
+import {
+  ApproveModal,
+  RejectModal,
+  ViewReportingApprovalModal,
+} from "@/components/modal";
 
 const TableHead = [
   "Report ID",
@@ -20,121 +27,233 @@ const TableHead = [
   "Pelapor",
   "Lokasi",
   "Tanggal",
-  "Status",
   "Aksi",
 ];
 
-export function DataReportingTable({ data, currentPage, itemsPerPage }) {
+const rejectMenu = [
+  {
+    label: "Bukti tidak jelas",
+  },
+  {
+    label: "Bukti kurang lengkap",
+  },
+  {
+    label: "Tidak ada detail kejadian",
+  },
+];
+
+export function DataReportingTable({ data }) {
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [rejectReason, setRejectReason] = useState(null);
   const {
     isOpen: isOpenView,
     onOpen: onOpenView,
     onClose: onCloseView,
   } = useDisclosure();
+
   const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onClose: onCloseDelete,
+    isOpen: isOpenApprove,
+    onOpen: onOpenApprove,
+    onClose: onCloseApprove,
   } = useDisclosure();
-  const [selectedRow, setSelectedRow] = useState(null);
+
+  const {
+    isOpen: isOpenReject,
+    onOpen: onOpenReject,
+    onClose: onCloseReject,
+  } = useDisclosure();
+
+  const handleBadges = (status) => {
+    switch (status) {
+      case "Perlu Tinjauan":
+        return "yellow";
+      case "Disetujui":
+        return "green";
+      case "Ditolak":
+        return "red";
+      default:
+        return "gray";
+    }
+  };
 
   const handleViewModal = (row) => {
     setSelectedRow(row);
     onOpenView();
   };
 
-  const handleDeleteModal = (row) => {
+  const handleApproveModal = (row) => {
     setSelectedRow(row);
-    onOpenDelete();
+    onOpenApprove();
   };
 
-  const handleDelete = (row) => {
-    console.log("deleted!", row);
-    onCloseDelete();
+  const handleApproveMission = () => {
+    console.log("id: ", selectedRow.id);
+  };
+
+  const handleRejectModal = (row, reason) => {
+    setSelectedRow(row);
+    setRejectReason(reason);
+    onOpenReject();
+  };
+
+  const handleRejectMission = () => {
+    console.log("id: ", selectedRow.id);
+    console.log("reason: ", rejectReason);
+    setRejectReason(null);
   };
 
   return (
     <>
-      <UserDetailModal
+      <ViewReportingApprovalModal
         isOpen={isOpenView}
         onClose={onCloseView}
-        data={selectedRow}
+        data={tabsData} // changed later
       />
-      <DeleteModal
-        isOpen={isOpenDelete}
-        onClose={onCloseDelete}
+
+      <ApproveModal
+        isOpen={isOpenApprove}
+        onClose={onCloseApprove}
+        onApprove={handleApproveMission}
         target={selectedRow}
-        onDelete={handleDelete}
+        title={"Apakah anda yakin ingin Menerima Verifikasi Misi?"}
+        message={"Misi yang terverifikasi tidak dapat diubah kembali"}
       />
 
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              {TableHead.map((head) => (
-                <Th
-                  key={head}
-                  color={"#7F7F7F"}
-                  textAlign={
-                    head !== "Report ID" && head !== "Aksi" ? "left" : "center"
-                  }
-                  textTransform={"capitalize"}
-                  fontSize={"md"}
-                  {...(head === "Report ID" && { width: "5%" })}
-                  {...(head === "Aksi" && { width: "10%" })}
-                >
-                  {head}
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data.length === 0 && (
-              <Tr>
-                <Td colSpan={TableHead.length} textAlign={"center"}>
-                  Data tidak ditemukan
-                </Td>
-              </Tr>
-            )}
-            {data.map((row, rowIndex) => (
-              <Tr
-                key={rowIndex}
-                bg={rowIndex % 2 === 0 ? "#F2F2F5" : "white"}
-                borderBlock={"2px solid #C4C4C4"}
-                _hover={{ bg: "#E0F3FF" }}
-              >
-                <Td textAlign="center">
-                  {(currentPage - 1) * itemsPerPage + rowIndex + 1}
-                </Td>
-                {row.map((cell, cellIndex) => (
-                  <Td
-                    key={cellIndex}
-                    color={"#383838"}
-                    w={"12.5rem"}
-                    overflowWrap={"break-word"}
-                    whiteSpace={"normal"}
-                  >
-                    {cell}
-                  </Td>
-                ))}
+      <RejectModal
+        isOpen={isOpenReject}
+        onClose={onCloseReject}
+        onReject={handleRejectMission}
+        target={selectedRow}
+        title={"Apakah anda yakin ingin Menolak Verifikasi Misi?"}
+        message={"Misi yang ditolak tidak dapat diubah kembali"}
+      />
 
-                <Td textAlign="start">Ini Lokasi</Td>
-                <Td textAlign="start">Status</Td>
-                <Td textAlign="center">
-                  <IconButton
+      <BaseTable
+        data={data}
+        heads={TableHead}
+        textAligns={TableHead.map((head) => {
+          if (head === "Report ID" || head === "View" || head === "Aksi") {
+            return "center";
+          } else {
+            return "left";
+          }
+        })}
+      >
+        {data.map((row, rowIndex) => (
+          <TableBodyRow key={rowIndex} index={rowIndex}>
+            <CenteredCell>{row.id}</CenteredCell>
+            {/* tipe pelapor */}
+            <TextCell content="Tipe Laporan" />
+            {/* Pelapor */}
+            <TextCell content={row.username} />
+
+            <TextCell content="Lokasi" />
+            <TextCell content={row.date} />
+
+            {/* <BadgeCell
+              content={row.status}
+              colorScheme={handleBadges(row.status)}
+            /> */}
+            <CenteredCell>
+              {row.status === "Perlu Tinjauan" ? (
+                <ButtonGroup>
+                  <Button
+                    colorScheme={"mainGreen"}
+                    _hover={{ bg: "#2DA22D" }}
+                    onClick={() => handleApproveModal(row)}
+                  >
+                    Setujui
+                  </Button>
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      colorScheme={"red"}
+                      rightIcon={<ChevronDown size={20} />}
+                    >
+                      Tolak
+                    </MenuButton>
+                    <MenuList py={0}>
+                      <MenuOptionGroup type={"radio"}>
+                        {rejectMenu.map((item, index) => (
+                          <MenuItemOption
+                            key={index}
+                            value={item.label}
+                            onClick={() => handleRejectModal(row, item.label)}
+                            _hover={{ bg: "#EBEBF0" }}
+                            _checked={{ bg: "#EBEBF0" }}
+                            py={"0.5rem"}
+                          >
+                            {item.label}
+                          </MenuItemOption>
+                        ))}
+                      </MenuOptionGroup>
+                    </MenuList>
+                  </Menu>
+                </ButtonGroup>
+              ) : (
+                <CenteredCell>
+                  <CustomIconButton
                     icon={<Eye />}
-                    size={"sm"}
-                    bg={"transparent"}
                     color={"#828282"}
-                    _hover={{ bg: "transparent", color: "#333333" }}
-                    _focus={{ boxShadow: "none" }}
+                    hoverColor={"#333333"}
                     onClick={() => handleViewModal(row)}
                   />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                </CenteredCell>
+              )}
+            </CenteredCell>
+          </TableBodyRow>
+        ))}
+      </BaseTable>
     </>
   );
 }
+
+// dummy
+const tabsData = [
+  {
+    tab: "1",
+    images: [
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 1",
+      },
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 2",
+      },
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 3",
+      },
+    ],
+    description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
+    uploadTime: new Date(),
+  },
+  {
+    tab: "2",
+    images: [
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 1",
+      },
+    ],
+    description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
+    uploadTime: new Date(),
+  },
+  {
+    tab: "3",
+    images: [
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 2",
+      },
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
+        alt: "image 3",
+      },
+    ],
+    description: "Saya telah membuang.",
+    uploadTime: new Date(),
+  },
+];
+// end dummy

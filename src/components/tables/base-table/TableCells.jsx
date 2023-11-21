@@ -1,33 +1,30 @@
-/* eslint-disable react/prop-types */
 import { Badge, Td, Text } from "@chakra-ui/react";
 
-export function TextCell({ key, content }) {
+export function TextCell({ content }) {
 	return (
 		<Td
-			key={key}
 			color={"#383838"}
 			maxW={"12.5rem"}
-			overflowWrap={"break-word"}
-			whiteSpace={"normal"}
+			isTruncated
 		>
 			{content}
 		</Td>
 	);
 }
 
-export function BadgeCell({ key, colorScheme, content }) {
+export function BadgeCell({ colorScheme, content }) {
 	{
 		switch (colorScheme) {
 			case "green":
 				return (
-					<Td key={key}>
+					<Td>
 						<Badge
 							px={"8px"}
 							py={"4px"}
 							fontSize={"xs"}
 							fontWeight={"medium"}
-							color={"#3FC28A"}
-							bg={"#3FC28A1A"}
+							color={"#154C3C"}
+							bg={"#C7EBD1"}
 						>
 							{content}
 						</Badge>
@@ -35,14 +32,14 @@ export function BadgeCell({ key, colorScheme, content }) {
 				);
 			case "yellow":
 				return (
-					<Td key={key}>
+					<Td>
 						<Badge
 							px={"8px"}
 							py={"4px"}
 							fontSize={"xs"}
 							fontWeight={"medium"}
-							color={"#FFCD29"}
-							bg={"#FFCD291A"}
+							color={"#5F5207"}
+							bg={"#FBF5D0"}
 						>
 							{content}
 						</Badge>
@@ -50,14 +47,14 @@ export function BadgeCell({ key, colorScheme, content }) {
 				);
 			case "red":
 				return (
-					<Td key={key}>
+					<Td>
 						<Badge
 							px={"8px"}
 							py={"4px"}
 							fontSize={"xs"}
 							fontWeight={"medium"}
-							color={"#FF5C5C"}
-							bg={"#FF5C5C1A"}
+							color={"#76170F"}
+							bg={"#FADCD9"}
 						>
 							{content}
 						</Badge>
@@ -66,14 +63,14 @@ export function BadgeCell({ key, colorScheme, content }) {
 
 			case "blue":
 				return (
-					<Td key={key}>
+					<Td>
 						<Badge
 							px={"8px"}
 							py={"4px"}
 							fontSize={"xs"}
 							fontWeight={"medium"}
-							color={"#0033FF"}
-							bg={"#0033FF1A"}
+							color={"#19365D"}
+							bg={"#D4E4FA"}
 						>
 							{content}
 						</Badge>
@@ -81,7 +78,7 @@ export function BadgeCell({ key, colorScheme, content }) {
 				);
 			default:
 				return (
-					<Td key={key}>
+					<Td>
 						<Badge
 							px={"8px"}
 							py={"4px"}
@@ -102,10 +99,20 @@ export function CenteredCell({ children }) {
 	return <Td textAlign="center">{children}</Td>;
 }
 
-export function LinkCell({ key, content, onClick }) {
+export function LeftAlignCell({ children }) {
 	return (
 		<Td
-			key={key}
+			maxWidth={"max-content"}
+			textAlign="left"
+		>
+			{children}
+		</Td>
+	);
+}
+
+export function LinkCell({ content, onClick }) {
+	return (
+		<Td
 			color={"#5B79EF"}
 			maxW={"12.5rem"}
 			overflowWrap={"break-word"}
@@ -133,4 +140,19 @@ export function NotFoundCell({ count }) {
 			Data tidak ditemukan
 		</Td>
 	);
+}
+
+export function TruncatedCell({ content, maxCharLength, maxWidth }) {
+    const truncatedContent =
+        content.length > maxCharLength
+            ? `${content.substring(0, maxCharLength)}...`
+            : content;
+
+    return (
+        <Td style={{ maxWidth: `${maxWidth}rem`, paddingLeft: "23px", paddingRight: "15px" }}>
+            <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {truncatedContent}
+            </div>
+        </Td>
+    );
 }

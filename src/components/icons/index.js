@@ -1,1 +1,1 @@
-export * from "./Iconly";
+export * from "./CustomIcons";
