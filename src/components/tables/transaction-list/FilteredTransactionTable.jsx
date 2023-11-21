@@ -1,4 +1,4 @@
-import { DaftarTransaksiTable } from "@/components/tables/daftar-transaksi/DaftarTransaksiTable";
+import { TransactionListTable } from "@/components/tables/transaction-list/TransactionListTable";
 import { Pagination } from "@/components/pagination";
 import { useState } from "react";
 
@@ -21,7 +21,7 @@ export function FilteredTable({
       case "Semua":
         return (
           <>
-            <DaftarTransaksiTable
+            <TransactionListTable
               currentPage={currentPage}
               data={paginatedData}
               itemsPerPage={itemsPerPage}
@@ -38,7 +38,7 @@ export function FilteredTable({
       case "Terbaru":
         return (
           <>
-            <DaftarTransaksiTable
+            <TransactionListTable
               currentPage={currentPage}
               data={paginatedData}
               itemsPerPage={itemsPerPage}
@@ -55,7 +55,7 @@ export function FilteredTable({
       case "Diproses":
         return (
           <>
-            <DaftarTransaksiTable
+            <TransactionListTable
               currentPage={currentPage}
               data={paginatedData}
               itemsPerPage={itemsPerPage}
@@ -72,7 +72,7 @@ export function FilteredTable({
       case "Selesai":
         return (
           <>
-            <DaftarTransaksiTable
+            <TransactionListTable
               currentPage={currentPage}
               data={paginatedData}
               itemsPerPage={itemsPerPage}

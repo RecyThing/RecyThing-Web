@@ -3,16 +3,15 @@ import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { Edit2, Eye } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { DetailModal } from "../../modal/daftar-transaksi/Detail";
-import { EditDetailModal } from "../../modal/daftar-transaksi/EditDetail";
+import { DetailModal } from "../../modal/transaction-list/Detail";
+import { EditDetailModal } from "../../modal/transaction-list/EditDetail";
 
 const TableHead = ["No", "Nama Pengguna", "Nama Reward" , "Tujuan Pengiriman", "Tanggal", "Status", "Aksi"];
 
-export function DaftarTransaksiTable({ data, currentPage, itemsPerPage }) {
+export function TransactionListTable({ data, currentPage, itemsPerPage }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
