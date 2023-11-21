@@ -1,4 +1,4 @@
-import { DaftarTransaksiTable } from "@/components/DaftarTransaksi/table/DaftarTransaksiTable";
+import { DaftarTransaksiTable } from "@/components/tables/daftar-transaksi/DaftarTransaksiTable";
 import { Pagination } from "@/components/pagination";
 import { useState } from "react";
 

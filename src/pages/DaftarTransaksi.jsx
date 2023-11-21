@@ -1,8 +1,8 @@
 import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import { SearchBar } from "@/components/navigation";
 import { useEffect, useState } from "react";
-import { FilteredButton } from "@/components/DaftarTransaksi/Button";
-import { FilteredTable } from "@/components/DaftarTransaksi/table/FilteredTransaksiTable";
+import { FilteredButton } from "@/components/buttons/daftar-transaksi-Button";
+import { FilteredTable } from "@/components/tables/daftar-transaksi/FilteredTransaksiTable";
 
 // dummy
 const DummyData = [];

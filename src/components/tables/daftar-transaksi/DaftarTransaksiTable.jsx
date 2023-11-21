@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import { BaseTable } from "../../tables/base-table/BaseTable";
-import { CenteredCell, TextCell, BadgeCell } from "../../tables/base-table/TableCells";
-import { TableBodyRow } from "../../tables/base-table/TableRows";
+import { BaseTable } from "../base-table/BaseTable";
+import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
+import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { Edit2, Eye } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { DetailModal } from "../modal/Detail";
-import { EditDetailModal } from "../modal/EditDetail";
+import { DetailModal } from "../../modal/daftar-transaksi/Detail";
+import { EditDetailModal } from "../../modal/daftar-transaksi/EditDetail";
 
 const TableHead = ["No", "Nama Pengguna", "Nama Reward" , "Tujuan Pengiriman", "Tanggal", "Status", "Aksi"];
 
