@@ -38,16 +38,16 @@ const labels = {
   status: { title: "Status", icon: <Location /> },
 };
 
-export function DetailDaftarTransaksiModal({ isOpen, onClose, data }) {
+export function DetailModal({ isOpen, onClose, data }) {
   // will be changed later
 
   const dummyData = {
-  nama: "Rivaldo",
-  tanggal: "25 November 2023",
-  waktu: "18.30",
-  reward: "Voucher Ovo 100000",
-  goal: "081361507548",
-  status: "Berhasil",
+    nama: "Rivaldo",
+    tanggal: "25 November 2023",
+    waktu: "18.30",
+    reward: "Voucher Ovo 100000",
+    goal: "081361507548",
+    status: "Berhasil",
   };
 
   // will be changed later
@@ -88,12 +88,14 @@ export function DetailDaftarTransaksiModal({ isOpen, onClose, data }) {
               ID Transaksi:
             </Text>
             <Text
-			className="ms-2"
+              className="ms-2"
               fontSize={"lg"}
               fontWeight={"semibold"}
               color={"#828282"}
               letterSpacing={"tight"}
-            >156548122</Text>
+            >
+              156548122
+            </Text>
           </Flex>
           <IconButton
             as={ModalCloseButton}
