@@ -12,6 +12,7 @@ import DaftarTransaksi from "./pages/DaftarTransaksi";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
 import MissionApproval from "./pages/MissionApproval";
+import ContentArticle from "./pages/ContentArticle";
 
 function App() {
 	return (
@@ -50,7 +51,7 @@ function App() {
 				/>
 				<Route
 					path="content-article"
-					element={<></>}
+					element={<ContentArticle />}
 				/>
 				<Route
 					path="rubbish-category"

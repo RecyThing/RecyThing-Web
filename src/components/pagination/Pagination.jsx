@@ -8,8 +8,8 @@ export function Pagination({
 	onChangeItemsPerPage,
 	onChangePage,
 	totalItems,
+	options = [5, 10, 25]
 }) {
-	const options = [5, 10, 25];
 
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	const startPage = Math.max(1, Math.min(currentPage - 1, totalPages - 3));
