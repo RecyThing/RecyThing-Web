@@ -11,7 +11,7 @@ export const FilterButton = ({
 		<Button
 			key={label}
 			colorScheme={label === activeFilter ? "mainGreen" : "gray"}
-			bg={label === activeFilter ? "#35CC33" : "#FFFFFF"}
+			bg={label === activeFilter ? "#35CC33" : "#A7A19E0D"}
 			fontWeight={"normal"}
 			px={"2.5rem"}
 			py={"1.75rem"}
