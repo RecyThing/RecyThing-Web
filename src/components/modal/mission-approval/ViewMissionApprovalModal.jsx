@@ -1,4 +1,5 @@
 import {
+	Box,
 	Button,
 	Flex,
 	Heading,
@@ -17,6 +18,7 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
+import { RecyThingWhiteIcon } from "@/components/icons";
 import { TabContent } from "./TabContent";
 import { TabButton } from "./TabButton";
 
@@ -44,11 +46,19 @@ export function ViewMissionApprovalModal({ isOpen, onClose, data }) {
 					bg={"transparent"}
 					color={"#828282"}
 					position={"absolute"}
-					right={"2.5rem"}
-					top={"2.25rem"}
+					right={"5rem"}
+					top={"4rem"}
 					_hover={{ bg: "transparent", color: "#333333" }}
 					_focus={{ boxShadow: "none" }}
 				/>
+				<Box
+					position={"absolute"}
+					top={0}
+					right={0}
+					zIndex={-9999}
+				>
+					<RecyThingWhiteIcon />
+				</Box>
 				<ModalHeader
 					display={"flex"}
 					flexDirection={"column"}
