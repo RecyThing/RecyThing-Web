@@ -1,11 +1,12 @@
-import { Container, Flex, Heading, Button } from "@chakra-ui/react";
+// Import yang sudah ada
+import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
 import { DataReportingTable } from "@/components/tables/DataReportingTable";
 import TabButton from "@/components/buttons/TabButton";
 
-// dummy
+// Dummy data
 const DummyData = [];
 const names = [
   "John Doe",
@@ -24,38 +25,30 @@ for (let i = 0; i < 50; i++) {
   const points = Math.floor(Math.random() * 10000);
   DummyData.push([name, email, points]);
 }
-// end dummy
-const handleButtonClick = () => {
-  // Logic to handle button click
-  console.log("Button clicked!");
-  // Add your custom logic here
-};
 
+// Komponen DataReporting
 function DataReporting() {
+  // State
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [activeTab, setActiveTab] = useState(null);
 
+  // Data yang sudah difilter
   const filteredData = DummyData.filter(([username]) =>
     username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Data yang ditampilkan di halaman saat ini
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
+  // Fungsi untuk menangani pencarian
   const handleSearch = (term) => {
     setSearchTerm(term);
     setCurrentPage(1);
-  };
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    if (tab === "semua") {
-      document.getElementById("semuaButton").style.backgroundColor = "green";
-    }
   };
 
   return (
@@ -72,10 +65,10 @@ function DataReporting() {
         fontWeight="bold"
         mb={"1.5rem"}
       >
-        Manage Data Reporting
+        Kelola Pelaporan Data
       </Heading>
 
-      {/* search */}
+      {/* Container untuk pencarian */}
       <Flex
         bg={"white"}
         borderRadius={"xl"}
@@ -84,43 +77,13 @@ function DataReporting() {
         gap={"1.5rem"}
         p={"1.5rem"}
       >
-        <Flex align="center" justify="space-between" mb="1.5rem">
-          {/* semua */}
+        {/* Container untuk tombol tab dan pencarian */}
 
-          <TabButton
-            id="semuaButton"
-            label="Semua"
-            count={420}
-            active={activeTab === "semua"}
-            onClick={() => handleTabClick("semua")}
-          />
-          <TabButton
-            label="Perlu Tinjauan"
-            count={69}
-            active={activeTab === "tinjauan"}
-            onClick={() => handleTabClick("tinjauan")}
-          />
-          <TabButton
-            label="Diterima"
-            count={300}
-            active={activeTab === "diterima"}
-            onClick={() => handleTabClick("diterima")}
-          />
-          <TabButton
-            label="Ditolak"
-            count={51}
-            active={activeTab === "ditolak"}
-            onClick={() => handleTabClick("ditolak")}
-          />
+        <TabButton />
 
-          <SearchBar onSearch={handleSearch} />
-        </Flex>
+        {/* Komponen DataReportingTable dengan headers dinamis */}
 
-        <DataReportingTable
-          currentPage={currentPage}
-          data={paginatedData}
-          itemsPerPage={itemsPerPage}
-        />
+        {/* Komponen Pagination */}
         <Pagination
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}

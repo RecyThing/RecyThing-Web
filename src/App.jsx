@@ -8,6 +8,7 @@ import KelolaPenukaranSampah from "./pages/KelolaPenukaranSampah";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
 import DataReporting from "./pages/DataReporting";
+import DaftarTransaksi from "./pages/DaftarTransaksi";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
         <Route path="mission-list" element={<></>} />
         <Route path="mission-approval" element={<></>} />
         <Route path="voucher-list" element={<></>} />
-        <Route path="transaction-list" element={<></>} />
+        <Route path="transaction-list" element={<DaftarTransaksi />} />
         <Route
           path="drop-point-transaction"
           element={<KelolaPenukaranSampah />}
