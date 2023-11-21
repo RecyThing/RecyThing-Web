@@ -29,10 +29,10 @@ export function DataCustomizationTable({ data }) {
 	const [selectedTopic, setSelectedTopic] = useState(null);
 
 	const handleEditModal = (row) => {
-        setSelectedQuestion(row);
+		setSelectedQuestion(row);
 		setSelectedTopic(row);
-        onOpenEdit();
-    };
+		onOpenEdit();
+	};
 
 	const handleDeleteModal = (row) => {
 		setSelectedQuestion(row);
@@ -44,22 +44,22 @@ export function DataCustomizationTable({ data }) {
 		onCloseDelete();
 	};
 
-    const formatDate = () => {
-        const date = new Date("2023-01-21");
-    	const day = date.getDate().toString().padStart(2, '0');
-		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+	const formatDate = () => {
+		const date = new Date("2023-01-21");
+		const day = date.getDate().toString().padStart(2, "0");
+		const month = (date.getMonth() + 1).toString().padStart(2, "0");
 		const year = date.getFullYear();
 		return `${day}/${month}/${year}`;
-    };
+	};
 
 	return (
 		<>
 			<EditDataCustomizationModal
-				isOpen={isOpenEdit} 
-				onClose={onCloseEdit} 
+				isOpen={isOpenEdit}
+				onClose={onCloseEdit}
 				setIsEditData={setIsEditData}
-				topic={selectedTopic ? selectedTopic[0] : ''}
-				question={selectedQuestion ? selectedQuestion[1] : ''}
+				topic={selectedTopic ? selectedTopic[0] : ""}
+				question={selectedQuestion ? selectedQuestion[1] : ""}
 			/>
 			<DeleteModal
 				isOpen={isOpenDelete}

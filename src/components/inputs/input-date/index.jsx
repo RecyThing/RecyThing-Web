@@ -10,6 +10,7 @@ export const InputDate = forwardRef(
 			<DatePicker
 				ref={ref}
 				value={props.value?.toLocaleDateString() || null}
+				selected={props.value || null}
 				onChange={props.onChange}
 				enableTabLoop={false}
 				placeholderText=" "

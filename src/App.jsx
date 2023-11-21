@@ -11,6 +11,7 @@ import ErrorNotFound from "./pages/ErrorNotFound";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
 import Badge from "./pages/Badge";
+import MissionApproval from "./pages/MissionApproval";
 
 function App() {
 	return (
@@ -65,7 +66,7 @@ function App() {
 				/>
 				<Route
 					path="mission-approval"
-					element={<></>}
+					element={<MissionApproval />}
 				/>
 				<Route
 					path="voucher-list"
@@ -73,7 +74,7 @@ function App() {
 				/>
 				<Route
 					path="transaction-list"
-					element={<></>}
+					element={<DaftarTransaksi/>}
 				/>
 				<Route
 					path="drop-point-transaction"
