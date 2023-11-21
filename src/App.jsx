@@ -12,6 +12,7 @@ import DaftarTransaksi from "./pages/DaftarTransaksi";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
 import MissionApproval from "./pages/MissionApproval";
+import RubbishCategory from "./pages/RubbishCategory";
 
 function App() {
 	return (
@@ -54,7 +55,7 @@ function App() {
 				/>
 				<Route
 					path="rubbish-category"
-					element={<></>}
+					element={<RubbishCategory/>}
 				/>
 				<Route
 					path="data-drop-point"
