@@ -7,9 +7,10 @@ import ManageWasteExchange from "./pages/ManageWasteExchange";
 import UserDetail from "./pages/UserDetail";
 import VoucherList from "./pages/VoucherList";
 import Download from "./pages/Download";
-import ErrorNotFound from "./error/ErrorNotFound";
+import ErrorNotFound from "./pages/ErrorNotFound";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
+import Badge from "./pages/Badge";
 
 function App() {
 	return (
@@ -40,7 +41,7 @@ function App() {
 				/>
 				<Route
 					path="badge"
-					element={<></>}
+					element={<Badge/>}
 				/>
 				<Route
 					path="report"

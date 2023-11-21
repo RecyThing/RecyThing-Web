@@ -78,6 +78,71 @@ export function BadgeCell({ colorScheme, content }) {
 						</Badge>
 					</Td>
 				);
+				case "azure":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#5BD4EF"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "gold":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#D4AF35"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "silver":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#BBBBBB"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "bronze":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#C97513"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+
 			default:
 				return (
 					<Td>

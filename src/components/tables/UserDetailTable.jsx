@@ -63,12 +63,14 @@ export function UserDetailTable({ data, currentPage, itemsPerPage }) {
 						<CenteredCell>
 							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
 						</CenteredCell>
+
 						{row.map((cell, cellIndex) => (
 							<TextCell
 								key={cellIndex}
 								content={cell}
 							/>
 						))}
+
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}
