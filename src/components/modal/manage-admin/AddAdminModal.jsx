@@ -34,7 +34,7 @@ export function AddAdminModal({ isOpen, onClose, onSubmit }) {
         <ModalContent padding={"24px"} borderRadius={"20px"}>
           <ModalHeader>Tambah Data Admin</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={8}>
+          <ModalBody pb={7}>
             <div className="wrapper relative w-2/3 mx-auto">
               <img
                 src={AdminImage}
@@ -102,7 +102,7 @@ export function AddAdminModal({ isOpen, onClose, onSubmit }) {
               color={"white"}
               bg={"#828282"}
               borderRadius={"lg"}
-              px={"3.5rem"}
+              px={"4rem"}
               py={"1.75rem"}
               _hover={{ bg: "#333333" }}
             >

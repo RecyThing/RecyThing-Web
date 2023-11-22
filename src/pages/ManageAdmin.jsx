@@ -6,11 +6,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
-import { SearchBarAdmin } from "@/components/navigation/";
+import { SearchBar } from "@/components/navigation/";
 import { AdminTable } from "@/components/tables";
 import { useState } from "react";
 import { AddAdminModal } from "@/components/modal";
-// import { Additem } from "iconsax-react";
 
 // dummy
 const DummyData = [];
@@ -63,7 +62,6 @@ function AdminDetailTable() {
     onClose();
   };
 
-
   return (
     <Container
       as={"section"}
@@ -76,7 +74,6 @@ function AdminDetailTable() {
         onClose={onClose}
         onSubmit={handleSubmitData}
       />
-      {/* <EditAdminModal /> */}
       <Heading
         as="h1"
         color={"#201A18"}
@@ -95,7 +92,9 @@ function AdminDetailTable() {
         p={"1.5rem"}
       >
         <Flex alignItems={"center"} justifyContent={"space-between"}>
-          <SearchBarAdmin onSearch={handleSearch} />
+          <div className="wrapper w-4/12">
+            <SearchBar onSearch={handleSearch} />
+          </div>
           <Button
             backgroundColor={"#35CC33"}
             color={"white"}

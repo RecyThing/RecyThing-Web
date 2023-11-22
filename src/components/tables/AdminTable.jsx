@@ -1,11 +1,7 @@
-/* eslint-disable react/prop-types */
-import { color } from "framer-motion";
-// import { EditAdminModal } from "../modal";
 import { BaseTable } from "./base-table/BaseTable";
 import { CenteredCell, TextCell, BadgeCell } from "./base-table/TableCells";
 import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-// import { AdminFormModal } from "@/components/modal";
 import { Edit2, Trash } from "iconsax-react";
 import { useState } from "react";
 import { DeleteModal, EditAdminModal } from "../modal";

@@ -93,7 +93,7 @@ export function EditAdminModal({ isOpen, onClose, onSubmit, target }) {
               color={"white"}
               bg={"#828282"}
               borderRadius={"lg"}
-              px={"3.5rem"}
+              px={"4rem"}
               py={"1.75rem"}
               _hover={{ bg: "#333333" }}
             >
