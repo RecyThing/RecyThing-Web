@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import { BaseTable } from "../base-table/BaseTable";
-import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
+import { BaseTable } from "./base-table/BaseTable";
+import { CenteredCell, TextCell, BadgeCell } from "./base-table/TableCells";
+import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Eye } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { DetailModal } from "../../modal/transaction-list/Detail";
-import { EditDetailModal } from "../../modal/transaction-list/EditDetail";
+import { DetailModal } from "../modal/transaction-list/Detail";
+import { EditDetailModal } from "../modal/transaction-list/EditDetail";
 
 const TableHead = ["No", "Nama Pengguna", "Nama Reward" , "Tujuan Pengiriman", "Tanggal", "Status", "Aksi"];
 
@@ -23,6 +23,19 @@ export function TransactionListTable({ data, currentPage, itemsPerPage }) {
 		onClose: onCloseUpdate,
 	} = useDisclosure();
 	const [selectedRow, setSelectedRow] = useState(null);
+
+	const handleBadges = (status) => {
+		switch (status) {
+			case "Diproses":
+				return "blue";
+			case "Terbaru":
+				return "yellow";
+			case "Berhasil":
+				return "green";
+			default:
+				return "gray";
+		}
+	};
 
 	const handleViewModal = (row) => {
 		setSelectedRow(row);
@@ -65,16 +78,14 @@ export function TransactionListTable({ data, currentPage, itemsPerPage }) {
 						<CenteredCell>
 							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
 						</CenteredCell>
-						{row.map((cell, cellIndex) => (
-						
-								cell === "Diproses" ? 
-									<BadgeCell key={cellIndex} colorScheme={"blue"} content={cell}/>
-									: cell === "Terbaru" ? 
-									<BadgeCell key={cellIndex} colorScheme={"yellow"} content={cell}/>
-									:cell === "Berhasil" ?
-									<BadgeCell key={cellIndex} colorScheme={"green"} content={cell}/>
-									: <TextCell key={cellIndex} content={cell}/>
-						))}
+						<TextCell content={row.name}/>
+						<TextCell content={row.reward}/>
+						<TextCell content={row.email}/>
+						<TextCell content={row.points}/>
+						<BadgeCell
+							content={row.status}
+							colorScheme={handleBadges(row.status)}
+						/>
 						<CenteredCell key={rowIndex}>
 							<CustomIconButton
 								icon={<Eye />}
