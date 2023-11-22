@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { CloseSquare } from "iconsax-react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
 
@@ -15,7 +15,7 @@ export function EditDataCustomizationModal({ isOpen, onClose, setIsEditData, que
         console.log(data);
         onClose();
     };
-    
+
     const closeForm = () => {
         setIsEditData(false);
         setEditedQuestion(question);
@@ -34,12 +34,12 @@ export function EditDataCustomizationModal({ isOpen, onClose, setIsEditData, que
                     <ModalBody>
                     <form onSubmit={onSubmit}>
                         <div className="w-72 border rounded-xl p-3 mb-6 relative" style={{ borderColor: "rgba(130, 130, 130, 1)"}}>
-                            <select 
-                                name="topik" 
-                                id="topik" 
-                                className="w-64 outline-none text-sm border-none bg-transparent" 
-                                style={{ color: "rgba(79, 79, 79, 1)" }} 
-                                value={editedTopic} 
+                            <select
+                                name="topik"
+                                id="topik"
+                                className="w-64 outline-none text-sm border-none bg-transparent"
+                                style={{ color: "rgba(79, 79, 79, 1)" }}
+                                value={editedTopic}
                                 onChange={(e) => setEditedTopic(e.target.value)}
                             >
                                 <option value="Sampah Anorganik">Sampah Anorganik</option>
