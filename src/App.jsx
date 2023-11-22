@@ -11,6 +11,7 @@ import ErrorNotFound from "./pages/ErrorNotFound";
 import DaftarTransaksi from "./pages/TransactionList";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
+import ManageAdmin from "./pages/ManageAdmin";
 import Badge from "./pages/Badge";
 import MissionApproval from "./pages/MissionApproval";
 import RubbishCategory from "./pages/RubbishCategory";
@@ -40,7 +41,7 @@ function App() {
 				/>
 				<Route
 					path="admin-list"
-					element={<></>}
+					element={<ManageAdmin />}
 				/>
 				<Route
 					path="badge"
