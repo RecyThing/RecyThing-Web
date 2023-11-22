@@ -7,11 +7,13 @@ import ManageWasteExchange from "./pages/ManageWasteExchange";
 import UserDetail from "./pages/UserDetail";
 import VoucherList from "./pages/VoucherList";
 import Download from "./pages/Download";
-import ErrorNotFound from "./pages/ErrorNotFound";
+import ErrorNotFound from "./error/ErrorNotFound";
+import DaftarTransaksi from "./pages/TransactionList";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
 import Badge from "./pages/Badge";
 import MissionApproval from "./pages/MissionApproval";
+import RubbishCategory from "./pages/RubbishCategory";
 
 function App() {
 	return (
@@ -54,7 +56,7 @@ function App() {
 				/>
 				<Route
 					path="rubbish-category"
-					element={<></>}
+					element={<RubbishCategory/>}
 				/>
 				<Route
 					path="data-drop-point"

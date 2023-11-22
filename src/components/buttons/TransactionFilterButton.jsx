@@ -1,7 +1,7 @@
 import { Button, Text } from "@chakra-ui/react";
 import { Box } from "iconsax-react";
 
-export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
+export function FilteredButton({ onSelected, name, onClicked,dataLength }) {
   {
     switch (name) {
       case "Semua": {
@@ -15,7 +15,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 width={"132px"}
                 height={"56px"}
                 _hover={{ bg: '#35CC33' }}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "white" }}
@@ -35,7 +35,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 backgroundColor={"transparent"}
                 width={"132px"}
                 height={"56px"}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "black" }}
@@ -60,7 +60,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 width={"192px"}
                 height={"56px"}
                 _hover={{ bg: '#35CC33' }}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "white" }}
@@ -73,7 +73,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "#35CC33", backgroundColor: "white", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );
@@ -86,7 +86,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 backgroundColor={"transparent"}
                 width={"192px"}
                 height={"56px"}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "black" }}
@@ -99,7 +99,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "white", backgroundColor: "#828282", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );
@@ -117,7 +117,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 width={"200px"}
                 height={"56px"}
                 _hover={{ bg: '#35CC33' }}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "white" }}
@@ -130,7 +130,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "#35CC33", backgroundColor: "white", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );
@@ -143,7 +143,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 backgroundColor={"transparent"}
                 width={"200px"}
                 height={"56px"}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "black" }}
@@ -156,7 +156,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "white", backgroundColor: "#828282", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );
@@ -174,7 +174,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 width={"187px"}
                 height={"56px"}
                 _hover={{ bg: '#35CC33' }}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "white" }}
@@ -187,7 +187,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "#35CC33", backgroundColor: "white", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );
@@ -200,7 +200,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                 backgroundColor={"transparent"}
                 width={"187px"}
                 height={"56px"}
-                onClick={diClick}
+                onClick={onClicked}
               >
                 <Text
                   style={{ color: "black" }}
@@ -213,7 +213,7 @@ export function DaftarTransaksiButton({ onSelected, name, diClick,dLength }) {
                   className="rounded ms-1 px-2 flex items-center justify-center"
                   style={{ color: "white", backgroundColor: "#828282", width:"43px", height:"28px", borderRadius:"2000px" }}
                 >
-                  <p>{dLength}</p>
+                  <p>{dataLength}</p>
                 </div>
               </Button>
             );

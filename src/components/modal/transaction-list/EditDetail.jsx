@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import {
-  Avatar,
   Box,
   Button,
   Flex,
@@ -20,13 +19,8 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  Center,
 } from "@chakra-ui/react";
-import { ArrowDown, ArrowDown2 } from "iconsax-react";
+import { ArrowDown2 } from "iconsax-react";
 
 import { useState } from "react";
 import {
@@ -34,7 +28,6 @@ import {
   CloseSquare,
   Document,
   Location,
-  Message,
   TicketStar,
   TickSquare,
   User,
@@ -49,7 +42,7 @@ const labels = {
   status: { title: "Status", icon: <Location /> },
 };
 
-export function EdDetailDFTModal({ isOpen, onClose, target, onUpdate }) {
+export function EditDetailModal({ isOpen, onClose, target, onUpdate }) {
   const handleUpdate = () => {
     onUpdate(target);
     onClose();

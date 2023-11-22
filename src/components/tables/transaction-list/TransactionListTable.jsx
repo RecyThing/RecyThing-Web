@@ -1,18 +1,17 @@
 /* eslint-disable react/prop-types */
-import { BaseTable } from "../../tables/base-table/BaseTable";
-import { CenteredCell, TextCell, BadgeCell } from "../../tables/base-table/TableCells";
-import { TableBodyRow } from "../../tables/base-table/TableRows";
+import { BaseTable } from "../base-table/BaseTable";
+import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
+import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-import { DeleteModal, UserDetailModal } from "@/components/modal";
 import { Edit2, Eye } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { DetailDaftarTransaksiModal } from "../modal/DetailDaftarTransaksi";
-import { EdDetailDFTModal } from "../modal/EdDetailDaftarTransaksi";
+import { DetailModal } from "../../modal/transaction-list/Detail";
+import { EditDetailModal } from "../../modal/transaction-list/EditDetail";
 
 const TableHead = ["No", "Nama Pengguna", "Nama Reward" , "Tujuan Pengiriman", "Tanggal", "Status", "Aksi"];
 
-export function DaftarTransaksiTable({ data, currentPage, itemsPerPage }) {
+export function TransactionListTable({ data, currentPage, itemsPerPage }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -42,13 +41,13 @@ export function DaftarTransaksiTable({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<DetailDaftarTransaksiModal
+			<DetailModal
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				data={selectedRow}
 			/>
 			
-			<EdDetailDFTModal
+			<EditDetailModal
 				isOpen={isOpenUpdate}
 				onClose={onCloseUpdate}
 				target={selectedRow}
