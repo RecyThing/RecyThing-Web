@@ -6,32 +6,36 @@ import { Show, Hide } from "react-iconly";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [passwordType, setPasswordType] = useState("password");
+  const [valid, setValid] = useState({});
+
   const navigate = useNavigate();
   const handleLogin = (event) => {
     event.preventDefault();
+    let error = {};
+    let loginValid = true;
+    const dummyUser = { email: "admin@gmail.com", password: "123" };
 
-    const dummyUser = { email: "admin", password: "123" };
-    // const user = JSON.parse(localStorage.getItem("user"));
-
-    if (email === email && password === password) {
-      localStorage.setItem("isLoggedIn", true);
-      navigate("/");
-      window.location.reload();
-    } else if (email === dummyUser.email && password === dummyUser.password) {
+    if (email === dummyUser.email && password === dummyUser.password) {
       localStorage.setItem("user", JSON.stringify(dummyUser));
       localStorage.setItem("isLoggedIn", true);
+      error.email = "";
+      error.password = "";
+      loginValid = false;
+      navigate("/dashboard");
       window.location.reload();
     } else {
-      setErrorMessage("Invalid username or password");
+      error.email = "Invalid username or password";
+      error.password = "Invalid username or password";
+      loginValid = true;
     }
+    setValid(error);
+    return loginValid;
   };
 
   const handleShowPassword = (e) => {
     // Mencegah pengiriman formulir default
     e.preventDefault();
-
     // Toggle tampilan password
     if (passwordType === "password") {
       setPasswordType("text");
@@ -75,7 +79,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 id="input-group-1"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
+                className="bg-gray-50 border border-gray-300  focus:ring-blue-500 focus:border-blue-500  text-gray-900 text-sm rounded-lg w-full pl-10 p-3.5 "
                 placeholder="Masukan Email"
               />
             </div>
@@ -106,24 +110,24 @@ const Login = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
                 placeholder="Masukan Kata Sandi"
               />
-<button
-  className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
-  onClick={handleShowPassword}
->
-  {passwordType === "password" ? <Show /> : <Hide />}
-</button>
+              <button
+                className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
+                onClick={handleShowPassword}
+              >
+                {passwordType === "password" ? <Show /> : <Hide />}
+              </button>
             </div>
           </div>
           <div>
             {" "}
-            {errorMessage?.email && (
+            {valid?.email && valid?.password &&(
               <p className="error py-2" style={{ color: "red" }}>
-                {errorMessage?.email}
+                {valid?.email && valid?.password}
               </p>
             )}
-            {errorMessage?.password && (
+            {valid?.password && (
               <p className="error py-2" style={{ color: "red" }}>
-                {errorMessage?.password}
+                {valid?.password}
               </p>
             )}
           </div>
