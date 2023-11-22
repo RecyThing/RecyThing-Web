@@ -1,16 +1,13 @@
-/* eslint-disable react/prop-types */
 import { Th, Tr } from "@chakra-ui/react";
 
-export function TableHeadRow({ heads }) {
+export function TableHeadRow({ heads, textAligns }) {
 	return (
 		<Tr>
 			{heads.map((head, index) => (
 				<Th
 					key={head}
 					color={"#7F7F7F"}
-					textAlign={
-						index === 0 || index === heads.length - 1 ? "center" : "left"
-					}
+					textAlign={textAligns[index]}
 					textTransform={"capitalize"}
 					fontSize={"md"}
 					{...(index === 0 && { width: "5%" })}

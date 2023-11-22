@@ -1,17 +1,15 @@
-/* eslint-disable react/prop-types */
 import { Badge, Td, Text } from "@chakra-ui/react";
 
 export function TextCell({ content }) {
-  return (
-    <Td
-      color={"#383838"}
-      maxW={"12.5rem"}
-      overflowWrap={"break-word"}
-      whiteSpace={"normal"}
-    >
-      {content}
-    </Td>
-  );
+	return (
+		<Td
+			color={"#383838"}
+			maxW={"12.5rem"}
+			isTruncated
+		>
+			{content}
+		</Td>
+	);
 }
 
 export function BadgeCell({ colorScheme, content }) {

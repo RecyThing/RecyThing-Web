@@ -8,9 +8,12 @@ import UserDetail from "./pages/UserDetail";
 import VoucherList from "./pages/VoucherList";
 import Download from "./pages/Download";
 import ErrorNotFound from "./error/ErrorNotFound";
+import DaftarTransaksi from "./pages/TransactionList";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
 import ManageAdmin from "./pages/ManageAdmin";
+import MissionApproval from "./pages/MissionApproval";
+import RubbishCategory from "./pages/RubbishCategory";
 
 function App() {
 	return (
@@ -53,7 +56,7 @@ function App() {
 				/>
 				<Route
 					path="rubbish-category"
-					element={<></>}
+					element={<RubbishCategory/>}
 				/>
 				<Route
 					path="data-drop-point"
@@ -65,7 +68,7 @@ function App() {
 				/>
 				<Route
 					path="mission-approval"
-					element={<></>}
+					element={<MissionApproval />}
 				/>
 				<Route
 					path="voucher-list"
@@ -73,7 +76,7 @@ function App() {
 				/>
 				<Route
 					path="transaction-list"
-					element={<></>}
+					element={<DaftarTransaksi/>}
 				/>
 				<Route
 					path="drop-point-transaction"
