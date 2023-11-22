@@ -85,7 +85,7 @@ export function WasteExchangeTable({ data, currentPage, itemsPerPage }) {
 							<CustomIconButton
 								icon={<Trash />}
 								color={"#E53535"}
-								hoverColor={"#B22222"}
+								 hoverColor={"#B22222"}
 								onClick={() => handleDeleteModal(row)}
 							/>
 						</CenteredCell>

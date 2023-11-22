@@ -1,4 +1,5 @@
 import ImgNotFound from "@/assets/LandingPage/not-found.png";
+import { Link } from "react-router-dom";
 const NotFound = () => {
   return (
     <>
@@ -11,9 +12,9 @@ const NotFound = () => {
           Jangan Khawatir, kamu dapat kembali mengakses halaman lainnya melalui
           halaman beranda
         </p>
-        <button className="p-5 bg-green-500 text-sm mt-4 text-white mx-auto rounded-lg ">
+        <Link to="/dashboard" className="p-5 bg-green-500 text-sm mt-4 text-white mx-auto rounded-lg ">
           Kembali Ke Beranda Admin
-        </button>
+        </Link>
       </div>
     </>
   );

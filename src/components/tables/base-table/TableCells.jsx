@@ -1,17 +1,15 @@
-/* eslint-disable react/prop-types */
 import { Badge, Td, Text } from "@chakra-ui/react";
 
 export function TextCell({ content }) {
-  return (
-    <Td
-      color={"#383838"}
-      maxW={"12.5rem"}
-      overflowWrap={"break-word"}
-      whiteSpace={"normal"}
-    >
-      {content}
-    </Td>
-  );
+	return (
+		<Td
+			color={"#383838"}
+			maxW={"12.5rem"}
+			isTruncated
+		>
+			{content}
+		</Td>
+	);
 }
 
 export function BadgeCell({ colorScheme, content }) {
@@ -62,7 +60,6 @@ export function BadgeCell({ colorScheme, content }) {
             </Badge>
           </Td>
         );
-
       case "blue":
         return (
           <Td>
@@ -78,23 +75,87 @@ export function BadgeCell({ colorScheme, content }) {
             </Badge>
           </Td>
         );
-      default:
-        return (
-          <Td>
-            <Badge
-              px={"8px"}
-              py={"4px"}
-              fontSize={"xs"}
-              fontWeight={"medium"}
-              color={"#828282"}
-              bg={"#E0E0E0"}
-            >
-              {content}
-            </Badge>
-          </Td>
-        );
-    }
-  }
+				case "azure":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#5BD4EF"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "gold":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#D4AF35"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "silver":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#BBBBBB"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+				case "bronze":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#C97513"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+			default:
+				return (
+					<Td>
+						<Badge
+							px={"8px"}
+							py={"4px"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#828282"}
+							bg={"#E0E0E0"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+		}
+	}
 }
 
 export function CenteredCell({ children }) {
