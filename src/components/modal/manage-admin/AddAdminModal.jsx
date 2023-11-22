@@ -1,8 +1,7 @@
-// import { InputWithLogo } from "@/components/inputs";
+import { InputWithLogo } from "@/components/inputs";
 import {
   Button,
   FormControl,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,9 +9,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
 } from "@chakra-ui/react";
+import { User, Message, Lock, Camera } from "react-iconly";
 import { useRef } from "react";
+import AdminImage from "@/assets/AdminImage.svg";
 
 export function AddAdminModal({ isOpen, onClose, onSubmit }) {
   const initialRef = useRef(null);
@@ -31,31 +31,68 @@ export function AddAdminModal({ isOpen, onClose, onSubmit }) {
         isCentered
       >
         <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
-        <ModalContent width={"80"}>
+        <ModalContent padding={"24px"} borderRadius={"20px"}>
           <ModalHeader>Tambah Data Admin</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={4}>
-            <FormControl>
-              <Input placeholder="Nama Lengkap" />
-            </FormControl>
+          <ModalBody pb={8}>
+            <div className="wrapper relative w-2/3 mx-auto">
+              <img
+                src={AdminImage}
+                className="relative mx-auto rounded-full"
+                width={150}
+                height={150}
+                alt=""
+              />
+              <button
+                className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
+                type="button"
+              >
+                <Camera />
+              </button>
+            </div>
+            <InputWithLogo
+              label={"Nama Lengkap"}
+              Logo={User}
+              className={"mt-10"}
+            />
+            <InputWithLogo
+              label={"Tambahkan Email"}
+              Logo={Message}
+              className={"mt-4"}
+            />
+            <InputWithLogo
+              label={"Masukkan Kata Sandi"}
+              Logo={Lock}
+              className={"mt-4"}
+            />
+            <InputWithLogo
+              label={"Konfirmasi Kata Sandi"}
+              Logo={Lock}
+              className={"mt-4"}
+            />
 
             <FormControl mt={4}>
-              <Input placeholder="Tambahkan Email" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <Input placeholder="Masukkan Kata Sandi" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <Input placeholder="Konfirmasi Kata Sandi" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <Select placeholder="Status">
-                <option>Aktif</option>
-                <option>Tidak Aktif</option>
-              </Select>
+              <div
+                className="w-90 border rounded-xl p-3 mt-4 relative"
+                style={{ borderColor: "rgba(130, 130, 130, 1)" }}
+              >
+                <select
+                  className="w-80 h-8 outline-none text-sm border-none bg-transparent"
+                  style={{ color: "rgba(79, 79, 79, 1)" }}
+                >
+                  <option value="Aktif" selected>
+                    Aktif
+                  </option>
+                  <option value="Tidak Aktif">Tidak Aktif</option>
+                </select>
+                <label
+                  htmlFor=""
+                  className="text-xs absolute -top-2 left-3 bg-white px-1"
+                  style={{ color: "rgba(130, 130, 130, 1)" }}
+                >
+                  Status
+                </label>
+              </div>
             </FormControl>
           </ModalBody>
 
@@ -69,9 +106,10 @@ export function AddAdminModal({ isOpen, onClose, onSubmit }) {
               py={"1.75rem"}
               _hover={{ bg: "#333333" }}
             >
-              Cancel
+              Batal
             </Button>
             <Button
+              onClick={handleSubmitData}
               color={"white"}
               bg={"#35CC33"}
               borderRadius={"lg"}
@@ -80,7 +118,7 @@ export function AddAdminModal({ isOpen, onClose, onSubmit }) {
               _hover={{ bg: "#2DA22D" }}
               type="submit"
             >
-              Save
+              Tambah
             </Button>
           </ModalFooter>
         </ModalContent>

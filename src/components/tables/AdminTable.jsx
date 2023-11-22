@@ -7,38 +7,35 @@ import { TableBodyRow } from "./base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 // import { AdminFormModal } from "@/components/modal";
 import { Edit2, Trash } from "iconsax-react";
-// import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
+import { DeleteModal, EditAdminModal } from "../modal";
+import { useDisclosure } from "@chakra-ui/react";
 
 const TableHead = ["No", "Nama Lengkap", "Email", "Status", "Aksi"];
 
-export function AdminTable({ data, currentPage, itemsPerPage, OnOpen }) {
-  // const {
-  //   isOpen: isOpenView,
-  //   onOpen: onOpenView,
-  //   onClose: onCloseView,
-  // } = useDisclosure();
-  // const {
-  //   isOpen: isOpenDelete,
-  //   onOpen: onOpenDelete,
-  //   onClose: onCloseDelete,
-  // } = useDisclosure();
-  // const [selectedRow, setSelectedRow] = useState(null);
+export function AdminTable({ data, currentPage, itemsPerPage }) {
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+  } = useDisclosure();
+  const [editForm, setEditForm] = useState(null);
 
-  // const handleViewModal = (row) => {
-  //   setSelectedRow(row);
-  //   onOpenView();
-  // };
 
-  // const handleDeleteModal = (row) => {
-  //   setSelectedRow(row);
-  //   onOpenDelete();
-  // };
+  const handleDeleteModal = (row) => {
+    setEditForm(row);
+    onOpenDelete();
+  };
 
-  // const handleDelete = (row) => {
-  //   console.log("deleted!", row);
-  //   onCloseDelete();
-  // };
+  const handleDelete = (row) => {
+    console.log("deleted!", row);
+    onCloseDelete();
+  };
 
   const handleBadgeColor = (status) => {
     switch (status) {
@@ -51,23 +48,24 @@ export function AdminTable({ data, currentPage, itemsPerPage, OnOpen }) {
     }
   };
 
-  // const handleEditModal = () => {
-  //   OnOpen();
-  // }
+  const handleEditModal = (target) => {
+    setEditForm(target);
+    onOpenEdit();
+  };
+
+  const submitDataEdit = (data, target) => {
+    console.log(data, target);
+  };
 
   return (
     <>
-      {/* <UserDetailModal
-        isOpen={isOpenView}
-        onClose={onCloseView}
-        data={selectedRow}
-      />
       <DeleteModal
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
-        target={selectedRow}
+        target={editForm}
         onDelete={handleDelete}
-      /> */}
+      />
+      <EditAdminModal isOpen={isOpenEdit} onClose={onCloseEdit} onSubmit={submitDataEdit} target={editForm} />
       <BaseTable data={data} heads={TableHead}>
         {console.log(data)}
         {data.map((row, rowIndex) => (
@@ -87,7 +85,7 @@ export function AdminTable({ data, currentPage, itemsPerPage, OnOpen }) {
                 icon={<Edit2 />}
                 color={"#201A18"}
                 hoverColor={"#333333"}
-                onClick={(onOpen) => handleViewModal(row)}
+                onClick={() => handleEditModal(row)}
               />
               <CustomIconButton
                 icon={<Trash />}
