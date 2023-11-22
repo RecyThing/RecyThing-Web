@@ -7,7 +7,7 @@ import ManageWasteExchange from "./pages/ManageWasteExchange";
 import UserDetail from "./pages/UserDetail";
 import VoucherList from "./pages/VoucherList";
 import Download from "./pages/Download";
-import ErrorNotFound from "./error/ErrorNotFound";
+import ErrorNotFound from "./pages/ErrorNotFound";
 import DaftarTransaksi from "./pages/TransactionList";
 import DataDropPoint from "./pages/DataDropPoint";
 import DataCustomization from "./pages/DataCustomization";
