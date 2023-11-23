@@ -10,7 +10,7 @@ function AdminRoot() {
       <SideBar collapse={collapse} setCollapse={setCollapse} />
       <div className={`w-full ${collapse ? "ml-[96px]" : "ml-[312px]"}`}>
         <TopBar collapse={collapse} setCollapse={setCollapse} />
-        <div className="mt-12 border">
+        <div className="pt-12 border">
           <Outlet />
         </div>
       </div>

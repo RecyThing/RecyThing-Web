@@ -9,6 +9,7 @@ export { EditVoucherModal } from "./voucher-list/EditVoucherModal";
 export { ViewMissionApprovalModal } from "./mission-approval/ViewMissionApprovalModal";
 export { AddDataCustomizationModal } from "./data-customization/AddDataCustomizationModal";
 export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";
+export { ArticleDetail } from "./content-article/ArticleDetail";
 
 export { ApproveModal } from "./action-feedback/ApproveModal";
 export { RejectModal } from "./action-feedback/RejectModal";
