@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Add } from "iconsax-react";
 import { AddDataCustomizationModal } from "@/components/modal/data-customization/AddDataCustomizationModal";
 import { DataCustomizationTable } from "@/components/tables";
-import { Flex, Heading } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { SearchBar } from "@/components/navigation";
+import { FilterButton } from "@/components/buttons";
 
 function DataCustomization() {
     const [isAddData, setIsAddData] = useState(false);
@@ -20,36 +21,35 @@ function DataCustomization() {
     };
     
     const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearch = (term) => {
-		setSearchTerm(term);
-		setCurrentPage(1);
-	};
-
     const [activeFilter, setActiveFilter] = useState("Semua");
 
-    const tableData = () => {
+    const buttonLabels = ["Semua", "Sampah Anorganik", "Sampah Organik"];
+
+    const filteredData = () => {
         return DummyData.filter(([topics, username]) =>
           (activeFilter === "Semua" || topics === activeFilter) &&
           username.toLowerCase().includes(searchTerm.toLowerCase())
         );
     };
 
-    const filteredData = tableData();
-
-    const handleFilterClick = (filter) => {
-        setActiveFilter(filter);
-        setCurrentPage(1);
-    };
-
-    const filteredDataCount = (filter) => {
+	const filteredDataCount = (filter) => {
         return DummyData.filter(([topics]) => (filter === "Semua" ? true : topics === filter)).length;
     };
 
-    const paginatedData = filteredData.slice(
+    const paginatedData = filteredData().slice(
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage
 	);
+
+	const handleSearch = (term) => {
+		setSearchTerm(term);
+		setCurrentPage(1);
+	};
+
+	const handleFilterClick = (filter) => {
+		setActiveFilter(filter);
+		setCurrentPage(1);
+	};
 
     return (
         <div className="p-6 w-full" style={{background: "#EBEBF0"}}>
@@ -60,53 +60,36 @@ function DataCustomization() {
                 <Heading as="h1" color={"#201A18"} fontSize={"2xl"} fontWeight="bold" mt={"10px"}>
                     Manage Data For Open AI
                 </Heading>
-                <div className="text-white font-inter font-medium text-base flex items-center gap-2 mr-2 p-3 h-10 rounded-lg cursor-pointer" style={{ backgroundColor: "rgba(53, 204, 51, 1)" }} onClick={openForm}>
-                    <Add size="24" color="rgba(255, 255, 255, 1)" />
-                    <p>Tambah Data</p>
-                </div>
+                <Button
+                    leftIcon={<Add />}
+                    _hover={{ bg: "#2DA22D" }}
+                    bg={"#35CC33"}
+                    borderRadius={"lg"}
+                    color={"white"}
+                    fontWeight={"normal"}
+                    lineHeight={"1.5rem"}
+                    px={"1.5rem"}
+                    py={"1.5rem"}
+                    onClick={openForm}
+                >
+                    Tambah Data
+                </Button>
             </div>
             <div className="bg-white rounded-lg shadow-md mt-4 p-4 h-90% w-full">
-                <div className="flex justify-between items-center mb-4 ml-2 w-full">
-                    <div className="flex items-center">
-                    {["Semua", "Sampah Anorganik", "Sampah Organik"].map((filter) => (
-                        <div key={filter}
-                            className="font-inter font-normal text-base flex items-center gap-2 py-7 px-5 h-10 rounded-xl cursor-pointer"
-                            style={
-                            activeFilter === filter
-                                ? {
-                                    backgroundColor: "rgba(53, 204, 51, 1)",
-                                    color: "rgba(255, 255, 255, 1)",
-                                }
-                                : {
-                                    backgroundColor: "rgba(246, 246, 246, 1)",
-                                    color: "rgba(32, 26, 24, 1)",
-                                }
-                            }
-                            onClick={() => handleFilterClick(filter)}
-                        >
-                            <p>{filter}</p>
-                            <p className="px-3 py-1 rounded-full text-sm font-semibold"
-                                style={
-                                    activeFilter === filter
-                                    ? {
-                                        backgroundColor: "rgba(255, 255, 255, 1)",
-                                        color: "rgba(53, 204, 51, 1)",
-                                        }
-                                    : {
-                                        backgroundColor: "rgba(130, 130, 130, 1)",
-                                        color: "rgba(255, 255, 255, 1)",
-                                        }
-                                }
-                            >
-                                {filteredDataCount(filter)}
-                            </p>
-                        </div>
+                <Flex gap={"1.5rem"} p={"0.5rem"}>
+                    <ButtonGroup spacing={0}>
+                        {buttonLabels.map((label) => (
+                            <FilterButton
+                                key={label}
+                                label={label}
+                                activeFilter={activeFilter}
+                                handleFilterClick={handleFilterClick}
+                                filteredDataCount={filteredDataCount}
+                            />
                         ))}
-                    </div>
-                    <div style={{width: "35%"}}>
-                        <SearchBar onSearch={handleSearch}/>
-                    </div>
-                </div>      
+                    </ButtonGroup>
+                    <SearchBar onSearch={handleSearch} />
+                </Flex>      
                 <Flex
                     direction={"column"}
                     gap={"1.5rem"}
