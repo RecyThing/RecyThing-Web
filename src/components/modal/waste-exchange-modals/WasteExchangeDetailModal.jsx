@@ -104,9 +104,9 @@ export function WasteExchangeDetailModal({ isOpen, onClose }) {
     const totalPoint = data.reduce((acc, curr) => acc + curr.point, 0);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay className={`fixed top-0 left-0 w-full h-full bg-opacity-5 backdrop-blur flex justify-center items-center z-10 ${isOpen ? 'block' : 'hidden'}`} style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}/>
-            <ModalContent maxW="560px" className="bg-white rounded-lg max-h-[80vh] overflow-y-auto">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
+            <ModalContent maxW="560px" borderRadius="12px" className="max-h-[80vh] overflow-y-auto">
                 <ModalHeader>
                     <div className="flex justify-between font-medium">
                         <h5 className="text-xl" style={{color:"#828282"}}>{dataTitle.exchangeId} : 

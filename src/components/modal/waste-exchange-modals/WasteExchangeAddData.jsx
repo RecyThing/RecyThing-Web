@@ -1,60 +1,84 @@
 import React from "react";
-import { Profile, Sms, Location, AddSquare, ArrowDown2, CloseSquare } from "iconsax-react";
+import * as Fields from "./WasteExchangeFormFields";
+import { Trash } from "iconsax-react";
+import { AddSquare, ArrowDown2, CloseSquare } from "iconsax-react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Box, Flex, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
 
-    const { control, handleSubmit, register, watch } = useForm({
+    const { control, handleSubmit, register, watch, formState: { errors }, reset } = useForm({
         defaultValues: {
             data: [
-                { wasteType: "logam"},
+                { wasteType: "Elektronik", unit: 0 },
             ],
         },
-    });
+    });    
 
-    const { fields, append } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: "data",
     });
 
     const handleAddData = () => {
-        append({ wasteType: "logam"});
+        append({ wasteType: "Elektronik", unit: 0});
     };
 
     const calculatePoints = (wasteType, unit) => {
         let pointPerUnit = 0;
     
         switch (wasteType) {
-            case 'logam':
-                pointPerUnit = 500;
+            case 'Elektronik':
+                pointPerUnit = 1000;
                 break;
-            case 'plastik':
-                pointPerUnit = 400;
+            case 'Kaca':
+                pointPerUnit = 2500;
                 break;
-            case 'kaca':
-                pointPerUnit = 500;
+            case 'Kaleng':
+                pointPerUnit = 7500;
                 break;
-            case 'kertas':
-                pointPerUnit = 300;
+            case 'Baterai':
+                pointPerUnit = 5000;
+                break;
+            case 'Kertas':
+                pointPerUnit = 9000;
+                break;
+            case 'Logam':
+                pointPerUnit = 1000;
+                break;
+            case 'Minyak':
+                pointPerUnit = 8000;
+                break;
+            case 'Organik':
+                pointPerUnit = 4500;
+                break;
+            case 'Pakaian':
+                pointPerUnit = 10000;
+                break;
+            case 'Plastik':
+                pointPerUnit = 9000;
+                break;
+            case 'Tekstil':
+                pointPerUnit = 900;
                 break;
             default:
                 pointPerUnit = 0;
         }
-    
         return pointPerUnit * unit;
     };
 
     const calculateTotalPoints = () => {
         let totalPoints = 0;
         fields.forEach((field, index) => {
-            totalPoints += calculatePoints(watch(`wasteType${index}`), parseInt(watch(`unit${index}`) || 0));
+            totalPoints += calculatePoints(watch(`data[${index}].wasteType`), parseInt(watch(`data[${index}].unit`) || 0));
         });
         return totalPoints;
     };
 
-    const onSubmit = (data) => {
+    const handleOnSubmit = (data) => {
         console.log(data);
+        onSubmit(data);
+        reset();
         onClose();
     };
     
@@ -62,40 +86,8 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
         setIsAddData(false);
     };
 
-    const inputWrapperStyles = {
-        display: "flex", 
-        position: "relative", 
-        marginBottom: "24px", 
-        borderWidth: "1px", 
-        borderRadius: "12px", 
-        padding: "16px", 
-        width: "328px", 
-        borderColor: "rgba(130, 130, 130, 1)"
-    };
-
-    const inputIconStyles = {
-        color: "rgba(148, 148, 148, 1)", 
-        width: "24px", 
-        height: "auto", 
-        marginRight: "8px"
-    };
-
-    const inputStyles = {
-        width: "100%", 
-        outline: "none", 
-        fontSize: "14px", 
-        position: "relative"
-    };
-
-    const inputLabelStyles = {
-        color: "rgba(130, 130, 130, 1)", 
-        fontSize: "12px",
-        position: "absolute", 
-        top: "-8px", 
-        left: "12px", 
-        backgroundColor: "white", 
-        paddingLeft: "4px", 
-        paddingRight: "4px"
+    const handleRemoveData = (index) => {
+        remove(index);
     };
 
     const tableInputStyles = {
@@ -122,80 +114,106 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
     };
 
     return(
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay className="fixed top-0 left-0 w-full h-full bg-opacity-5 backdrop-blur flex justify-center items-center z-10" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)"}}/>
-            <ModalContent maxW="690px" className="bg-white rounded-lg max-h-[80vh] overflow-y-auto">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
+            <ModalContent maxW="690px" borderRadius="12px" className="max-h-[80vh] overflow-y-auto">
                 <ModalHeader className="flex justify-between">
                     <h4 className="text-gray-800 text-2xl font-bold  mb-2">Tambah Data Penukaran Sampah</h4>
                     <CloseSquare size="32" color="rgba(130, 130, 130, 1)" className="cursor-pointer" onClick={closeForm}/>
                 </ModalHeader>
                 <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="flex gap-x-6">
-                            <div style={{ ...inputWrapperStyles }}>
-                                <Profile style={{ ...inputIconStyles }}/>
-                                <input type="text" name="nama" style={{ ...inputStyles }} placeholder="Masukkan nama pengguna"/>
-                                <label htmlFor="nama" style={{ ...inputLabelStyles }}>Nama Pengguna</label>
-                            </div>
-                            <div style={{ ...inputWrapperStyles }}>
-                                <Sms style={{ ...inputIconStyles }}/>
-                                <input type="email" name="email" style={{ ...inputStyles }} placeholder="Masukkan email pengguna"/>
-                                <label htmlFor="email" style={{ ...inputLabelStyles }}>Email Pengguna</label>
-                            </div>
+                    <form onSubmit={handleSubmit(handleOnSubmit)}>
+                        <div className="flex gap-x-5 mb-6">
+                            <Fields.Username
+                                control={control}
+                                error={errors.username}
+                            />
+                            <Fields.UserEmail
+                                control={control}
+                                error={errors.userEmail}
+                            />
                         </div>
-                        <div className="w-full flex items-center border rounded-xl p-4 mb-6 relative" style={{ borderColor: "rgba(130, 130, 130, 1)"}}>
-                            <Location style={{ ...inputIconStyles }}/>
-                            <input type="text" name="lokasi" style={{ ...inputStyles }} placeholder="Masukkan lokasi drop point"/>
-                            <label htmlFor="lokasi" style={{ ...inputLabelStyles }}>Lokasi Drop Point</label>
+                        <div className="mb-6">
+                            <Fields.DropPointLocation
+                                control={control}
+                                error={errors.dropPointLocation}
+                            />
                         </div>
                         <div className="w-full">
                             <table className="w-full">
                                 <thead>
                                     <tr className="text-sm text-left" style={{ background: "#F2F2F5"}}>
                                         <th className="font-medium p-2">Jenis Sampah</th>
-                                        <th className="font-medium w-52">Satuan</th>
+                                        <th className="font-medium w-44">Satuan</th>
                                         <th className="font-medium ">Poin</th>
+                                        <th className="font-medium pr-4">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {fields.map((field, index) => (
                                     <tr key={field.id}>
                                         <td>
-                                            <div className="relative mt-6">
+                                            <div className="relative mt-6 w-52">
                                                 <Controller
-                                                name={`wasteType${index}`} // Ubah nama ke wasteType
-                                                control={control}
-                                                defaultValue="logam"
-                                                render={({ field }) => (
-                                                    <select
-                                                        {...field}
-                                                        className="w-52"
-                                                        style={{ color: "rgba(79, 79, 79, 1)", borderColor: "rgba(79, 79, 79, 1)", ...tableInputStyles }}
-                                                        >
-                                                            <option value="logam">Logam</option>
-                                                            <option value="plastik">Plastik</option>
-                                                            <option value="kertas">Kertas</option>
-                                                            <option value="kaca">Kaca</option>
-                                                    </select>
-                                                )}
+                                                    name={`data[${index}].wasteType`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Menu>
+                                                            <MenuButton
+                                                                px={4}
+                                                                py={2}
+                                                                width={"220px"}
+                                                                height={"41px"}
+                                                                transition="all 0.2s"
+                                                                borderRadius="md"
+                                                                borderWidth="1px"
+                                                                _hover={{ bg: "#F2F2F5" }}
+                                                                _focus={{ boxShadow: "outline" }}
+                                                            >
+                                                                <Flex direction={"row"}>
+                                                                <Box className="ms-2" minWidth={"140px"} textAlign={"start"}>{field.value}</Box>
+                                                                <Box flex={"1"} marginStart={"20px"}>
+                                                                    <ArrowDown2 />
+                                                                </Box>
+                                                                </Flex>
+                                                            </MenuButton>
+                                                            <MenuList maxH="110px" style={{ overflowY: 'auto' }}>
+                                                                <MenuItem onClick={() => {field.onChange("Elektronik");}}>Elektronik</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Kaca");}}>Kaca</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Kaleng");}}>Kaleng</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Baterai");}}>Baterai</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Kertas");}}>Kertas</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Logam");}}>Logam</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Minyak");}}>Minyak</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Organik");}}>Organik</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Pakaian");}}>Pakaian</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Plastik");}}>Plastik</MenuItem>
+                                                                <MenuItem onClick={() => {field.onChange("Tekstil");}}>Tekstil</MenuItem>
+                                                            </MenuList>
+                                                        </Menu>
+                                                    )}
                                                 />
-                                                <ArrowDown2 size="24" color="rgba(148, 148, 148, 1)" className="absolute inset-y-0 right-24 mt-2 items-center pointer-events-none"/>
                                             </div>
                                         </td>
                                         <td>
                                             <input
-                                                {...register(`unit${index}`, { required: true, min: 0, pattern: /^[0-9]*$/ })}
+                                                {...register(`data[${index}].unit`, { required: true, min: 0, pattern: /^[0-9]*$/ })}
                                                 type="number"
-                                                className="w-32 mt-6"
+                                                className="w-28 mt-6"
                                                 style={{ color: "rgba(130, 130, 130, 1)", borderColor: "rgba(130, 130, 130, 1)", ...tableInputStyles }}
-                                                name={`unit${index}`}
+                                                name={`data[${index}].unit`}
                                                 min="0"
                                                 step="1"
                                             />
                                         </td>
                                         <td>
                                             <div className="mt-6 w-24" style={{ color: "rgba(255, 205, 41, 1)", ...poinStyles }}>
-                                                +{calculatePoints(watch(`wasteType${index}`), parseInt(watch(`unit${index}`) || 0))} Poin
+                                                {calculatePoints(watch(`data[${index}].wasteType`), parseInt(watch(`data[${index}].unit`) || 0))}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="mt-6 cursor-pointer" onClick={() => handleRemoveData(index)}>
+                                                <Trash size="24" color="rgba(229, 53, 53, 1)"/>
                                             </div>
                                         </td>
                                     </tr>
@@ -207,9 +225,9 @@ export function WasteExchangeAddData({ isOpen, onClose, setIsAddData  }){
                                     <AddSquare size="24" color="rgba(148, 148, 148, 1)" className="cursor-pointer"/>
                                     <button type="button" onClick={handleAddData}>Tambah Data</button>
                                 </div>
-                                <p className="text-right mr-1" style={{ ...poinStyles }}>Total Poin</p>
-                                <p style={{ color: "rgba(255, 205, 41, 1)", marginLeft: "36%", ...poinStyles}}>
-                                    +{calculateTotalPoints()} Poin
+                                <p className="text-center mr-1" style={{ ...poinStyles }}>Total Poin</p>
+                                <p className="text-left ml-6" style={{ color: "rgba(255, 205, 41, 1)", ...poinStyles, fontSize:"18px"}}>
+                                    +{calculateTotalPoints()}
                                 </p>
                             </div>
                         </div>

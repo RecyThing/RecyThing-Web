@@ -1,14 +1,13 @@
 import { Pagination } from "@/components/pagination/Pagination";
 import { Add } from "iconsax-react";
-import { Flex, Heading } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import { Flex, Heading, Button } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { SearchBar } from "@/components/navigation";
 import { WasteExchangeAddData } from "@/components/modal/waste-exchange-modals/WasteExchangeAddData";
 import { WasteExchangeTable } from "@/components/tables";
 
 function ManageWasteExchange() {
     const [isAddData, setIsAddData] = useState(false);
-    const [filterSearch, setFilterSearch] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
     const [isFocused, setIsFocused] = useState(false);
@@ -21,13 +20,15 @@ function ManageWasteExchange() {
         setIsAddData(false);
     };
 
+    const [searchTerm, setSearchTerm] = useState("");
+
     const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
 
     const filteredData = DummyData.filter(([username]) =>
-		username.toLowerCase().includes(filterSearch.toLowerCase())
+		username.toLowerCase().includes(searchTerm.toLowerCase())
 	);     
     
 	const paginatedData = filteredData.slice(
@@ -48,10 +49,21 @@ function ManageWasteExchange() {
                     <div style={{width: "35%"}}>
                         <SearchBar onSearch={handleSearch}/>
                     </div>
-                    <div className={`text-white font-inter font-medium text-lg flex items-center gap-2 mr-2 p-3 h-12 rounded-lg cursor-pointer ${isFocused ? 'ml-3' : ''}`} style={{ backgroundColor: "rgba(53, 204, 51, 1)" }} onClick={openForm}>
-                        <Add size="24" color="rgba(255, 255, 255, 1)" />
-                        <p>Tambah Data</p>
-                    </div>
+                    <Button
+                        leftIcon={<Add />}
+                        _hover={{ bg: "#2DA22D" }}
+                        bg={"#35CC33"}
+                        borderRadius={"lg"}
+                        color={"white"}
+                        fontWeight={"normal"}
+                        lineHeight={"1.5rem"}
+                        px={"1.5rem"}
+                        py={"1.75rem"}
+                        marginRight={"20px"}
+                        onClick={openForm}
+                    >
+                        Tambah Data
+                    </Button>
                 </div>      
                 <Flex
                     direction={"column"}
