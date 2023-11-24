@@ -1,17 +1,11 @@
 import { AddSquare } from "iconsax-react";
-import {
-	Box,
-	Button,
-	Container,
-	Flex,
-	Heading,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
-import { CommunityTable } from "@/components/tables";
 import { ModalAddCommunity } from "@/components/modal";
+import { TableCommunityList } from "@/components/tables";
+import { LayoutDashboardContent } from "@/layout";
 
 // dummy
 const DummyData = [];
@@ -77,12 +71,7 @@ function Community() {
 	};
 
 	return (
-		<Container
-			as={"section"}
-			maxW={"container.2xl"}
-			bg={"#EBEBF0"}
-			p={"1.5rem"}
-		>
+		<LayoutDashboardContent>
 			<Heading
 				as="h1"
 				color={"#201A18"}
@@ -125,7 +114,7 @@ function Community() {
 					</Button>
 				</Flex>
 
-				<CommunityTable
+				<TableCommunityList
 					data={paginatedData}
 					currentPage={currentPage}
 					itemsPerPage={itemsPerPage}
@@ -145,7 +134,7 @@ function Community() {
 				onClose={onClose}
 				onSubmit={handleSubmitAdded}
 			/>
-		</Container>
+		</LayoutDashboardContent>
 	);
 }
 
