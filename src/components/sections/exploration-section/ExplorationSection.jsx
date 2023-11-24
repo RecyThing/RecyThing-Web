@@ -65,6 +65,7 @@ export function ExplorationSection() {
 			</div>
 			{ExplorationData.map((data, id) => (
 				<div
+					id={id === 0 ? "frameDaurUlang" : ""}
 					className={`grid lg:grid-cols-2 md:grid-cols-2 sm:grid-row-1 justify-center items-center my-20 p-10 gap-20  ${
 						data.id % 2 === 0 ? "transparent " : "bg-green-50"
 					}`}
