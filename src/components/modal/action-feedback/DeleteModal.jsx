@@ -29,7 +29,7 @@ export function DeleteModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={"sm"}
+			size={"md"}
 			isCentered
 		>
 			<ModalOverlay
@@ -65,7 +65,7 @@ export function DeleteModal({
 						<Text
 							color={"#828282"}
 							fontWeight={"semibold"}
-							lineHeight={"0.4375rem"}
+							lineHeight={"1.5rem"}
 						>
 							{message || "Data yang dihapus tidak dapat dipulihkan"}
 						</Text>
@@ -74,7 +74,7 @@ export function DeleteModal({
 				<ModalFooter
 					pt={0}
 					display={"flex"}
-					justifyContent={"space-between"}
+					justifyContent={"space-around"}
 				>
 					<Button
 						color={"white"}

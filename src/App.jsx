@@ -15,6 +15,7 @@ import ManageAdmin from "./pages/ManageAdmin";
 import Badge from "./pages/Badge";
 import MissionApproval from "./pages/MissionApproval";
 import RubbishCategory from "./pages/RubbishCategory";
+import Community from "./pages/Community";
 
 function App() {
 	return (
@@ -57,7 +58,7 @@ function App() {
 				/>
 				<Route
 					path="rubbish-category"
-					element={<RubbishCategory/>}
+					element={<RubbishCategory />}
 				/>
 				<Route
 					path="data-drop-point"
@@ -77,7 +78,7 @@ function App() {
 				/>
 				<Route
 					path="transaction-list"
-					element={<DaftarTransaksi/>}
+					element={<DaftarTransaksi />}
 				/>
 				<Route
 					path="drop-point-transaction"
@@ -85,8 +86,11 @@ function App() {
 				/>
 				<Route
 					path="community"
-					element={<></>}
+					element={<Community />}
 				/>
+				{/* tambah route buat nampilin event berdasarkan id community 
+						example: community/:id
+				*/}
 				<Route
 					path="customize-data"
 					element={<DataCustomization />}
