@@ -7,11 +7,14 @@ export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
 export { AddVoucherModal } from "./voucher-list/AddVoucherModal";
 export { EditVoucherModal } from "./voucher-list/EditVoucherModal";
 export { ViewMissionApprovalModal } from "./mission-approval/ViewMissionApprovalModal";
-export { ViewDetailCommunityModal } from "./community/ViewDetailCommunityModal";
+export { ModalViewCommunityModal } from "./community/ModalViewDetailCommunity";
+export { ModalAddCommunity } from "./community/ModalAddCommunity";
+export { ModalEditDetailCommunity } from "./community/ModalEditDetailCommunity";
 export { AddDataCustomizationModal } from "./data-customization/AddDataCustomizationModal";
 export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";
 export { AddAdminModal } from "./manage-admin/AddAdminModal";
 export { EditAdminModal } from "./manage-admin/EditAdminModal";
+
 export { ApproveModal } from "./action-feedback/ApproveModal";
 export { RejectModal } from "./action-feedback/RejectModal";
 export { DeleteModal } from "./action-feedback/DeleteModal";
