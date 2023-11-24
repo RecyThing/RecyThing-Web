@@ -2,22 +2,17 @@ import { useState } from "react";
 import {
 	Button,
 	ButtonGroup,
-	Menu,
-	MenuButton,
-	MenuItemOption,
-	MenuList,
-	MenuOptionGroup,
 	useDisclosure,
 } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "./base-table/TableCells";
 import { BaseTable } from "./base-table/BaseTable";
-import { ChevronDown } from "react-iconly";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye } from "iconsax-react";
 import { TableBodyRow } from "./base-table/TableRows";
 import {
 	ApproveModal,
 	RejectModal,
+  RejectionReasonModal,
 	ViewMissionApprovalModal,
 } from "@/components/modal";
 
@@ -25,7 +20,6 @@ const TableHead = [ "Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal",
 
 export function DataReportingTable({ data }) {
 	const [selectedRow, setSelectedRow] = useState(null);
-	const [rejectReason, setRejectReason] = useState(null);
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -43,6 +37,12 @@ export function DataReportingTable({ data }) {
 		onOpen: onOpenReject,
 		onClose: onCloseReject,
 	} = useDisclosure();
+
+  const {
+    isOpen: isOpenRejectionReason,
+    onOpen: onOpenRejectionReason,
+    onClose: onCloseRejectionReason,
+  } = useDisclosure();
 
 	const handleBadges = (status) => {
 		switch (status) {
@@ -67,14 +67,18 @@ export function DataReportingTable({ data }) {
 		onOpenApprove();
 	};
 
-	const handleApproveMission = () => {
+  const handleRejectModal = (row) => {
+		setSelectedRow(row);
+		onOpenReject();
+	};
+
+	const handleApproveReport = () => {
 		console.log("id: ", selectedRow.id);
 	};
 
-	const handleRejectMission = () => {
+	const handleRejectReport = () => {
 		console.log("id: ", selectedRow.id);
-		console.log("reason: ", rejectReason);
-		setRejectReason(null);
+    onOpenRejectionReason();
 	};
 
 	return (
@@ -88,19 +92,28 @@ export function DataReportingTable({ data }) {
 			<ApproveModal
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
-				onApprove={handleApproveMission}
+				onApprove={handleApproveReport}
 				target={selectedRow}
-				title={"Apakah anda yakin ingin Menerima Verifikasi Misi?"}
-				message={"Misi yang terverifikasi tidak dapat diubah kembali"}
+				title={"Apakah anda yakin ingin Menyetujui Laporan?"}
+				message={"Laporan tidak dapat dikembalikan"}
 			/>
 
 			<RejectModal
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
-				onReject={handleRejectMission}
+				onReject={handleRejectReport}
 				target={selectedRow}
-				title={"Apakah anda yakin ingin Menolak Verifikasi Misi?"}
-				message={"Misi yang ditolak tidak dapat diubah kembali"}
+				title={"Apakah anda yakin ingin Menolak Laporan?"}
+				message={"Laporan tidak dapat dikembalikan"}
+			/>
+
+			<RejectionReasonModal
+				isOpen={isOpenRejectionReason}
+				onClose={onCloseRejectionReason}
+				target={selectedRow}
+				onReject={handleRejectReport}
+				title={"Alasan Penolakan"}
+				message={"Masukkan alasan penolakan"}
 			/>
 
 			<BaseTable
@@ -122,8 +135,8 @@ export function DataReportingTable({ data }) {
 						<CenteredCell>{row.id}</CenteredCell>
 						<TextCell content={row.reportTypes} />
 						<TextCell content={row.username} />
-            <TextCell content={row.locations} />
-            <TextCell content={row.date} />
+						<TextCell content={row.locations} />
+						<TextCell content={row.date} />
 						<BadgeCell
 							content={row.status}
 							colorScheme={handleBadges(row.status)}
@@ -146,24 +159,13 @@ export function DataReportingTable({ data }) {
 									>
 										Setujui
 									</Button>
-									<Menu>
-										<MenuButton
-											as={Button}
-											colorScheme={"red"}
-										>
-											Tolak
-										</MenuButton>
-										<MenuList py={0}>
-											<MenuOptionGroup type={"radio"}>
-                        <MenuItemOption
-                          _hover={{ bg: "#EBEBF0" }}
-                          _checked={{ bg: "#EBEBF0" }}
-                          py={"0.5rem"}
-                        >
-                        </MenuItemOption>
-											</MenuOptionGroup>
-										</MenuList>
-									</Menu>
+                  					<Button
+										colorScheme={"red"}
+										_hover={{ bg: "#B22222" }}
+										onClick={() => handleRejectModal(row)}
+									>
+										Tolak
+									</Button>
 								</ButtonGroup>
 							) : (
 								"--"
