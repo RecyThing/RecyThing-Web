@@ -15,7 +15,11 @@ import { ChevronDown } from "react-iconly";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye } from "iconsax-react";
 import { TableBodyRow } from "../base-table/TableRows";
-import { ModalApprove, ModalViewMissionApproval } from "@/components/modal";
+import {
+	ModalApprove,
+	ModalReject,
+	ModalViewMissionApproval,
+} from "@/components/modal";
 
 const TableHead = [
 	"ID Misi",
@@ -116,7 +120,7 @@ export function TableMissionApproval({ data }) {
 				message={"Misi yang terverifikasi tidak dapat diubah kembali"}
 			/>
 
-			<ModalApprove
+			<ModalReject
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
 				onReject={handleRejectMission}
