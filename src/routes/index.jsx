@@ -16,6 +16,7 @@ import PathNotFound from "@/pages/ErrorNotFound";
 import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
+import MissionList from "@/pages/MissionList";
 
 export default function AppRoutes() {
 	return (
@@ -66,7 +67,7 @@ export default function AppRoutes() {
 				/>
 				<Route
 					path="mission-list"
-					element={<></>}
+					element={<MissionList></MissionList>}
 				/>
 				<Route
 					path="mission-approval"

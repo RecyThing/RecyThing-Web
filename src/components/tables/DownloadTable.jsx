@@ -1,10 +1,11 @@
-import { CenteredCell, TextCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
-import { BaseTable } from "../base-table/BaseTable";
+/* eslint-disable react/prop-types */
+import { CenteredCell, TextCell } from "./base-table/TableCells";
+import { TableBodyRow } from "./base-table/TableRows";
+import { BaseTable } from "./base-table/BaseTable";
 import { Box } from "@chakra-ui/react";
-import { DownloadOutlineIcon } from "@/components/icons";
+import { DownloadOutlineIcon } from "../icons";
 
-export function TableDownloadStatistic({ TableHead, data }) {
+export function DownloadTable({ TableHead, data }) {
   return (
     <BaseTable data={data} heads={TableHead}>
       {data.map((row, rowIndex) => (
