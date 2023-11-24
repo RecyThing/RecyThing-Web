@@ -7,6 +7,7 @@ export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
 export { AddVoucherModal } from "./voucher-list/AddVoucherModal";
 export { EditVoucherModal } from "./voucher-list/EditVoucherModal";
 export { ViewMissionApprovalModal } from "./mission-approval/ViewMissionApprovalModal";
+export { ViewDetailCommunityModal } from "./community/ViewDetailCommunityModal";
 export { AddDataCustomizationModal } from "./data-customization/AddDataCustomizationModal";
 export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";
 export { AddAdminModal } from "./manage-admin/AddAdminModal";
