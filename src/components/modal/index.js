@@ -11,6 +11,7 @@ export { AddDataCustomizationModal } from "./data-customization/AddDataCustomiza
 export { EditDataCustomizationModal } from "./data-customization/EditDataCustomizationModal";
 export { AddAdminModal } from "./manage-admin/AddAdminModal";
 export { EditAdminModal } from "./manage-admin/EditAdminModal";
+export { ViewReportingApprovalModal } from "./data-reporting-table/ViewReportingApprovalModal";
 export { ApproveModal } from "./action-feedback/ApproveModal";
 export { RejectModal } from "./action-feedback/RejectModal";
 export { DeleteModal } from "./action-feedback/DeleteModal";

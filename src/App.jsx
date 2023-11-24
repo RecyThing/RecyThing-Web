@@ -15,6 +15,7 @@ import ManageAdmin from "./pages/ManageAdmin";
 import Badge from "./pages/Badge";
 import MissionApproval from "./pages/MissionApproval";
 import RubbishCategory from "./pages/RubbishCategory";
+import DataReporting from "./pages/DataReporting";
 
 function App() {
 	return (
@@ -49,7 +50,7 @@ function App() {
 				/>
 				<Route
 					path="report"
-					element={<></>}
+					element={<DataReporting />}
 				/>
 				<Route
 					path="content-article"
