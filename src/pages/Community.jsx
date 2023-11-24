@@ -90,7 +90,7 @@ function Community() {
 				fontWeight="bold"
 				mb={"1.5rem"}
 			>
-				Daftar Voucher
+				Kelola Komunitas
 			</Heading>
 			<Flex
 				bg={"white"}
