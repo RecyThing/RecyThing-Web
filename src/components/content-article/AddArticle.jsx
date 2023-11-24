@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ArticleCategory from "./ArticleCategory";
 import uploadImgPic from "../../assets/upload-img.png";
+import TextEditor from "./TextEditor";
 
 function AddArticle({ onClose }) {
   const [previewImage, setPreviewImage] = useState(null);
+  const categoryHeight = useRef(null);
 
   function handleImage(event) {
     if (event.target.files && event.target.files[0]) {
@@ -12,19 +14,20 @@ function AddArticle({ onClose }) {
     }
   }
 
+  if (categoryHeight.current) console.log(categoryHeight.current.clientHeight)
   return (
     <div className="p-6 w-full min-h-screen bg-[#EBEBF0]">
       <p className="text-2xl font-bold">Tambah Konten</p>
-
       <div className="mt-4 flex gap-9 pl-3 pr-6 py-6 rounded-xl min-h-[85vh] bg-white">
-        <div className="flex-1">
+        <div  className="flex-1">
           <p className="mb-2 text-sm font-medium">Masukkan Judul</p>
           <input className="w-full pl-6 py-4 rounded-xl border border-[#828282]" type="text" placeholder="Masukkan Judul Disini..." />
+          <TextEditor peerHeight={categoryHeight} />
         </div>
 
-        <div className="flex flex-col">
+        <div ref={categoryHeight} className="flex flex-col max-w-[328px]">
           <ArticleCategory />
-          <div className={`relative mt-6 h-52 rounded-xl ${!previewImage && 'border'} border-dashed border-[#828282] min-w-[328px] max-w-[400px] cursor-pointer`}>
+          <div className={`relative mt-6 h-52 rounded-xl ${!previewImage && 'border'} border-dashed border-[#828282] min-w-[328px] cursor-pointer`}>
             <input onChange={handleImage} className="absolute w-full h-full opacity-0 cursor-pointer" type="file" accept="image/*" />
             {previewImage ? <img src={previewImage} className="w-full h-full object-cover rounded-xl" alt="" />
             :<>
