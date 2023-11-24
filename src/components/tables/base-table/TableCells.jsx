@@ -170,25 +170,25 @@ export function LeftAlignCell({ children }) {
   );
 }
 
-export function LinkCell({ content, onClick }) {
-  return (
-    <Td
-      color={"#5B79EF"}
-      maxW={"12.5rem"}
-      overflowWrap={"break-word"}
-      whiteSpace={"normal"}
-    >
-      <Text
-        textAlign={"left"}
-        as={"button"}
-        cursor={"pointer"}
-        _hover={{ color: "#2C5282", textDecoration: "underline" }}
-        onClick={onClick}
-      >
-        {content}
-      </Text>
-    </Td>
-  );
+export function LinkCell({ content, textAlign, onClick }) {
+	return (
+		<Td
+			color={"#5B79EF"}
+			maxW={"12.5rem"}
+			overflowWrap={"break-word"}
+			whiteSpace={"normal"}
+			textAlign={textAlign || "center"}
+		>
+			<Text
+				as={"button"}
+				cursor={"pointer"}
+				_hover={{ color: "#2C5282", textDecoration: "underline" }}
+				onClick={onClick}
+			>
+				{content}
+			</Text>
+		</Td>
+	);
 }
 
 export function NotFoundCell({ count }) {
@@ -200,16 +200,28 @@ export function NotFoundCell({ count }) {
 }
 
 export function TruncatedCell({ content, maxCharLength, maxWidth }) {
-    const truncatedContent =
-        content.length > maxCharLength
-            ? `${content.substring(0, maxCharLength)}...`
-            : content;
+	const truncatedContent =
+		content.length > maxCharLength
+			? `${content.substring(0, maxCharLength)}...`
+			: content;
 
-    return (
-        <Td style={{ maxWidth: `${maxWidth}rem`, paddingLeft: "23px", paddingRight: "15px" }}>
-            <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {truncatedContent}
-            </div>
-        </Td>
-    );
+	return (
+		<Td
+			style={{
+				maxWidth: `${maxWidth}rem`,
+				paddingLeft: "23px",
+				paddingRight: "15px",
+			}}
+		>
+			<div
+				style={{
+					overflow: "hidden",
+					textOverflow: "ellipsis",
+					whiteSpace: "nowrap",
+				}}
+			>
+				{truncatedContent}
+			</div>
+		</Td>
+	);
 }

@@ -2,7 +2,7 @@ import { ButtonGroup, Container, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
-import { DataReportingTable } from "@/components/tables";
+import { TableDataReporting } from "@/components/tables";
 import { TabButton } from "@/components/buttons";
 
 // dummy
@@ -116,7 +116,7 @@ function DataReporting() {
           <SearchBar onSearch={handleSearch} />
         </Flex>
 
-        <DataReportingTable
+        <TableDataReporting
           currentPage={currentPage}
           data={paginatedData}
           itemsPerPage={itemsPerPage}
