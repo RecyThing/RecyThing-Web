@@ -1,3 +1,4 @@
-export { SideBar } from "./SideBar";
-export { SideBarItem } from "./SideBarItem";
-export { SearchBar } from "./SearchBar";
+export { NavBar } from "./landing-page/NavBar";
+export { SearchBar } from "./dashboard/SearchBar";
+export { SideBar } from "./dashboard/sidebar/SideBar";
+export { TopBar } from "./dashboard/TopBar";

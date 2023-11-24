@@ -16,7 +16,7 @@ import {
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { CloseSquare } from "react-iconly";
-import * as Fields from "./FormFieldsCommunity";
+import * as Fields from "./CommunityFormFields";
 
 export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 	const {
