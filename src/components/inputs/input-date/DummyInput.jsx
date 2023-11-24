@@ -14,6 +14,7 @@ export const DummyInput = forwardRef(
 						props.error ? "border-red-600" : "border-[#949494]"
 					} appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-pointer`}
 					placeholder=" "
+					autoComplete="off"
 					{...props}
 				/>
 

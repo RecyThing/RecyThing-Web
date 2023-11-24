@@ -12,8 +12,9 @@ export const InputTextArea = forwardRef(
 					className={`resize-none block px-4 py-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${
 						props.error ? "border-red-600" : "border-[#949494]"
 					} appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-					{...props}
 					placeholder=" "
+					autoComplete="off"
+					{...props}
 				/>
 
 				<label
