@@ -1,6 +1,5 @@
 import {
 	Button,
-	Flex,
 	Grid,
 	GridItem,
 	Heading,
@@ -57,7 +56,6 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 			/>
 
 			<ModalContent
-				as={Flex}
 				bg={"#FFFFFF"}
 				borderRadius={"10px"}
 				p={"1.5rem"}
