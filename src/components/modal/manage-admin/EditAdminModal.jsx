@@ -2,6 +2,7 @@ import { InputWithLogo } from "@/components/inputs";
 import {
   Button,
   FormControl,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,6 +14,7 @@ import {
 import { User, Message, Lock, Camera } from "react-iconly";
 import { useRef } from "react";
 import AdminImage from "@/assets/AdminImage.svg";
+import { CloseSquare } from "iconsax-react";
 
 export function EditAdminModal({ isOpen, onClose, onSubmit, target }) {
   const initialRef = useRef(null);
@@ -31,10 +33,22 @@ export function EditAdminModal({ isOpen, onClose, onSubmit, target }) {
         isCentered
       >
         <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
-        <ModalContent padding={"24px"} borderRadius={"20px"}>
-          <ModalHeader>Edit Data Admin</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={8}>
+        <ModalContent padding={"24px"} borderRadius={"20px"} gap={"24px"}>
+          <ModalHeader padding={"-1"} fontSize={"25px"}>Edit Data Admin</ModalHeader>
+          <IconButton
+            as={ModalCloseButton}
+            icon={<CloseSquare size={"large"} />}
+            size={"sm"}
+            bg={"transparent"}
+            color={"#828282"}
+            position={"absolute"}
+            right={"1.5rem"}
+            top={"1.5rem"}
+            _hover={{ bg: "transparent", color: "#333333" }}
+            _focus={{ boxShadow: "none" }}
+            onClick={onClose}
+          />
+          <ModalBody pb={2} >
             <div className="wrapper relative w-2/3 mx-auto">
               <img
                 src={AdminImage}
