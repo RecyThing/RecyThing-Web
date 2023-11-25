@@ -65,7 +65,6 @@ export function DeleteModal({
 						<Text
 							color={"#828282"}
 							fontWeight={"semibold"}
-							lineHeight={"0.4375rem"}
 						>
 							{message || "Data yang dihapus tidak dapat dipulihkan"}
 						</Text>

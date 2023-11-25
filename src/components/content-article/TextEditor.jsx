@@ -1,7 +1,7 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-function TextEditor({ peerHeight }) {
+function TextEditor({ peerHeight, reduceHeight = 0 }) {
   function uploadAdapter(loader) {
     return {
       upload: () => {
@@ -33,7 +33,7 @@ function TextEditor({ peerHeight }) {
           editor.editing.view.change((writer) => {
             writer.setStyle(
               "height",
-              `${peerHeight.current.clientHeight - 150}px`,
+              `${peerHeight.current.clientHeight - reduceHeight - 150}px`,
               editor.editing.view.document.getRoot()
             );
             writer.setStyle(

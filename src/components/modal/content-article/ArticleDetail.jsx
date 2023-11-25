@@ -2,7 +2,7 @@
 import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import { GoThumbsup, GoShareAndroid } from 'react-icons/go'
 
-export function ArticleDetail({ isOpen, onClose }) {
+export function ArticleDetail({ setEditArticleData, isOpen, onClose }) {
   function getImgUrl(name) {
     return new URL(`${name}`, import.meta.url).href
   }
@@ -28,7 +28,7 @@ export function ArticleDetail({ isOpen, onClose }) {
           </div>
         </div>
 
-        <p className="mt-2 max-h-[353px] overflow-scroll">
+        <p className="mt-2 max-h-[353px] overflow-y-scroll">
           Sampah plastik adalah masalah serius yang merusak lingkungan kita. Plastik tidak mudah terurai, dan banyak jenisnya akhirnya mencemari lautan, hutan, dan daratan. Namun, dengan berpartisipasi dalam praktik daur ulang plastik, kita dapat berkontribusi untuk mengurangi dampak negatifnya terhadap bumi. Berikut adalah tiga cara sederhana untuk mendaur ulang sampah plastik yang dapat membantu menyelamatkan lingkungan: 1. Mencari Tempat Pengumpulan Daur Ulang Plastik
           Langkah pertama adalah mencari tempat pengumpulan daur ulang plastik di sekitar Anda. Banyak komunitas memiliki fasilitas daur ulang yang menerima berbagai jenis plastik, termasuk botol, wadah, dan kemasan plastik lainnya. Informasi tentang lokasi pengumpulan ini biasanya dapat ditemukan di situs web pemerintah setempat atau lembaga daur ulang. Ketika Anda mengetahui lokasinya, Anda dapat mulai mengumpulkan plastik Anda.
           2. Pisahkan Plastik Menurut Jenisnya
@@ -40,7 +40,7 @@ export function ArticleDetail({ isOpen, onClose }) {
 
         <div className="mt-8 flex gap-3 justify-between text-white">
           <button onClick={onClose} className="p-4 w-full rounded-lg bg-[#828282] hover:opacity-90">Kembali</button>
-          <button onClick={onClose} className="p-4 w-full rounded-lg bg-[#35CC33] hover:opacity-90">Ubah</button>
+          <button onClick={() => {onClose(); setEditArticleData(1)}} className="p-4 w-full rounded-lg bg-[#35CC33] hover:opacity-90">Ubah</button>
         </div>
       </ModalContent>
     </Modal>
