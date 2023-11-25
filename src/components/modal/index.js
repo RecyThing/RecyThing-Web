@@ -20,9 +20,12 @@ export { ModalViewDetailTransaction } from "./transaction-list/ModalViewDetailTr
 export { ModalViewDetailWasteExchange } from "./waste-exchange/ModalViewDetailWasteExchange";
 export { ModalViewMissionApproval } from "./mission-approval/ModalViewMissionApproval";
 export { ModalViewUserDetail } from "./manage-user/ModalViewUserDetail";
+export { ModalViewReportingApproval } from "./data-reporting/ModalViewReportingApproval";
 
 export { ModalApprove } from "./action-feedback/ModalApprove";
 export { ModalDelete } from "./action-feedback/ModalDelete";
 export { ModalReject } from "./action-feedback/ModalReject";
+export { ModalRejectionReason } from "./data-reporting/ModalRejectionReason";
 
 export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
+
