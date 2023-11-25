@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
 import { TableDataReporting } from "@/components/tables";
 import { TabButton } from "@/components/buttons";
+import { LayoutDashboardContent } from "@/layout";
 
 // dummy
 const DummyData = [];
@@ -77,12 +78,7 @@ function DataReporting() {
   };
 
   return (
-    <Container
-      as={"section"}
-      maxW={"container.2xl"}
-      bg={"#EBEBF0"}
-      p={"1.5rem"}
-    >
+    <LayoutDashboardContent>
       <Heading
         as="h1"
         color={"#201A18"}
@@ -90,7 +86,7 @@ function DataReporting() {
         fontWeight="bold"
         mb={"1.5rem"}
       >
-        Manage Data Reporting
+        Kelola Data Pelaporan
       </Heading>
       <Flex
         bg={"white"}
@@ -100,7 +96,6 @@ function DataReporting() {
         gap={"1.5rem"}
         p={"1.5rem"}
       >
-        {/*  */}
         <Flex gap={"1.5rem"}>
           <ButtonGroup spacing={0}>
             {buttonLabels.map((label) => (
@@ -129,7 +124,7 @@ function DataReporting() {
           totalItems={filteredData().length}
         />
       </Flex>
-    </Container>
+    </LayoutDashboardContent>
   );
 }
 
