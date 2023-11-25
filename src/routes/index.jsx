@@ -16,6 +16,7 @@ import PathNotFound from "@/pages/ErrorNotFound";
 import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
+import DataReporting from "@/pages/DataReporting";
 import MissionList from "@/pages/MissionList";
 
 export default function AppRoutes() {
@@ -51,7 +52,7 @@ export default function AppRoutes() {
 				/>
 				<Route
 					path="report"
-					element={<></>}
+					element={<DataReporting />}
 				/>
 				<Route
 					path="content-article"

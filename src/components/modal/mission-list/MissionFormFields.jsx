@@ -17,6 +17,7 @@ import {
   InputWithLogo,
   InputWithoutLogo,
 } from "@/components/inputs";
+import frame from "@/assets/input-image-frame.png";
 
 const rules = {
   missionTitle: {
@@ -113,7 +114,9 @@ export function MissionImageField({
                   <Text color={"#828282"}>Unggah Gambar Misi</Text>
                 </>
               )}
+              <Image src={frame} position={"absolute"} bottom={0}/>
             </Flex>
+            
           </Flex>
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>

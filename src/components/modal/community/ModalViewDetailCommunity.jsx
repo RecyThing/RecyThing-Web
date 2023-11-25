@@ -25,8 +25,8 @@ export function ModalViewCommunityModal({
 	data,
 }) {
 	const handleUpdate = () => {
-		onClose();
 		onOpenUpdate();
+		onClose();
 	};
 
 	return (
@@ -42,7 +42,6 @@ export function ModalViewCommunityModal({
 			/>
 
 			<ModalContent
-				as={Flex}
 				bg={"#FFFFFF"}
 				borderRadius={"10px"}
 				p={"1.5rem"}

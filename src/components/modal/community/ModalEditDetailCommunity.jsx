@@ -68,7 +68,6 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 			/>
 
 			<ModalContent
-				as={Flex}
 				bg={"#FFFFFF"}
 				borderRadius={"10px"}
 				p={"1.5rem"}
@@ -117,13 +116,13 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 							templateColumns={"1.75fr 1fr"}
 							gap={6}
 						>
-							<GridItem colSpan={"3"}>
+							<GridItem colSpan={3}>
 								<Fields.CommunityNameField
 									control={control}
 									error={errors.communityName}
 								/>
 							</GridItem>
-							<GridItem colSpan={"3"}>
+							<GridItem colSpan={3}>
 								<Fields.CommunityDescField
 									control={control}
 									error={errors.communityDescription}
@@ -145,7 +144,6 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 					</ModalBody>
 
 					<ModalFooter
-						display={"flex"}
 						gap={"1rem"}
 						justifyContent={"flex-end"}
 						p={0}

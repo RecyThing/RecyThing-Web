@@ -63,8 +63,9 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleUpdateModal = () => {
-		onCloseView();
-		onOpenUpdate();
+		setTimeout(() => {
+			onOpenUpdate();
+		});
 	};
 
 	const handleSubmitUpdatedData = (data) => {
@@ -84,17 +85,17 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<ModalEditDetailCommunity
-				isOpen={isOpenUpdate}
-				onClose={onCloseUpdate}
-				onUpdate={handleSubmitUpdatedData}
-				data={selectedRow}
-			/>
-
 			<ModalViewCommunityModal
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				onOpenUpdate={handleUpdateModal}
+				data={selectedRow}
+			/>
+
+			<ModalEditDetailCommunity
+				isOpen={isOpenUpdate}
+				onClose={onCloseUpdate}
+				onUpdate={handleSubmitUpdatedData}
 				data={selectedRow}
 			/>
 
