@@ -7,7 +7,6 @@ import Community from "@/pages/Community";
 import Dashboard from "@/pages/Dashboard";
 import DataCustomization from "@/pages/DataCustomization";
 import DataDropPoint from "@/pages/DataDropPoint";
-import DataReporting from "@/pages/DataReporting";
 import DownloadStatistic from "@/pages/DownloadStatistic";
 import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/Login";
@@ -19,6 +18,7 @@ import PathNotFound from "@/pages/ErrorNotFound";
 import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
+import DataReporting from "@/pages/DataReporting";
 
 export default function AppRoutes() {
 	return (
