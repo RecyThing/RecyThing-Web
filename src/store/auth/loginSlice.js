@@ -12,6 +12,13 @@ export const adminLogin = createAsyncThunk("/admins/login", APIAuth.login);
 export const loginSlice = createSlice({
 	name: "adminLogin",
 	initialState,
+	reducers: {
+		clearAuthState: (state) => {
+			state.status = "idle";
+			state.message = "";
+			state.data = {};
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(adminLogin.pending, (state) => {
 			state.status = "loading";
@@ -29,4 +36,5 @@ export const loginSlice = createSlice({
 });
 
 export const adminLoginSelector = (state) => state.auth;
+export const { clearAuthState } = loginSlice.actions;
 export const loginReducer = loginSlice.reducer;

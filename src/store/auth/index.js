@@ -1,1 +1,6 @@
-export { loginReducer, adminLoginSelector, adminLogin } from "./loginSlice";
+export {
+	loginReducer,
+	adminLoginSelector,
+	adminLogin,
+	clearAuthState,
+} from "./loginSlice";
