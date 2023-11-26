@@ -18,7 +18,8 @@ export const loginSlice = createSlice({
 		});
 		builder.addCase(adminLogin.fulfilled, (state, action) => {
 			state.status = "success";
-			console.log(action.payload);
+			state.message = action.payload.message;
+			state.data = action.payload.data;
 		});
 		builder.addCase(adminLogin.rejected, (state, action) => {
 			state.status = "failed";

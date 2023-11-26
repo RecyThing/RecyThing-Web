@@ -1,10 +1,9 @@
-import { adminLoginSelector } from "@/store/auth";
-import { APIAuth } from "@/apis";
+import { adminLogin, adminLoginSelector } from "@/store/auth";
 import { Controller, useForm } from "react-hook-form";
 import { InputWithLogo } from "@/components/inputs";
 import { Show, Hide, Lock, Message } from "react-iconly";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Banner from "@/assets/LandingPage/banner-img.png";
 
@@ -22,11 +21,23 @@ const Login = () => {
 	//react router dom
 	const navigate = useNavigate();
 
+	// dispatch
+	const dispatch = useDispatch();
+
 	// handle submit
-	const handleOnSubmit = async (auth) => {
-		const data = await APIAuth.login(auth);
-		console.log(data);
-		navigate("/dashboard");
+	const handleOnSubmit = (data, e) => {
+		e.preventDefault();
+		try {
+			dispatch(adminLogin(data))
+				.then(() => {
+					navigate("/dashboard");
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	// Handle untuk menampilkan password

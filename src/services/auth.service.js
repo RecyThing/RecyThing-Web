@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 
 export class AuthService {
 	isAuthorized() {
-		return this.getToken() !== null;
+		return this.getToken() ? true : false;
 	}
 
 	getToken() {
@@ -14,7 +14,7 @@ export class AuthService {
 		return Cookies.get("refreshToken");
 	}
 
-	getRole() {
+	getAdminRole() {
 		if (this.isAuthorized()) {
 			const { id, role } = jwtDecode(this.getToken());
 			return { id, role };
