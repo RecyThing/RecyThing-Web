@@ -74,7 +74,7 @@ function App() {
 				/>
 				<Route
 					path="transaction-list"
-					element={<DaftarTransaksi/>}
+					// element={<DaftarTransaksi/>}
 				/>
 				<Route
 					path="drop-point-transaction"

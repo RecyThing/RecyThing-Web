@@ -1,10 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Show, Hide, Lock, Message } from "react-iconly";
-import { useState } from "react";
-import Banner from "@/assets/LandingPage/banner-img.png";
+import { useEffect, useState } from "react";
 import { InputWithLogo } from "@/components/inputs";
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginApiEvent } from "./../store/LoginSlice";
+import Banner from "@/assets/LandingPage/banner-img.png";
 const Login = () => {
   // react hooks form
   const {
@@ -14,30 +15,24 @@ const Login = () => {
   } = useForm();
 
   //useState
-  const [valid, setValid] = useState({});
   const [passwordType, setPasswordType] = useState("password");
+  const loading = useSelector((state) => state.auth.login);
+  const dispatch = useDispatch();
   //react router dom
   const navigate = useNavigate();
   // handle submit
-  const onSubmit = (data) => {
-    let error = {};
-    let loginValid = true;
-    const dummyUser = { email: "admin@gmail.com", password: "123" };
-    if (
-      data.email === dummyUser.email &&
-      data.password === dummyUser.password
-    ) {
-      localStorage.setItem("user", JSON.stringify(dummyUser));
-      localStorage.setItem("isLoggedIn", true);
-      loginValid = false;
+
+  useEffect(() => {
+    dispatch(loginApiEvent());
+  }, [dispatch]);
+
+  const handleOnSubmit = async (data) => {
+    try {
+      await dispatch(loginApiEvent(data));
       navigate("/dashboard");
-    } else {
-      error.email = "Invalid username or password";
-      error.password = "Invalid username or password";
-      loginValid = true;
+    } catch (error) {
+      console.error("Login error:", error);
     }
-    setValid(error);
-    return loginValid;
   };
 
   // Handle untuk menampilkan password
@@ -58,7 +53,10 @@ const Login = () => {
         </div>
 
         {/* Form Login */}
-        <form className="p-10 w-3/4 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="p-10 w-3/4 mx-auto"
+          onSubmit={handleSubmit(handleOnSubmit)}
+        >
           <p className="text-3xl font-bold">Selamat Datang👋 </p>
           <p className="font-regular text-gray-400 my-3 w-2/3">
             Login terlebih dahulu untuk mengakses halaman Admin
@@ -132,19 +130,20 @@ const Login = () => {
             )}
 
             {/* Validasi email password salah */}
-            {valid?.email && valid?.password && (
+            {/* {valid?.email && valid?.password && (
               <p className="error py-2" style={{ color: "red" }}>
                 {valid?.email && valid?.password}
               </p>
-            )}
+            )} */}
           </div>
 
           {/* Button Submit */}
           <button
             type="submit"
-            className="w-full p-3 text-center bg-green-500 text-white font-bold rounded-lg"
+            className="w-full p-3 text-center bg-green-500 text-white font-bold rounded-lg "
+            disabled={loading}
           >
-            Login
+            {loading ? "Loading ..." : "Login"}
           </button>
         </form>
         {/* End Form Login */}
