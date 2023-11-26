@@ -1,22 +1,25 @@
-import Jumbotron from "@/components/jumbotron/Jumbotron";
-import Navbar from "@/components/navigation/navbar/NavBar";
-import Card from "@/components/card/Card";
-import Frame from "@/components/frame/Frame";
-import Footer from "@/components/footer/Footer";
-import Question from "@/components/question/question";
-import Download from "@/components/download/Download";
+import { NavBar } from "@/components/navigation";
+import {
+	DownloadSection,
+	ExplorationSection,
+	FeatureSection,
+	Footer,
+	HeroSection,
+	QuestionSection,
+} from "@/components/sections";
+
 const LandingPage = () => {
-  return (
-    <>
-      <Navbar />
-      <Jumbotron />
-      <Card />
-      <Frame />
-      <Question/>
-      <Download/>
-      <Footer/>
-    </>
-  );
+	return (
+		<>
+			<NavBar />
+			<HeroSection />
+			<FeatureSection />
+			<ExplorationSection />
+			<QuestionSection />
+			<DownloadSection />
+			<Footer />
+		</>
+	);
 };
 
 export default LandingPage;

@@ -1,17 +1,11 @@
 import { Add } from "iconsax-react";
-import {
-	Box,
-	Button,
-	Container,
-	Flex,
-	Heading,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
-import { VoucherListTable } from "@/components/tables";
-import { AddVoucherModal } from "@/components/modal";
+import { TableVoucherList } from "@/components/tables";
+import { ModalAddVoucher } from "@/components/modal";
+import { LayoutDashboardContent } from "@/layout";
 
 // dummy
 const DummyData = [];
@@ -82,12 +76,7 @@ function VoucherList() {
 	};
 
 	return (
-		<Container
-			as={"section"}
-			maxW={"container.2xl"}
-			bg={"#EBEBF0"}
-			p={"1.5rem"}
-		>
+		<LayoutDashboardContent>
 			<Heading
 				as="h1"
 				color={"#201A18"}
@@ -125,7 +114,7 @@ function VoucherList() {
 					</Button>
 				</Flex>
 
-				<VoucherListTable
+				<TableVoucherList
 					data={paginatedData}
 					currentPage={currentPage}
 					itemsPerPage={itemsPerPage}
@@ -140,12 +129,12 @@ function VoucherList() {
 				/>
 			</Flex>
 
-			<AddVoucherModal
+			<ModalAddVoucher
 				isOpen={isOpen}
 				onClose={onClose}
 				onSubmit={handleSubmitAdded}
 			/>
-		</Container>
+		</LayoutDashboardContent>
 	);
 }
 
