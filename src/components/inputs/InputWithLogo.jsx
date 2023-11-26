@@ -37,4 +37,6 @@ export const InputWithLogo = forwardRef(
 	}
 );
 
+
 InputWithLogo.displayName = "InputWithLogo";
+

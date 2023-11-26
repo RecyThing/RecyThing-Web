@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import axios from "axios";
-import Cookies from "js-cookie";
+import { authService } from "../auth";
 
 export const axiosInstance = axios.create({
 	baseURL: process.env.VITE_API_URL,
@@ -11,6 +11,9 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-	config.headers.Authorization = `Bearer ${Cookies.get("token")}`;
+	if (authService.isAuthorized()) {
+		const token = authService.getToken();
+		config.headers.Authorization = `Bearer ${token}`;
+	}
 	return config;
 });
