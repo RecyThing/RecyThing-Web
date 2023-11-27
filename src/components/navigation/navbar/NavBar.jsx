@@ -26,8 +26,8 @@ function Navbar() {
 
   const menuItems = [
     { text: "Beranda", link: "jumbotron" },
-    { text: "Tentang", link: "framePahlawan" },
     { text: "Fitur", link: "card" },
+    { text: "Tentang", link: "framePahlawan" },
     { text: "Eksplorasi", link: "frameDaurUlang" },
     { text: "FaQ", link: "question" },
   ];
