@@ -2,64 +2,60 @@ import { Add } from "iconsax-react";
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TableVoucherList } from "@/components/tables";
 import { ModalAddVoucher } from "@/components/modal";
 import { LayoutDashboardContent } from "@/layout";
-
-// dummy
-const DummyData = [];
-const names = ["Voucher 1", "Voucher 2", "Voucher 3", "Voucher 4", "Voucher 5"];
-const descriptions = [
-	"Description 1",
-	"Description 2",
-	"Description 3",
-	"Description 4",
-	"Description 5",
-];
-const images = [
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-];
-
-for (let i = 0; i < 50; i++) {
-	const voucherName = names[Math.floor(Math.random() * names.length)];
-	const voucherDescription =
-		descriptions[Math.floor(Math.random() * descriptions.length)];
-	const voucherImage = images[Math.floor(Math.random() * images.length)];
-	const voucherPoint = Math.floor(Math.random() * 10000);
-	const voucherStartDate = new Date(2021, 1, 1);
-	const voucherEndDate = new Date(2021, 12, 31);
-
-	DummyData.push({
-		voucherImage,
-		voucherName,
-		voucherPoint,
-		voucherDescription,
-		voucherStartDate,
-		voucherEndDate,
-	});
-}
-// end dummy
+import { useDispatch, useSelector } from "react-redux";
+import {
+	clearFetchVouchersState,
+	fetchVouchers,
+	fetchVouchersSelector,
+} from "@/store/voucher";
+import { Spinner } from "@/components/spinner";
 
 function VoucherList() {
+	const dispatch = useDispatch();
+	const {
+		data = [],
+		status,
+		message,
+		count_data,
+	} = useSelector(fetchVouchersSelector);
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [totalItems, setTotalItems] = useState(0);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const filteredData = DummyData.filter((data) => {
-		return data.voucherName.toLowerCase().includes(searchTerm.toLowerCase());
-	});
+	useEffect(() => {
+		dispatch(
+			fetchVouchers({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
+	useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchVouchersState());
+		};
+	}, [dispatch]);
+
+	const filteredData = Object.values(data).filter((voucher) => {
+		return (
+			voucher.reward_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			voucher.point.toString().includes(searchTerm)
+		);
+	});
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -113,20 +109,25 @@ function VoucherList() {
 						Tambah Reward
 					</Button>
 				</Flex>
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableVoucherList
+							data={filteredData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
 
-				<TableVoucherList
-					data={paginatedData}
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-				/>
-
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={filteredData.length}
-				/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={totalItems}
+						/>
+					</>
+				)}
 			</Flex>
 
 			<ModalAddVoucher

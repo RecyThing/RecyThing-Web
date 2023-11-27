@@ -6,6 +6,7 @@ import { TableBodyRow } from "../base-table/TableRows";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "../../buttons";
 import { ModalDelete, ModalEditVoucher } from "@/components/modal";
+import { formatDateToLocalDateString } from "@/utils";
 
 const TableHead = [
 	"No",
@@ -79,10 +80,13 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 						<CenteredCell>
 							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
 						</CenteredCell>
-						<TextCell content={row.voucherName} />
-						<TextCell content={row.voucherPoint} />
-						<TextCell content={row.voucherStartDate.toLocaleDateString()} />
-						<TextCell content={row.voucherEndDate.toLocaleDateString()} />
+						<TextCell
+							casing={"uppercase"}
+							content={row.reward_name}
+						/>
+						<TextCell content={row.point} />
+						<TextCell content={formatDateToLocalDateString(row.start_date)} />
+						<TextCell content={formatDateToLocalDateString(row.end_date)} />
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Edit2 />}
