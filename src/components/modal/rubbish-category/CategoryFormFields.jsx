@@ -1,12 +1,12 @@
-import { ChevronDown, Delete, TicketStar } from "react-iconly";
+import { ChevronDown, ChevronUp, Delete, TicketStar } from "react-iconly";
 import {
   FormControl,
   FormErrorMessage,
-  Flex,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
+  Button,
 } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
 import { InputWithLogo } from "@/components/inputs";
@@ -68,26 +68,29 @@ export function RewardPoint ({ control, error }) {
 }
 
 export function SelectUnit({ control, error, target }) {
-    const [selectedUnit, setSelectedUnit] = useState("");
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
-    useEffect(() => {
-      if (target) {
-        setSelectedUnit(target[2]);
-      }
-    }, [target]);
+  useEffect(() => {
+    if (target) {
+      setSelectedUnit(target[2]);
+    }
+  }, [target]);
 
-    const handleSelectUnit = (unit) => {
-      setSelectedUnit(unit);
-    };
+  const handleMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <Controller
       name="selectUnit"
       control={control}
       rules={rules.selectUnit}
-      render={({ field: { onChange } }) => (
+      render={({ field }) => (
         <FormControl isInvalid={error}>
           <Menu>
             <MenuButton
+              as={Button}
               px={4}
               py={2}
               width={"100%"}
@@ -96,25 +99,33 @@ export function SelectUnit({ control, error, target }) {
               borderRadius="lg"
               borderWidth="1px"
               borderColor={"#949494"}
+              backgroundColor={"white"}
               _hover={{ bg: "gray.100" }}
+              _expanded={{
+                bg: "#35CC33",
+                textColor: "white",
+                borderColor: "#35CC33",
+              }}
+              rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}
+              onClick={handleMenuOpen}
+              isActive={menuOpen}
+              textAlign="left"
+              fontWeight="normal"
+              fontSize={"14px"}
             >
-              <Flex className="justify-between">
-                {selectedUnit || "Pilih Satuan"} <ChevronDown />
-              </Flex>
+              {field.value || "Pilih Satuan"}
             </MenuButton>
-            <MenuList>
+            <MenuList fontSize={"14px"}>
               <MenuItem
                 onClick={() => {
-                  handleSelectUnit("Barang");
-                  onChange("Barang");
+                  field.onChange("Barang");
                 }}
               >
                 Barang
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  handleSelectUnit("Kilogram");
-                  onChange("Kilogram");
+                  field.onChange("Kilogram");
                 }}
               >
                 Kilogram

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Button,
-  Flex,
   FormControl,
   FormErrorMessage,
   Menu,
@@ -12,7 +11,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { CloseSquare, ChevronDown } from "react-iconly";
+import { CloseSquare, ChevronDown, ChevronUp } from "react-iconly";
 import { useForm, Controller } from "react-hook-form";
 import * as Fields from "./CategoryFormFields";
 
@@ -32,6 +31,11 @@ export function EditCategoryModal({
   } = useForm();
 
   const [selectedUnit, setSelectedUnit] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   const handleOnSubmit = (data) => {
     console.log(data);
@@ -53,10 +57,6 @@ export function EditCategoryModal({
       setSelectedUnit(target[2]);
     }
   }, [target, setValue]);
-
-  const handleSelectUnit = (unit) => {
-    setSelectedUnit(unit);
-  };
 
   useEffect(() => {
     if (!isOpen) {
@@ -92,10 +92,11 @@ export function EditCategoryModal({
                 name="selectUnit"
                 control={control}
                 rules={rules.selectUnit}
-                render={({ field: { onChange } }) => (
+                render={({ field }) => (
                   <FormControl isInvalid={error}>
                     <Menu>
                       <MenuButton
+                        as={Button}
                         px={4}
                         py={2}
                         width={"100%"}
@@ -104,25 +105,33 @@ export function EditCategoryModal({
                         borderRadius="lg"
                         borderWidth="1px"
                         borderColor={"#949494"}
+                        backgroundColor={"white"}
                         _hover={{ bg: "gray.100" }}
+                        _expanded={{
+                          bg: "#35CC33",
+                          textColor: "white",
+                          borderColor: "#35CC33",
+                        }}
+                        rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}
+                        onClick={handleMenuOpen}
+                        isActive={menuOpen}
+                        textAlign="left"
+                        fontWeight="normal"
+                        fontSize={"14px"}
                       >
-                        <Flex className="justify-between">
-                          {selectedUnit || "Pilih Satuan"} <ChevronDown />
-                        </Flex>
+                        {field.value || "Pilih Satuan"}
                       </MenuButton>
                       <MenuList>
                         <MenuItem
                           onClick={() => {
-                            handleSelectUnit("Barang");
-                            onChange("Barang");
+                            field.onChange("Barang");
                           }}
                         >
                           Barang
                         </MenuItem>
                         <MenuItem
                           onClick={() => {
-                            handleSelectUnit("Kilogram");
-                            onChange("Kilogram");
+                            field.onChange("Kilogram");
                           }}
                         >
                           Kilogram
