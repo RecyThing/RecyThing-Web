@@ -27,5 +27,7 @@ export { ModalDelete } from "./action-feedback/ModalDelete";
 export { ModalReject } from "./action-feedback/ModalReject";
 export { ModalRejectionReason } from "./data-reporting/ModalRejectionReason";
 
+export { ArticleDetail } from "./content-article/ArticleDetail";
+
 export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
 
