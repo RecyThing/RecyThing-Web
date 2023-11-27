@@ -1,9 +1,10 @@
-import { ButtonGroup, Container, Flex, Heading } from "@chakra-ui/react";
+import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { useState } from "react";
-import { MissionApprovalTable } from "@/components/tables";
 import { FilterButton } from "@/components/buttons";
+import { TableMissionApproval } from "@/components/tables";
+import { LayoutDashboardContent } from "@/layout";
 
 // dummy
 const DummyData = [];
@@ -74,12 +75,7 @@ function MissionApproval() {
 	};
 
 	return (
-		<Container
-			as={"section"}
-			maxW={"container.2xl"}
-			bg={"#EBEBF0"}
-			p={"1.5rem"}
-		>
+		<LayoutDashboardContent>
 			<Heading
 				as="h1"
 				color={"#201A18"}
@@ -111,7 +107,7 @@ function MissionApproval() {
 					</ButtonGroup>
 					<SearchBar onSearch={handleSearch} />
 				</Flex>
-				<MissionApprovalTable
+				<TableMissionApproval
 					currentPage={currentPage}
 					data={paginatedData}
 					itemsPerPage={itemsPerPage}
@@ -124,7 +120,7 @@ function MissionApproval() {
 					totalItems={filteredData().length}
 				/>
 			</Flex>
-		</Container>
+		</LayoutDashboardContent>
 	);
 }
 

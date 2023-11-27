@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 import { Button, Flex, IconButton, Select, Text } from "@chakra-ui/react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
+
 
 export function Pagination({
 	currentPage,
@@ -10,7 +10,6 @@ export function Pagination({
 	totalItems,
 	options = [5, 10, 25]
 }) {
-
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	const startPage = Math.max(1, Math.min(currentPage - 1, totalPages - 3));
 	const endPage = Math.min(totalPages, startPage + 3);
@@ -28,6 +27,11 @@ export function Pagination({
 		if (currentPage < totalPages) {
 			onChangePage(currentPage + 1);
 		}
+	};
+
+	const handleLimitPage = (e) => {
+		onChangeItemsPerPage(e.target.value);
+		onChangePage(1);
 	};
 
 	return (
@@ -51,7 +55,7 @@ export function Pagination({
 					fontSize="sm"
 					defaultValue={itemsPerPage}
 					cursor={"pointer"}
-					onChange={(e) => onChangeItemsPerPage(e.target.value)}
+					onChange={(e) => handleLimitPage(e)}
 				>
 					{options.map((option) => (
 						<option
