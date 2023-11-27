@@ -3,16 +3,13 @@ import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import { GoThumbsup, GoShareAndroid } from 'react-icons/go'
 
 export function ArticleDetail({ setEditArticleData, isOpen, onClose }) {
-  function getImgUrl(name) {
-    return new URL(`${name}`, import.meta.url).href
-  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"lg"} isCentered>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
       <ModalContent padding={"24px"} borderRadius={"xl"}>
         <p className="text-[28px]">3 Cara mendaur ulang sampah PLASTIK!</p>
-        <img src={getImgUrl('../../../assets/article-dummy.png')} className="my-8 object-cover h-[148px]" alt="" />
+        <img src={'../../../assets/article-dummy.png'} className="my-8 object-cover h-[148px]" alt="" />
         <div className="flex justify-between">
           <div className="flex gap-2">
             <p className="text-sm text-[#35CC33]">Minyak</p>
