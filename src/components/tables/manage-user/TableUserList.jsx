@@ -1,14 +1,15 @@
-/* eslint-disable react/prop-types */
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
+import { deleteUser, fetchUser } from "@/store/user";
 import { Eye, Trash } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
 import { ModalDelete, ModalViewUserDetail } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDisclosure } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
-const TableHead = ["No", "Username", "Email", "Total Poin", "Aksi"];
+const TableHead = ["No", "Nama Lengkap", "Email", "Total Poin", "Aksi"];
 
 export function TableUserList({ data, currentPage, itemsPerPage }) {
 	const {
@@ -22,9 +23,10 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 		onClose: onCloseDelete,
 	} = useDisclosure();
 	const [selectedRow, setSelectedRow] = useState(null);
+	const dispatch = useDispatch();
 
 	const handleViewModal = (row) => {
-		setSelectedRow(row);
+		dispatch(fetchUser(row.id));
 		onOpenView();
 	};
 
@@ -34,7 +36,7 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleDelete = (row) => {
-		console.log("deleted!", row);
+		dispatch(deleteUser(row.id));
 		onCloseDelete();
 	};
 
@@ -63,14 +65,12 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 						<CenteredCell>
 							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
 						</CenteredCell>
-
-						{row.map((cell, cellIndex) => (
-							<TextCell
-								key={cellIndex}
-								content={cell}
-							/>
-						))}
-
+						<TextCell
+							casing={"capitalize"}
+							content={row.fullname}
+						/>
+						<TextCell content={row.email} />
+						<TextCell content={row.point} />
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}
