@@ -19,6 +19,7 @@ import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
 import DataReporting from "@/pages/DataReporting";
+import ContentArticle from "@/pages/ContentArticle";
 
 export default function AppRoutes() {
 	return (
@@ -63,7 +64,7 @@ export default function AppRoutes() {
 					/>
 					<Route
 						path="content-article"
-						element={<></>}
+						element={<ContentArticle />}
 					/>
 					<Route
 						path="rubbish-category"

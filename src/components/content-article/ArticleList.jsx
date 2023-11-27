@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ArticleDetail } from "../modal";
 import ArticleItem from "./ArticleItem";
+import { ArticleDetail } from '../modal';
 
 function ArticleList({ editArticleData, setEditArticleData, articleData }) {
   const [currArticleData, setCurrArticleData] = useState(null);

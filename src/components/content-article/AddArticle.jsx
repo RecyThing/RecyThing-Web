@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ArticleCategory from "./ArticleCategory";
-import uploadImgPic from "../../assets/upload-img.png";
 import TextEditor from "./TextEditor";
+import { UploadImageIcon } from "../icons";
 
 function AddArticle({ onClose }) {
   const [previewImage, setPreviewImage] = useState(null);
@@ -29,10 +29,10 @@ function AddArticle({ onClose }) {
           <div className={`relative mt-6 h-52 rounded-xl ${!previewImage && 'border'} border-dashed border-[#828282] min-w-[328px] cursor-pointer`}>
             <input onChange={handleImage} className="absolute w-full h-full opacity-0 cursor-pointer" type="file" accept="image/*" />
             {previewImage ? <img src={previewImage} className="w-full h-full object-cover rounded-xl" alt="" />
-            :<>
-              <img src={uploadImgPic} className="mt-[52px] mx-auto" alt="" />
+            : <div className="flex flex-col items-center justify-center h-full">
+              <UploadImageIcon />
               <p className="text-center font-medium text-[#828282]">Unggah Gambar</p>
-            </>}
+            </div>}
           </div>
           <p className="mt-2 text-sm text-center text-[#828282]">Max 5 Mb, Format JPG & JPEG</p>
           <div className="mt-auto flex gap-3 justify-between text-white">

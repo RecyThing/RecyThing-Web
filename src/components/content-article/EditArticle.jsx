@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import ArticleCategory from "./ArticleCategory";
-import uploadImgPic from "../../assets/upload-img.png";
 import TextEditor from "./TextEditor";
-import { DeleteModal } from "../modal";
+
 import { useDisclosure } from "@chakra-ui/react";
+import { ModalDelete } from "../modal";
+import { UploadImageIcon } from "../icons";
 
 function EditArticle({ editArticleData, onClose }) {
   const [previewImage, setPreviewImage] = useState(null);
@@ -25,7 +26,7 @@ function EditArticle({ editArticleData, onClose }) {
 
   return (
     <div className="p-6 w-full min-h-screen bg-[#EBEBF0]">
-      <DeleteModal title={"Anda yakin ingin menghapus konten ini?"} message={"Konten yang dihapus tidak dapat dipulihkan"}
+      <ModalDelete title={"Anda yakin ingin menghapus konten ini?"} message={"Konten yang dihapus tidak dapat dipulihkan"}
       isOpen={isOpenDelete} target={editArticleData} onClose={onCloseDelete} onDelete={handleDelete} />
       <p className="text-2xl font-bold">Edit Konten</p>
       <div className="mt-4 flex gap-9 pl-3 pr-6 py-6 rounded-xl min-h-[85vh] bg-white">
@@ -41,10 +42,10 @@ function EditArticle({ editArticleData, onClose }) {
           <div className={`relative mt-6 h-52 rounded-xl ${!previewImage && 'border'} border-dashed border-[#828282] min-w-[328px] cursor-pointer`}>
             <input onChange={handleImage} className="absolute w-full h-full opacity-0 cursor-pointer" type="file" accept="image/*" />
             {previewImage ? <img src={previewImage} className="w-full h-full object-cover rounded-xl" alt="" />
-            :<>
-              <img src={uploadImgPic} className="mt-[52px] mx-auto" alt="" />
+            : <div className="flex flex-col items-center justify-center h-full">
+              <UploadImageIcon />
               <p className="text-center font-medium text-[#828282]">Unggah Gambar</p>
-            </>}
+            </div>}
           </div>
           <p className="mt-2 text-sm text-center text-[#828282]">Max 5 Mb, Format JPG & JPEG</p>
           <div className="mt-auto flex gap-3 justify-between text-white">

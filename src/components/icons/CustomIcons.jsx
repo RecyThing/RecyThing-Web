@@ -54,7 +54,7 @@ export function CopyIcon() {
 	);
 }
 
-export function DownloadIcon({ color = "#828282" }) {
+export function UploadImageIcon({ color = "#828282" }) {
 	return (
 		<svg
 			width="65"
