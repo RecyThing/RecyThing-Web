@@ -1,13 +1,13 @@
 import { Badge, Td, Text } from "@chakra-ui/react";
 
-export function TextCell({ content }) {
+export function TextCell({ content, ...props }) {
 	return (
 		<Td
 			color={"#383838"}
 			maxW={"12.5rem"}
 			isTruncated
 		>
-			{content}
+			<Text {...props}>{content}</Text>
 		</Td>
 	);
 }
@@ -60,7 +60,6 @@ export function BadgeCell({ colorScheme, content }) {
 						</Badge>
 					</Td>
 				);
-
 			case "blue":
 				return (
 					<Td>
@@ -71,6 +70,70 @@ export function BadgeCell({ colorScheme, content }) {
 							fontWeight={"medium"}
 							color={"#19365D"}
 							bg={"#D4E4FA"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+			case "azure":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#5BD4EF"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+			case "gold":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#D4AF35"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+			case "silver":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#BBBBBB"}
+						>
+							{content}
+						</Badge>
+					</Td>
+				);
+			case "bronze":
+				return (
+					<Td>
+						<Badge
+							px={"9px"}
+							py={"5px"}
+							rounded={"2xl"}
+							fontSize={"xs"}
+							fontWeight={"medium"}
+							color={"#fff"}
+							bg={"#C97513"}
 						>
 							{content}
 						</Badge>
@@ -110,16 +173,16 @@ export function LeftAlignCell({ children }) {
 	);
 }
 
-export function LinkCell({ content, onClick }) {
+export function LinkCell({ content, textAlign, onClick }) {
 	return (
 		<Td
 			color={"#5B79EF"}
 			maxW={"12.5rem"}
 			overflowWrap={"break-word"}
 			whiteSpace={"normal"}
+			textAlign={textAlign || "center"}
 		>
 			<Text
-				textAlign={"left"}
 				as={"button"}
 				cursor={"pointer"}
 				_hover={{ color: "#2C5282", textDecoration: "underline" }}
@@ -143,16 +206,28 @@ export function NotFoundCell({ count }) {
 }
 
 export function TruncatedCell({ content, maxCharLength, maxWidth }) {
-    const truncatedContent =
-        content.length > maxCharLength
-            ? `${content.substring(0, maxCharLength)}...`
-            : content;
+	const truncatedContent =
+		content.length > maxCharLength
+			? `${content.substring(0, maxCharLength)}...`
+			: content;
 
-    return (
-        <Td style={{ maxWidth: `${maxWidth}rem`, paddingLeft: "23px", paddingRight: "15px" }}>
-            <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {truncatedContent}
-            </div>
-        </Td>
-    );
+	return (
+		<Td
+			style={{
+				maxWidth: `${maxWidth}rem`,
+				paddingLeft: "23px",
+				paddingRight: "15px",
+			}}
+		>
+			<div
+				style={{
+					overflow: "hidden",
+					textOverflow: "ellipsis",
+					whiteSpace: "nowrap",
+				}}
+			>
+				{truncatedContent}
+			</div>
+		</Td>
+	);
 }

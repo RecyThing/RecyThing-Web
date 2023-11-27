@@ -1,4 +1,4 @@
-import { DownloadIcon } from "@/components/icons";
+import { UploadImageIcon } from "@/components/icons";
 import { Edit2 } from "iconsax-react";
 import { Calendar, Discount } from "react-iconly";
 import {
@@ -104,7 +104,7 @@ export function VoucherImageField({
 								</>
 							) : (
 								<>
-									<DownloadIcon />
+									<UploadImageIcon />
 									<Text color={"#828282"}>Unggah Gambar Reward</Text>
 								</>
 							)}

@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 .hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
-.hide-scrollbar::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+.hide-scrollbar::-webkit-scrollbar {
+	display: none; /* Safari and Chrome */
 }
