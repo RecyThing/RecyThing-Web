@@ -1,3 +1,5 @@
+import { authService } from "@/configs";
+import { clearAuthState } from "@/store/auth";
 import {
 	Button,
 	Flex,
@@ -9,8 +11,19 @@ import {
 } from "@chakra-ui/react";
 import { ArrowDown2 } from "iconsax-react";
 import { ArrowLeftSquare, ArrowRightSquare, Logout } from "react-iconly";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export function TopBar({ setCollapse, collapse }) {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const handleLogout = () => {
+		authService.logout();
+		dispatch(clearAuthState()); // waktu logout clear semua state nanti di store
+		navigate("/login");
+	};
+
 	return (
 		<div
 			className="flex items-center bg-white fixed z-50"
@@ -71,7 +84,11 @@ export function TopBar({ setCollapse, collapse }) {
 								_hover={{ bg: "#F2F2F5", color: "red" }}
 								cursor={"pointer"}
 							>
-								<PopoverBody>
+								<PopoverBody
+									className="flex flex-col gap-y-2"
+									p={2}
+									onClick={handleLogout}
+								>
 									<Flex
 										justifyContent={"space-between"}
 										alignItems={"center"}
