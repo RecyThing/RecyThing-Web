@@ -1,24 +1,20 @@
-/* eslint-disable react/prop-types */
 import { Spinner } from "@/components/spinner";
 import { fetchUserSelector } from "@/store/user";
-import { formatDateToCustomDate } from "@/utils";
+import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
 import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Icon,
-  IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
+	Avatar,
+	Box,
+	Button,
+	Flex,
+	IconButton,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+	Text,
 } from "@chakra-ui/react";
 import {
   Calendar,
@@ -29,6 +25,7 @@ import {
   TickSquare,
   User,
 } from "react-iconly";
+import { DetailUserField } from "./DetailUserField";
 import { useSelector } from "react-redux";
 
 const labels = {
@@ -135,57 +132,37 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 							>
 								Detail Informasi
 							</Text>
-							{Object.entries(labels).map(([key, value]) => {
-								if (
-									[
-										"fullname",
-										"email",
-										"date_of_birth",
-										"point",
-										"purpose",
-										"address",
-									].includes(key)
-								) {
-									return (
-										<Grid
-											key={key}
-											templateColumns="0.4fr 1fr"
-											_hover={{ bg: "#F2F2F2" }}
-											gap={"3rem"}
-										>
-											<GridItem
-												display={"flex"}
-												gap={"0.5rem"}
-												p={"0.5rem"}
-											>
-												<Icon
-													color={"#949494"}
-													boxSize={"1.5rem"}
-												>
-													{value.icon}
-												</Icon>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{value.title}
-												</Text>
-											</GridItem>
-											<GridItem p={"0.5rem"}>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data[key] || "-"}
-												</Text>
-											</GridItem>
-										</Grid>
-									);
-								}
-								return null;
-							})}
+							<DetailUserField
+								icon={labels.fullname.icon}
+								title={labels.fullname.title}
+								value={data.fullname}
+								casing={"capitalize"}
+							/>
+							<DetailUserField
+								icon={labels.email.icon}
+								title={labels.email.title}
+								value={data.email}
+							/>
+							<DetailUserField
+								icon={labels.date_of_birth.icon}
+								title={labels.date_of_birth.title}
+								value={formatDateToLocalDate(data.date_of_birth)}
+							/>
+							<DetailUserField
+								icon={labels.point.icon}
+								title={labels.point.title}
+								value={data.point}
+							/>
+							<DetailUserField
+								icon={labels.purpose.icon}
+								title={labels.purpose.title}
+								value={data.purpose}
+							/>
+							<DetailUserField
+								icon={labels.address.icon}
+								title={labels.address.title}
+								value={data.address}
+							/>
 						</ModalBody>
 						<ModalFooter p={0}>
 							<Button

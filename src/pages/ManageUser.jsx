@@ -14,6 +14,7 @@ import {
 	fetchUsersSelector,
 } from "@/store/user";
 import { Spinner } from "@/components/spinner";
+import { useCustomToast } from "@/hooks";
 
 function ManageUser() {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +29,9 @@ function ManageUser() {
 	useEffect(() => {
 		dispatch(fetchUsers());
 	}, [dispatch]);
+
+	useCustomToast(status, message);
+	useCustomToast(deleteStatus, deleteMessage);
 
 	useEffect(() => {
 		if (status === "success") {
