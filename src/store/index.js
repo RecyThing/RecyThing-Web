@@ -1,7 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { loginReducer } from "./auth";
 import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
-import { fetchVouchersReducer } from "./voucher";
+import {
+	fetchVoucherReducer,
+	fetchVouchersReducer,
+	updateVoucherReducer,
+} from "./voucher";
 
 export const store = configureStore({
 	reducer: {
@@ -12,5 +16,7 @@ export const store = configureStore({
 		deleteUser: deleteUserReducer,
 
 		fetchVouchers: fetchVouchersReducer,
+		fetchVoucher: fetchVoucherReducer,
+		updateVoucher: updateVoucherReducer,
 	},
 });

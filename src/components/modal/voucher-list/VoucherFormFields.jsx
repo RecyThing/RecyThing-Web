@@ -14,22 +14,22 @@ import { Controller } from "react-hook-form";
 import { InputDate, InputTextArea, InputWithLogo } from "@/components/inputs";
 
 const rules = {
-	voucherName: {
+	reward_name: {
 		required: "Nama voucher tidak boleh kosong",
 	},
-	voucherPoint: {
+	point: {
 		required: "Poin voucher tidak boleh kosong",
 	},
-	voucherImage: {
+	image: {
 		required: "Gambar voucher tidak boleh kosong",
 	},
-	voucherDescription: {
+	description: {
 		required: "Deskripsi voucher tidak boleh kosong",
 	},
-	voucherStartDate: {
+	start_date: {
 		required: "Tanggal mulai voucher tidak boleh kosong",
 	},
-	voucherEndDate: {
+	end_date: {
 		required: "Tanggal berakhir voucher tidak boleh kosong",
 	},
 };
@@ -42,9 +42,9 @@ export function VoucherImageField({
 }) {
 	return (
 		<Controller
-			name="voucherImage"
+			name="image"
 			control={control}
-			rules={rules.voucherImage}
+			rules={rules.image}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<Flex
@@ -52,11 +52,11 @@ export function VoucherImageField({
 						gap={2}
 					>
 						<Input
-							name="voucherImage"
+							name="image"
 							type="file"
 							display={"none"}
 							ref={imageRef}
-							accept={".jpg,.jpeg,.png"}
+							accept={".jpg,.png"}
 							onInput={(e) => {
 								field.onChange(e.target.files[0]);
 							}}
@@ -120,9 +120,9 @@ export function VoucherImageField({
 export function VoucherNameField({ control, error }) {
 	return (
 		<Controller
-			name="voucherName"
+			name="reward_name"
 			control={control}
-			rules={rules.voucherName}
+			rules={rules.reward_name}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
@@ -141,9 +141,9 @@ export function VoucherNameField({ control, error }) {
 export function VoucherPointField({ control, error }) {
 	return (
 		<Controller
-			name="voucherPoint"
+			name="point"
 			control={control}
-			rules={rules.voucherPoint}
+			rules={rules.point}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
@@ -163,9 +163,9 @@ export function VoucherPointField({ control, error }) {
 export function VoucherDescriptionField({ control, error }) {
 	return (
 		<Controller
-			name="voucherDescription"
+			name="description"
 			control={control}
-			rules={rules.voucherDescription}
+			rules={rules.description}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputTextArea
@@ -183,9 +183,9 @@ export function VoucherDescriptionField({ control, error }) {
 export function VoucherStartDateField({ control, error }) {
 	return (
 		<Controller
-			name="voucherStartDate"
+			name="start_date"
 			control={control}
-			rules={rules.voucherStartDate}
+			rules={rules.start_date}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputDate
@@ -204,9 +204,9 @@ export function VoucherStartDateField({ control, error }) {
 export function VoucherEndDateField({ control, error }) {
 	return (
 		<Controller
-			name="voucherEndDate"
+			name="end_date"
 			control={control}
-			rules={rules.voucherEndDate}
+			rules={rules.end_date}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputDate

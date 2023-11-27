@@ -2,17 +2,21 @@ import { Add } from "iconsax-react";
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TableVoucherList } from "@/components/tables";
 import { ModalAddVoucher } from "@/components/modal";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	clearFetchVoucherState,
 	clearFetchVouchersState,
+	clearUpdateVoucherState,
 	fetchVouchers,
 	fetchVouchersSelector,
+	updateVoucherSelector,
 } from "@/store/voucher";
 import { Spinner } from "@/components/spinner";
+import { useCustomToast } from "@/hooks";
 
 function VoucherList() {
 	const dispatch = useDispatch();
@@ -23,6 +27,10 @@ function VoucherList() {
 		count_data,
 	} = useSelector(fetchVouchersSelector);
 
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateVoucherSelector
+	);
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -30,7 +38,7 @@ function VoucherList() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	useEffect(() => {
+	const fetchVouchersData = useCallback(() => {
 		dispatch(
 			fetchVouchers({
 				search: searchTerm,
@@ -41,12 +49,24 @@ function VoucherList() {
 	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
+		fetchVouchersData();
+	}, [searchTerm, itemsPerPage, currentPage, fetchVouchersData]);
+
+	useEffect(() => {
+		if (updateStatus === "success") {
+			fetchVouchersData();
+		}
+	}, [fetchVouchersData, updateStatus]);
+
+	useEffect(() => {
 		setTotalItems(count_data);
 	}, [count_data]);
 
 	useEffect(() => {
 		return () => {
 			dispatch(clearFetchVouchersState());
+			dispatch(clearFetchVoucherState());
+			dispatch(clearUpdateVoucherState());
 		};
 	}, [dispatch]);
 
@@ -70,6 +90,8 @@ function VoucherList() {
 		console.log("added!", data);
 		onClose();
 	};
+
+	useCustomToast(updateStatus, updateMessage);
 
 	return (
 		<LayoutDashboardContent>

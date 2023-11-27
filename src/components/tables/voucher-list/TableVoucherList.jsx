@@ -6,7 +6,9 @@ import { TableBodyRow } from "../base-table/TableRows";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "../../buttons";
 import { ModalDelete, ModalEditVoucher } from "@/components/modal";
-import { formatDateToLocalDateString } from "@/utils";
+import { formatDateToISOString, formatDateToLocalDateString } from "@/utils";
+import { useDispatch } from "react-redux";
+import { fetchVoucher, updateVoucher } from "@/store/voucher";
 
 const TableHead = [
 	"No",
@@ -18,7 +20,8 @@ const TableHead = [
 ];
 
 export function TableVoucherList({ data, currentPage, itemsPerPage }) {
-	const [selectedRow, setSelectedRow] = useState(null);
+	const [id, setId] = useState(null);
+	const dispatch = useDispatch();
 
 	const {
 		isOpen: isOpenView,
@@ -32,23 +35,26 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 		onClose: onCloseDelete,
 	} = useDisclosure();
 
-	const handleEditModal = (row) => {
-		setSelectedRow(row);
+	const handleEditModal = (target) => {
+		setId(target);
+		dispatch(fetchVoucher(target));
 		onOpenView();
 	};
 
-	const handleSubmitEdited = (target, data) => {
-		console.log("edited!", data, target);
+	const handleSubmitEdited = (data) => {
+		data.start_date = formatDateToISOString(data.start_date);
+		data.end_date = formatDateToISOString(data.end_date);
+		dispatch(updateVoucher({ id, data }));
 		onCloseView();
 	};
 
-	const handleDeleteModal = (row) => {
-		setSelectedRow(row);
+	const handleDeleteModal = (target) => {
+		setId(target);
 		onOpenDelete();
 	};
 
-	const handleDelete = (row) => {
-		console.log("deleted!", row);
+	const handleDelete = (target) => {
+		console.log("deleted!", target);
 		onCloseDelete();
 	};
 
@@ -57,14 +63,13 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 			<ModalEditVoucher
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				target={selectedRow}
 				onSubmit={handleSubmitEdited}
 			/>
 
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
-				target={selectedRow}
+				target={id}
 				onDelete={handleDelete}
 			/>
 
@@ -92,13 +97,13 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 								icon={<Edit2 />}
 								color={"#333333"}
 								hoverColor={"#333333"}
-								onClick={() => handleEditModal(row)}
+								onClick={() => handleEditModal(row.id)}
 							/>
 							<CustomIconButton
 								icon={<Trash />}
 								color={"#E53535"}
 								hoverColor={"#E53535"}
-								onClick={() => handleDeleteModal(row)}
+								onClick={() => handleDeleteModal(row.id)}
 							/>
 						</CenteredCell>
 					</TableBodyRow>
