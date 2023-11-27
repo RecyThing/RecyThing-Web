@@ -9,7 +9,7 @@ export function ArticleDetail({ setEditArticleData, isOpen, onClose }) {
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
       <ModalContent padding={"24px"} borderRadius={"xl"}>
         <p className="text-[28px]">3 Cara mendaur ulang sampah PLASTIK!</p>
-        <img src={'../../../assets/article-dummy.png'} className="my-8 object-cover h-[148px]" alt="" />
+        <img src={'https://blog.sciencemuseum.org.uk/wp-content/uploads/2014/06/D1413351-1024x696.jpg'} className="my-8 object-cover h-[148px]" alt="" />
         <div className="flex justify-between">
           <div className="flex gap-2">
             <p className="text-sm text-[#35CC33]">Minyak</p>
