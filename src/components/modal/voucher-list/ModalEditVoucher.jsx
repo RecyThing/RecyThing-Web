@@ -13,7 +13,7 @@ import {
 import * as Fields from "./VoucherFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { fetchVoucherSelector } from "@/store/voucher";
+import { fetchVoucherSelector, updateVoucherSelector } from "@/store/voucher";
 import { useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
 
@@ -27,6 +27,7 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 	} = useForm();
 
 	const { data, status, message } = useSelector(fetchVoucherSelector);
+	const { status: updateStatus } = useSelector(updateVoucherSelector);
 
 	const imageRef = useRef();
 
@@ -39,7 +40,6 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 	const handleOnSubmit = (data) => {
 		onSubmit(data);
 		reset();
-		onClose();
 	};
 
 	useEffect(() => {
@@ -75,9 +75,11 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 				gap={"1.5rem"}
 				py={"1rem"}
 			>
-				{status === "loading" && <Spinner containerSize={"xl"} />}
+				{(status === "loading" || updateStatus === "loading") && (
+					<Spinner containerSize={"xl"} />
+				)}
 				{status === "failed" && <div>{message}</div>}
-				{status === "success" && (
+				{status === "success" && updateStatus === "idle" && (
 					<>
 						<ModalHeader pb={"0"}>
 							<Heading

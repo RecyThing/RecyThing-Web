@@ -1,14 +1,20 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
-import { deleteVoucher, fetchVoucher, updateVoucher } from "@/store/voucher";
+import {
+	deleteVoucher,
+	deleteVoucherSelector,
+	fetchVoucher,
+	updateVoucher,
+	updateVoucherSelector,
+} from "@/store/voucher";
 import { formatDateToISOString, formatDateToLocalDateString } from "@/utils";
 import { ModalDelete, ModalEditVoucher } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
 import { Trash, Edit2 } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const TableHead = [
 	"No",
@@ -23,10 +29,13 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	const [id, setId] = useState(null);
 	const dispatch = useDispatch();
 
+	const { status: updateStatus } = useSelector(updateVoucherSelector);
+	const { status: deleteStatus } = useSelector(deleteVoucherSelector);
+
 	const {
-		isOpen: isOpenView,
-		onOpen: onOpenView,
-		onClose: onCloseView,
+		isOpen: isOpenEdit,
+		onOpen: onOpenEdit,
+		onClose: onCloseEdit,
 	} = useDisclosure();
 
 	const {
@@ -38,15 +47,15 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	const handleEditModal = (target) => {
 		setId(target);
 		dispatch(fetchVoucher(target));
-		onOpenView();
+		onOpenEdit();
 	};
 
 	const handleSubmitEdited = (data) => {
 		data.image = data.image[0];
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
+
 		dispatch(updateVoucher({ id, data }));
-		onCloseView();
 	};
 
 	const handleDeleteModal = (target) => {
@@ -56,14 +65,25 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 
 	const handleDelete = (target) => {
 		dispatch(deleteVoucher(target));
-		onCloseDelete();
 	};
+
+	useEffect(() => {
+		if (updateStatus === "success" || updateStatus === "failed") {
+			onCloseEdit();
+		}
+	}, [updateStatus, onCloseEdit]);
+
+	useEffect(() => {
+		if (deleteStatus === "success" || deleteStatus === "failed") {
+			onCloseDelete();
+		}
+	}, [deleteStatus, onCloseDelete]);
 
 	return (
 		<>
 			<ModalEditVoucher
-				isOpen={isOpenView}
-				onClose={onCloseView}
+				isOpen={isOpenEdit}
+				onClose={onCloseEdit}
 				onSubmit={handleSubmitEdited}
 			/>
 
@@ -72,6 +92,7 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 				onClose={onCloseDelete}
 				target={id}
 				onDelete={handleDelete}
+				deleteStatus={deleteStatus}
 			/>
 
 			<BaseTable
