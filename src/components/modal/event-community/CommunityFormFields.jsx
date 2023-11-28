@@ -1,5 +1,5 @@
 import { UploadImageIcon } from "@/components/icons";
-import { InputTextArea, InputWithLogo } from "@/components/inputs";
+import { InputDate, InputTextArea, InputWithLogo } from "@/components/inputs";
 import {
   Box,
   Flex,
@@ -15,7 +15,7 @@ import { Calendar, Location, Paper, People, TickSquare } from "react-iconly";
 
 const rules = {
   communityImage: {
-    required: "Gambar Reward Tidak Boleh Kosong!",
+    required: "Gambar Komunitas Tidak Boleh Kosong!",
   },
   communityName: {
     required: "Nama Komunitas Tidak Boleh Kosong!",
@@ -254,23 +254,23 @@ export function CommunityMembersField({ control, error }) {
 
 export function CommunityDateField({ control, error }) {
   return (
-    <FormControl isInvalid={error}>
-      <Controller
-        control={control}
-        name="CommunityDateField"
-        rules={rules.CommunityDateField}
-        render={({ field }) => (
-          <InputWithLogo
+    <Controller
+      control={control}
+      name="CommunityDateField"
+      // rules={rules.CommunityDateField}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <InputDate
             label={"Tanggal Pelaksanaan"}
-            type={"date"}
             Logo={Calendar}
+            autoComplete={"off"}
             error={error}
             {...field}
           />
-        )}
-      />
-      <FormErrorMessage>{error?.message}</FormErrorMessage>
-    </FormControl>
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
   );
 }
 
