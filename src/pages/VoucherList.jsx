@@ -109,6 +109,7 @@ function VoucherList() {
 	};
 
 	const handleSubmitAdded = (data) => {
+		data.image = data.image[0];
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 		dispatch(createVoucher(data));

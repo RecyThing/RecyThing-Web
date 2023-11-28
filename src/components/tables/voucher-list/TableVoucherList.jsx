@@ -42,6 +42,7 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleSubmitEdited = (data) => {
+		data.image = data.image[0];
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 		dispatch(updateVoucher({ id, data }));
