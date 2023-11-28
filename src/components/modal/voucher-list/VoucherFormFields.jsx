@@ -95,7 +95,10 @@ export function VoucherImageField({
 							Max 5 Mb, Format JPG & JPEG
 						</Text>
 					</Flex>
-					<FormErrorMessage justifyContent={"center"}>
+					<FormErrorMessage
+						justifyContent={"center"}
+						textAlign={"center"}
+					>
 						{error?.message}
 					</FormErrorMessage>
 				</FormControl>
