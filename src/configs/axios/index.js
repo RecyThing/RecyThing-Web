@@ -15,10 +15,9 @@ axiosInstance.interceptors.request.use((config) => {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
 
-	if (config.method === "put") {
-		config.headers["Content-Type"] = "multipart/form-data";
-	} else {
+	if (!config.headers["Content-Type"]) {
 		config.headers["Content-Type"] = "application/json";
 	}
+
 	return config;
 });

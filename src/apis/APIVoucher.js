@@ -28,7 +28,12 @@ export const APIVoucher = {
 		try {
 			const response = await axiosInstance.put(
 				`/admins/manage/vouchers/${id}`,
-				data
+				data,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
 			);
 			return response.data;
 		} catch (error) {
