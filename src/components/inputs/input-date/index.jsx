@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import { forwardRef } from "react";
 import { DummyInput } from "./DummyInput";
 import { formatDateToLocalDate } from "@/utils";
+import { parseISO } from "date-fns";
 
 export const InputDate = forwardRef(
 	({ label, Logo, className, minDate, maxDate, ...props }, ref) => {
@@ -11,7 +12,9 @@ export const InputDate = forwardRef(
 			<DatePicker
 				ref={ref}
 				value={props.value ? formatDateToLocalDate(props.value) : null}
-				selected={props.value || null}
+				selected={
+					typeof props.value === "string" ? parseISO(props.value) : props.value
+				}
 				onChange={props.onChange}
 				enableTabLoop={false}
 				placeholderText=" "
@@ -28,6 +31,7 @@ export const InputDate = forwardRef(
 				maxDate={maxDate}
 				popperPlacement="top"
 				isClearable
+				dateFormat={"yyyy-MM-dd"}
 			/>
 		);
 	}

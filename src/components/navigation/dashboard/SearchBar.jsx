@@ -2,7 +2,7 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-iconly";
 
-export function SearchBar({ onSearch, className }) {
+export function SearchBar({ onSearch, maxLength = 25, className }) {
 	const handleSearch = (e) => {
 		onSearch(e.target.value);
 	};
@@ -31,6 +31,7 @@ export function SearchBar({ onSearch, className }) {
 				px={"2.5rem"}
 				py={"1.75rem"}
 				onChange={handleSearch}
+				maxLength={maxLength}
 			/>
 		</InputGroup>
 	);
