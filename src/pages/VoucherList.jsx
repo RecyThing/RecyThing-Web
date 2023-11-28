@@ -21,7 +21,7 @@ import {
 	updateVoucherSelector,
 } from "@/store/voucher";
 import { Spinner } from "@/components/spinner";
-import { useCustomToast } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 import { formatDateToISOString } from "@/utils";
 
 function VoucherList() {
@@ -42,7 +42,9 @@ function VoucherList() {
 		createVoucherSelector
 	);
 
-	const [searchTerm, setSearchTerm] = useState("");
+	const [_searchTerm, setSearchTerm] = useState("");
+	const searchTerm = useDebounce(_searchTerm, 500);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const [totalItems, setTotalItems] = useState(0);
