@@ -5,6 +5,7 @@ export { ModalAddDataDropPoint } from "./data-drop-point/ModalAddDataDropPoint";
 export { ModalAddRubbishCategory } from "./rubbish-category/ModalAddRubbishCategory";
 export { ModalAddVoucher } from "./voucher-list/ModalAddVoucher";
 export { ModalAddWasteExchangeData } from "./waste-exchange/ModalAddWasteExchangeData";
+export { ModalAddEventCommunity } from "./event-community/ModalAddEventCommunity";
 
 export { ModalEditAdmin } from "./manage-admin/ModalEditAdmin";
 export { ModalEditCustomizationData } from "./data-customization/ModalEditDataCustomization";
