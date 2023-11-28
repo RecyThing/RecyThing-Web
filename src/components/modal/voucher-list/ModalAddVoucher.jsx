@@ -13,6 +13,8 @@ import {
 import * as Fields from "./VoucherFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./VoucherFormSchema";
 
 export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 	const {
@@ -20,7 +22,9 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 		control,
 		formState: { errors },
 		reset,
-	} = useForm();
+	} = useForm({
+		resolver: yupResolver(schema),
+	});
 
 	const imageRef = useRef();
 
@@ -31,7 +35,6 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 	};
 
 	const handleOnSubmit = (data) => {
-		console.log(data);
 		onSubmit(data);
 		reset();
 		onClose();
@@ -78,7 +81,7 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 					>
 						<Fields.VoucherImageField
 							control={control}
-							error={errors.voucherImage}
+							error={errors.image}
 							imageRef={imageRef}
 							handleImageRef={handleImageRef}
 						/>
@@ -91,31 +94,31 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 							<GridItem>
 								<Fields.VoucherNameField
 									control={control}
-									error={errors.voucherName}
+									error={errors.reward_name}
 								/>
 							</GridItem>
 							<GridItem>
 								<Fields.VoucherPointField
 									control={control}
-									error={errors.voucherPoint}
+									error={errors.point}
 								/>
 							</GridItem>
 							<GridItem colSpan={"2"}>
 								<Fields.VoucherDescriptionField
 									control={control}
-									error={errors.voucherDescription}
+									error={errors.description}
 								/>
 							</GridItem>
 							<GridItem>
 								<Fields.VoucherStartDateField
 									control={control}
-									error={errors.voucherStartDate}
+									error={errors.start_date}
 								/>
 							</GridItem>
 							<GridItem>
 								<Fields.VoucherEndDateField
 									control={control}
-									error={errors.voucherEndDate}
+									error={errors.end_date}
 								/>
 							</GridItem>
 						</Grid>

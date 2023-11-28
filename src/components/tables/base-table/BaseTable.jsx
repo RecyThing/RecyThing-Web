@@ -22,12 +22,13 @@ export function BaseTable({ data, heads, children, textAligns }) {
 					/>
 				</Thead>
 				<Tbody>
-					{data.length === 0 && (
+					{data.length === 0 ? (
 						<TableBodyRow>
 							<NotFoundCell count={heads.length} />
 						</TableBodyRow>
+					) : (
+						children
 					)}
-					{children}
 				</Tbody>
 			</Table>
 		</TableContainer>

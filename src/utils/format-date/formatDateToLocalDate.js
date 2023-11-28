@@ -1,6 +1,8 @@
 export const formatDateToLocalDate = (date) => {
 	if (!date) return null;
-	return new Date(date).toLocaleDateString("id-ID", {
+	const localDate = new Date(date);
+	localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+	return localDate.toLocaleDateString("id-ID", {
 		year: "numeric",
 		month: "long",
 		day: "numeric",
