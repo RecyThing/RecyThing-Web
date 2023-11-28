@@ -9,6 +9,9 @@ export const schema = yup.object().shape({
 		.matches(/^[a-zA-Z0-9 ]*$/, "Nama voucher tidak boleh mengandung simbol"),
 	point: yup
 		.number()
+		.transform((value, originalValue) => {
+			return originalValue.trim() === "" ? undefined : value;
+		})
 		.required("Poin voucher tidak boleh kosong")
 		.min(1, "Poin voucher tidak boleh kurang dari 1")
 		.max(99999, "Poin voucher tidak boleh lebih dari 99999"),
