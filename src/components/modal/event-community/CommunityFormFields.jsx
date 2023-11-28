@@ -8,10 +8,26 @@ import {
   Image,
   Input,
   Text,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { Edit2 } from "iconsax-react";
 import { Controller } from "react-hook-form";
-import { Calendar, Location, Paper, People, TickSquare } from "react-iconly";
+import {
+  Calendar,
+  Location,
+  Paper,
+  People,
+  TickSquare,
+  ChevronDown,
+  ChevronUp,
+  Delete,
+  TicketStar,
+} from "react-iconly";
+import { useState, useEffect } from "react";
 
 const rules = {
   communityImage: {
@@ -31,7 +47,16 @@ const rules = {
     required: "Lokasi Komunitas Tidak Boleh Kosong!",
   },
   CommunityLinkGoogleForm: { required: "Link Google Form Tidak Boleh Kosong!" },
+  CommunityMembersField: { required: "Maksimal Anggota Tidak Bolek Kosong" },
+  CommunityDateField: { required: "Tanggal Pelaksanaan Tidak Boleh Kosong" },
+  StatusEvent: { required: "Status Event Tidak Boleh Kosong" },
 };
+
+const options = [
+  { label: "Berjalan", value: "berjalan" },
+  { label: "Belum Berjalan", value: "belum-berjalan" },
+  { label: "Selesai", value: "selesai" },
+];
 
 export function CommunityImageField({
   control,
@@ -235,8 +260,8 @@ export function CommunityMembersField({ control, error }) {
     <FormControl isInvalid={error}>
       <Controller
         control={control}
-        name="communityMembers"
-        rules={rules.communityMembers}
+        name="CommunityMembersField"
+        rules={rules.CommunityMembersField}
         render={({ field }) => (
           <InputWithLogo
             label={"Maksimal Total Anggota"}
@@ -257,7 +282,7 @@ export function CommunityDateField({ control, error }) {
     <Controller
       control={control}
       name="CommunityDateField"
-      // rules={rules.CommunityDateField}
+      rules={rules.CommunityDateField}
       render={({ field }) => (
         <FormControl isInvalid={error}>
           <InputDate
@@ -293,5 +318,85 @@ export function StatusEvent({ control, error }) {
       />
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
+  );
+}
+
+export function SelectUnit({ control, error, target }) {
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (target) {
+      setSelectedUnit(target[2]);
+    }
+  }, [target]);
+
+  const handleMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  return (
+    <Controller
+      name="selectUnit"
+      control={control}
+      rules={rules.selectUnit}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              px={4}
+              py={2}
+              width={"100%"}
+              height={"53.6px"}
+              transition="all 0.2s"
+              borderRadius="lg"
+              borderWidth="1px"
+              borderColor={"#949494"}
+              backgroundColor={"white"}
+              _hover={{ bg: "gray.100" }}
+              _expanded={{
+                bg: "#35CC33",
+                textColor: "white",
+                borderColor: "#35CC33",
+              }}
+              rightIcon={<ChevronDown />}
+              leftIcon={<TickSquare />}
+              onClick={handleMenuOpen}
+              isActive={menuOpen}
+              textAlign="left"
+              fontWeight="normal"
+              fontSize={"14px"}
+            >
+              {field.value || "Status Event"}
+            </MenuButton>
+            <MenuList fontSize={"14px"}>
+              <MenuItem
+                onClick={() => {
+                  field.onChange("Berjalan");
+                }}
+              >
+                Berjalan
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  field.onChange("Belum Berjalan");
+                }}
+              >
+                Belum Berjalan
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  field.onChange("Berlangsung");
+                }}
+              >
+                Berlangsung
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
   );
 }

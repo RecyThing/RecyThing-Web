@@ -139,9 +139,9 @@ export function ModalAddEventCommunity({ isOpen, onClose, onSubmit }) {
                 />
               </GridItem>
               <GridItem colSpan={1}>
-                <Fields.StatusEvent
+                <Fields.SelectUnit
                   control={control}
-                  error={errors.StatusEvent}
+                  error={errors.SelectUnit}
                 />
               </GridItem>
             </Grid>
