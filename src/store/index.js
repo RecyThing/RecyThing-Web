@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { loginReducer } from "./auth";
 import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
 import {
+	createVoucherReducer,
+	deleteVoucherReducer,
 	fetchVoucherReducer,
 	fetchVouchersReducer,
 	updateVoucherReducer,
@@ -18,5 +20,7 @@ export const store = configureStore({
 		fetchVouchers: fetchVouchersReducer,
 		fetchVoucher: fetchVoucherReducer,
 		updateVoucher: updateVoucherReducer,
+		deleteVoucher: deleteVoucherReducer,
+		createVoucher: createVoucherReducer,
 	},
 });

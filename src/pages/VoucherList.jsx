@@ -8,15 +8,21 @@ import { ModalAddVoucher } from "@/components/modal";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	clearCreateVoucherState,
+	clearDeleteVoucherState,
 	clearFetchVoucherState,
 	clearFetchVouchersState,
 	clearUpdateVoucherState,
+	createVoucher,
+	createVoucherSelector,
+	deleteVoucherSelector,
 	fetchVouchers,
 	fetchVouchersSelector,
 	updateVoucherSelector,
 } from "@/store/voucher";
 import { Spinner } from "@/components/spinner";
 import { useCustomToast } from "@/hooks";
+import { formatDateToISOString } from "@/utils";
 
 function VoucherList() {
 	const dispatch = useDispatch();
@@ -26,9 +32,14 @@ function VoucherList() {
 		message,
 		count_data,
 	} = useSelector(fetchVouchersSelector);
-
 	const { status: updateStatus, message: updateMessage } = useSelector(
 		updateVoucherSelector
+	);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deleteVoucherSelector
+	);
+	const { status: createStatus, message: createMessage } = useSelector(
+		createVoucherSelector
 	);
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -53,10 +64,19 @@ function VoucherList() {
 	}, [searchTerm, itemsPerPage, currentPage, fetchVouchersData]);
 
 	useEffect(() => {
-		if (updateStatus === "success") {
+		if (
+			updateStatus === "success" ||
+			deleteStatus === "success" ||
+			createStatus === "success"
+		) {
 			fetchVouchersData();
+			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
+			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
+			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
+			setSearchTerm("");
+			setCurrentPage(1);
 		}
-	}, [fetchVouchersData, updateStatus]);
+	}, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {
 		setTotalItems(count_data);
@@ -67,6 +87,8 @@ function VoucherList() {
 			dispatch(clearFetchVouchersState());
 			dispatch(clearFetchVoucherState());
 			dispatch(clearUpdateVoucherState());
+			dispatch(clearDeleteVoucherState());
+			dispatch(clearCreateVoucherState());
 		};
 	}, [dispatch]);
 
@@ -87,11 +109,15 @@ function VoucherList() {
 	};
 
 	const handleSubmitAdded = (data) => {
-		console.log("added!", data);
+		data.start_date = formatDateToISOString(data.start_date);
+		data.end_date = formatDateToISOString(data.end_date);
+		dispatch(createVoucher(data));
 		onClose();
 	};
 
 	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>

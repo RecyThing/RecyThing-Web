@@ -13,27 +13,6 @@ import {
 import { Controller } from "react-hook-form";
 import { InputDate, InputTextArea, InputWithLogo } from "@/components/inputs";
 
-const rules = {
-	reward_name: {
-		required: "Nama voucher tidak boleh kosong",
-	},
-	point: {
-		required: "Poin voucher tidak boleh kosong",
-	},
-	image: {
-		required: "Gambar voucher tidak boleh kosong",
-	},
-	description: {
-		required: "Deskripsi voucher tidak boleh kosong",
-	},
-	start_date: {
-		required: "Tanggal mulai voucher tidak boleh kosong",
-	},
-	end_date: {
-		required: "Tanggal berakhir voucher tidak boleh kosong",
-	},
-};
-
 export function VoucherImageField({
 	control,
 	error,
@@ -44,7 +23,6 @@ export function VoucherImageField({
 		<Controller
 			name="image"
 			control={control}
-			rules={rules.image}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<Flex
@@ -57,11 +35,9 @@ export function VoucherImageField({
 							display={"none"}
 							ref={imageRef}
 							accept={".jpg,.png"}
-							onInput={(e) => {
-								field.onChange(e.target.files[0]);
-							}}
+							onChange={(e) => field.onChange(e.target.files)}
 						/>
-						<Text color={"#828282"}>Gambar Reward</Text>
+						<Text color={error ? "red.500" : "#828282"}>Gambar Reward</Text>
 						<Flex
 							w={"full"}
 							position={"relative"}
@@ -79,8 +55,8 @@ export function VoucherImageField({
 								<>
 									<Image
 										src={
-											field.value && field.value instanceof File
-												? URL.createObjectURL(field.value)
+											field.value && field.value[0] instanceof File
+												? URL.createObjectURL(field.value[0])
 												: field.value
 										}
 										alt={"voucher image"}
@@ -104,13 +80,24 @@ export function VoucherImageField({
 								</>
 							) : (
 								<>
-									<UploadImageIcon />
-									<Text color={"#828282"}>Unggah Gambar Reward</Text>
+									<UploadImageIcon color={error ? "#E53535" : "#828282"} />
+									<Text color={error ? "red.500" : "#828282"}>
+										Unggah Gambar Reward
+									</Text>
 								</>
 							)}
 						</Flex>
+						<Text
+							color={error ? "red.500" : "#828282"}
+							fontSize={"sm"}
+							textAlign={"center"}
+						>
+							Max 5 Mb, Format JPG & JPEG
+						</Text>
 					</Flex>
-					<FormErrorMessage>{error?.message}</FormErrorMessage>
+					<FormErrorMessage justifyContent={"center"}>
+						{error?.message}
+					</FormErrorMessage>
 				</FormControl>
 			)}
 		/>
@@ -122,13 +109,13 @@ export function VoucherNameField({ control, error }) {
 		<Controller
 			name="reward_name"
 			control={control}
-			rules={rules.reward_name}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
 						label={"Nama Voucher"}
 						Logo={Discount}
 						autoComplete={"off"}
+						error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -143,7 +130,6 @@ export function VoucherPointField({ control, error }) {
 		<Controller
 			name="point"
 			control={control}
-			rules={rules.point}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
@@ -151,6 +137,7 @@ export function VoucherPointField({ control, error }) {
 						Logo={Discount}
 						type={"number"}
 						autoComplete={"off"}
+						error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -165,12 +152,12 @@ export function VoucherDescriptionField({ control, error }) {
 		<Controller
 			name="description"
 			control={control}
-			rules={rules.description}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputTextArea
 						label={"Deskripsi Voucher"}
 						rows={10}
+						error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -185,13 +172,13 @@ export function VoucherStartDateField({ control, error }) {
 		<Controller
 			name="start_date"
 			control={control}
-			rules={rules.start_date}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputDate
 						label={"Tanggal Mulai Voucher"}
 						Logo={Calendar}
 						autoComplete={"off"}
+						error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -206,13 +193,13 @@ export function VoucherEndDateField({ control, error }) {
 		<Controller
 			name="end_date"
 			control={control}
-			rules={rules.end_date}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputDate
 						label={"Tanggal Berakhir Voucher"}
 						Logo={Calendar}
 						autoComplete={"off"}
+						error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>

@@ -1,14 +1,14 @@
-import { useDisclosure } from "@chakra-ui/react";
-import { Trash, Edit2 } from "iconsax-react";
-import { useState } from "react";
 import { BaseTable } from "../base-table/BaseTable";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
-import { CustomIconButton } from "../../buttons";
-import { ModalDelete, ModalEditVoucher } from "@/components/modal";
+import { CustomIconButton } from "@/components/buttons";
+import { deleteVoucher, fetchVoucher, updateVoucher } from "@/store/voucher";
 import { formatDateToISOString, formatDateToLocalDateString } from "@/utils";
+import { ModalDelete, ModalEditVoucher } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { Trash, Edit2 } from "iconsax-react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { fetchVoucher, updateVoucher } from "@/store/voucher";
+import { useState } from "react";
 
 const TableHead = [
 	"No",
@@ -54,7 +54,7 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleDelete = (target) => {
-		console.log("deleted!", target);
+		dispatch(deleteVoucher(target));
 		onCloseDelete();
 	};
 

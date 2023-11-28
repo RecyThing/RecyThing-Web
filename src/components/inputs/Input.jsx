@@ -13,6 +13,14 @@ export function Input({ className, label, type, ...props }) {
 				} appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
 				placeholder=" "
 				autoComplete="off"
+				onKeyDown={(e) => {
+					if (type === "number") {
+						const keysToPrevent = ["e", "E", "-", "+", ".", " ", ","];
+						if (keysToPrevent.includes(e.key)) {
+							e.preventDefault();
+						}
+					}
+				}}
 				{...props}
 			/>
 

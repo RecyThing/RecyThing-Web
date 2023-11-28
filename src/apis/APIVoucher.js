@@ -41,4 +41,34 @@ export const APIVoucher = {
 				throw new Error(error.response.data.message);
 		}
 	},
+
+	deleteVoucher: async (id) => {
+		try {
+			const response = await axiosInstance.delete(
+				`/admins/manage/vouchers/${id}`
+			);
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError)
+				throw new Error(error.response.data.message);
+		}
+	},
+
+	createVoucher: async (data) => {
+		try {
+			const response = await axiosInstance.post(
+				"/admins/manage/vouchers",
+				data,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError)
+				throw new Error(error.response.data.message);
+		}
+	},
 };

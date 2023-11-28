@@ -16,6 +16,14 @@ export const InputWithLogo = forwardRef(
 					} appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
 					placeholder=" "
 					autoComplete="off"
+					onKeyDown={(e) => {
+						if (type === "number") {
+							const keysToPrevent = ["e", "E", "-", "+", ".", " ", ","];
+							if (keysToPrevent.includes(e.key)) {
+								e.preventDefault();
+							}
+						}
+					}}
 					{...props}
 				/>
 
@@ -37,6 +45,4 @@ export const InputWithLogo = forwardRef(
 	}
 );
 
-
 InputWithLogo.displayName = "InputWithLogo";
-
