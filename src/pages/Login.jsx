@@ -1,142 +1,166 @@
-import Banner from "@/assets/LandingPage/banner-img.png";
-import { useState } from "react";
+import { adminLogin, adminLoginSelector } from "@/store/auth";
+import { Controller, useForm } from "react-hook-form";
+import { InputWithLogo } from "@/components/inputs";
+import { Show, Hide, Lock, Message } from "react-iconly";
 import { useNavigate } from "react-router-dom";
-import { Show, Hide } from "react-iconly";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import Banner from "@/assets/LandingPage/banner-img.png";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [passwordType, setPasswordType] = useState("password");
-  const navigate = useNavigate();
-  const handleLogin = (event) => {
-    event.preventDefault();
+	// react hooks form
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
 
-    const dummyUser = { email: "admin", password: "123" };
-    // const user = JSON.parse(localStorage.getItem("user"));
+	//useState
+	const [passwordType, setPasswordType] = useState("password");
+	const { status, message } = useSelector(adminLoginSelector);
+	//react router dom
+	const navigate = useNavigate();
 
-    if (email === email && password === password) {
-      localStorage.setItem("isLoggedIn", true);
-      navigate("/");
-      window.location.reload();
-    } else if (email === dummyUser.email && password === dummyUser.password) {
-      localStorage.setItem("user", JSON.stringify(dummyUser));
-      localStorage.setItem("isLoggedIn", true);
-      window.location.reload();
-    } else {
-      setErrorMessage("Invalid username or password");
-    }
-  };
+	// dispatch
+	const dispatch = useDispatch();
 
-  const handleShowPassword = (e) => {
-    // Mencegah pengiriman formulir default
-    e.preventDefault();
+	// handle submit
+	const handleOnSubmit = (data, e) => {
+		e.preventDefault();
+		try {
+			dispatch(adminLogin(data))
+				.then(() => {
+					navigate("/dashboard");
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-    // Toggle tampilan password
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else {
-      setPasswordType("password");
-    }
-  };
-  return (
-    <>
-      <div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-1 items-center p-5 h-screen">
-        <div className=" banner rounded-md bg-green-500 flex justify-center items-center h-full p-10">
-          <img src={Banner} alt="" className="w-4/5" />
-        </div>
-        <form className=" p-10 w-3/4 mx-auto" onSubmit={handleLogin}>
-          <p className="text-3xl font-bold">Selamat Datang👋 </p>
-          <p className="font-regular text-gray-400 my-3 w-2/3">
-            Login terlebih dahulu untuk mengakses halaman Admin
-          </p>
-          <div className="wrapper flex flex-col gap-3 my-3">
-            <div className="relative my-3">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 16"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"
-                  />
-                </svg>
-              </div>
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                id="input-group-1"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
-                placeholder="Masukan Email"
-              />
-            </div>
-            <div className="relative my-3 flex ">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 16 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11.5 8V4.5a3.5 3.5 0 1 0-7 0V8M8 12v3M2 8h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type={passwordType}
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                id="password"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3.5  "
-                placeholder="Masukan Kata Sandi"
-              />
-<button
-  className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
-  onClick={handleShowPassword}
->
-  {passwordType === "password" ? <Show /> : <Hide />}
-</button>
-            </div>
-          </div>
-          <div>
-            {" "}
-            {errorMessage?.email && (
-              <p className="error py-2" style={{ color: "red" }}>
-                {errorMessage?.email}
-              </p>
-            )}
-            {errorMessage?.password && (
-              <p className="error py-2" style={{ color: "red" }}>
-                {errorMessage?.password}
-              </p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-full p-3 text-center bg-green-500 text-white font-bold rounded-lg"
-          >
-            Login
-          </button>
-        </form>
-      </div>
-    </>
-  );
+	// Handle untuk menampilkan password
+	const handleShowPassword = (e) => {
+		e.preventDefault();
+		if (passwordType === "password") {
+			setPasswordType("text");
+		} else {
+			setPasswordType("password");
+		}
+	};
+
+	return (
+		<>
+			<div className="grid grid-cols-2 md:grid-cols-2 sm:grid-cols-1 items-center p-5 h-screen">
+				<div className="banner rounded-md bg-green-500 flex justify-center items-center h-full p-10">
+					<img
+						src={Banner}
+						alt=""
+						className="w-4/5"
+					/>
+				</div>
+
+				{/* Form Login */}
+				<form
+					className="p-10 w-3/4 mx-auto"
+					onSubmit={handleSubmit(handleOnSubmit)}
+				>
+					<p className="text-3xl font-bold">Selamat Datang👋 </p>
+					<p className="font-regular text-gray-400 my-3 w-2/3">
+						Login terlebih dahulu untuk mengakses halaman Admin
+					</p>
+					<div className="wrapper flex flex-col gap-3 my-5">
+						<Controller
+							name={"email"}
+							control={control}
+							rules={{
+								required: "Email is required",
+								pattern: {
+									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+									message: "Invalid email address",
+								},
+							}}
+							render={({ field }) => (
+								<InputWithLogo
+									type={"text"}
+									id={"email"}
+									label={"Email"}
+									Logo={Message}
+									error={errors.email}
+									autoComplete={"off"}
+									{...field}
+								/>
+							)}
+						/>
+						{/* Menampilkan error pada email */}
+						{errors.email && (
+							<p
+								className="error"
+								style={{ color: "red" }}
+							>
+								{errors.email.message}
+							</p>
+						)}
+
+						<div className="relative wrapper">
+							<Controller
+								name={"password"}
+								control={control}
+								rules={{
+									required: "Password is required",
+									minLength: {
+										value: 2,
+										message: "Password must be at least 2 characters long",
+									},
+								}}
+								render={({ field }) => (
+									<InputWithLogo
+										label={"Password"}
+										id={"password"}
+										Logo={Lock}
+										type={passwordType}
+										error={errors.password}
+										{...field}
+									/>
+								)}
+							/>
+
+							{/* Button Hide and Seek */}
+							<button
+								className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
+								onClick={handleShowPassword}
+							>
+								{passwordType === "password" ? <Show /> : <Hide />}
+							</button>
+						</div>
+						{/* menampilkan error pada password */}
+						{errors.password && (
+							<p
+								className="error"
+								style={{ color: "red" }}
+							>
+								{errors.password.message}
+							</p>
+						)}
+					</div>
+
+					{/* Button Submit */}
+					<button
+						type="submit"
+						className="w-full p-3 text-center bg-green-500 text-white font-bold rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+						disabled={status === "loading" ? true : false}
+					>
+						{status === "loading" ? "Loading..." : "Login"}
+					</button>
+
+					{/* diganti toast nanti */}
+					<p>{message}</p>
+				</form>
+				{/* End Form Login */}
+			</div>
+		</>
+	);
 };
 
 export default Login;

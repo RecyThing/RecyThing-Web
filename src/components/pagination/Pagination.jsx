@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Button, Flex, IconButton, Select, Text } from "@chakra-ui/react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 
@@ -7,11 +6,10 @@ export function Pagination({
 	itemsPerPage,
 	onChangeItemsPerPage,
 	onChangePage,
-	totalItems,
+	totalItems = 0,
+	options = [5, 10],
 }) {
-	const options = [5, 10, 25];
-
-	const totalPages = Math.ceil(totalItems / itemsPerPage);
+	const totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
 	const startPage = Math.max(1, Math.min(currentPage - 1, totalPages - 3));
 	const endPage = Math.min(totalPages, startPage + 3);
 
@@ -30,6 +28,11 @@ export function Pagination({
 		}
 	};
 
+	const handleLimitPage = (e) => {
+		onChangeItemsPerPage(e.target.value);
+		onChangePage(1);
+	};
+
 	return (
 		<Flex
 			justify="space-between"
@@ -38,37 +41,43 @@ export function Pagination({
 			<Flex
 				justify="start"
 				align="center"
-				gap={5}
+				gap={"1.5rem"}
 			>
+				<Flex
+					justify="start"
+					align="center"
+					gap={"1.25rem"}
+				>
+					<Text
+						fontSize="sm"
+						color="gray.400"
+					>
+						Menampilkan
+					</Text>
+					<Select
+						variant="outline"
+						fontSize="sm"
+						defaultValue={itemsPerPage}
+						cursor={"pointer"}
+						onChange={(e) => handleLimitPage(e)}
+					>
+						{options.map((option) => (
+							<option
+								key={option}
+								value={option}
+							>
+								{option}
+							</option>
+						))}
+					</Select>
+				</Flex>
 				<Text
 					fontSize="sm"
 					color="gray.400"
 				>
-					Menampilkan
+					Menampilkan {startItem} sampai {endItem} dari {totalItems} data
 				</Text>
-				<Select
-					variant="outline"
-					fontSize="sm"
-					defaultValue={itemsPerPage}
-					cursor={"pointer"}
-					onChange={(e) => onChangeItemsPerPage(e.target.value)}
-				>
-					{options.map((option) => (
-						<option
-							key={option}
-							value={option}
-						>
-							{option}
-						</option>
-					))}
-				</Select>
 			</Flex>
-			<Text
-				fontSize="sm"
-				color="gray.400"
-			>
-				Menampilkan {startItem} sampai {endItem} dari {totalItems} data
-			</Text>
 			<Flex
 				justify="start"
 				align="center"
@@ -80,18 +89,32 @@ export function Pagination({
 					isDisabled={currentPage === 1}
 					onClick={handlePrevPage}
 				/>
-				{[...Array(endPage - startPage + 1)].map((_, index) => (
+				{totalItems === 1 ? (
 					<Button
-						key={index}
-						variant={currentPage === startPage + index ? "outline" : "ghost"}
-						borderColor={currentPage === startPage + index ? "#35CC33" : "none"}
-						color={currentPage === startPage + index ? "#35CC33" : "black "}
+						variant="outline"
+						borderColor="#35CC33"
+						color="#35CC33"
 						fontSize="sm"
-						onClick={() => onChangePage(startPage + index)}
+						isDisabled
 					>
-						{startPage + index}
+						1
 					</Button>
-				))}
+				) : (
+					[...Array(endPage - startPage + 1)].map((_, index) => (
+						<Button
+							key={index}
+							variant={currentPage === startPage + index ? "outline" : "ghost"}
+							borderColor={
+								currentPage === startPage + index ? "#35CC33" : "none"
+							}
+							color={currentPage === startPage + index ? "#35CC33" : "black "}
+							fontSize="sm"
+							onClick={() => onChangePage(startPage + index)}
+						>
+							{startPage + index}
+						</Button>
+					))
+				)}
 				<IconButton
 					icon={<ArrowRight2 />}
 					bg={"none"}

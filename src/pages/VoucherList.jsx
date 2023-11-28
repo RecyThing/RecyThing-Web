@@ -1,71 +1,103 @@
 import { Add } from "iconsax-react";
-import {
-	Box,
-	Button,
-	Container,
-	Flex,
-	Heading,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useState } from "react";
-import { VoucherListTable } from "@/components/tables";
-import { AddVoucherModal } from "@/components/modal";
-
-// dummy
-const DummyData = [];
-const names = ["Voucher 1", "Voucher 2", "Voucher 3", "Voucher 4", "Voucher 5"];
-const descriptions = [
-	"Description 1",
-	"Description 2",
-	"Description 3",
-	"Description 4",
-	"Description 5",
-];
-const images = [
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-	"https://avatars.githubusercontent.com/u/60215086?v=4",
-];
-
-for (let i = 0; i < 50; i++) {
-	const voucherName = names[Math.floor(Math.random() * names.length)];
-	const voucherDescription =
-		descriptions[Math.floor(Math.random() * descriptions.length)];
-	const voucherImage = images[Math.floor(Math.random() * images.length)];
-	const voucherPoint = Math.floor(Math.random() * 10000);
-	const voucherStartDate = new Date(2021, 1, 1);
-	const voucherEndDate = new Date(2021, 12, 31);
-
-	DummyData.push({
-		voucherImage,
-		voucherName,
-		voucherPoint,
-		voucherDescription,
-		voucherStartDate,
-		voucherEndDate,
-	});
-}
-// end dummy
+import { useCallback, useEffect, useState } from "react";
+import { TableVoucherList } from "@/components/tables";
+import { ModalAddVoucher } from "@/components/modal";
+import { LayoutDashboardContent } from "@/layout";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	clearCreateVoucherState,
+	clearDeleteVoucherState,
+	clearFetchVoucherState,
+	clearFetchVouchersState,
+	clearUpdateVoucherState,
+	createVoucher,
+	createVoucherSelector,
+	deleteVoucherSelector,
+	fetchVouchers,
+	fetchVouchersSelector,
+	updateVoucherSelector,
+} from "@/store/voucher";
+import { Spinner } from "@/components/spinner";
+import { useCustomToast } from "@/hooks";
+import { formatDateToISOString } from "@/utils";
 
 function VoucherList() {
+	const dispatch = useDispatch();
+	const {
+		data = [],
+		status,
+		message,
+		count_data,
+	} = useSelector(fetchVouchersSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateVoucherSelector
+	);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deleteVoucherSelector
+	);
+	const { status: createStatus, message: createMessage } = useSelector(
+		createVoucherSelector
+	);
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [totalItems, setTotalItems] = useState(0);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const filteredData = DummyData.filter((data) => {
-		return data.voucherName.toLowerCase().includes(searchTerm.toLowerCase());
-	});
+	const fetchVouchersData = useCallback(() => {
+		dispatch(
+			fetchVouchers({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
+	useEffect(() => {
+		fetchVouchersData();
+	}, [searchTerm, itemsPerPage, currentPage, fetchVouchersData]);
+
+	useEffect(() => {
+		if (
+			updateStatus === "success" ||
+			deleteStatus === "success" ||
+			createStatus === "success"
+		) {
+			fetchVouchersData();
+			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
+			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
+			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+	}, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
+
+	useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchVouchersState());
+			dispatch(clearFetchVoucherState());
+			dispatch(clearUpdateVoucherState());
+			dispatch(clearDeleteVoucherState());
+			dispatch(clearCreateVoucherState());
+		};
+	}, [dispatch]);
+
+	const filteredData = Object.values(data).filter((voucher) => {
+		return (
+			voucher.reward_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			voucher.point.toString().includes(searchTerm)
+		);
+	});
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -77,17 +109,19 @@ function VoucherList() {
 	};
 
 	const handleSubmitAdded = (data) => {
-		console.log("added!", data);
+		data.image = data.image[0];
+		data.start_date = formatDateToISOString(data.start_date);
+		data.end_date = formatDateToISOString(data.end_date);
+		dispatch(createVoucher(data));
 		onClose();
 	};
 
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
+
 	return (
-		<Container
-			as={"section"}
-			maxW={"container.2xl"}
-			bg={"#EBEBF0"}
-			p={"1.5rem"}
-		>
+		<LayoutDashboardContent>
 			<Heading
 				as="h1"
 				color={"#201A18"}
@@ -124,28 +158,33 @@ function VoucherList() {
 						Tambah Reward
 					</Button>
 				</Flex>
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableVoucherList
+							data={filteredData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
 
-				<VoucherListTable
-					data={paginatedData}
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-				/>
-
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={filteredData.length}
-				/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={totalItems}
+						/>
+					</>
+				)}
 			</Flex>
 
-			<AddVoucherModal
+			<ModalAddVoucher
 				isOpen={isOpen}
 				onClose={onClose}
 				onSubmit={handleSubmitAdded}
 			/>
-		</Container>
+		</LayoutDashboardContent>
 	);
 }
 
