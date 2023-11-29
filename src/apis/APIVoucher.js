@@ -2,7 +2,7 @@ import { axiosInstance } from "@/configs";
 import { AxiosError } from "axios";
 
 export const APIVoucher = {
-	getVouchers: async ({ search, limit, page }) => {
+	getVouchers: async ({ search = "", limit = 10, page = 1 }) => {
 		try {
 			const response = await axiosInstance.get(
 				`/admins/manage/vouchers?search=${search}&limit=${limit}&page=${page}`
