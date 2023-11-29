@@ -1,13 +1,27 @@
 import JumbotronImg from "@/assets/LandingPage/jumbotron img.png";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 export const HeroSection = () => {
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: true });
+
 	return (
 		<>
 			<div
 				id="jumbotron"
 				className="jumbotron grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-center lg:h-screen sm:h-full items-center  mb-24"
-			>
-				<div className="text-group p-10">
+				>
+				<div 
+					className="text-group p-10"
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateX(-100px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s"
+					}}
+					
+				>
 					<p className="text-4xl font-bold my-5 ">
 						Mulai Langkahmu untuk Lingkungan yang Lebih Baik
 					</p>
@@ -30,11 +44,25 @@ export const HeroSection = () => {
 						</button>
 					</div>
 				</div>
-				<div className="h-screen relative md:bg-green-50 sm:bg-white rounded-bl-[5em] sm:pt-24 sm:h-full md:row-auto sm:row-start-1 ">
+				<div 
+					className="h-screen relative md:bg-green-50 sm:bg-white rounded-bl-[5em] sm:pt-24 sm:h-full md:row-auto sm:row-start-1 "
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateY(-100px)",
+						  opacity: isInView ? 1 : 0,
+						transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1s"
+					}}
+				>
 					<img
 						src={JumbotronImg}
 						alt=""
 						className="mx-auto w-2/6 relative   sm:w-3/4 "
+						ref={ref}
+						style={{
+							transform: isInView ? "none" : "translateX(100px)",
+							opacity: isInView ? 1 : 0,
+							transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.2s"
+						}}
 					/>
 				</div>
 			</div>

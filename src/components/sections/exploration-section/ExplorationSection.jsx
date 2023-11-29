@@ -36,14 +36,14 @@ export function ExplorationSection() {
 				id="framePahlawan"
 				className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-row-1 justify-center items-center my-20 p-10 gap-20"
 			>
-				<div className="left">
+				<div className="left" data-aos="fade-right" data-aos-easing="ease-in" data-aos-duration="500" data-aos-once="true">
 					<img
 						src={imgFrame1}
 						alt=""
 						className="mx-auto"
 					/>
 				</div>
-				<div className="right">
+				<div className="right" data-aos="fade-left" data-aos-easing="ease-in" data-aos-duration="500" data-aos-once="true">
 					<p className="text-5xl font-semibold my-3 w-9/12">
 						Jadi <span className="text-green-400"> Pahlawan Lingkungan </span>
 						Untuk Masa Depan
@@ -71,7 +71,13 @@ export function ExplorationSection() {
 					}`}
 					key={id}
 				>
-					<div className="left bg-green-100 rounded-[3%] pt-10">
+					<div 
+						className="left bg-green-100 rounded-[3%] pt-10"
+						data-aos={`${data.id % 2 === 0 ? "fade-right" : "fade-up"}`}
+						data-aos-easing="ease-in"
+						data-aos-duration="500"
+						data-aos-once="true"
+					>
 						<img
 							src={data.image}
 							alt=""
@@ -82,6 +88,10 @@ export function ExplorationSection() {
 						className={`group-text ${
 							data.id % 2 === 0 ? "" : "lg:row-start-1 md:row-auto"
 						}`}
+						data-aos={`${data.id % 2 === 0 ? "fade-left" : "fade-down"}`}
+						data-aos-easing="ease-in"
+						data-aos-duration="500"
+						data-aos-once="true"
 					>
 						<p className="text-5xl font-semibold my-3 w-9/12">
 							{renderHighlightedTitle(data.title)}

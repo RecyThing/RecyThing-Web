@@ -115,7 +115,7 @@ export function QuestionSection() {
 				id="question"
 				className="question px-4 lg:px-[72px] py-10 lg:py-16 bg-[#F6FEF6]"
 			>
-				<div className="question-title flex flex-col lg:flex lg:flex-row lg:justify-between gap-5">
+				<div className="question-title flex flex-col lg:flex lg:flex-row lg:justify-between gap-5" data-aos-ease="ease-out" data-aos="fade-down"  data-aos-duration="1000" data-aos-once="true">
 					<div className="lg:flex lg:w-[500px] lg:items-center">
 						<p className="text-lg lg:text-4xl lg:items-center font-semibold lg:font-bold">
 							Pertanyaan yang Sering Diajukan
@@ -130,7 +130,7 @@ export function QuestionSection() {
 						</button>
 					</div>
 				</div>
-				<div className="question-list mt-10 lg:mt-14 bg-white">
+				<div className="question-list mt-10 lg:mt-14 bg-white" data-aos="fade-up" data-aos-ease="ease-out" data-aos-duration="1000" data-aos-once="true">
 					<Accordion allowToggle>
 						{data.map((item, index) => (
 							<AccordionItem key={index}>

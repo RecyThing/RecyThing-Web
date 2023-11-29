@@ -6,15 +6,15 @@ export function DownloadSection() {
 	return (
 		<>
 			<div className="download px-4 lg:px-[72px] pt-[80px] lg:pt-[226px] pb-[60px] lg:pb-[120px] relative">
-				<div className="shape rounded-2xl lg:rounded-[3rem] lg:h-[320px] bg-[#35CC33] p-5 lg:p-0 overflow-visible lg:flex">
-					<div className="relative w-[187px] lg:w-[493px] z-10">
+				<div className="shape rounded-2xl lg:rounded-[3rem] lg:h-[320px] bg-[#35CC33] p-5 lg:p-0 overflow-visible lg:flex" data-aos="fade-left" data-aos-easing="ease-in" data-aos-duration="200" data-aos-once="true">
+					<div className="relative w-[187px] lg:w-[493px] z-10" data-aos="fade-right"  data-aos-duration="500" data-aos-delay="175" data-aos-once="true">
 						<img
 							src={download_img}
 							alt="download-img"
 							className="w-full h-auto -mt-14 lg:-mt-[180px]"
 						/>
 					</div>
-					<div className="text-group flex flex-col gap-2 mt-2 lg:py-12 lg:pl-28">
+					<div className="text-group flex flex-col gap-2 mt-2 lg:py-12 lg:pl-28" data-aos="fade-left" data-aos-easing="ease-in" data-aos-duration="500" data-aos-delay="175" data-aos-once="true">
 						<p className="text-lg lg:text-4xl text-white font-semibold">
 							Download Sekarang Juga
 						</p>

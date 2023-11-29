@@ -1,13 +1,21 @@
 import { data } from "./FeatureCardList.js";
+import AOS from "aos";
+import { useEffect } from "react";
+import 'aos/dist/aos.css';
 
 export const FeatureSection = () => {
+	useEffect(() => {
+		AOS.init();
+	  }, []);
+	
+	let cardListDelayDur = 0;
 	return (
 		<>
 			<div
 				id="card"
 				className="bg-green-100 p-16 "
 			>
-				<div className="wrapper mx-auto my-10">
+				<div className="wrapper mx-auto my-10" data-aos="fade-down" data-aos-duration="500" data-aos-easing="ease-in" data-aos-delay="100" data-aos-once="true">
 					<p className="text-4xl text-center font-semibold my-5">
 						Jelajahi Aplikasi <span className="text-green-500">Recy</span>
 						<span className="text-yellow-400">Thing</span>{" "}
@@ -24,6 +32,7 @@ export const FeatureSection = () => {
 						<div
 							className="max-w-xs sm:max-w-lg bg-white border border-gray-200 rounded-lg shadow p-5 mx-auto"
 							key={i}
+							data-aos="fade-up" data-aos-duration={"10000"} data-aos-easing="ease-in" data-aos-delay={cardListDelayDur+=100} data-aos-once="true"
 						>
 							<img
 								className={`rounded-t-lg rounded-md my-5`}
