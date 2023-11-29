@@ -9,6 +9,7 @@ import Statistic from "@/components/dashboard/Statistic";
 import Chart from "@/components/dashboard/Chart";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboardContent } from "@/layout";
+import RankingUser from "@/components/dashboard/RankingUser";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -52,11 +53,12 @@ function Dashboard() {
           percentage={0.1}
         />
 
-        <Statistic />
-        <Chart />
-      </div>
-    </LayoutDashboardContent>
-  );
+				<Statistic />
+				<Chart />
+				<RankingUser />
+			</div>
+		</LayoutDashboardContent>
+	);
 }
 
 export default Dashboard;

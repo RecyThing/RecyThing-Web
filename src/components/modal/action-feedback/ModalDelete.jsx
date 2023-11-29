@@ -11,6 +11,7 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
+import { Spinner } from "@/components/spinner";
 
 export function ModalDelete({
 	isOpen,
@@ -19,10 +20,10 @@ export function ModalDelete({
 	onDelete,
 	title,
 	message,
+	deleteStatus,
 }) {
 	const handleDelete = () => {
 		onDelete(target);
-		onClose();
 	};
 
 	return (
@@ -43,62 +44,67 @@ export function ModalDelete({
 				py={"0.5rem"}
 				shadow={"lg"}
 			>
-				<ModalHeader pb={0}>
-					<Center>
-						<DangerCircleIcon />
-					</Center>
-				</ModalHeader>
+				{deleteStatus === "loading" ? (
+					<Spinner containerSize={"sm"} />
+				) : (
+					<>
+						<ModalHeader pb={0}>
+							<Center>
+								<DangerCircleIcon />
+							</Center>
+						</ModalHeader>
 
-				<ModalBody>
-					<VStack
-						spacing={"1.5rem"}
-						textAlign={"center"}
-					>
-						<Text
-							fontSize={"2xl"}
-							color={"black"}
-							fontWeight={"medium"}
-							lineHeight={"1.875rem"}
+						<ModalBody>
+							<VStack
+								spacing={"1.5rem"}
+								textAlign={"center"}
+							>
+								<Text
+									fontSize={"2xl"}
+									color={"black"}
+									fontWeight={"medium"}
+									lineHeight={"1.875rem"}
+								>
+									{title || "Anda yakin ingin menghapus data ini?"}
+								</Text>
+								<Text
+									color={"#828282"}
+									fontWeight={"semibold"}
+								>
+									{message || "Data yang dihapus tidak dapat dipulihkan"}
+								</Text>
+							</VStack>
+						</ModalBody>
+						<ModalFooter
+							pt={0}
+							display={"flex"}
+							justifyContent={"space-around"}
 						>
-							{title || "Anda yakin ingin menghapus data ini?"}
-						</Text>
-						<Text
-							color={"#828282"}
-							fontWeight={"semibold"}
-							lineHeight={"1.5rem"}
-						>
-							{message || "Data yang dihapus tidak dapat dipulihkan"}
-						</Text>
-					</VStack>
-				</ModalBody>
-				<ModalFooter
-					pt={0}
-					display={"flex"}
-					justifyContent={"space-around"}
-				>
-					<Button
-						color={"white"}
-						bg={"#828282"}
-						borderRadius={"lg"}
-						px={"3.5rem"}
-						py={"1.75rem"}
-						_hover={{ bg: "#333333" }}
-						onClick={onClose}
-					>
-						Batal
-					</Button>
-					<Button
-						color={"white"}
-						bg={"#FF5C5C"}
-						borderRadius={"lg"}
-						px={"3.5rem"}
-						py={"1.75rem"}
-						_hover={{ bg: "#FF0000" }}
-						onClick={handleDelete}
-					>
-						Hapus
-					</Button>
-				</ModalFooter>
+							<Button
+								color={"white"}
+								bg={"#828282"}
+								borderRadius={"lg"}
+								px={"3.5rem"}
+								py={"1.75rem"}
+								_hover={{ bg: "#333333" }}
+								onClick={onClose}
+							>
+								Batal
+							</Button>
+							<Button
+								color={"white"}
+								bg={"#FF5C5C"}
+								borderRadius={"lg"}
+								px={"3.5rem"}
+								py={"1.75rem"}
+								_hover={{ bg: "#FF0000" }}
+								onClick={handleDelete}
+							>
+								Hapus
+							</Button>
+						</ModalFooter>
+					</>
+				)}
 			</ModalContent>
 		</Modal>
 	);

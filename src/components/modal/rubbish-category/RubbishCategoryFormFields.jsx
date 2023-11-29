@@ -1,8 +1,8 @@
-import { ChevronDown, Delete, TicketStar } from "react-iconly";
+import { ChevronDown, ChevronUp, Delete, TicketStar } from "react-iconly";
 import {
+	Button,
 	FormControl,
 	FormErrorMessage,
-	Flex,
 	Menu,
 	MenuButton,
 	MenuList,
@@ -68,62 +68,73 @@ export function RewardPoint({ control, error }) {
 }
 
 export function SelectUnit({ control, error, target }) {
-	const [selectedUnit, setSelectedUnit] = useState("");
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
-	useEffect(() => {
-		if (target) {
-			setSelectedUnit(target[2]);
-		}
-	}, [target]);
+  useEffect(() => {
+    if (target) {
+      setSelectedUnit(target[2]);
+    }
+  }, [target]);
 
-	const handleSelectUnit = (unit) => {
-		setSelectedUnit(unit);
-	};
-	return (
-		<Controller
-			name="selectUnit"
-			control={control}
-			rules={rules.selectUnit}
-			render={({ field: { onChange } }) => (
-				<FormControl isInvalid={error}>
-					<Menu>
-						<MenuButton
-							px={4}
-							py={2}
-							width={"100%"}
-							height={"53.6px"}
-							transition="all 0.2s"
-							borderRadius="lg"
-							borderWidth="1px"
-							borderColor={"#949494"}
-							_hover={{ bg: "gray.100" }}
-						>
-							<Flex className="justify-between">
-								{selectedUnit || "Pilih Satuan"} <ChevronDown />
-							</Flex>
-						</MenuButton>
-						<MenuList>
-							<MenuItem
-								onClick={() => {
-									handleSelectUnit("Barang");
-									onChange("Barang");
-								}}
-							>
-								Barang
-							</MenuItem>
-							<MenuItem
-								onClick={() => {
-									handleSelectUnit("Kilogram");
-									onChange("Kilogram");
-								}}
-							>
-								Kilogram
-							</MenuItem>
-						</MenuList>
-					</Menu>
-					<FormErrorMessage>{error?.message}</FormErrorMessage>
-				</FormControl>
-			)}
-		/>
-	);
+  const handleMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  return (
+    <Controller
+      name="selectUnit"
+      control={control}
+      rules={rules.selectUnit}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              px={4}
+              py={2}
+              width={"100%"}
+              height={"53.6px"}
+              transition="all 0.2s"
+              borderRadius="lg"
+              borderWidth="1px"
+              borderColor={"#949494"}
+              backgroundColor={"white"}
+              _hover={{ bg: "gray.100" }}
+              _expanded={{
+                bg: "#35CC33",
+                textColor: "white",
+                borderColor: "#35CC33",
+              }}
+              rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}
+              onClick={handleMenuOpen}
+              isActive={menuOpen}
+              textAlign="left"
+              fontWeight="normal"
+              fontSize={"14px"}
+            >
+              {field.value || "Pilih Satuan"}
+            </MenuButton>
+            <MenuList fontSize={"14px"}>
+              <MenuItem
+                onClick={() => {
+                  field.onChange("Barang");
+                }}
+              >
+                Barang
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  field.onChange("Kilogram");
+                }}
+              >
+                Kilogram
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
+  );
 }

@@ -1,12 +1,11 @@
-/* eslint-disable react/prop-types */
+import { Spinner } from "@/components/spinner";
+import { fetchUserSelector } from "@/store/user";
+import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
 import {
 	Avatar,
 	Box,
 	Button,
 	Flex,
-	Grid,
-	GridItem,
-	Icon,
 	IconButton,
 	Modal,
 	ModalBody,
@@ -26,51 +25,21 @@ import {
 	TickSquare,
 	User,
 } from "react-iconly";
-
-const dummy = {
-	username: "John Doe",
-	fullname: "John Doe Wibawa",
-	email: "johndoe@gmail.com",
-	birthdate: "22 November 2000",
-	point: 3000,
-	goal: "Melaporkan Pelanggaran Sampah",
-	address:
-		"Jl. Gunung Anyar Tengah (Gunung Anyar) No. 789 RT 09 RW 12, Surabaya, Jawa Timur, Indonesia",
-	createdAt: "2023-09-23T10:12:35+08:00",
-};
+import { DetailUserField } from "./DetailUserField";
+import { useSelector } from "react-redux";
 
 const labels = {
-	username: { title: "Username", icon: null },
 	fullname: { title: "Nama Pengguna", icon: <User /> },
 	email: { title: "Email", icon: <Message /> },
-	birthdate: { title: "Tanggal Lahir", icon: <Calendar /> },
+	date_of_birth: { title: "Tanggal Lahir", icon: <Calendar /> },
 	point: { title: "Total Poin", icon: <TicketStar /> },
-	goal: { title: "Tujuan Pengguna", icon: <TickSquare /> },
+	purpose: { title: "Tujuan Pengguna", icon: <TickSquare /> },
 	address: { title: "Alamat", icon: <Location /> },
 	createdAt: { title: "Akun Terdaftar", icon: null },
 };
 
-export function ModalViewUserDetail({ isOpen, onClose, data }) {
-	// will be changed later
-	data = dummy;
-
-	// will be changed later
-	const formatDate = (value) => {
-		return (
-			new Date(value).toLocaleDateString("id-ID", {
-				day: "numeric",
-				month: "long",
-				year: "numeric",
-			}) +
-			" | " +
-			new Date(value).toLocaleTimeString("en-GB", {
-				hour: "2-digit",
-				minute: "2-digit",
-				second: "2-digit",
-				hour12: false,
-			})
-		);
-	};
+export function ModalViewUserDetail({ isOpen, onClose }) {
+	const { data, status, message } = useSelector(fetchUserSelector);
 
 	return (
 		<Modal
@@ -89,139 +58,126 @@ export function ModalViewUserDetail({ isOpen, onClose, data }) {
 				borderRadius={"3xl"}
 				shadow={"lg"}
 			>
-				<ModalHeader p={0}>
-					<Flex
-						alignItems={"center"}
-						justifyContent={"flex-start"}
-					>
-						<Avatar
-							size={"lg"}
-							src="https://bit.ly/sage-adebayo"
-						/>
-						<Flex
-							ml={"1.5rem"}
-							flexDirection={"column"}
-						>
-							<Text
-								fontWeight={"bold"}
-								fontSize={"3xl"}
+				{status === "loading" && <Spinner containerSize={"lg"} />}
+				{status === "failed" && <p>{message}</p>}
+				{status === "success" && (
+					<>
+						<ModalHeader p={0}>
+							<Flex
+								alignItems={"center"}
+								justifyContent={"flex-start"}
 							>
-								{data.username}
-							</Text>
-							<Box
-								as={"p"}
-								fontSize={"md"}
-							>
-								<Text
-									as={"span"}
-									fontWeight={"medium"}
-									color={"#828282"}
+								<Avatar
+									size={"lg"}
+									src="https://bit.ly/sage-adebayo"
+								/>
+								<Flex
+									ml={"1.5rem"}
+									flexDirection={"column"}
 								>
-									{labels.createdAt.title} :{" "}
-								</Text>
-								<Text
-									as={"span"}
-									fontWeight={"bold"}
-									color={"#333333"}
-								>
-									{formatDate(data.createdAt)}
-								</Text>
-							</Box>
-						</Flex>
-					</Flex>
-					<IconButton
-						as={ModalCloseButton}
-						icon={<CloseSquare size={"large"} />}
-						size={"sm"}
-						bg={"transparent"}
-						color={"#828282"}
-						position={"absolute"}
-						right={"1.5rem"}
-						top={"1.5rem"}
-						_hover={{ bg: "transparent", color: "#333333" }}
-						_focus={{ boxShadow: "none" }}
-					/>
-				</ModalHeader>
-
-				<ModalBody
-					p={0}
-					display={"flex"}
-					flexDirection={"column"}
-					gap={"1rem"}
-				>
-					<Text
-						fontSize={"lg"}
-						fontWeight={"semibold"}
-						color={"#828282"}
-						letterSpacing={"tight"}
-					>
-						Detail Informasi
-					</Text>
-					{Object.entries(labels).map(([key, value]) => {
-						if (
-							[
-								"fullname",
-								"email",
-								"birthdate",
-								"point",
-								"goal",
-								"address",
-							].includes(key)
-						) {
-							return (
-								<Grid
-									key={key}
-									templateColumns="0.4fr 1fr"
-									_hover={{ bg: "#F2F2F2" }}
-									gap={"3rem"}
-								>
-									<GridItem
-										display={"flex"}
-										gap={"0.5rem"}
-										p={"0.5rem"}
+									<Text
+										fontWeight={"bold"}
+										fontSize={"3xl"}
+										casing={"capitalize"}
 									>
-										<Icon
-											color={"#949494"}
-											boxSize={"1.5rem"}
-										>
-											{value.icon}
-										</Icon>
+										{data.fullname}
+									</Text>
+									<Box
+										as={"p"}
+										fontSize={"md"}
+									>
 										<Text
+											as={"span"}
 											fontWeight={"medium"}
 											color={"#828282"}
-											letterSpacing={"tight"}
 										>
-											{value.title}
+											{labels.createdAt.title} :{" "}
 										</Text>
-									</GridItem>
-									<GridItem p={"0.5rem"}>
 										<Text
+											as={"span"}
 											fontWeight={"bold"}
 											color={"#333333"}
-											letterSpacing={"tight"}
 										>
-											{data[key]}
+											{formatDateToCustomDate(data.createdAt) || "-"}
 										</Text>
-									</GridItem>
-								</Grid>
-							);
-						}
-						return null;
-					})}
-				</ModalBody>
-				<ModalFooter p={0}>
-					<Button
-						color={"white"}
-						bg={"#828282"}
-						borderRadius={"lg"}
-						px={"2.5rem"}
-						py={"1.75rem"}
-						_hover={{ bg: "#333333" }}
-						onClick={onClose}
-					>
-						Kembali
-					</Button>
-				</ModalFooter>
+									</Box>
+								</Flex>
+							</Flex>
+							<IconButton
+								as={ModalCloseButton}
+								icon={<CloseSquare size={"large"} />}
+								size={"sm"}
+								bg={"transparent"}
+								color={"#828282"}
+								position={"absolute"}
+								right={"1.5rem"}
+								top={"1.5rem"}
+								_hover={{ bg: "transparent", color: "#333333" }}
+								_focus={{ boxShadow: "none" }}
+							/>
+						</ModalHeader>
+
+						<ModalBody
+							p={0}
+							display={"flex"}
+							flexDirection={"column"}
+							gap={"1rem"}
+						>
+							<Text
+								fontSize={"lg"}
+								fontWeight={"semibold"}
+								color={"#828282"}
+								letterSpacing={"tight"}
+							>
+								Detail Informasi
+							</Text>
+							<DetailUserField
+								icon={labels.fullname.icon}
+								title={labels.fullname.title}
+								value={data.fullname}
+								casing={"capitalize"}
+							/>
+							<DetailUserField
+								icon={labels.email.icon}
+								title={labels.email.title}
+								value={data.email}
+							/>
+							<DetailUserField
+								icon={labels.date_of_birth.icon}
+								title={labels.date_of_birth.title}
+								value={formatDateToLocalDate(data.date_of_birth)}
+							/>
+							<DetailUserField
+								icon={labels.point.icon}
+								title={labels.point.title}
+								value={data.point}
+							/>
+							<DetailUserField
+								icon={labels.purpose.icon}
+								title={labels.purpose.title}
+								value={data.purpose}
+							/>
+							<DetailUserField
+								icon={labels.address.icon}
+								title={labels.address.title}
+								value={data.address}
+							/>
+						</ModalBody>
+						<ModalFooter p={0}>
+							<Button
+								color={"white"}
+								bg={"#828282"}
+								borderRadius={"lg"}
+								px={"2.5rem"}
+								py={"1.75rem"}
+								_hover={{ bg: "#333333" }}
+								onClick={onClose}
+							>
+								Kembali
+							</Button>
+						</ModalFooter>
+					</>
+				)}
 			</ModalContent>
 		</Modal>
 	);

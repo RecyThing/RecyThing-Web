@@ -1,5 +1,7 @@
-import { Route, Routes } from "react-router-dom/dist";
 import { LayoutDashboardRoot } from "@/layout";
+import { PrivateRoute } from "./private-route";
+import { ProtectedRoute } from "./protected-route";
+import { Route, Routes } from "react-router-dom/dist";
 import Badge from "@/pages/Badge";
 import Community from "@/pages/Community";
 import Dashboard from "@/pages/Dashboard";
@@ -17,6 +19,7 @@ import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
 import DataReporting from "@/pages/DataReporting";
+import ContentArticle from "@/pages/ContentArticle";
 import MissionList from "@/pages/MissionList";
 
 export default function AppRoutes() {
@@ -28,80 +31,87 @@ export default function AppRoutes() {
 			/>
 			<Route
 				path="/login"
-				element={<Login />}
-			/>
-			<Route
-				path="/dashboard"
-				element={<LayoutDashboardRoot />}
+				element={<ProtectedRoute />}
 			>
 				<Route
 					index
-					element={<Dashboard />}
+					element={<Login />}
 				/>
-				<Route
-					path="user-detail"
-					element={<ManageUser />}
-				/>
-				<Route
-					path="admin-list"
-					element={<ManageAdmin />}
-				/>
-				<Route
-					path="badge"
-					element={<Badge />}
-				/>
-				<Route
-					path="report"
-					element={<DataReporting />}
-				/>
-				<Route
-					path="content-article"
-					element={<></>}
-				/>
-				<Route
-					path="rubbish-category"
-					element={<RubbishCategory />}
-				/>
-				<Route
-					path="data-drop-point"
-					element={<DataDropPoint />}
-				/>
-				<Route
-					path="mission-list"
-					element={<MissionList></MissionList>}
-				/>
-				<Route
-					path="mission-approval"
-					element={<MissionApproval />}
-				/>
-				<Route
-					path="voucher-list"
-					element={<VoucherList />}
-				/>
-				<Route
-					path="transaction-list"
-					element={<TransactionList />}
-				/>
-				<Route
-					path="drop-point-transaction"
-					element={<ManageWasteExchange />}
-				/>
-				<Route
-					path="community"
-					element={<Community />}
-				/>
-				<Route
-					path="community/:id"
-					element={<></>}
-				/>
-				<Route
-					path="customize-data"
-					element={<DataCustomization />}
-				/>
-				<Route
-					path="download"
-					element={<DownloadStatistic />}
-				/>
+			</Route>
+			<Route
+				path="/dashboard"
+				element={<PrivateRoute />}
+			>
+				<Route element={<LayoutDashboardRoot />}>
+					<Route
+						index
+						element={<Dashboard />}
+					/>
+					<Route
+						path="user-detail"
+						element={<ManageUser />}
+					/>
+					<Route
+						path="admin-list"
+						element={<ManageAdmin />}
+					/>
+					<Route
+						path="badge"
+						element={<Badge />}
+					/>
+					<Route
+						path="report"
+						element={<DataReporting />}
+					/>
+					<Route
+						path="content-article"
+						element={<ContentArticle />}
+					/>
+					<Route
+						path="rubbish-category"
+						element={<RubbishCategory />}
+					/>
+					<Route
+						path="data-drop-point"
+						element={<DataDropPoint />}
+					/>
+					<Route
+						path="mission-list"
+						element={<MissionList />}
+					/>
+					<Route
+						path="mission-approval"
+						element={<MissionApproval />}
+					/>
+					<Route
+						path="voucher-list"
+						element={<VoucherList />}
+					/>
+					<Route
+						path="transaction-list"
+						element={<TransactionList />}
+					/>
+					<Route
+						path="drop-point-transaction"
+						element={<ManageWasteExchange />}
+					/>
+					<Route
+						path="community"
+						element={<Community />}
+					/>
+					<Route
+						path="community/:id"
+						element={<></>}
+					/>
+					<Route
+						path="customize-data"
+						element={<DataCustomization />}
+					/>
+					<Route
+						path="download"
+						element={<DownloadStatistic />}
+					/>
+				</Route>
 			</Route>
 			<Route
 				path="*"

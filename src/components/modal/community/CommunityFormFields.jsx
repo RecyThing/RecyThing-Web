@@ -1,4 +1,4 @@
-import { DownloadIcon } from "@/components/icons";
+import { UploadImageIcon } from "@/components/icons";
 import { InputTextArea, InputWithLogo } from "@/components/inputs";
 import {
 	Box,
@@ -101,7 +101,7 @@ export function CommunityImageField({
 								</>
 							) : (
 								<>
-									<DownloadIcon color={error ? "#E53535" : "#828282"} />
+									<UploadImageIcon color={error ? "#E53535" : "#828282"} />
 									<Text color={error ? "red.500" : "#828282"}>
 										Unggah Gambar Komunitas
 									</Text>
