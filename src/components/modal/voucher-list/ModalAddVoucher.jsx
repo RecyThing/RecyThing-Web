@@ -67,7 +67,7 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 				py={"1rem"}
 			>
 				{createStatus === "loading" ? (
-					<Spinner containerSize={"5xl"} />
+					<Spinner containerSize={"xl"} />
 				) : (
 					<>
 						<ModalHeader pb={"0"}>
