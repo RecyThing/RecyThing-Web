@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
 import {
+  Input as InputWithoutLogo,
   InputDate,
   InputTextArea,
   InputWithLogo,
-  InputWithoutLogo,
 } from "@/components/inputs";
 import frame from "@/assets/input-image-frame.png";
 

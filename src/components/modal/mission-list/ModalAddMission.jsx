@@ -18,7 +18,7 @@ import * as Fields from "./MissionFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { AddCircle } from "iconsax-react";
-import { AddMissionStepSection } from "@/components/sections";
+import { InputMissionStepSection } from "@/components/sections";
 import { CloseSquare } from "react-iconly";
 
 export function ModalAddMission({ isOpen, onClose, onSubmit }) {
@@ -53,6 +53,7 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
   useEffect(() => {
     if (!isOpen) {
       reset();
+    } else {
       setValue("missionSteps", []);
     }
   }, [isOpen, reset, setValue]);
@@ -138,34 +139,9 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
               <GridItem colSpan={"2"}>
                 <Flex flexDirection={"column"} gap={"16px"}>
                   <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
-                  <Box
-                    display={"flex"}
-                    gap={2}
-                    width="100%"
-                    cursor={"pointer"}
-                    _hover={{ opacity: "50%" }}
-                    bg={"white"}
-                    border={"1px"}
-                    borderColor={"#35CC33"}
-                    borderRadius={"lg"}
-                    color={"#35CC33"}
-                    fontWeight={"normal"}
-                    lineHeight={"1.5rem"}
-                    px={"1.5rem"}
-                    py={"1rem"}
-                    onClick={() => {
-                      const temp = missionSteps.concat([
-                        { title: "", description: "" },
-                      ]);
-                      setValue("missionSteps", temp);
-                    }}
-                  >
-                    <AddCircle />
-                    Tambah Tahapan / Tantangan
-                  </Box>
                   {missionSteps.map((step, index) => {
                     return (
-                      <AddMissionStepSection
+                      <InputMissionStepSection
                         key={index + 1}
                         no={index + 1}
                         control={control}
@@ -175,6 +151,33 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                       />
                     );
                   })}
+                  <Box
+                    display={"flex"}
+                    gap={2}
+                    width="100%"
+                    cursor={ missionSteps.length < 3 ? "pointer" : "default"}
+                    _hover={{ opacity: missionSteps.length < 3 ? "50%" : "100%" }}
+                    bg={"white"}
+                    border={"1px"}
+                    borderColor={missionSteps.length < 3 ? "#35CC33" : "#A7A19E"}
+                    borderRadius={"lg"}
+                    color={missionSteps.length < 3 ? "#35CC33" : "#A7A19E"}
+                    fontWeight={"normal"}
+                    lineHeight={"1.5rem"}
+                    px={"1.5rem"}
+                    py={"1rem"}
+                    onClick={() => {
+                      if (missionSteps.length < 3) {
+                        const temp = missionSteps.concat([
+                          { title: "", description: "" },
+                        ]);
+                        setValue("missionSteps", temp);
+                      }
+                    }}
+                  >
+                    <AddCircle />
+                    Tambah Tahapan / Tantangan
+                  </Box>
                 </Flex>
               </GridItem>
             </Grid>

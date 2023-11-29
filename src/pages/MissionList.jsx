@@ -42,6 +42,14 @@ const steps = [
     description: "Buanglah sampah Logam pada pembuangan terdekat!",
   },
 ];
+const images = [
+	"https://avatars.githubusercontent.com/u/60215086?v=4",
+	"https://avatars.githubusercontent.com/u/60215086?v=4",
+	"https://avatars.githubusercontent.com/u/60215086?v=4",
+	"https://avatars.githubusercontent.com/u/60215086?v=4",
+	"https://avatars.githubusercontent.com/u/60215086?v=4",
+];
+
 const buttonLabels = ["Semua", "Aktif", "Melewati Tenggat"];
 
 for (let i = 0; i < 50; i++) {
@@ -50,6 +58,9 @@ for (let i = 0; i < 50; i++) {
   const status =
     Math.floor(Math.random() * 30) % 2 ? "Aktif" : "Melewati Tenggat";
   const point = Math.floor(Math.random() * 9900) + 100;
+  const startDate = new Date(2021, 1, 1);
+	const endDate = new Date(2021, 12, 31);
+  const image = images[Math.floor(Math.random() * images.length)];
   dummyData.push({
     title: mission,
     description:
@@ -57,8 +68,9 @@ for (let i = 0; i < 50; i++) {
     maker: maker,
     status: status,
     point: point,
-    start_at: "01 November 2023",
-    end_at: "01 Desember 2023",
+    image: image,
+    startDate: startDate,
+    endDate: endDate,
     steps: steps,
   });
 }
