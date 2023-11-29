@@ -31,7 +31,7 @@ function RankingUser() {
   ];
 
   return (
-    <div className="col-span-5 rounded-lg py-5 px-6 bg-white">
+    <div className="col-span-4 rounded-lg py-5 px-6 bg-white">
       <p className="mb-2 text-xl font-semibold">Peringkat Pengguna</p>
       <BaseTable data={data} heads={tableHead}>
         {data.map((row, rowIndex) => (
