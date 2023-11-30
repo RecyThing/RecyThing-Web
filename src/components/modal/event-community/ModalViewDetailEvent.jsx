@@ -15,13 +15,32 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Box,
+  CheckboxIcon,
 } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
+import { useState } from "react";
+import { CopyIcon } from "@/components/icons";
 
 export function ModalViewDetailEvent({ isOpen, onClose, onOpenUpdate, data }) {
   const handleUpdate = () => {
     onOpenUpdate();
     onClose();
+  };
+
+  const [copiedGMaps, setCopiedGMaps] = useState(false);
+  const [copiedGForms, setCopiedGForms] = useState(false);
+
+  const handleCopyGMaps = () => {
+    navigator.clipboard.writeText(data?.gMaps);
+    setCopiedGMaps(true);
+    setTimeout(() => setCopiedGMaps(false), 200);
+  };
+
+  const handleCopyGForms = () => {
+    navigator.clipboard.writeText(data?.gForms);
+    setCopiedGForms(true);
+    setTimeout(() => setCopiedGForms(false), 200);
   };
 
   return (
@@ -125,34 +144,62 @@ export function ModalViewDetailEvent({ isOpen, onClose, onOpenUpdate, data }) {
               </Text>
             </GridItem>
 
-            {/* link google maps */}
             <GridItem
-              as={Flex}
-              colSpan={"3"}
-              flexDirection={"column"}
-              gap={"0.5rem"}
+              position="relative"
+              colSpan={3}
+              flexDirection="column"
+              gap="0.5rem"
             >
-              <Text color={"#828282"} fontSize={"lg"}>
+              <Box position="absolute" top="0" right="0">
+                {copiedGMaps ? (
+                  <CheckboxIcon color="green.500" />
+                ) : (
+                  <IconButton
+                    size="sm"
+                    aria-label="Salin Google Maps"
+                    onClick={handleCopyGMaps}
+                    icon={<CopyIcon />}
+                  />
+                )}
+              </Box>
+              <Text color="#828282" fontSize="lg">
                 Link Google Maps Lokasi Event
               </Text>
-              <Text color={"#333333"} fontSize={"sm"} textAlign={"justify"}>
-                {data?.gMaps}
-              </Text>
+              <Flex>
+                <Text color="#333333" fontSize="sm" textAlign="justify">
+                  {data?.gMaps}
+                </Text>
+              </Flex>
             </GridItem>
 
-            {/* link google form */}
+            {/* Google Form */}
             <GridItem
-              as={Flex}
-              colSpan={"3"}
-              flexDirection={"column"}
-              gap={"0.5rem"}
+              position="relative"
+              colSpan={3}
+              flexDirection="column"
+              gap="0.5rem"
             >
-              <Text color={"#828282"} fontSize={"lg"}>
+              <Box position="absolute" top="0" right="0">
+                {copiedGForms ? (
+                  <CheckboxIcon color="green.500" />
+                ) : (
+                  // <CheckCircleIcon color="green.500" />
+                  <IconButton
+                    size="sm"
+                    aria-label="Salin Google Form"
+                    onClick={handleCopyGForms}
+                    icon={<CopyIcon />}
+                  />
+                )}
+              </Box>
+              <Text color="#828282" fontSize="lg">
                 Link Google Form Pendaftaran Event
               </Text>
-              <Text color={"#333333"} fontSize={"sm"} textAlign={"justify"}>
-                {data?.gForms}
-              </Text>
+              <Flex>
+                <Text color="#333333" fontSize="sm" textAlign="justify">
+                  {data?.gForms}
+                </Text>
+              </Flex>
             </GridItem>
 
             <GridItem as={Flex} flexDirection={"column"} gap={"0.5rem"}>

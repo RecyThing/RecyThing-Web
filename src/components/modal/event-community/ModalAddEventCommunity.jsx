@@ -93,7 +93,7 @@ export function ModalAddEventCommunity({ isOpen, onClose, onSubmit }) {
 
             <Grid
               templateRows={"auto auto auto"}
-              templateColumns={"1.75fr 1fr"}
+              templateColumns={"1fr 1fr"}
               gap={6}
             >
               <GridItem colSpan={"3"}>
@@ -126,18 +126,18 @@ export function ModalAddEventCommunity({ isOpen, onClose, onSubmit }) {
                   error={errors.CommunityLinkGoogleForm}
                 />
               </GridItem>
+
               <GridItem colSpan={1}>
-                <Fields.CommunityMembersField
-                  control={control}
-                  error={errors.CommunityMembersField}
-                />
+                <Fields.KuotaMaks control={control} error={errors.KuotaMaks} />
               </GridItem>
+
               <GridItem colSpan={1}>
                 <Fields.CommunityDateField
                   control={control}
                   error={errors.CommunityDateField}
                 />
               </GridItem>
+
               <GridItem colSpan={1}>
                 <Fields.SelectUnit
                   control={control}

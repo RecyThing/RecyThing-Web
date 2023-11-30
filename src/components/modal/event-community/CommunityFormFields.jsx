@@ -13,6 +13,7 @@ import {
   Button,
   MenuList,
   MenuItem,
+  Select,
 } from "@chakra-ui/react";
 import { Edit2 } from "iconsax-react";
 import { Controller } from "react-hook-form";
@@ -48,6 +49,7 @@ const rules = {
   },
   CommunityLinkGoogleForm: { required: "Link Google Form Tidak Boleh Kosong!" },
   CommunityMembersField: { required: "Maksimal Anggota Tidak Bolek Kosong" },
+  KuotaMaks: { required: "Maksimal Anggota Tidak Bolek Kosong" },
   CommunityDateField: { required: "Tanggal Pelaksanaan Tidak Boleh Kosong" },
   StatusEvent: { required: "Status Event Tidak Boleh Kosong" },
 };
@@ -277,27 +279,69 @@ export function CommunityMembersField({ control, error }) {
   );
 }
 
-export function CommunityDateField({ control, error }) {
+export function KuotaMaks({ control, error }) {
   return (
-    <Controller
-      control={control}
-      name="CommunityDateField"
-      rules={rules.CommunityDateField}
-      render={({ field }) => (
-        <FormControl isInvalid={error}>
-          <InputDate
-            label={"Tanggal Pelaksanaan"}
-            Logo={Calendar}
-            autoComplete={"off"}
+    <FormControl isInvalid={error}>
+      <Controller
+        control={control}
+        name="KuotaMaksimal"
+        rules={rules.KuotaMaks}
+        render={({ field }) => (
+          <InputWithLogo
+            label={"Kuota Maksimal"}
+            type={"number"}
+            Logo={People}
             error={error}
             {...field}
           />
-          <FormErrorMessage>{error?.message}</FormErrorMessage>
-        </FormControl>
-      )}
-    />
+        )}
+      />
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
+    </FormControl>
   );
 }
+
+export function CommunityDateField({ control, error }) {
+  return (
+    <FormControl isInvalid={error}>
+      <Controller
+        control={control}
+        name="CommunityDateField"
+        rules={rules.CommunityDateField}
+        render={({ field }) => (
+          <InputDate
+            label={"Tanggal Pelaksanaan"}
+            Logo={Calendar}
+            error={error}
+            {...field}
+          />
+        )}
+      />
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
+    </FormControl>
+  );
+}
+
+// export function CommunityDateField({ control, error }) {
+//   return (
+//     <Controller
+//       control={control}
+//       name="CommunityDateField"
+//       rules={rules.CommunityDateField}
+//       render={({ field }) => (
+//         <FormControl isInvalid={error}>
+//           <InputDate
+//             label={"Tanggal Pelaksanaan"}
+//             Logo={Calendar}
+//             error={error}
+//             {...field}
+//           />
+//           <FormErrorMessage>{error?.message}</FormErrorMessage>
+//         </FormControl>
+//       )}
+//     />
+//   );
+// }
 
 export function StatusEvent({ control, error }) {
   return (
@@ -320,6 +364,29 @@ export function StatusEvent({ control, error }) {
     </FormControl>
   );
 }
+
+// export function SelectUnit({ control, error }) {
+//   return (
+//     <FormControl isInvalid={error}>
+//       <Controller
+//         control={control}
+//         name="SelectUnit"
+//         rules={rules.SelectUnit}
+//         render={({ field }) => (
+//           <InputWithLogo
+//             label={"Status Event"}
+//             type={""}
+//             Logo={TickSquare}
+//             error={error}
+//             rightIcon={<ChevronDown />}
+//             {...field}
+//           />
+//         )}
+//       />
+//       <FormErrorMessage>{error?.message}</FormErrorMessage>
+//     </FormControl>
+//   );
+// }
 
 export function SelectUnit({ control, error, target }) {
   const [selectedUnit, setSelectedUnit] = useState("");
