@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 export const HeroSection = () => {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true });
+	const isInView = useInView(ref, { once: false });
 
 	return (
 		<>
@@ -18,7 +18,7 @@ export const HeroSection = () => {
 					style={{
 						transform: isInView ? "none" : "translateX(-100px)",
 						  opacity: isInView ? 1 : 0,
-						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s"
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.6s"
 					}}
 					
 				>
@@ -50,7 +50,7 @@ export const HeroSection = () => {
 					style={{
 						transform: isInView ? "none" : "translateY(-100px)",
 						  opacity: isInView ? 1 : 0,
-						transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1s"
+						transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s"
 					}}
 				>
 					<img
@@ -61,7 +61,7 @@ export const HeroSection = () => {
 						style={{
 							transform: isInView ? "none" : "translateX(100px)",
 							opacity: isInView ? 1 : 0,
-							transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.2s"
+							transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.7s"
 						}}
 					/>
 				</div>

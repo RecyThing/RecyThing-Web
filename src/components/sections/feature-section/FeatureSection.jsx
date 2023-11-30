@@ -1,21 +1,27 @@
 import { data } from "./FeatureCardList.js";
-import AOS from "aos";
-import { useEffect } from "react";
-import 'aos/dist/aos.css';
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 export const FeatureSection = () => {
-	useEffect(() => {
-		AOS.init();
-	  }, []);
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: false });
 	
-	let cardListDelayDur = 0;
+	let cardListDelayDur = 0.1;
 	return (
 		<>
 			<div
 				id="card"
 				className="bg-green-100 p-16 "
 			>
-				<div className="wrapper mx-auto my-10" data-aos="fade-down" data-aos-duration="500" data-aos-easing="ease-in" data-aos-delay="100" data-aos-once="true">
+				<div 
+					className="wrapper mx-auto my-10"
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateY(-100px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s"
+					}}
+				>
 					<p className="text-4xl text-center font-semibold my-5">
 						Jelajahi Aplikasi <span className="text-green-500">Recy</span>
 						<span className="text-yellow-400">Thing</span>{" "}
@@ -32,7 +38,12 @@ export const FeatureSection = () => {
 						<div
 							className="max-w-xs sm:max-w-lg bg-white border border-gray-200 rounded-lg shadow p-5 mx-auto"
 							key={i}
-							data-aos="fade-up" data-aos-duration={"10000"} data-aos-easing="ease-in" data-aos-delay={cardListDelayDur+=100} data-aos-once="true"
+							ref={ref}
+							style={{
+								transform: isInView ? "none" : "translateY(100px)",
+								opacity: isInView ? 1 : 0,
+								transition: `all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) ${cardListDelayDur+=0.1}s`
+							}}
 						>
 							<img
 								className={`rounded-t-lg rounded-md my-5`}
