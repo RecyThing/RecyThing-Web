@@ -7,6 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownCircle, ChevronUpCircle } from "react-iconly";
 import { useState } from "react";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 const data = [
 	{
@@ -103,6 +105,9 @@ const data = [
 ];
 
 export function QuestionSection() {
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: false });
+
 	const [activeAccordion, setActiveAccordion] = useState(null);
 
 	const handleAccordionChange = (index) => {
@@ -115,7 +120,15 @@ export function QuestionSection() {
 				id="question"
 				className="question px-4 lg:px-[72px] py-10 lg:py-16 bg-[#F6FEF6]"
 			>
-				<div className="question-title flex flex-col lg:flex lg:flex-row lg:justify-between gap-5">
+				<div 
+					className="question-title flex flex-col lg:flex lg:flex-row lg:justify-between gap-5"
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateY(-100px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s"
+					}}
+				>
 					<div className="lg:flex lg:w-[500px] lg:items-center">
 						<p className="text-lg lg:text-4xl lg:items-center font-semibold lg:font-bold">
 							Pertanyaan yang Sering Diajukan
@@ -130,7 +143,15 @@ export function QuestionSection() {
 						</button>
 					</div>
 				</div>
-				<div className="question-list mt-10 lg:mt-14 bg-white">
+				<div 
+					className="question-list mt-10 lg:mt-14 bg-white"
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateY(100px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s"
+					}}
+				>
 					<Accordion allowToggle>
 						{data.map((item, index) => (
 							<AccordionItem key={index}>
