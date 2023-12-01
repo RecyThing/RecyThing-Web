@@ -8,9 +8,9 @@ export const APIAuth = {
 			const response = await axiosInstance.post("/admins/login", data);
 
 			if (response.data) {
-				const { token } = response.data.data;
+				const { token, fullname, email, image } = response.data.data;
 				authService.setCredentialsToCookie({ token });
-				authService.setDataAdmin(JSON.stringify(response.data.data));
+				authService.setDataAdmin({fullname, email, image});
 			}
 
 			return response.data;

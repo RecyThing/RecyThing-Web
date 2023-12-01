@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 export function TopBar({ setCollapse, collapse }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { fullname, email, image } = authService.getDataAdmin();
+	const { name, email, image } = authService.getDataAdmin();
 
 	const handleLogout = () => {
 		authService.logout();
@@ -63,7 +63,7 @@ export function TopBar({ setCollapse, collapse }) {
 											className="text-xs font-medium"
 											style={nameStyle}
 										>
-											{fullname}
+											{name}
 										</p>
 										<p style={emailStyle}>{email}</p>
 									</div>

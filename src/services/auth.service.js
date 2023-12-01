@@ -37,8 +37,13 @@ export class AuthService {
 		// }
 	}
 	
-	setDataAdmin( data ) {
-		Cookies.set("data", data);
+	setDataAdmin( {fullname, email , image} ) {
+		const data = {
+			'name': fullname,
+			'email': email,
+			'image': image,
+		}
+		Cookies.set("data", JSON.stringify(data));
 	}
 
 	clearCredentialsFromCookie() {
