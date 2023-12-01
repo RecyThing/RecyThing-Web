@@ -35,7 +35,7 @@ const labels = {
 	point: { title: "Total Poin", icon: <TicketStar /> },
 	purpose: { title: "Tujuan Pengguna", icon: <TickSquare /> },
 	address: { title: "Alamat", icon: <Location /> },
-	createdAt: { title: "Akun Terdaftar", icon: null },
+	created_at: { title: "Akun Terdaftar", icon: null },
 };
 
 export function ModalViewUserDetail({ isOpen, onClose }) {
@@ -69,7 +69,10 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 							>
 								<Avatar
 									size={"lg"}
-									src="https://bit.ly/sage-adebayo"
+									src={
+										data.image ||
+										`https://ui-avatars.com/api/?name=${data.fullname}&background=0D8ABC&color=fff&size=128`
+									}
 								/>
 								<Flex
 									ml={"1.5rem"}
@@ -80,7 +83,7 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 										fontSize={"3xl"}
 										casing={"capitalize"}
 									>
-										{data.fullname}
+										{data.fullname || "-"}
 									</Text>
 									<Box
 										as={"p"}
@@ -91,14 +94,14 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 											fontWeight={"medium"}
 											color={"#828282"}
 										>
-											{labels.createdAt.title} :{" "}
+											{labels.created_at.title} :{" "}
 										</Text>
 										<Text
 											as={"span"}
 											fontWeight={"bold"}
 											color={"#333333"}
 										>
-											{formatDateToCustomDate(data.createdAt) || "-"}
+											{formatDateToCustomDate(data.created_at) || "-"}
 										</Text>
 									</Box>
 								</Flex>
