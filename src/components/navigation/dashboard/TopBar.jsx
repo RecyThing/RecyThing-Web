@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export function TopBar({ setCollapse, collapse }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { fullname, email, image } = authService.getDataAdmin();
 
 	const handleLogout = () => {
 		authService.logout();
@@ -54,7 +55,7 @@ export function TopBar({ setCollapse, collapse }) {
 								<div className="flex items-center gap-x-2">
 									<img
 										className="h-9 w-9 rounded-full"
-										src="https://i.ibb.co/4s1Pzd9/image.png"
+										src= {image ?? "https://i.ibb.co/4s1Pzd9/image.png"}
 										alt="profile"
 									/>
 									<div className="text-info text-left">
@@ -62,9 +63,9 @@ export function TopBar({ setCollapse, collapse }) {
 											className="text-xs font-medium"
 											style={nameStyle}
 										>
-											Admin Recything
+											{fullname}
 										</p>
-										<p style={emailStyle}>admin123@gmail.com</p>
+										<p style={emailStyle}>{email}</p>
 									</div>
 									<ArrowDown2
 										color="gray"

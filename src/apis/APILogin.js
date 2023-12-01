@@ -10,6 +10,7 @@ export const APIAuth = {
 			if (response.data) {
 				const { token } = response.data.data;
 				authService.setCredentialsToCookie({ token });
+				authService.setDataAdmin(JSON.stringify(response.data.data));
 			}
 
 			return response.data;

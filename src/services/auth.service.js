@@ -22,6 +22,13 @@ export class AuthService {
 		return null;
 	}
 
+	getDataAdmin() {
+		if (this.isAuthorized()) {
+			return JSON.parse(Cookies.get("data"));
+		}
+		return null;
+	}
+
 	setCredentialsToCookie({ token }) {
 		const { exp } = jwtDecode(token);
 		Cookies.set("token", token, { expires: new Date(exp * 1000) });
@@ -29,10 +36,15 @@ export class AuthService {
 		// 	Cookies.set("refreshToken", refreshToken);
 		// }
 	}
+	
+	setDataAdmin( data ) {
+		Cookies.set("data", data);
+	}
 
 	clearCredentialsFromCookie() {
 		if (Cookies.get("token")) Cookies.remove("token");
 		if (Cookies.get("refreshToken")) Cookies.remove("refreshToken");
+		if (Cookies.get("data")) Cookies.remove("data");
 	}
 
 	logout() {
