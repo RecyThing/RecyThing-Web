@@ -1,7 +1,7 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-function TextEditor({ peerHeight, reduceHeight = 0 }) {
+function TextEditor({ text, setArticleData, peerHeight, reduceHeight = 0 }) {
   function uploadAdapter(loader) {
     return {
       upload: () => {
@@ -26,9 +26,10 @@ function TextEditor({ peerHeight, reduceHeight = 0 }) {
       <CKEditor
         editor={ ClassicEditor }
         config={{
-          extraPlugins: [uploadPlugin]
+          extraPlugins: [uploadPlugin],
+          removePlugins: ["EasyImage","ImageUpload","MediaEmbed"]
         }}
-        data="<p></p>"
+        data={text || ""}
         onReady={(editor) => {
           editor.editing.view.change((writer) => {
             writer.setStyle(
@@ -43,9 +44,9 @@ function TextEditor({ peerHeight, reduceHeight = 0 }) {
             );
           });
         }}
-        onChange={ ( event, editor ) => {
+        onChange={ ( _, editor ) => {
             const data = editor.getData();
-            console.log( { event, editor, data } );
+            setArticleData(prev => ({ ...prev, content: data }))
         } }
       />
     </div>

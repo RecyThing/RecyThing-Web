@@ -23,6 +23,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.4",
+    "html-react-parser": "^5.0.6",
     "iconsax-react": "^0.0.8",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
