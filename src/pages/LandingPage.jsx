@@ -8,10 +8,13 @@ import {
 	QuestionSection,
 } from "@/components/sections";
 
+
 const LandingPage = () => {
+
+
 	return (
 		<>
-			<NavBar />
+			<NavBar/>
 			<HeroSection />
 			<FeatureSection />
 			<ExplorationSection />

@@ -1,13 +1,16 @@
 import Logo from "@/assets/recything-logo.png";
 import hamburger_active from "@/assets/hamburger-active.svg";
 import hamburger_non_active from "@/assets/hamburger-non-active.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-scroll";
+import { useInView } from "framer-motion";
 
 export function NavBar() {
 	const [toggleNavbar, setToggleNavbar] = useState(false);
 	const [color, setColor] = useState(false);
 	const [activeSection, setActiveSection] = useState("");
+  const ref = useRef(null);
+	const isInView = useInView(ref, { once: true });
 	
 	const changeColor = () => {
 		if (window.scrollY >= 72) {
@@ -40,6 +43,12 @@ export function NavBar() {
           "fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
           (color ? "bg-white shadow" : "bg-transparent ")
         }
+        ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateY(-50px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s"
+					}}
       >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">

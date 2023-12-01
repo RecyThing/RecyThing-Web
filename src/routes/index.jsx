@@ -20,6 +20,7 @@ import TransactionList from "@/pages/TransactionList";
 import VoucherList from "@/pages/VoucherList";
 import DataReporting from "@/pages/DataReporting";
 import ContentArticle from "@/pages/ContentArticle";
+import MissionList from "@/pages/MissionList";
 
 export default function AppRoutes() {
 	return (
@@ -76,7 +77,7 @@ export default function AppRoutes() {
 					/>
 					<Route
 						path="mission-list"
-						element={<></>}
+						element={<MissionList />}
 					/>
 					<Route
 						path="mission-approval"

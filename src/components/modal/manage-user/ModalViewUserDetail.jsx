@@ -17,13 +17,13 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import {
-  Calendar,
-  CloseSquare,
-  Location,
-  Message,
-  TicketStar,
-  TickSquare,
-  User,
+	Calendar,
+	CloseSquare,
+	Location,
+	Message,
+	TicketStar,
+	TickSquare,
+	User,
 } from "react-iconly";
 import { DetailUserField } from "./DetailUserField";
 import { useSelector } from "react-redux";
@@ -59,7 +59,6 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 				shadow={"lg"}
 			>
 				{status === "loading" && <Spinner containerSize={"lg"} />}
-				{/* will be changed to toast */}
 				{status === "failed" && <p>{message}</p>}
 				{status === "success" && (
 					<>
