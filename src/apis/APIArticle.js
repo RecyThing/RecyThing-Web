@@ -2,9 +2,9 @@ import { AxiosError } from "axios";
 import { axiosInstance } from "../configs/axios/index";
 
 export const APIArticle = {
-  getAllArticle: async (search, page = 1) => {
+  getAllArticle: async (search, limit, page = 1) => {
     try {
-      const response = await axiosInstance.get(`/admins/manage/articles?search=${search}&page=${page}`);
+      const response = await axiosInstance.get(`/admins/manage/articles?search=${search}&limit=${limit}&page=${page}`);
       return response.data;
     } catch (error) {
 			if (error instanceof AxiosError)

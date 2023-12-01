@@ -30,7 +30,7 @@ function ContentArticle() {
 
   function getArticleData() {
     setIsLoading(true);
-    APIArticle.getAllArticle(searchTerm, currentPage).then(res => {
+    APIArticle.getAllArticle(searchTerm, itemsPerPage, currentPage).then(res => {
       setArticleData(res.data);
       setTotalItems(res.count_data);
     }).finally(() => {setToastMessage({ status: "", message: "" }); setIsLoading(false)});
@@ -38,7 +38,7 @@ function ContentArticle() {
 
   useEffect(() => {
     getArticleData();
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, itemsPerPage]);
 
   useCustomToast(toastMessage.status, toastMessage.message);
 
