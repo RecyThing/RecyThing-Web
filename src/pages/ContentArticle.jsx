@@ -17,7 +17,7 @@ function ContentArticle() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [showCreateArticle, setShowCreateArticle] = useState(false);
@@ -32,7 +32,7 @@ function ContentArticle() {
     setIsLoading(true);
     APIArticle.getAllArticle(searchTerm, currentPage).then(res => {
       setArticleData(res.data);
-      setLastPage(res.pagination.last_page);
+      setTotalItems(res.count_data);
     }).finally(() => {setToastMessage({ status: "", message: "" }); setIsLoading(false)});
   }
 
@@ -72,8 +72,7 @@ function ContentArticle() {
           itemsPerPage={itemsPerPage}
           onChangeItemsPerPage={setItemsPerPage}
           onChangePage={setCurrentPage}
-          totalItems={11}
-          lastPage={lastPage}
+          totalItems={totalItems}
         />
       </div>
     </div>
