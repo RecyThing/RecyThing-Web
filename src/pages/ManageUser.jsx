@@ -1,23 +1,25 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useEffect, useState } from "react";
 import { TableUserList } from "@/components/tables";
-import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import {
 	clearDeleteUserState,
-	clearFetchUserState,
 	clearFetchUsersState,
+	clearFetchUserState,
 	deleteUserSelector,
 	fetchUsers,
 	fetchUsersSelector,
 } from "@/store/user";
 import { Spinner } from "@/components/spinner";
-import { useCustomToast } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 
 function ManageUser() {
-	const [searchTerm, setSearchTerm] = useState("");
+	const [_searchTerm, setSearchTerm] = useState("");
+	const searchTerm = useDebounce(_searchTerm, 500);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
@@ -29,9 +31,6 @@ function ManageUser() {
 	useEffect(() => {
 		dispatch(fetchUsers());
 	}, [dispatch]);
-
-	useCustomToast(status, message);
-	useCustomToast(deleteStatus, deleteMessage);
 
 	useEffect(() => {
 		if (status === "success") {
@@ -67,6 +66,8 @@ function ManageUser() {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
+
+	useCustomToast(deleteStatus, deleteMessage);
 
 	return (
 		<LayoutDashboardContent>

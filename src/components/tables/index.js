@@ -11,3 +11,4 @@ export { TableUserList } from "./manage-user/TableUserList";
 export { TableVoucherList } from "./voucher-list/TableVoucherList";
 export { TableWasteExchange } from "./waste-exchange/TableWasteExchange";
 export { TableDataReporting } from "./data-reporting/TableDataReporting";
+export { TableMissionList } from "./mission-list/TableMissionList";

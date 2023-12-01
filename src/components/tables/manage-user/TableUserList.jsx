@@ -1,13 +1,13 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
-import { deleteUser, fetchUser } from "@/store/user";
+import { deleteUser, deleteUserSelector, fetchUser } from "@/store/user";
 import { Eye, Trash } from "iconsax-react";
 import { ModalDelete, ModalViewUserDetail } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
 import { useDisclosure } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const TableHead = ["No", "Nama Lengkap", "Email", "Total Poin", "Aksi"];
 
@@ -22,36 +22,45 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 		onOpen: onOpenDelete,
 		onClose: onCloseDelete,
 	} = useDisclosure();
-	const [selectedRow, setSelectedRow] = useState(null);
-	const dispatch = useDispatch();
 
-	const handleViewModal = (row) => {
-		dispatch(fetchUser(row.id));
+	const [id, setId] = useState(null);
+
+	const dispatch = useDispatch();
+	const { status: deletestatus } = useSelector(deleteUserSelector);
+
+	const handleViewModal = (target) => {
+		dispatch(fetchUser(target));
 		onOpenView();
 	};
 
-	const handleDeleteModal = (row) => {
-		setSelectedRow(row);
+	const handleDeleteModal = (target) => {
+		setId(target);
 		onOpenDelete();
 	};
 
-	const handleDelete = (row) => {
-		dispatch(deleteUser(row.id));
-		onCloseDelete();
+	const handleDelete = (target) => {
+		dispatch(deleteUser(target));
 	};
+
+	useEffect(() => {
+		if (deletestatus === "success" || deletestatus === "failed") {
+			onCloseDelete();
+		}
+	}, [deletestatus, onCloseDelete]);
 
 	return (
 		<>
 			<ModalViewUserDetail
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={selectedRow}
+				data={id}
 			/>
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
-				target={selectedRow}
+				target={id}
 				onDelete={handleDelete}
+				deleteStatus={deletestatus}
 			/>
 			<BaseTable
 				data={data}
@@ -76,13 +85,13 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 								icon={<Eye />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+								onClick={() => handleViewModal(row.id)}
 							/>
 							<CustomIconButton
 								icon={<Trash />}
 								color={"#E53535"}
 								hoverColor={"#B22222"}
-								onClick={() => handleDeleteModal(row)}
+								onClick={() => handleDeleteModal(row.id)}
 							/>
 						</CenteredCell>
 					</TableBodyRow>
