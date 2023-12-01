@@ -8,14 +8,15 @@ import AddArticle from "@/components/content-article/AddArticle";
 import EditArticle from "@/components/content-article/EditArticle";
 import { APIArticle } from "@/apis/APIArticle";
 import { Spinner } from "@/components/spinner";
-import { useCustomToast } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 
 function ContentArticle() {
   const [articleData, setArticleData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState({ status: "", message: "" });
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [_searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useDebounce(_searchTerm, 500);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
