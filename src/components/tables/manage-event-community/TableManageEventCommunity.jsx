@@ -5,9 +5,10 @@ import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Eye, Trash } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-
+import { formatDateToLocalDate } from "@/utils";
 import { ModalDelete, ModalViewDetailTransaction } from "@/components/modal";
 import { ModalViewDetailEvent } from "@/components/modal/event-community/ModalViewDetailEvent";
+import { ModalEditCommunity } from "@/components/modal/event-community/ModalEditCommunity";
 
 const TableHead = [
   "No",
@@ -23,6 +24,11 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
     isOpen: isOpenView,
     onOpen: onOpenView,
     onClose: onCloseView,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenUpdate,
+    onOpen: onOpenUpdate,
+    onClose: onCloseUpdate,
   } = useDisclosure();
   const {
     isOpen: isOpenDelete,
@@ -49,6 +55,17 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
     onOpenView();
   };
 
+  const handleUpdateModal = () => {
+    setTimeout(() => {
+      onOpenUpdate();
+    });
+  };
+
+  const handleSubmitUpdatedData = (data) => {
+    console.log("updated!", data);
+    onCloseUpdate();
+  };
+
   const handleDeleteModal = (row) => {
     setSelectedRow(row);
     onOpenDelete();
@@ -69,9 +86,16 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
       <ModalViewDetailEvent
         isOpen={isOpenView}
         onClose={onCloseView}
+        onOpenUpdate={handleUpdateModal}
         data={selectedRow}
       />
 
+      <ModalEditCommunity
+        isOpen={isOpenUpdate}
+        onClose={onCloseUpdate}
+        onUpdate={handleSubmitUpdatedData}
+        data={selectedRow}
+      />
       <ModalDelete
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
@@ -88,7 +112,7 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
               {(currentPage - 1) * itemsPerPage + rowIndex + 1}
             </CenteredCell>
             <TextCell content={row.name} />
-            <TextCell content={row.tanggal} />
+            <TextCell content={formatDateToLocalDate(row.tanggal)} />
             <TextCell content={row.kuota} />
 
             <BadgeCell

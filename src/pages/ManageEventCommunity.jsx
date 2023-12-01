@@ -23,7 +23,7 @@ const names = [
   "Gunung Rinjani Bersih dari Polusi",
   "Sungai Citarum Sik Resik",
 ];
-const tglPelaksanaan = ["21 Oktober 2023"];
+// const tglPelaksanaan = ["21 Oktober 2023"];
 const kuotaEvent = [1000, 2000, 3000];
 const labels = ["Berjalan", "Belum Berjalan", "Selesai"];
 const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
@@ -36,8 +36,12 @@ const description = [
 
 for (let i = 0; i < 10; i++) {
   const name = names[Math.floor(Math.random() * names.length)];
-  const tanggal =
-    tglPelaksanaan[Math.floor(Math.random() * tglPelaksanaan.length)];
+  // const tanggal = ["20 Oktober 2023"];
+  const tanggal = new Date(
+    Math.floor(Math.random() * 3) + 2021,
+    Math.floor(Math.random() * 12),
+    Math.floor(Math.random() * 31)
+  );
   const kuota = kuotaEvent[Math.floor(Math.random() * kuotaEvent.length)];
   const status = labels[Math.floor(Math.random() * labels.length)];
   const points = Math.floor(Math.random() * 10000);
