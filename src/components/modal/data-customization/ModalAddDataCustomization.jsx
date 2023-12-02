@@ -9,7 +9,7 @@ import {
 	ModalFooter,
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./DataCustomizationFormSchema";
 import { createPromptSelector } from "@/store/prompt";
