@@ -7,9 +7,10 @@ function ArticleList({ editArticleData, setEditArticleData, articleData }) {
 
   return (
     <>
-      <ArticleDetail isOpen={currArticleData} editArticleData={editArticleData} setEditArticleData={setEditArticleData} onClose={() => setCurrArticleData(null)} />
+      <ArticleDetail currArticleData={currArticleData} editArticleData={editArticleData} setEditArticleData={setEditArticleData} 
+      onClose={() => setCurrArticleData(null)} />
       <div className="mb-10 flex flex-wrap gap-10">
-        {articleData.map((article, index) => <ArticleItem setCurrArticleData={setCurrArticleData} {...article} key={index} />)}
+        {articleData.map((article, index) => <ArticleItem setCurrArticleData={setCurrArticleData} data={article} key={index} />)}
       </div>
     </>
   )
