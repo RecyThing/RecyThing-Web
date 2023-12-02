@@ -1,71 +1,100 @@
 import { ButtonGroup, Container, Flex, Heading } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TableDataReporting } from "@/components/tables";
 import { TabButton } from "@/components/buttons";
 import { LayoutDashboardContent } from "@/layout";
-
-// dummy
-const DummyData = [];
-const reportType = ["Tumpukan Sampah", "Pelanggaran Sampah", ];
-const users = ["Putri", " Budi", " Joko", " Andi", " Siti"];
-const months = [ "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des", ];
-const location = [ "Jakarta Timur"]
-const labels = ["Perlu Tinjauan", "Disetujui", "Ditolak"];
-const buttonLabels = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
-
-for (let i = 0; i < 50; i++) {
-  const reportTypeIndex = Math.floor(Math.random() * reportType.length);
-  const reportTypeValue = reportType[reportTypeIndex];
-
-  let prefix;
-  if (reportTypeValue === "Tumpukan Sampah") {
-    prefix = "RBH";
-  } else if (reportTypeValue === "Pelanggaran Sampah") {
-    prefix = "LTR";
-  } else {
-    prefix = "MIS";
-  }
-  
-  const formattedNumber = i.toString().padStart(3, '0');
-
-  const id = `${prefix}${formattedNumber}`;
-  const reportTypes = reportType[Math.floor(Math.random() * reportType.length)];
-  const username = users[Math.floor(Math.random() * users.length)];
-  const locations = location[Math.floor(Math.random() * location.length)];
-  const date = `${Math.floor(Math.random() * 30) + 1} ${
-    months[Math.floor(Math.random() * months.length)]
-  } 2023`;
-  const status = labels[Math.floor(Math.random() * labels.length)];
-  DummyData.push({ id, reportTypes, username, locations, date, status });
-}
-// end dummy
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "@/components/spinner";
+import { useDebounce } from "@/hooks";
+import {
+  clearDataReportsState,
+  fetchDataReports,
+  fetchDataReportsSelector,
+} from "@/store/report";
 
 function DataReporting() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+
+  console.log("hai");
+  const {
+    data = [],
+    status,
+    message,
+    count_data,
+  } = useSelector(fetchDataReportsSelector);
+  console.log("saya rivaldo");
+
+  const [_searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useDebounce(_searchTerm, 500);
+
   const [activeFilter, setActiveFilter] = useState("Semua");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const filteredData = () => {
-    return DummyData.filter(
-      (data) =>
-        (activeFilter === "Semua" || data.status === activeFilter) &&
-        data.reportTypes.toLowerCase().includes(searchTerm.toLowerCase())
-    ).sort((a) => (a.status === "Perlu Tinjauan" ? -1 : 1));
-  };
+  const fetchReportingData = useCallback(() => {
+    dispatch(
+      fetchDataReports({
+        search: searchTerm,
+        limit: itemsPerPage,
+        page: currentPage,
+      })
+    );
+  }, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
-  const filteredDataCount = (filter) => {
-    return DummyData.filter((data) =>
-      filter === "Semua" ? true : data.status === filter
-    ).length;
-  };
+  useEffect(() => {
+    fetchReportingData();
+  }, [fetchReportingData, searchTerm, itemsPerPage, currentPage]);
 
-  const paginatedData = filteredData().slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // For Patch Data
+  // useEffect(() => {
+  //   useEffect(() => {
+  //     if (
+  //       patchStatus === "success"
+  //     ) {
+  //       fetchVouchersData();
+  //       setSearchTerm("");
+  //       setCurrentPage(1);
+  //     }
+
+  //     return () => {
+  //       if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
+  //       if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
+  //       if (createStatus !== "idle") dispatch(clearCreateVoucherState());
+  //     };
+  //   }, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
+  // });
+
+  // useEffect(() => {
+  // 	setTotalItems(count_data);
+  // }, [count_data]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearDataReportsState());
+    };
+  }, [dispatch]);
+
+  console.log(stateDataReports);
+
+  // const filteredData = Object.values(data).filter((report) => {
+  //   return report.name.toLowerCase().includes(searchTerm.toLowerCase());
+  // });
+
+  // const filteredData = () => {
+  //   return data.filter(
+  //     (data) =>
+  //       (activeFilter === "Semua" || data.status === activeFilter) &&
+  //       data.report_types.toLowerCase().includes(searchTerm.toLowerCase())
+  //   ).sort((a) => (a.status === "Perlu Tinjauan" ? -1 : 1));
+  // };
+
+  // const filteredDataCount = (filter) => {
+  //   return DummyData.filter((data) =>
+  //     filter === "Semua" ? true : data.status === filter
+  //   ).length;
+  // };
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -110,19 +139,24 @@ function DataReporting() {
           </ButtonGroup>
           <SearchBar onSearch={handleSearch} />
         </Flex>
-
-        <TableDataReporting
-          currentPage={currentPage}
-          data={paginatedData}
-          itemsPerPage={itemsPerPage}
-        />
-        <Pagination
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          onChangeItemsPerPage={setItemsPerPage}
-          onChangePage={setCurrentPage}
-          totalItems={filteredData().length}
-        />
+        {status === "loading" && <Spinner />}
+        {status === "failed" && <div>{message}</div>}
+        {status === "success" && (
+          <>
+            <TableDataReporting
+              currentPage={currentPage}
+              data={paginatedData}
+              itemsPerPage={itemsPerPage}
+            />
+            <Pagination
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              onChangeItemsPerPage={setItemsPerPage}
+              onChangePage={setCurrentPage}
+              totalItems={filteredData().length}
+            />
+          </>
+        )}
       </Flex>
     </LayoutDashboardContent>
   );
