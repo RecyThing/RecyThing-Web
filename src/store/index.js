@@ -8,6 +8,13 @@ import {
 	fetchVouchersReducer,
 	updateVoucherReducer,
 } from "./voucher";
+import {
+	createPromptReducer,
+	deletePromptReducer,
+	fetchPromptReducer,
+	fetchPromptsReducer,
+	updatePromptReducer,
+} from "./prompt";
 
 export const store = configureStore({
 	reducer: {
@@ -22,5 +29,11 @@ export const store = configureStore({
 		updateVoucher: updateVoucherReducer,
 		deleteVoucher: deleteVoucherReducer,
 		createVoucher: createVoucherReducer,
+
+		fetchPrompts: fetchPromptsReducer,
+		fetchPrompt: fetchPromptReducer,
+		updatePrompt: updatePromptReducer,
+		deletePrompt: deletePromptReducer,
+		createPrompt: createPromptReducer,
 	},
 });

@@ -1,17 +1,40 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Add } from "iconsax-react";
-import { Button, ButtonGroup, Flex, Heading } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { SearchBar } from "@/components/navigation";
 import { FilterButton } from "@/components/buttons";
 import { TableDataCustomization } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
 import { ModalAddCustomizationData } from "@/components/modal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	clearCreatePromptState,
+	clearDeletePromptState,
+	clearFetchPromptState,
+	clearFetchPromptsState,
+	clearUpdatePromptState,
+	createPrompt,
+	createPromptSelector,
+	deletePromptSelector,
+	fetchPrompts,
+	fetchPromptsSelector,
+	updatePromptSelector,
+} from "@/store/prompt";
+import { Spinner } from "@/components/spinner";
+import { useCustomToast, useDebounce } from "@/hooks";
 
 function DataCustomization() {
+	const dispatch = useDispatch();
+	const { data = [], status, message, count_data } = useSelector(fetchPromptsSelector) || {};
+	const { status: updateStatus, message: updateMessage } = useSelector(updatePromptSelector) || {};
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deletePromptSelector) || {};
+	const { status: createStatus, message: createMessage } = useSelector(createPromptSelector) || {};
+
+	const [_searchTerm, setSearchTerm] = useState("");
+	const searchTerm = useDebounce(_searchTerm, 500);
+
 	const [isAddData, setIsAddData] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const openForm = () => {
 		setIsAddData(true);
@@ -21,26 +44,90 @@ function DataCustomization() {
 		setIsAddData(false);
 	};
 
-	const [searchTerm, setSearchTerm] = useState("");
 	const [activeFilter, setActiveFilter] = useState("Semua");
+
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [totalItems, setTotalItems] = useState(0);
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const fetchPromptsData = useCallback(() => {
+		dispatch(
+			fetchPrompts({
+				category: activeFilter,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
+
+	useEffect(() => {
+		fetchPromptsData();
+	}, [searchTerm, itemsPerPage, currentPage, fetchPromptsData]);
+
+	useEffect(() => {
+		if (
+			updateStatus === "success" ||
+			deleteStatus === "success" ||
+			createStatus === "success"
+		) {
+			fetchPromptsData();
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+
+		return () => {
+			if (updateStatus !== "idle") dispatch(clearUpdatePromptState());
+			if (deleteStatus !== "idle") dispatch(clearDeletePromptState());
+			if (createStatus !== "idle") dispatch(clearCreatePromptState());
+		};
+	}, [fetchPromptsData, updateStatus, deleteStatus, createStatus, dispatch]);
+
+	useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);
+
+	useEffect(() => {
+		if (createStatus === "success" || createStatus === "failed") {
+			onClose();
+		}
+	}, [createStatus, onClose]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchPromptsState());
+			dispatch(clearFetchPromptState());
+			dispatch(clearUpdatePromptState());
+			dispatch(clearDeletePromptState());
+			dispatch(clearCreatePromptState());
+		};
+	}, [dispatch]);
 
 	const buttonLabels = ["Semua", "Sampah Anorganik", "Sampah Organik"];
 
-	const filteredData = () => {
-		return DummyData.filter(
-			([topics, username]) =>
-				(activeFilter === "Semua" || topics === activeFilter) &&
-				username.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredData = Object.values(data).filter((propmt) => {
+		const { topics, username } = propmt;
+		return (
+			(activeFilter === "Semua" || topics === activeFilter) &&
+			username.toLowerCase().includes(searchTerm.toLowerCase())
 		);
-	};
+	});	
 
 	const filteredDataCount = (filter) => {
-		return DummyData.filter(([topics]) =>
-			filter === "Semua" ? true : topics === filter
-		).length;
-	};
+		if (filter === "Semua") {
+		  	return totalItems || 0;
+		} else {
+			const filterCount = count_data && count_data[filter] ? count_data[filter] : 0;
+			return filterCount;
+		}
+	};		
 
-	const paginatedData = filteredData().slice(
+	useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);	  
+
+	const paginatedData = filteredData.slice(
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage
 	);
@@ -50,10 +137,18 @@ function DataCustomization() {
 		setCurrentPage(1);
 	};
 
+	const handleSubmitAdded = (data) => {
+		dispatch(createPrompt(data));
+	};
+
 	const handleFilterClick = (filter) => {
 		setActiveFilter(filter);
 		setCurrentPage(1);
 	};
+
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>
@@ -61,7 +156,7 @@ function DataCustomization() {
 				<ModalAddCustomizationData
 					isOpen={isAddData}
 					onClose={closeForm}
-					setIsAddData={setIsAddData}
+					onSubmit={handleSubmitAdded}
 				/>
 			) : null}
 			<div className="flex justify-between align-center">
@@ -113,18 +208,24 @@ function DataCustomization() {
 					p={"0.5rem"}
 					marginTop={"16px"}
 				>
-					<TableDataCustomization
-						data={paginatedData}
-						currentPage={currentPage}
-						itemsPerPage={itemsPerPage}
-					/>
-					<Pagination
-						currentPage={currentPage}
-						itemsPerPage={itemsPerPage}
-						onChangeItemsPerPage={setItemsPerPage}
-						onChangePage={setCurrentPage}
-						totalItems={filteredData.length}
-					/>
+					{status === "loading" && <Spinner />}
+					{status === "failed" && <div>{message}</div>}
+					{status === "success" && (
+						<>
+							<TableDataCustomization
+								data={paginatedData}
+								currentPage={currentPage}
+								itemsPerPage={itemsPerPage}
+							/>
+							<Pagination
+								currentPage={currentPage}
+								itemsPerPage={itemsPerPage}
+								onChangeItemsPerPage={setItemsPerPage}
+								onChangePage={setCurrentPage}
+								totalItems={filteredData.length}
+							/>
+						</>
+					)}
 				</Flex>
 			</div>
 		</LayoutDashboardContent>
@@ -132,18 +233,3 @@ function DataCustomization() {
 }
 
 export default DataCustomization;
-
-// dummy
-const DummyData = [];
-const trash = ["Sampah Anorganik", "Sampah Organik"];
-const questions = [
-	"1. Apa saja contoh sampah anorganik?\n2. Bagaimana mengelola sampah anorganik?\n3. Mengapa sampah anorganik dapat mencemari lingkungan?\n4. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah anorganik dengan baik?\n5. Bagaimana cara mendaur ulang sampah anorganik?",
-	"1. Apa saja contoh sampah anorganik?\n2. Bagaimana mengelola sampah anorganik?\n3. Mengapa sampah anorganik dapat mencemari lingkungan?\n4. Apa dampak yang ditimbulkan jika kita tidak mengelola sampah anorganik dengan baik?\n5. Bagaimana cara mendaur ulang sampah anorganik?",
-];
-
-for (let i = 0; i < 20; i++) {
-	const topics = trash[Math.floor(Math.random() * trash.length)];
-	const question = questions[Math.floor(Math.random() * questions.length)];
-	DummyData.push([topics, question]);
-}
-// end dummy
