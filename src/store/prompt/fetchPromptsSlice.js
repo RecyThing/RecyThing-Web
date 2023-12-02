@@ -1,10 +1,13 @@
 import { APIPrompt } from "@/apis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+// ini kalo udah dibenerin response bodynya dari BE sesuaiin lagi ya @Putri-R
 const initialState = {
 	status: "idle",
 	message: "",
 	data: {},
+	pagination: {},
+	count_data: 0,
 };
 
 export const fetchPrompts = createAsyncThunk(
@@ -20,6 +23,8 @@ export const fetchPromptsSlice = createSlice({
 			state.status = "idle";
 			state.message = "";
 			state.data = {};
+			state.pagination = {};
+			state.count_data = 0;
 		},
 	},
 	extraReducers: (builder) => {
@@ -30,6 +35,8 @@ export const fetchPromptsSlice = createSlice({
 			state.status = "success";
 			state.message = action.payload.message;
 			state.data = action.payload.data;
+			state.pagination = action.payload.pagination;
+			state.count_data = action.payload.count_data;
 		});
 		builder.addCase(fetchPrompts.rejected, (state, action) => {
 			state.status = "failed";

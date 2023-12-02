@@ -1,5 +1,5 @@
 import { BaseTable } from "../base-table/BaseTable";
-import { CenteredCell } from "../base-table/TableCells";
+import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { TruncatedCell } from "../base-table/TableCells";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
@@ -76,15 +76,11 @@ export function TableDataCustomization({ data }) {
 						key={rowIndex}
 						index={rowIndex}
 					>
+						{/* ini buat datenya nanti kamu ganti kalo udah ada response dari BE @Putri-R */}
 						<CenteredCell>{formatDate()}</CenteredCell>
+						<TextCell content={row.category} />
+						<TruncatedCell content={row.question} />
 
-						{row.map((cell, cellIndex) => (
-							<TruncatedCell
-								key={cellIndex}
-								content={cell}
-								maxWidth={17}
-							/>
-						))}
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Edit2 />}

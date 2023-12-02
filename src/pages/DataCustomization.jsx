@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { Add } from "iconsax-react";
-import { Button, ButtonGroup, Flex, Heading, useDisclosure } from "@chakra-ui/react";
+import {
+	Button,
+	ButtonGroup,
+	Flex,
+	Heading,
+	useDisclosure,
+} from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { SearchBar } from "@/components/navigation";
 import { FilterButton } from "@/components/buttons";
@@ -24,12 +30,22 @@ import {
 import { Spinner } from "@/components/spinner";
 import { useCustomToast, useDebounce } from "@/hooks";
 
+const buttonLabels = ["Semua", "Sampah Anorganik", "Sampah Organik"];
+
 function DataCustomization() {
 	const dispatch = useDispatch();
-	const { data = [], status, message, count_data } = useSelector(fetchPromptsSelector) || {};
-	const { status: updateStatus, message: updateMessage } = useSelector(updatePromptSelector) || {};
-	const { status: deleteStatus, message: deleteMessage } = useSelector(deletePromptSelector) || {};
-	const { status: createStatus, message: createMessage } = useSelector(createPromptSelector) || {};
+	const {
+		data = [],
+		status,
+		message,
+		count_data,
+	} = useSelector(fetchPromptsSelector);
+	const { status: updateStatus, message: updateMessage } =
+		useSelector(updatePromptSelector);
+	const { status: deleteStatus, message: deleteMessage } =
+		useSelector(deletePromptSelector);
+	const { status: createStatus, message: createMessage } =
+		useSelector(createPromptSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
@@ -55,7 +71,7 @@ function DataCustomization() {
 	const fetchPromptsData = useCallback(() => {
 		dispatch(
 			fetchPrompts({
-				category: activeFilter,
+				search: searchTerm,
 				limit: itemsPerPage,
 				page: currentPage,
 			})
@@ -104,33 +120,26 @@ function DataCustomization() {
 		};
 	}, [dispatch]);
 
-	const buttonLabels = ["Semua", "Sampah Anorganik", "Sampah Organik"];
-
-	const filteredData = Object.values(data).filter((propmt) => {
-		const { topics, username } = propmt;
+	// ini nanti dipake buat balikin data yang udah difilter berdasarkan searchTerm sama categorynya
+	const filteredData = Object.values(data).filter((prompt) => {
+		const { category, question } = prompt;
 		return (
-			(activeFilter === "Semua" || topics === activeFilter) &&
-			username.toLowerCase().includes(searchTerm.toLowerCase())
+			(activeFilter === "Semua" || category === activeFilter) &&
+			question.toLowerCase().includes(searchTerm.toLowerCase())
 		);
-	});	
+	});
 
+	// ini harusnya dari BE nanti kita dapet count data buat per category, aku masih tanya ini @Putri-R
 	const filteredDataCount = (filter) => {
-		if (filter === "Semua") {
-		  	return totalItems || 0;
-		} else {
-			const filterCount = count_data && count_data[filter] ? count_data[filter] : 0;
-			return filterCount;
+		switch (filter) {
+			case "Sampah Anorganik":
+				return 0; // sesuaiin nanti sama response dari BE
+			case "Sampah Organik":
+				return 0; // sesuaiin nanti sama response dari BE
+			default:
+				return count_data;
 		}
-	};		
-
-	useEffect(() => {
-		setTotalItems(count_data);
-	}, [count_data]);	  
-
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
+	};
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -141,6 +150,7 @@ function DataCustomization() {
 		dispatch(createPrompt(data));
 	};
 
+	// ini nanti kalo kita ngubah filternya, bakal refetch data dari BE
 	const handleFilterClick = (filter) => {
 		setActiveFilter(filter);
 		setCurrentPage(1);
@@ -212,17 +222,13 @@ function DataCustomization() {
 					{status === "failed" && <div>{message}</div>}
 					{status === "success" && (
 						<>
-							<TableDataCustomization
-								data={paginatedData}
-								currentPage={currentPage}
-								itemsPerPage={itemsPerPage}
-							/>
+							<TableDataCustomization data={filteredData} />
 							<Pagination
 								currentPage={currentPage}
 								itemsPerPage={itemsPerPage}
 								onChangeItemsPerPage={setItemsPerPage}
 								onChangePage={setCurrentPage}
-								totalItems={filteredData.length}
+								totalItems={totalItems}
 							/>
 						</>
 					)}
