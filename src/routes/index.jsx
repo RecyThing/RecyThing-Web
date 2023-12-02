@@ -13,6 +13,7 @@ import Login from "@/pages/Login";
 import ManageAdmin from "@/pages/ManageAdmin";
 import ManageUser from "@/pages/ManageUser";
 import ManageWasteExchange from "@/pages/ManageWasteExchange";
+import MissionList from "@/pages/MissionList";
 import MissionApproval from "@/pages/MissionApproval";
 import PathNotFound from "@/pages/ErrorNotFound";
 import RubbishCategory from "@/pages/RubbishCategory";
@@ -39,7 +40,7 @@ export default function AppRoutes() {
           <Route path="content-article" element={<ContentArticle />} />
           <Route path="rubbish-category" element={<RubbishCategory />} />
           <Route path="data-drop-point" element={<DataDropPoint />} />
-          <Route path="mission-list" element={<></>} />
+          <Route path="mission-list" element={<MissionList />} />
           <Route path="mission-approval" element={<MissionApproval />} />
           <Route path="voucher-list" element={<VoucherList />} />
           <Route path="transaction-list" element={<TransactionList />} />
@@ -56,4 +57,3 @@ export default function AppRoutes() {
       <Route path="*" element={<PathNotFound />} />
     </Routes>
   );
-}

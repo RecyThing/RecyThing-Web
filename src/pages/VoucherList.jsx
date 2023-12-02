@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	clearCreateVoucherState,
 	clearDeleteVoucherState,
-	clearFetchVoucherState,
 	clearFetchVouchersState,
+	clearFetchVoucherState,
 	clearUpdateVoucherState,
 	createVoucher,
 	createVoucherSelector,
@@ -72,17 +72,26 @@ function VoucherList() {
 			createStatus === "success"
 		) {
 			fetchVouchersData();
-			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
-			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
-			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
 			setSearchTerm("");
 			setCurrentPage(1);
 		}
+
+		return () => {
+			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
+			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
+			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
+		};
 	}, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {
 		setTotalItems(count_data);
 	}, [count_data]);
+
+	useEffect(() => {
+		if (createStatus === "success" || createStatus === "failed") {
+			onClose();
+		}
+	}, [createStatus, onClose]);
 
 	useEffect(() => {
 		return () => {
@@ -114,8 +123,8 @@ function VoucherList() {
 		data.image = data.image[0];
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
+
 		dispatch(createVoucher(data));
-		onClose();
 	};
 
 	useCustomToast(updateStatus, updateMessage);
@@ -157,7 +166,7 @@ function VoucherList() {
 						py={"1.75rem"}
 						onClick={handleAddModal}
 					>
-						Tambah Reward
+						Tambah Voucher
 					</Button>
 				</Flex>
 				{status === "loading" && <Spinner />}

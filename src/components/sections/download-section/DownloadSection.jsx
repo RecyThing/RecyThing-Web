@@ -1,20 +1,49 @@
 import download_img from "@/assets/download-img.png";
 import app_store from "@/assets/app-store.svg";
 import play_store from "@/assets/play-store.svg";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 export function DownloadSection() {
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: false });
+
 	return (
 		<>
 			<div className="download px-4 lg:px-[72px] pt-[80px] lg:pt-[226px] pb-[60px] lg:pb-[120px] relative">
-				<div className="shape rounded-2xl lg:rounded-[3rem] lg:h-[320px] bg-[#35CC33] p-5 lg:p-0 overflow-visible lg:flex">
-					<div className="relative w-[187px] lg:w-[493px] z-10">
+				<div 
+					className="shape rounded-2xl lg:rounded-[3rem] lg:h-[320px] bg-[#35CC33] p-5 lg:p-0 overflow-visible lg:flex"
+					ref={ref}
+					style={{
+						transform: isInView ? "none" : "translateX(100px)",
+						  opacity: isInView ? 1 : 0,
+						  transition: "all 0.2s cubic-bezier(0.17, 0.55, 0.55, 1) 0.1s"
+					}}
+				>
+					<div 
+						className="relative w-[187px] lg:w-[493px] z-10"
+						ref={ref}
+						style={{
+							transform: isInView ? "none" : "translateX(-100px)",
+							opacity: isInView ? 1 : 0,
+							transition: "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.175s"
+						}}
+					>
 						<img
 							src={download_img}
 							alt="download-img"
 							className="w-full h-auto -mt-14 lg:-mt-[180px]"
 						/>
 					</div>
-					<div className="text-group flex flex-col gap-2 mt-2 lg:py-12 lg:pl-28">
+					<div 
+						className="text-group flex flex-col gap-2 mt-2 lg:py-12 lg:pl-28"
+						ref={ref}
+						style={{
+							transform: isInView ? "none" : "translateX(100px)",
+							opacity: isInView ? 1 : 0,
+							transition: "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1) 0.175s"
+						}}
+					>
 						<p className="text-lg lg:text-4xl text-white font-semibold">
 							Download Sekarang Juga
 						</p>
