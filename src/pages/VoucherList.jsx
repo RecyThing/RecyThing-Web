@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	clearCreateVoucherState,
 	clearDeleteVoucherState,
-	clearFetchVoucherState,
 	clearFetchVouchersState,
+	clearFetchVoucherState,
 	clearUpdateVoucherState,
 	createVoucher,
 	createVoucherSelector,
@@ -166,7 +166,7 @@ function VoucherList() {
 						py={"1.75rem"}
 						onClick={handleAddModal}
 					>
-						Tambah Reward
+						Tambah Voucher
 					</Button>
 				</Flex>
 				{status === "loading" && <Spinner />}

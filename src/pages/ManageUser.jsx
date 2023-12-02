@@ -4,7 +4,7 @@ import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { TableUserList } from "@/components/tables";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
 	clearDeleteUserState,
 	clearFetchUsersState,
@@ -17,33 +17,52 @@ import { Spinner } from "@/components/spinner";
 import { useCustomToast, useDebounce } from "@/hooks";
 
 function ManageUser() {
+	const dispatch = useDispatch();
+	const {
+		data = [],
+		status,
+		message,
+		count_data,
+	} = useSelector(fetchUsersSelector);
+	const { status: deleteStatus, message: deleteMessage } =
+		useSelector(deleteUserSelector);
+
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [totalItems, setTotalItems] = useState(0);
 
-	const dispatch = useDispatch();
-	const { data, status, message } = useSelector(fetchUsersSelector);
-	const { status: deleteStatus, message: deleteMessage } =
-		useSelector(deleteUserSelector);
+	const fetchUsersData = useCallback(() => {
+		dispatch(
+			fetchUsers({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
-		dispatch(fetchUsers());
-	}, [dispatch]);
-
-	useEffect(() => {
-		if (status === "success") {
-			setSearchTerm("");
-			setCurrentPage(1);
-		}
-	}, [status]);
+		fetchUsersData();
+	}, [fetchUsersData, searchTerm, currentPage, itemsPerPage]);
 
 	useEffect(() => {
 		if (deleteStatus === "success") {
-			dispatch(fetchUsers());
+			fetchUsersData();
+			setSearchTerm("");
+			setCurrentPage(1);
 		}
-	}, [deleteStatus, dispatch]);
+
+		return () => {
+			if (deleteStatus !== "idle") dispatch(clearDeleteUserState());
+		};
+	}, [deleteStatus, dispatch, fetchUsersData]);
+
+	useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);
 
 	useEffect(() => {
 		return () => {
@@ -56,11 +75,6 @@ function ManageUser() {
 	const filteredData = Object.values(data).filter((user) => {
 		return user.fullname.toLowerCase().includes(searchTerm.toLowerCase());
 	});
-
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -88,14 +102,14 @@ function ManageUser() {
 				gap={"1.5rem"}
 				p={"1.5rem"}
 			>
+				<SearchBar onSearch={handleSearch} />
 				{status === "loading" && <Spinner />}
 				{status === "failed" && <p>{message}</p>}
 				{status === "success" && (
 					<>
-						<SearchBar onSearch={handleSearch} />
 						<TableUserList
 							currentPage={currentPage}
-							data={paginatedData}
+							data={filteredData}
 							itemsPerPage={itemsPerPage}
 						/>
 						<Pagination
@@ -103,7 +117,7 @@ function ManageUser() {
 							itemsPerPage={itemsPerPage}
 							onChangeItemsPerPage={setItemsPerPage}
 							onChangePage={setCurrentPage}
-							totalItems={filteredData.length}
+							totalItems={totalItems}
 						/>
 					</>
 				)}

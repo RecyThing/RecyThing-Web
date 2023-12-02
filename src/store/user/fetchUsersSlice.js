@@ -4,7 +4,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
 	status: "idle",
 	message: "",
-	data: {},
+	data: [],
+	pagination: {},
+	count_data: 0,
 };
 
 export const fetchUsers = createAsyncThunk(
@@ -19,7 +21,9 @@ export const fetchUsersSlice = createSlice({
 		clearFetchUsersState: (state) => {
 			state.status = "idle";
 			state.message = "";
-			state.data = {};
+			state.data = [];
+			state.pagination = {};
+			state.count_data = 0;
 		},
 	},
 	extraReducers: (builder) => {
@@ -30,6 +34,8 @@ export const fetchUsersSlice = createSlice({
 			state.status = "success";
 			state.message = action.payload.message;
 			state.data = action.payload.data;
+			state.pagination = action.payload.pagination;
+			state.count_data = action.payload.count_data;
 		});
 		builder.addCase(fetchUsers.rejected, (state, action) => {
 			state.status = "failed";
