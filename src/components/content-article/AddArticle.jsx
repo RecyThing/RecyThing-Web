@@ -16,8 +16,10 @@ function AddArticle({ onClose, setToastMessage }) {
 
   function handleImage(event) {
     setErrorImage("");
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     try {
       if (event.target.files && event.target.files[0]) {
+        if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("File harus image"); 
         if (event.target.files[0].size > 5000000) return setErrorImage("Ukuran gambar terlalu besar"); 
         const objUrl = URL.createObjectURL(event.target.files[0]);
         setPreviewImage(objUrl);
