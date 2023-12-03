@@ -9,6 +9,7 @@ import { TableDataDropPoint } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
 import { useCustomToast } from "@/hooks";
 import { APIDropPoint } from "@/apis/APIDropPoint";
+import { Spinner } from "@/components/spinner";
 
 function DataDropPoint() {
 	const [toastMessage, setToastMessage] = useState({ status: "", message: "" });
@@ -44,6 +45,7 @@ function DataDropPoint() {
 		getDropPointData();
 	}, [currentPage, searchTerm, itemsPerPage]);
 
+	if (isLoading) return <Spinner />;
 	return (
 		<LayoutDashboardContent>
 			<p className="font-bold text-2xl">Kelola Drop Point Penukaran Sampah</p>
