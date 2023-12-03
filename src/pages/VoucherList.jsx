@@ -26,12 +26,7 @@ import { formatDateToISOString } from "@/utils";
 
 function VoucherList() {
 	const dispatch = useDispatch();
-	const {
-		data = [],
-		status,
-		message,
-		count_data,
-	} = useSelector(fetchVouchersSelector);
+	const { data = [], status, message } = useSelector(fetchVouchersSelector);
 	const { status: updateStatus, message: updateMessage } = useSelector(
 		updateVoucherSelector
 	);
@@ -51,6 +46,10 @@ function VoucherList() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
+
 	const fetchVouchersData = useCallback(() => {
 		dispatch(
 			fetchVouchers({
@@ -58,7 +57,11 @@ function VoucherList() {
 				limit: itemsPerPage,
 				page: currentPage,
 			})
-		);
+		).then((res) => {
+			if (res.payload) {
+				setTotalItems(res.payload.count_data);
+			}
+		});
 	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
@@ -82,16 +85,6 @@ function VoucherList() {
 			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
 		};
 	}, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
-
-	useEffect(() => {
-		setTotalItems(count_data);
-	}, [count_data]);
-
-	useEffect(() => {
-		if (createStatus === "success" || createStatus === "failed") {
-			onClose();
-		}
-	}, [createStatus, onClose]);
 
 	useEffect(() => {
 		return () => {
@@ -124,12 +117,12 @@ function VoucherList() {
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 
-		dispatch(createVoucher(data));
+		dispatch(createVoucher(data)).then((res) => {
+			if (res.payload) {
+				onClose();
+			}
+		});
 	};
-
-	useCustomToast(updateStatus, updateMessage);
-	useCustomToast(deleteStatus, deleteMessage);
-	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>
