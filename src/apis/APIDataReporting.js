@@ -11,18 +11,17 @@ export const APIDataReporting = {
 		} catch (error) {
 
 			if (error instanceof AxiosError)
-				// console.log(response);
 				throw new Error(error.response.data.message);
 		}
 	},
 
-	// getDataReporting: async (id) => {
-	// 	try {
-	// 		const response = await axiosInstance.get(`/admins/manage/reports/${id}`);
-	// 		return response.data;
-	// 	} catch (error) {
-	// 		if (error instanceof AxiosError)
-	// 			throw new Error(error.response.data.message);
-	// 	}
-	// },
+	getDataReporting: async (id) => {
+		try {
+			const response = await axiosInstance.get(`/admins/manage/reports/${id}`);
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError)
+				throw new Error(error.response.data.message);
+		}
+	},
 };

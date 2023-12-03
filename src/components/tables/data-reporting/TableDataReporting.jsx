@@ -7,7 +7,7 @@ import {
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
 import { CustomIconButton } from "@/components/buttons";
-import { Eye } from "iconsax-react";
+import { Data, Eye } from "iconsax-react";
 import { TableBodyRow } from "../base-table/TableRows";
 import {
 	ModalApprove,
@@ -15,6 +15,8 @@ import {
   	ModalRejectionReason,
 	ModalViewReportingApproval,
 } from "@/components/modal";
+import { useDispatch } from "react-redux";
+import { fetchDataReport } from "@/store/report";
 
 const TableHead = [ "Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal", "Status", "View", "Aksi", ];
 
@@ -37,32 +39,36 @@ export function TableDataReporting({ data }) {
 		onOpen: onOpenReject,
 		onClose: onCloseReject,
 	} = useDisclosure();
-
+	
   const {
-    isOpen: isOpenRejectionReason,
-    onOpen: onOpenRejectionReason,
-    onClose: onCloseRejectionReason,
-  } = useDisclosure();
-
+	  isOpen: isOpenRejectionReason,
+	  onOpen: onOpenRejectionReason,
+	  onClose: onCloseRejectionReason,
+	} = useDisclosure();
+	
 	const handleBadges = (status) => {
 		switch (status) {
-			case "Perlu Tinjauan":
+			case "perlu ditinjau":
 				return "yellow";
-			case "Disetujui":
-				return "green";
-			case "Ditolak":
-				return "red";
-			default:
-				return "gray";
-		}
+				case "diterima":
+					return "green";
+					case "ditolak":
+						return "red";
+						default:
+							return "gray";
+						}
 	};
+	
+	const [id, setId] = useState(null);
 
-	const handleViewModal = (row) => {
-		setSelectedRow(row);
+	const dispatch = useDispatch(); 
+	const handleViewModal = (target) => {
+		console.log(target);
+		dispatch(fetchDataReport(target));
 		onOpenView();
 	};
 
-	const handleModalApprove = (row) => {
+	const handleModalApprove = (target) => {
 		setSelectedRow(row);
 		onOpenApprove();
 	};
@@ -86,7 +92,7 @@ export function TableDataReporting({ data }) {
 			<ModalViewReportingApproval
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={tabsData}
+				data={id}
 			/>
 
 			<ModalApprove
@@ -115,7 +121,6 @@ export function TableDataReporting({ data }) {
 				title={"Alasan Penolakan"}
 				message={"Masukkan alasan penolakan"}
 			/>
-
 			<BaseTable
 				data={data}
 				heads={TableHead}
@@ -127,16 +132,17 @@ export function TableDataReporting({ data }) {
 					}
 				})}
 			>
+				{/* {console.log(data.length)} */}
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
 						<CenteredCell>{row.id}</CenteredCell>
-						<TextCell content={row.reportTypes} />
-						<TextCell content={row.username} />
-						<TextCell content={row.locations} />
-						<TextCell content={row.date} />
+						<TextCell content={row.report_type} />
+						<TextCell content={row.name} />
+						<TextCell content={row.location} />
+						<TextCell content={row.insident_date} />
 						<BadgeCell
 							content={row.status}
 							colorScheme={handleBadges(row.status)}
@@ -146,11 +152,11 @@ export function TableDataReporting({ data }) {
 								icon={<Eye />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+								onClick={() => handleViewModal(row.id)}
 							/>
 						</CenteredCell>
 						<CenteredCell>
-							{row.status === "Perlu Tinjauan" ? (
+							{row.status === "perlu ditinjau" ? (
 								<ButtonGroup>
 									<Button
 										colorScheme={"mainGreen"}

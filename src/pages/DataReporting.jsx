@@ -17,21 +17,21 @@ import {
 function DataReporting() {
   const dispatch = useDispatch();
 
-  console.log("hai");
   const {
     data = [],
     status,
     message,
     count_data,
   } = useSelector(fetchDataReportsSelector);
-  console.log("saya rivaldo");
 
   const [_searchTerm, setSearchTerm] = useState("");
   const searchTerm = useDebounce(_searchTerm, 500);
 
+  const buttonLabels = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
   const [activeFilter, setActiveFilter] = useState("Semua");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
 
   const fetchReportingData = useCallback(() => {
     dispatch(
@@ -46,6 +46,10 @@ function DataReporting() {
   useEffect(() => {
     fetchReportingData();
   }, [fetchReportingData, searchTerm, itemsPerPage, currentPage]);
+
+  useEffect(() => {
+		setTotalItems(count_data);
+	}, [count_data]);
 
   // For Patch Data
   // useEffect(() => {
@@ -76,25 +80,15 @@ function DataReporting() {
     };
   }, [dispatch]);
 
-  console.log(stateDataReports);
+  const filteredData = Object.values(data).filter((report) => {
+		return report.name?.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
-  // const filteredData = Object.values(data).filter((report) => {
-  //   return report.name.toLowerCase().includes(searchTerm.toLowerCase());
-  // });
-
-  // const filteredData = () => {
-  //   return data.filter(
-  //     (data) =>
-  //       (activeFilter === "Semua" || data.status === activeFilter) &&
-  //       data.report_types.toLowerCase().includes(searchTerm.toLowerCase())
-  //   ).sort((a) => (a.status === "Perlu Tinjauan" ? -1 : 1));
-  // };
-
-  // const filteredDataCount = (filter) => {
-  //   return DummyData.filter((data) =>
-  //     filter === "Semua" ? true : data.status === filter
-  //   ).length;
-  // };
+  const filteredDataCount = (filter) => {
+    return data.filter((data) =>
+      filter === "Semua" ? true : filter === "Perlu Tinjauan" ? data.status === "perlu ditinjau" : filter === "Disetujui" ? data.status === "diterima" : data.status === "ditolak"
+    ).length;
+  };
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -108,6 +102,7 @@ function DataReporting() {
 
   return (
     <LayoutDashboardContent>
+      {console.log(data)}
       <Heading
         as="h1"
         color={"#201A18"}
@@ -145,7 +140,7 @@ function DataReporting() {
           <>
             <TableDataReporting
               currentPage={currentPage}
-              data={paginatedData}
+              data={filteredData}
               itemsPerPage={itemsPerPage}
             />
             <Pagination
@@ -153,7 +148,7 @@ function DataReporting() {
               itemsPerPage={itemsPerPage}
               onChangeItemsPerPage={setItemsPerPage}
               onChangePage={setCurrentPage}
-              totalItems={filteredData().length}
+              totalItems={totalItems}
             />
           </>
         )}

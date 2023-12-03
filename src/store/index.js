@@ -8,7 +8,7 @@ import {
 	fetchVouchersReducer,
 	updateVoucherReducer,
 } from "./voucher";
-import { fetchDataReportsReducer } from "./report";
+import { fetchDataReportReducer, fetchDataReportsReducer } from "./report";
 
 export const store = configureStore({
 	reducer: {
@@ -24,6 +24,7 @@ export const store = configureStore({
 		deleteVoucher: deleteVoucherReducer,
 		createVoucher: createVoucherReducer,
 
-		fetchReports:fetchDataReportsReducer,
+		fetchDataReports:fetchDataReportsReducer,
+		fetchDataReport:fetchDataReportReducer,
 	},
 });

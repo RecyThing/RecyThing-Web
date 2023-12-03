@@ -19,7 +19,6 @@ export const fetchDataReportsSlice = createSlice({
 	initialState,
 	reducers: {
 		clearDataReportsState: (state) => {
-			console.log("ini clear");
 			state.status = "idle";
 			state.message = "";
 			state.data = [];
@@ -29,11 +28,9 @@ export const fetchDataReportsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchDataReports.pending, (state) => {
-			console.log("load");
 			state.status = "loading";
 		});
 		builder.addCase(fetchDataReports.fulfilled, (state, action) => {
-			console.log("sukses");
 			state.status = "success";
 			state.message = action.payload.message;
 			state.data = action.payload.data;
@@ -41,7 +38,6 @@ export const fetchDataReportsSlice = createSlice({
 			state.count_data = action.payload.count_data;
 		});
 		builder.addCase(fetchDataReports.rejected, (state, action) => {
-			console.log("gagal");
 			state.status = "failed";
 			state.message = action.error.message;
 		});
