@@ -18,12 +18,7 @@ import { useCustomToast, useDebounce } from "@/hooks";
 
 function ManageUser() {
 	const dispatch = useDispatch();
-	const {
-		data = [],
-		status,
-		message,
-		count_data,
-	} = useSelector(fetchUsersSelector);
+	const { data = [], status, message } = useSelector(fetchUsersSelector);
 	const { status: deleteStatus, message: deleteMessage } =
 		useSelector(deleteUserSelector);
 
@@ -34,6 +29,8 @@ function ManageUser() {
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const [totalItems, setTotalItems] = useState(0);
 
+	useCustomToast(deleteStatus, deleteMessage);
+
 	const fetchUsersData = useCallback(() => {
 		dispatch(
 			fetchUsers({
@@ -41,7 +38,11 @@ function ManageUser() {
 				limit: itemsPerPage,
 				page: currentPage,
 			})
-		);
+		).then((res) => {
+			if (res.payload) {
+				setTotalItems(res.payload.count_data);
+			}
+		});
 	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
@@ -61,10 +62,6 @@ function ManageUser() {
 	}, [deleteStatus, dispatch, fetchUsersData]);
 
 	useEffect(() => {
-		setTotalItems(count_data);
-	}, [count_data]);
-
-	useEffect(() => {
 		return () => {
 			dispatch(clearFetchUsersState());
 			dispatch(clearFetchUserState());
@@ -80,8 +77,6 @@ function ManageUser() {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
-
-	useCustomToast(deleteStatus, deleteMessage);
 
 	return (
 		<LayoutDashboardContent>
