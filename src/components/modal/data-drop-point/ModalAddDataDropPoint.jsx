@@ -21,7 +21,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 		.then(res => {
 			const address = res.data.results[0].formatted_address;
 			setLocation({...location, address: address});
-		}).catch(err => console.log(err)).finally(() => setShowMap(false));
+		}).catch(err => console.warn(err)).finally(() => setShowMap(false));
 	}
 
 	if (showMap) return <Modal isOpen={isOpen} onClose={onClose} size={"7xl"} isCentered>
