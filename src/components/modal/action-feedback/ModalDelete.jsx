@@ -21,6 +21,7 @@ export function ModalDelete({
 	title,
 	message,
 	deleteStatus,
+	isLoading,
 }) {
 	const handleDelete = () => {
 		onDelete(target);
@@ -88,6 +89,8 @@ export function ModalDelete({
 								py={"1.75rem"}
 								_hover={{ bg: "#333333" }}
 								onClick={onClose}
+								isDisabled={isLoading}
+								className="w-40"
 							>
 								Batal
 							</Button>
@@ -98,9 +101,12 @@ export function ModalDelete({
 								px={"3.5rem"}
 								py={"1.75rem"}
 								_hover={{ bg: "#FF0000" }}
+								isDisabled={isLoading}
 								onClick={handleDelete}
+								className="w-40 !flex !gap-2 !justify-center disabled:!opacity-70"
 							>
-								Hapus
+							<span>Hapus</span>
+							{isLoading && <Spinner containerSize={6} width={6} height={6} />}
 							</Button>
 						</ModalFooter>
 					</>

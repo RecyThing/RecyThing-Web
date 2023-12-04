@@ -45,11 +45,43 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
   };
 
 
+<<<<<<< HEAD
   useEffect(() => {
     if (!isOpen) {
       reset();
     }
   }, [isOpen, reset]);
+=======
+	return (
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size={"5xl"}
+			isCentered
+		>
+			<ModalOverlay
+				bg={"#0000000D"}
+				backdropFilter={"blur(5px)"}
+			/>
+			<ModalContent
+				borderRadius={"3xl"}
+				gap={"1.5rem"}
+				py={"1rem"}
+			>
+				{createStatus === "loading" ? (
+					<Spinner containerSize={"xl"} />
+				) : (
+					<>
+						<ModalHeader pb={"0"}>
+							<Heading
+								as="h2"
+								fontSize={"2xl"}
+								fontWeight={"bold"}
+							>
+								Tambah Data Voucher
+							</Heading>
+						</ModalHeader>
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>

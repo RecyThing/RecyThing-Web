@@ -8,6 +8,7 @@ import { ModalAddVoucher } from "@/components/modal";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
 import {
+<<<<<<< HEAD
   clearCreateVoucherState,
   clearDeleteVoucherState,
   clearFetchVoucherState,
@@ -19,12 +20,26 @@ import {
   fetchVouchers,
   fetchVouchersSelector,
   updateVoucherSelector,
+=======
+	clearCreateVoucherState,
+	clearDeleteVoucherState,
+	clearFetchVouchersState,
+	clearFetchVoucherState,
+	clearUpdateVoucherState,
+	createVoucher,
+	createVoucherSelector,
+	deleteVoucherSelector,
+	fetchVouchers,
+	fetchVouchersSelector,
+	updateVoucherSelector,
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 } from "@/store/voucher";
 import { Spinner } from "@/components/spinner";
 import { useCustomToast, useDebounce } from "@/hooks";
 import { formatDateToISOString } from "@/utils";
 
 function VoucherList() {
+<<<<<<< HEAD
   const dispatch = useDispatch();
   const {
     data = [],
@@ -41,6 +56,19 @@ function VoucherList() {
   const { status: createStatus, message: createMessage } = useSelector(
     createVoucherSelector
   );
+=======
+	const dispatch = useDispatch();
+	const { data = [], status, message } = useSelector(fetchVouchersSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateVoucherSelector
+	);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deleteVoucherSelector
+	);
+	const { status: createStatus, message: createMessage } = useSelector(
+		createVoucherSelector
+	);
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 
   const [_searchTerm, setSearchTerm] = useState("");
   const searchTerm = useDebounce(_searchTerm, 500);
@@ -51,6 +79,7 @@ function VoucherList() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+<<<<<<< HEAD
   const fetchVouchersData = useCallback(() => {
     dispatch(
       fetchVouchers({
@@ -60,6 +89,25 @@ function VoucherList() {
       })
     );
   }, [dispatch, searchTerm, itemsPerPage, currentPage]);
+=======
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
+
+	const fetchVouchersData = useCallback(() => {
+		dispatch(
+			fetchVouchers({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		).then((res) => {
+			if (res.payload) {
+				setTotalItems(res.payload.count_data);
+			}
+		});
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 
   useEffect(() => {
     fetchVouchersData();
@@ -83,6 +131,7 @@ function VoucherList() {
     };
   }, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
 
+<<<<<<< HEAD
   useEffect(() => {
     setTotalItems(count_data);
   }, [count_data]);
@@ -102,6 +151,17 @@ function VoucherList() {
       dispatch(clearCreateVoucherState());
     };
   }, [dispatch]);
+=======
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchVouchersState());
+			dispatch(clearFetchVoucherState());
+			dispatch(clearUpdateVoucherState());
+			dispatch(clearDeleteVoucherState());
+			dispatch(clearCreateVoucherState());
+		};
+	}, [dispatch]);
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 
   const filteredData = Object.values(data).filter((voucher) => {
     return (
@@ -124,6 +184,7 @@ function VoucherList() {
     data.start_date = formatDateToISOString(data.start_date);
     data.end_date = formatDateToISOString(data.end_date);
 
+<<<<<<< HEAD
     dispatch(createVoucher(data));
   };
 
@@ -178,6 +239,62 @@ function VoucherList() {
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
             />
+=======
+		dispatch(createVoucher(data)).then((res) => {
+			if (res.payload) {
+				onClose();
+			}
+		});
+	};
+
+	return (
+		<LayoutDashboardContent>
+			<Heading
+				as="h1"
+				color={"#201A18"}
+				fontSize={"2xl"}
+				fontWeight="bold"
+				mb={"1.5rem"}
+			>
+				Daftar Voucher
+			</Heading>
+			<Flex
+				bg={"white"}
+				borderRadius={"xl"}
+				boxShadow={"md"}
+				direction={"column"}
+				gap={"1.5rem"}
+				p={"1.5rem"}
+			>
+				<Flex justifyContent={"space-between"}>
+					<Box w={"35%"}>
+						<SearchBar onSearch={handleSearch} />
+					</Box>
+					<Button
+						leftIcon={<Add />}
+						_hover={{ bg: "#2DA22D" }}
+						bg={"#35CC33"}
+						borderRadius={"lg"}
+						color={"white"}
+						fontWeight={"normal"}
+						lineHeight={"1.5rem"}
+						px={"1.5rem"}
+						py={"1.75rem"}
+						onClick={handleAddModal}
+					>
+						Tambah Voucher
+					</Button>
+				</Flex>
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableVoucherList
+							data={filteredData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
+>>>>>>> 70f0ecfb44ecf9a9f00990365d334a5926e31d3f
 
             <Pagination
               currentPage={currentPage}
