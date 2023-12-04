@@ -12,24 +12,11 @@ import { Controller } from "react-hook-form";
 import { InputWithLogo } from "@/components/inputs";
 import { useState, useEffect } from "react";
 
-const rules = {
-	rubbishCategoryName: {
-		required: "Nama jenis sampah tidak boleh kosong",
-	},
-	rewardPoint: {
-		required: "Poin reward tidak boleh kosong",
-	},
-	selectUnit: {
-		required: "Satuan tidak boleh kosong",
-	},
-};
-
-export function RubbishCategoryName({ control, error }) {
+export function TrashTypeField({ control, error }) {
 	return (
 		<Controller
-			name="rubbishCategoryName"
+			name="trash_type"
 			control={control}
-			rules={rules.rubbishCategoryName}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
@@ -45,12 +32,11 @@ export function RubbishCategoryName({ control, error }) {
 	);
 }
 
-export function RewardPoint({ control, error }) {
+export function RewardPointField({ control, error }) {
 	return (
 		<Controller
-			name="rewardPoint"
+			name="point"
 			control={control}
-			rules={rules.rewardPoint}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<InputWithLogo
@@ -67,7 +53,7 @@ export function RewardPoint({ control, error }) {
 	);
 }
 
-export function SelectUnit({ control, error, target }) {
+export function SelectUnitField({ control, error, target }) {
   const [selectedUnit, setSelectedUnit] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -83,9 +69,8 @@ export function SelectUnit({ control, error, target }) {
 
   return (
     <Controller
-      name="selectUnit"
+      name="unit"
       control={control}
-      rules={rules.selectUnit}
       render={({ field }) => (
         <FormControl isInvalid={error}>
           <Menu>
