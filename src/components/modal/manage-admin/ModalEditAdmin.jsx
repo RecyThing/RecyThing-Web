@@ -11,9 +11,10 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { User, Message, Lock, Camera, CloseSquare } from "react-iconly";
-import { useRef } from "react";
+import { User, Message, Lock, Camera, CloseSquare, Show, Hide } from "react-iconly";
+import { useRef, useState } from "react";
 import AdminImage from "@/assets/AdminImage.svg";
+import { Controller, useForm } from "react-hook-form";
 
 export function ModalEditAdmin({ isOpen, onClose, onSubmit, target }) {
   const initialRef = useRef(null);
@@ -21,6 +22,23 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit, target }) {
   const handleSubmitData = (data) => {
     onSubmit(data, target);
   };
+
+    const [passwordType, setPasswordType] = useState("password");
+    // react hooks form
+    const {
+      control,
+      handleSubmit,
+      formState: { errors },
+    } = useForm();
+
+    const handleShowPassword = (e) => {
+      e.preventDefault();
+      if (passwordType === "password") {
+        setPasswordType("text");
+      } else {
+        setPasswordType("password");
+      }
+    };
 
   return (
     <>
@@ -68,11 +86,36 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit, target }) {
               className={"mt-10"}
             />
             <InputWithLogo label={"Email"} Logo={Message} className={"mt-4"} />
-            <InputWithLogo
-              label={"Kata Sandi"}
-              Logo={Lock}
-              className={"mt-4"}
-            />
+            <div className="relative wrapper my-4">
+              <Controller
+                name={"password"}
+                control={control}
+                rules={{
+                  required: "Password is required",
+                  minLength: {
+                    value: 2,
+                    message: "Password must be at least 2 characters long",
+                  },
+                }}
+                render={() => (
+                  <InputWithLogo
+                    label={"Masukkan kata sandi"}
+                    id={"password"}
+                    Logo={Lock}
+                    type={passwordType}
+                    error={errors.password}
+                  />
+                )}
+              />
+
+              {/* Button Hide and Seek */}
+              <button
+                className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
+                onClick={handleShowPassword}
+              >
+                {passwordType === "password" ? <Show /> : <Hide />}
+              </button>
+            </div>
 
             <FormControl mt={4}>
               <div
