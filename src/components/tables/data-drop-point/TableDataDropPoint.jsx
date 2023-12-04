@@ -73,9 +73,9 @@ export function TableDataDropPoint({ data }) {
 						index={rowIndex}
 					>
 						<CenteredCell>{rowIndex + 1}</CenteredCell>
-						<LeftAlignCell>
-							<p>{row.name}</p>
-							<p>{row.address}</p>
+						<LeftAlignCell maxWidth={"0"}>
+							<p className="w-fit">{row.name}</p>
+							<p className="overflow-hidden text-ellipsis">{row.address}</p>
 						</LeftAlignCell>
 						<LeftAlignCell>
 							<p>{row.days}</p>

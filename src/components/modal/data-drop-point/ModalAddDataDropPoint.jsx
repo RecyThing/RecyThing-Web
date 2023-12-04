@@ -1,28 +1,87 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
 import { InputWithLogo } from "@/components/inputs";
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import { ArrowLeft, CloseSquare, Location } from "react-iconly";
 import { User } from "react-iconly";
 import { OperationalSchedule } from "./OperationalSchedule";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyMapPicker from "./MyMapPicker";
 import axios from "axios";
+import { useDebounce } from "@/hooks";
 
 export function ModalAddDataDropPoint({ isOpen, onClose }) {
 	const [showMap, setShowMap] = useState(false);
-	const [location, setLocation] = useState({ lat: -6.200000, lng: 106.816666});
 	const [zoom, setZoom] = useState(10);
+	const [inputs, setInputs] = useState({
+		name: "",
+		address: "",
+		lat: -6.200000,
+		lng: 106.816666,
+		operational_schedule: [
+			{
+				day: "Senin",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Selasa",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Rabu",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Kamis",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Jumat",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Sabtu",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			},
+			{
+				day: "Minggu",
+				isChecked: false,
+				start_time: "",
+				end_time: "",
+			}
+		],
+	});
 
-	const handleChangeLocation = (lat, lng) => setLocation({lat: lat, lng: lng});
+	const lat = useDebounce(inputs.lat, 500);
+	const lng = useDebounce(inputs.lng, 500);
+
+	const handleChangeLocation = (lat, lng) => setInputs(prev => ({ ...prev, lat: lat, lng: lng }));
   const handleChangeZoom = (newZoom) => setZoom(newZoom);
 
-	function getAddressLocation() {
-		axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${process.env.GOOGLE_MAP_API_KEY}`)
+	function getAddressLocation(lat = inputs.lat, lng = inputs.lng) {
+		axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.GOOGLE_MAP_API_KEY}`)
 		.then(res => {
 			const address = res.data.results[0].formatted_address;
-			setLocation({...location, address: address});
+			setInputs(prev => ({ ...prev, address: address }));
 		}).catch(err => console.warn(err)).finally(() => setShowMap(false));
 	}
+
+	useEffect(() => {
+		getAddressLocation(parseFloat(lat), parseFloat(lng));
+
+	}, [lat, lng])
 
 	if (showMap) return <Modal isOpen={isOpen} onClose={onClose} size={"7xl"} isCentered>
 		<ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
@@ -33,7 +92,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 				</div>
 				<button onClick={getAddressLocation} className="absolute z-50 w-[90%] mx-auto inset-x-0 py-4 bottom-14
 				rounded-lg text-white bg-[#35CC33]">Pilih Lokasi</button>
-				<MyMapPicker defaultLocation={location} zoom={zoom} mapTypeId="roadmap" style={{height:'100vh'}}
+				<MyMapPicker defaultLocation={{lat: parseFloat(inputs.lat), lng: parseFloat(inputs.lng)}} zoom={zoom} mapTypeId="roadmap" style={{height:'100vh'}}
 				onChangeLocation={handleChangeLocation} onChangeZoom={handleChangeZoom} apiKey={process.env.GOOGLE_MAP_API_KEY} />
 			</div>
 		</ModalContent>
@@ -73,14 +132,16 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 					label={"Masukkan Nama Drop Point"}
 					Logo={User}
 					className={"mt-10"}
+					value={inputs.name || ""}
+					onChange={(e) => setInputs(prev => ({ ...prev, name: e.target.value }))}
 				/>
 				<div className="flex gap-4 mt-4">
 					<InputWithLogo
 						label={"Alamat Drop Point"}
 						Logo={Location}
 						className={"w-full"}
-						value={location.address || ""}
-						onChange={() => {}}
+						value={inputs.address || ""}
+						onChange={(e) => setInputs(prev => ({ ...prev, address: e.target.value }))}
 					/>
 					<button onClick={() => setShowMap(true)} className="w-48 h-14 rounded-lg py-4 hover:opacity-80 text-white bg-[#35CC33]">Map</button>
 				</div>
@@ -91,20 +152,20 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 						label={"Latitude"}
 						Logo={Location}
 						className={"w-full"}
-						value={location.lat}
-						onChange={() => {}}
+						value={inputs.lat}
+						onChange={(e) => setInputs(prev => ({ ...prev, lat: e.target.value }))}
 					/>
 					<InputWithLogo
 						type={"number"}
 						label={"Longitude"}
 						Logo={Location}
 						className={"w-full"}
-						value={location.lng}
-						onChange={() => {}}
+						value={inputs.lng}
+						onChange={(e) => setInputs(prev => ({ ...prev, lng: e.target.value }))}
 					/>
 				</div>
 
-				<OperationalSchedule />
+				<OperationalSchedule inputs={inputs} setInputs={setInputs} />
 				<div className="mt-9 flex justify-between text-white">
 					<button
 						onClick={onClose}
@@ -113,8 +174,10 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 						Batal
 					</button>
 					<button
+						disabled={inputs.name === "" || inputs.address === "" || inputs.lat === "" || inputs.lng === "" || 
+						inputs.operational_schedule.filter(item => item.start_time === "" || item.end_time === "").length > 6}
 						onClick={onClose}
-						className="p-4 w-[170px] rounded-lg bg-[#35CC33] hover:opacity-90"
+						className="p-4 w-[170px] rounded-lg bg-[#35CC33] disabled:opacity-50 hover:opacity-90"
 					>
 						Simpan
 					</button>
