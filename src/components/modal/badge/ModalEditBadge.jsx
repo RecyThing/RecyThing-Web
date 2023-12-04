@@ -11,7 +11,7 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@chakra-ui/react";
-import { CloseSquare } from "react-iconly";
+import { CloseSquare, Lock } from "react-iconly";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/inputs/Input";
