@@ -8,6 +8,8 @@ import {
 	fetchVouchersReducer,
 	updateVoucherReducer,
 } from "./voucher";
+import { fetchAchievementsReducer } from "@/store/achievements";
+import { patchAchievementsReducer } from '@/store/achievements';
 
 export const store = configureStore({
 	reducer: {
@@ -16,6 +18,9 @@ export const store = configureStore({
 		fetchUsers: fetchUsersReducer,
 		fetchUser: fetchUserReducer,
 		deleteUser: deleteUserReducer,
+
+		fetchAchievements: fetchAchievementsReducer,
+		patchAchievements: patchAchievementsReducer,
 
 		fetchVouchers: fetchVouchersReducer,
 		fetchVoucher: fetchVoucherReducer,
