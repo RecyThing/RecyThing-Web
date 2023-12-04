@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchPrompt = createAsyncThunk(
-	"GET /admins/manage/Prompts/id",
+	"GET /admins/manage/prompts/id",
 	APIPrompt.getPrompt
 );
 

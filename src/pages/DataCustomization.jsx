@@ -132,9 +132,9 @@ function DataCustomization() {
 	// ini harusnya dari BE nanti kita dapet count data buat per category, aku masih tanya ini @Putri-R
 	const filteredDataCount = (filter) => {
 		switch (filter) {
-			case "Sampah Anorganik":
+			case "sampah anorganik":
 				return 0; // sesuaiin nanti sama response dari BE
-			case "Sampah Organik":
+			case "sampah organik":
 				return 0; // sesuaiin nanti sama response dari BE
 			default:
 				return count_data;

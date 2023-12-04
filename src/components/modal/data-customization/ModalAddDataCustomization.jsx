@@ -12,12 +12,14 @@ import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./DataCustomizationFormSchema";
-import { createPromptSelector } from "@/store/prompt";
-import { useSelector } from "react-redux";
+import { createPrompt, clearCreatePromptState } from "@/store/prompt";
+import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
 import { InputTextArea } from "@/components/inputs";
 
 export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
+	const dispatch = useDispatch();
+
 	const {
 		handleSubmit,
 		control,
@@ -26,19 +28,27 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
-	const { status: createStatus } = useSelector(createPromptSelector) || {};
 
-	const handleOnSubmit = (data) => {
-		onSubmit(data);
-		reset();
-		onClose();
-	};
+	const { status: createStatus } = useSelector(
+		(state) => state.createPrompt
+	) || {};
+
+	const handleOnSubmit = async (data) => {
+		try {
+		  await dispatch(createPrompt(data));
+		  reset();
+		  onClose();
+		} catch (error) {
+		  console.error("Error creating prompt:", error);
+		}
+	};			
 
 	useEffect(() => {
 		if (!isOpen) {
 			reset();
+			dispatch(clearCreatePromptState());
 		}
-	}, [isOpen, reset]);
+	}, [isOpen, reset, dispatch]);
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -66,7 +76,7 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 						<ModalBody>
 							<div className="w-72 border rounded-xl p-3 mb-6 relative" style={{ borderColor: "rgba(130, 130, 130, 1)" }}>
 								<Controller
-									name="topic"
+									name="category"
 									control={control}
 									render={({ field }) => (
 									<>
@@ -75,10 +85,10 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 											style={{ color: "rgba(79, 79, 79, 1)" }}
 											{...field}
 										>
-											<option value="Sampah Anorganik">Sampah Anorganik</option>
-											<option value="Sampah Organik">Sampah Organik</option>
+											<option value="sampah anorganik">Sampah Anorganik</option>
+											<option value="sampah organik">Sampah Organik</option>
 										</select>
-										<label htmlFor="topic" className="text-xs absolute -top-2 left-3 bg-white px-1" style={{ color: "rgba(130, 130, 130, 1)" }}>
+										<label htmlFor="category" className="text-xs absolute -top-2 left-3 bg-white px-1" style={{ color: "rgba(130, 130, 130, 1)" }}>
 											Topik
 										</label>
 									</>

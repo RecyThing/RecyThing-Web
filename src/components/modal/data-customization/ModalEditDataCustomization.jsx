@@ -11,19 +11,22 @@ import {
 	ModalFooter,
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { fetchPromptSelector, updatePromptSelector } from "@/store/prompt";
-import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./DataCustomizationFormSchema";
+import { fetchPromptSelector, updatePromptSelector, updatePrompt } from "@/store/prompt";
+import { useSelector, useDispatch } from "react-redux";
 import { Spinner } from "@/components/spinner";
 
 export function ModalEditCustomizationData({
 	isOpen,
 	onClose,
-	onSubmit,
-	question,
-	topic,
+	selectedQuestion,
+	selectedCategory,
 }) {
-	const [editedQuestion, setEditedQuestion] = useState(question);
-	const [editedTopic, setEditedTopic] = useState(topic);
+	const dispatch = useDispatch();
+
+	const [editedQuestion, setEditedQuestion] = useState('');
+	const [editedCategory, setEditedCategory] = useState('');
 
 	const {
 		handleSubmit,
@@ -31,32 +34,40 @@ export function ModalEditCustomizationData({
 		formState: { errors },
 		reset,
 		setValue,
-	} = useForm();
+	} = useForm({
+		resolver: yupResolver(schema),
+	});
 
 	const { data, status, message } = useSelector(fetchPromptSelector);
 	const { status: updateStatus } = useSelector(updatePromptSelector);
 
-	const handleOnSubmit = (data) => {
-		onSubmit(data);
-		reset();
-		onClose();
+	const handleOnSubmit = async (data) => {
+		try {
+		  await dispatch(updatePrompt({ id: selectedQuestion.id, data }));
+		  reset();
+		  onClose();
+		} catch (error) {
+		  console.error("Error updating prompt:", error);
+		}
 	};
 
 	useEffect(() => {
+		if (selectedQuestion) {
+			setEditedQuestion(selectedQuestion.question);
+			setEditedCategory(selectedCategory);
+	  
+		  if (!isOpen) {
+				reset();
+			}
+		}
+	}, [selectedQuestion, selectedCategory, isOpen, reset]);	  
+
+	useEffect(() => {
 		if (data) {
-			setValue("topic", data.topic);
+			setValue("category", data.category);
 			setValue("question", data.question);
 		}
 	}, [data, setValue]);
-
-	useEffect(() => {
-		setEditedQuestion(question);
-		setEditedTopic(topic);
-
-		if (!isOpen) {
-			reset();
-		}
-	}, [question, topic, isOpen, reset]);
 
 	return (
 		<Modal
@@ -103,11 +114,11 @@ export function ModalEditCustomizationData({
 									id="topik"
 									className="w-64 outline-none text-sm border-none bg-transparent"
 									style={{ color: "rgba(79, 79, 79, 1)" }}
-									value={editedTopic}
-									onChange={(e) => setEditedTopic(e.target.value)}
+									value={editedCategory}
+									onChange={(e) => setEditedCategory(e.target.value)}
 								>
-									<option value="Sampah Anorganik">Sampah Anorganik</option>
-									<option value="Sampah Organik">Sampah Organik</option>
+									<option value="sampah anorganik">Sampah Anorganik</option>
+									<option value="sampah organik">Sampah Organik</option>
 								</select>
 								<label
 									htmlFor="topik"

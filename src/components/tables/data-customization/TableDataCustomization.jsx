@@ -5,13 +5,20 @@ import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Trash } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPrompt,
+	deletePrompt,
+	deletePromptSelector,
+	clearDeletePromptState,
+} from '@/store/prompt';
 import { ModalDelete, ModalEditCustomizationData } from "@/components/modal";
 
 const TableHead = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
 
 export function TableDataCustomization({ data }) {
 	const [isEditData, setIsEditData] = useState(false);
+	const dispatch = useDispatch();
 
 	const {
 		isOpen: isOpenEdit,
@@ -26,46 +33,67 @@ export function TableDataCustomization({ data }) {
 	} = useDisclosure();
 
 	const [selectedQuestion, setSelectedQuestion] = useState(null);
-	const [selectedTopic, setSelectedTopic] = useState(null);
+	const [selectedCategory, setSelectedCategory] = useState(null);
 
-	const handleEditModal = (row) => {
-		setSelectedQuestion(row);
-		setSelectedTopic(row);
-		onOpenEdit();
+	const handleEditModal = async (row) => {
+		try {
+			const promptId = row.id;
+			await dispatch(fetchPrompt(promptId));
+		
+			setSelectedQuestion(row);
+			setSelectedCategory(row.category);
+		
+			onOpenEdit();
+		} catch (error) {
+		  	console.error('Error fetching prompt data:', error);
+		}
 	};
+	  
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deletePromptSelector
+	);
 
 	const handleDeleteModal = (row) => {
 		setSelectedQuestion(row);
 		onOpenDelete();
 	};
 
-	const handleDelete = (row) => {
-		console.log("deleted!", row);
-		onCloseDelete();
+	const handleDelete = async (row) => {
+		try {
+			await dispatch(deletePrompt(row.id));
+			onCloseDelete();
+		} catch (error) {
+		  	console.error("Error deleting prompt:", error);
+		}
 	};
 
+	useEffect(() => {
+		if (deleteStatus === "success") {
+			dispatch(clearDeletePromptState());
+		}
+	}, [deleteStatus, dispatch]);
+
 	const formatDate = () => {
-		const date = new Date("2023-01-21");
-		const day = date.getDate().toString().padStart(2, "0");
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const year = date.getFullYear();
+		const currentDate = new Date();
+		const day = currentDate.getDate().toString().padStart(2, "0");
+		const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+		const year = currentDate.getFullYear();
 		return `${day}/${month}/${year}`;
-	};
+	};	  
 
 	return (
 		<>
 			<ModalEditCustomizationData
 				isOpen={isOpenEdit}
 				onClose={onCloseEdit}
-				setIsEditData={setIsEditData}
-				topic={selectedTopic ? selectedTopic[0] : ""}
+				category={selectedCategory || ""}
 				question={selectedQuestion ? selectedQuestion[1] : ""}
 			/>
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
 				target={selectedQuestion}
-				onDelete={handleDelete}
+				onDelete={() => handleDelete(selectedQuestion)}
 			/>
 			<BaseTable
 				data={data}
