@@ -42,7 +42,6 @@ const labels = {
 
 export function ModalViewReportingApproval({ isOpen, onClose }) {
   const { data, status, message } = useSelector(fetchDataReportSelector);
-  console.log(data);
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} isCentered>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
@@ -188,6 +187,15 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
                             
                           </Text>
                           ) : data.report_type !== "pelanggaran sampah" && key === "insident_date"? (false
+                          ) : data.status === "ditolak" && key === "alasanPenolakan"? (
+                            <Text
+                            fontWeight={"medium"}
+                            color={"#828282"}
+                            letterSpacing={"tight"}
+                            >
+                            {value.title}
+                            </Text>
+                          ) : data.report_type !== "ditolak" && key === "alasanPenolakan"? (false
                           ) : (
                             <Text
                               fontWeight={"medium"}
@@ -212,12 +220,24 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
                               flexWrap={"wrap"}
                               gap={"3rem"}
                             >
-                              <Image
-                                src={data[key]}
-                                aspectRatio={1}
-                                w={"7rem"}
-                                borderRadius={"10px"}
-                              />
+                              {data.images  ? (
+                                data.images.map((dataImage) => (
+                                  <Image
+                                    src={dataImage.image}
+                                    aspectRatio={1}
+                                    w={"7rem"}
+                                    borderRadius={"10px"}
+                                  />
+                                ))
+                                ):(
+                                  <Image
+                                    src={data[key]}
+                                    aspectRatio={1}
+                                    w={"7rem"}
+                                    borderRadius={"10px"}
+                                  />
+                                  
+                              )}
                             </Flex>
                           ) : 
                           // Showing Waktu Masuk Laporan Value
@@ -225,6 +245,9 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
                           ) : 
                           // Showing Waktu Kejadian Value
                           data.report_type === "pelanggaran" && key === "insident_date" ? (`${"23.10"} | ${"23-12-23"}`
+                          ) : 
+                          // Showing Waktu alasan penolakan Value
+                          data.status === "ditolak" && key === "alasanPenolakan" ? (data.rejection_description
                           ) : (data[key])}
                         </Text>
                       </GridItem>

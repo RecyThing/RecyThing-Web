@@ -11,17 +11,22 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import { ApproveIcon } from "@/components/icons";
+import { useDispatch } from "react-redux";
+import { patchDataReport } from "@/store/report";
 
 export function ModalApprove({
 	isOpen,
 	onClose,
 	target,
-	onApprove,
 	title,
 	message,
 }) {
-	const handleApprove = () => {
-		onApprove(target);
+	const dispatch = useDispatch();
+	const handleApprove = (id) => {
+		const data = {
+			status : "diterima"
+		};
+		dispatch(patchDataReport({id,data}));
 		onClose();
 	};
 
@@ -94,7 +99,7 @@ export function ModalApprove({
 						px={"3.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#2DA22D" }}
-						onClick={handleApprove}
+						onClick={() => handleApprove(target)}
 					>
 						Verifikasi
 					</Button>

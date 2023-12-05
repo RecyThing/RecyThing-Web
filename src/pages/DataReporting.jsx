@@ -7,11 +7,13 @@ import { TabButton } from "@/components/buttons";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
-import { useDebounce } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 import {
   clearDataReportsState,
+  clearPatchDataReportState,
   fetchDataReports,
   fetchDataReportsSelector,
+  patchDataReportSelector,
 } from "@/store/report";
 
 function DataReporting() {
@@ -24,6 +26,10 @@ function DataReporting() {
     count_data,
   } = useSelector(fetchDataReportsSelector);
 
+  const { status: patchStatus, message: patchMessage } = useSelector(
+		patchDataReportSelector
+	);
+
   const [_searchTerm, setSearchTerm] = useState("");
   const searchTerm = useDebounce(_searchTerm, 500);
 
@@ -33,6 +39,8 @@ function DataReporting() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
+  useCustomToast(patchStatus, patchMessage);
+
   const fetchReportingData = useCallback(() => {
     dispatch(
       fetchDataReports({
@@ -40,39 +48,31 @@ function DataReporting() {
         limit: itemsPerPage,
         page: currentPage,
       })
-    );
+    ).then((res) => {
+			if (res.payload) {
+				setTotalItems(res.payload.count_data);
+			}
+		});;
   }, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
   useEffect(() => {
     fetchReportingData();
   }, [fetchReportingData, searchTerm, itemsPerPage, currentPage]);
 
-  useEffect(() => {
-		setTotalItems(count_data);
-	}, [count_data]);
-
   // For Patch Data
-  // useEffect(() => {
-  //   useEffect(() => {
-  //     if (
-  //       patchStatus === "success"
-  //     ) {
-  //       fetchVouchersData();
-  //       setSearchTerm("");
-  //       setCurrentPage(1);
-  //     }
+  useEffect(() => {
+    if (
+      patchStatus === "success"
+    ) {
+      fetchReportingData();
+      setSearchTerm("");
+      setCurrentPage(1);
+    }
 
-  //     return () => {
-  //       if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
-  //       if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
-  //       if (createStatus !== "idle") dispatch(clearCreateVoucherState());
-  //     };
-  //   }, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
-  // });
-
-  // useEffect(() => {
-  // 	setTotalItems(count_data);
-  // }, [count_data]);
+    return () => {
+      if (patchStatus !== "idle") dispatch(clearPatchDataReportState());
+    };
+  }, [fetchDataReports, patchStatus, dispatch]);
 
   useEffect(() => {
     return () => {
@@ -103,6 +103,7 @@ function DataReporting() {
   return (
     <LayoutDashboardContent>
       {console.log(data)}
+      {console.log(filteredData)}
       <Heading
         as="h1"
         color={"#201A18"}

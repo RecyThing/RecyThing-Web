@@ -11,3 +11,10 @@ export {
 	fetchDataReportSelector,
 	fetchDataReportReducer,
 } from "./fetchDataReportSlice";
+
+export {
+	clearPatchDataReportState,
+	patchDataReport,
+	patchDataReportSelector,
+	patchDataReportReducer,
+} from "./patchDataReportSlice";

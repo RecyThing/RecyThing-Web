@@ -1,3 +1,4 @@
+import { patchDataReport } from "@/store/report";
 import {
 	Button,
 	Modal,
@@ -9,6 +10,8 @@ import {
 	Text,
 	Textarea,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export function ModalRejectionReason({
 	isOpen,
@@ -16,8 +19,14 @@ export function ModalRejectionReason({
 	target,
 	onReject,
 }) {
-	const handleReject = () => {
-		onReject(target);
+	const dispatch = useDispatch();
+	const [rejectionReason, setRejectionReason] = useState("tidak begitu jelas");
+	const handleReject = (id) => {
+		const data = {
+			status: "ditolak",
+		  	rejection_description: rejectionReason
+		}
+		dispatch(patchDataReport({id,data}));
 		onClose();
 	};
 
@@ -63,6 +72,7 @@ export function ModalRejectionReason({
 						rows="8" 
 						className="resize-none h-36"
 						border={"2px solid var(--dark-colors-dark-3, rgba(130, 130, 130, 0.75))"}
+						onChange={(e)=>setRejectionReason(e.target.value)}
 					>
 					</Textarea>
 				</ModalBody>
@@ -89,7 +99,7 @@ export function ModalRejectionReason({
 						px={"4.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#FF0000" }}
-						onClick={handleReject}
+						onClick={()=>handleReject(target)}
 					>
 						Tolak
 					</Button>

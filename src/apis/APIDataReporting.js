@@ -24,4 +24,22 @@ export const APIDataReporting = {
 				throw new Error(error.response.data.message);
 		}
 	},
+
+	patchDataReporting: async ({id,data}) => {
+		try {
+			const response = await axiosInstance.patch(
+				`/admins/manage/reports/${id}`,
+				data,
+				{
+					headers : {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError)
+				throw new Error(error.response.data.message);
+		}
+	},
 };

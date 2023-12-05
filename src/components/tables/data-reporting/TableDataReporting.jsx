@@ -63,27 +63,21 @@ export function TableDataReporting({ data }) {
 
 	const dispatch = useDispatch(); 
 	const handleViewModal = (target) => {
-		console.log(target);
 		dispatch(fetchDataReport(target));
 		onOpenView();
 	};
 
 	const handleModalApprove = (target) => {
-		setSelectedRow(row);
+		setId(target);
 		onOpenApprove();
 	};
 
-  const handleModalReject = (row) => {
-		setSelectedRow(row);
+  	const handleModalReject = (target) => {
+		setId(target);
 		onOpenReject();
 	};
 
-	const handleApproveReport = () => {
-		console.log("id: ", selectedRow.id);
-	};
-
 	const handleRejectReport = () => {
-		console.log("id: ", selectedRow.id);
     onOpenRejectionReason();
 	};
 
@@ -98,8 +92,7 @@ export function TableDataReporting({ data }) {
 			<ModalApprove
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
-				onApprove={handleApproveReport}
-				target={selectedRow}
+				target={id}
 				title={"Apakah anda yakin ingin Menyetujui Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
 			/>
@@ -108,7 +101,7 @@ export function TableDataReporting({ data }) {
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
 				onReject={handleRejectReport}
-				target={selectedRow}
+				target={id}
 				title={"Apakah anda yakin ingin Menolak Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
 			/>
@@ -116,8 +109,7 @@ export function TableDataReporting({ data }) {
 			<ModalRejectionReason
 				isOpen={isOpenRejectionReason}
 				onClose={onCloseRejectionReason}
-				target={selectedRow}
-				onReject={handleRejectReport}
+				target={id}
 				title={"Alasan Penolakan"}
 				message={"Masukkan alasan penolakan"}
 			/>
@@ -132,7 +124,7 @@ export function TableDataReporting({ data }) {
 					}
 				})}
 			>
-				{/* {console.log(data.length)} */}
+				{/* {console.log(data)} */}
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
@@ -161,14 +153,14 @@ export function TableDataReporting({ data }) {
 									<Button
 										colorScheme={"mainGreen"}
 										_hover={{ bg: "#2DA22D" }}
-										onClick={() => handleModalApprove(row)}
+										onClick={() => handleModalApprove(row.id)}
 									>
 										Setujui
 									</Button>
                   					<Button
 										colorScheme={"red"}
 										_hover={{ bg: "#B22222" }}
-										onClick={() => handleModalReject(row)}
+										onClick={() => handleModalReject(row.id)}
 									>
 										Tolak
 									</Button>
