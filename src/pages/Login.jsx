@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Banner from "@/assets/LandingPage/banner-img.png";
+import { useCustomToast } from "@/hooks";
 
 const Login = () => {
 	// react hooks form
@@ -49,6 +50,8 @@ const Login = () => {
 			setPasswordType("password");
 		}
 	};
+
+	useCustomToast(status, message);
 
 	return (
 		<>
@@ -153,9 +156,6 @@ const Login = () => {
 					>
 						{status === "loading" ? "Loading..." : "Login"}
 					</button>
-
-					{/* diganti toast nanti */}
-					<p>{message}</p>
 				</form>
 				{/* End Form Login */}
 			</div>
