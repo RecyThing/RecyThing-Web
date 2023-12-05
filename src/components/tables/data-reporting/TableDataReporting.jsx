@@ -1,27 +1,35 @@
 import { useState } from "react";
-import {
-	Button,
-	ButtonGroup,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Button, ButtonGroup, useDisclosure } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
 import { CustomIconButton } from "@/components/buttons";
-import { Data, Eye } from "iconsax-react";
+import { Eye } from "iconsax-react";
 import { TableBodyRow } from "../base-table/TableRows";
 import {
 	ModalApprove,
 	ModalReject,
-  	ModalRejectionReason,
+	ModalRejectionReason,
 	ModalViewReportingApproval,
 } from "@/components/modal";
-import { useDispatch } from "react-redux";
-import { fetchDataReport } from "@/store/report";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	fetchDataReport,
+	patchDataReport,
+	patchDataReportSelector,
+} from "@/store/report";
 
-const TableHead = [ "Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal", "Status", "View", "Aksi", ];
+const TableHead = [
+	"Report ID",
+	"Tipe Laporan",
+	"Pelapor",
+	"Lokasi",
+	"Tanggal",
+	"Status",
+	"View",
+	"Aksi",
+];
 
 export function TableDataReporting({ data }) {
-	const [selectedRow, setSelectedRow] = useState(null);
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -39,29 +47,31 @@ export function TableDataReporting({ data }) {
 		onOpen: onOpenReject,
 		onClose: onCloseReject,
 	} = useDisclosure();
-	
-  const {
-	  isOpen: isOpenRejectionReason,
-	  onOpen: onOpenRejectionReason,
-	  onClose: onCloseRejectionReason,
+
+	const {
+		isOpen: isOpenRejectionReason,
+		onOpen: onOpenRejectionReason,
+		onClose: onCloseRejectionReason,
 	} = useDisclosure();
-	
+
+	const { status } = useSelector(patchDataReportSelector);
+
 	const handleBadges = (status) => {
 		switch (status) {
 			case "perlu ditinjau":
 				return "yellow";
-				case "diterima":
-					return "green";
-					case "ditolak":
-						return "red";
-						default:
-							return "gray";
-						}
+			case "diterima":
+				return "green";
+			case "ditolak":
+				return "red";
+			default:
+				return "gray";
+		}
 	};
-	
+
 	const [id, setId] = useState(null);
 
-	const dispatch = useDispatch(); 
+	const dispatch = useDispatch();
 	const handleViewModal = (target) => {
 		dispatch(fetchDataReport(target));
 		onOpenView();
@@ -72,13 +82,26 @@ export function TableDataReporting({ data }) {
 		onOpenApprove();
 	};
 
-  	const handleModalReject = (target) => {
+	const handleModalReject = (target) => {
 		setId(target);
 		onOpenReject();
 	};
 
-	const handleRejectReport = () => {
-    onOpenRejectionReason();
+	const handleModalRejectReason = () => {
+		onOpenRejectionReason();
+	};
+
+	const handlePatchData = (id, data) => {
+		dispatch(patchDataReport({ id, data })).then((res) => {
+			if (res.payload) {
+				if (data.status === "diterima") {
+					onCloseApprove();
+				}
+				if (data.status === "ditolak") {
+					onCloseRejectionReason();
+				}
+			}
+		});
 	};
 
 	return (
@@ -92,15 +115,17 @@ export function TableDataReporting({ data }) {
 			<ModalApprove
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
+				onApprove={handlePatchData}
 				target={id}
 				title={"Apakah anda yakin ingin Menyetujui Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
+				approveStatus={status}
 			/>
 
 			<ModalReject
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
-				onReject={handleRejectReport}
+				onReject={handleModalRejectReason}
 				target={id}
 				title={"Apakah anda yakin ingin Menolak Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
@@ -110,9 +135,10 @@ export function TableDataReporting({ data }) {
 				isOpen={isOpenRejectionReason}
 				onClose={onCloseRejectionReason}
 				target={id}
-				title={"Alasan Penolakan"}
-				message={"Masukkan alasan penolakan"}
+				onReject={handlePatchData}
+				rejectStatus={status}
 			/>
+
 			<BaseTable
 				data={data}
 				heads={TableHead}
@@ -124,7 +150,6 @@ export function TableDataReporting({ data }) {
 					}
 				})}
 			>
-				{/* {console.log(data)} */}
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
@@ -157,7 +182,7 @@ export function TableDataReporting({ data }) {
 									>
 										Setujui
 									</Button>
-                  					<Button
+									<Button
 										colorScheme={"red"}
 										_hover={{ bg: "#B22222" }}
 										onClick={() => handleModalReject(row.id)}
@@ -175,53 +200,3 @@ export function TableDataReporting({ data }) {
 		</>
 	);
 }
-
-// dummy
-const tabsData = [
-	{
-		tab: "1",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 1",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 2",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 3",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-	{
-		tab: "2",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 1",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-	{
-		tab: "3",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 2",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 3",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-];
-// end dummy

@@ -11,8 +11,6 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import { ApproveIcon } from "@/components/icons";
-import { useDispatch } from "react-redux";
-import { patchDataReport } from "@/store/report";
 
 export function ModalApprove({
 	isOpen,
@@ -20,14 +18,11 @@ export function ModalApprove({
 	target,
 	title,
 	message,
+	onApprove,
+	approveStatus,
 }) {
-	const dispatch = useDispatch();
-	const handleApprove = (id) => {
-		const data = {
-			status : "diterima"
-		};
-		dispatch(patchDataReport({id,data}));
-		onClose();
+	const handleApprove = (target) => {
+		onApprove(target);
 	};
 
 	return (
@@ -35,6 +30,7 @@ export function ModalApprove({
 			isOpen={isOpen}
 			onClose={onClose}
 			size={"md"}
+			closeOnOverlayClick={approveStatus !== "loading"}
 			isCentered
 		>
 			<ModalOverlay
@@ -89,6 +85,7 @@ export function ModalApprove({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
+						isLoading={approveStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -100,6 +97,7 @@ export function ModalApprove({
 						py={"1.75rem"}
 						_hover={{ bg: "#2DA22D" }}
 						onClick={() => handleApprove(target)}
+						isLoading={approveStatus === "loading"}
 					>
 						Verifikasi
 					</Button>

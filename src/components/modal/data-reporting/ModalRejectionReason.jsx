@@ -1,4 +1,3 @@
-import { patchDataReport } from "@/store/report";
 import {
 	Button,
 	Modal,
@@ -11,23 +10,21 @@ import {
 	Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-
 export function ModalRejectionReason({
 	isOpen,
 	onClose,
 	target,
 	onReject,
+	rejectStatus,
 }) {
-	const dispatch = useDispatch();
 	const [rejectionReason, setRejectionReason] = useState("tidak begitu jelas");
+
 	const handleReject = (id) => {
 		const data = {
 			status: "ditolak",
-		  	rejection_description: rejectionReason
-		}
-		dispatch(patchDataReport({id,data}));
-		onClose();
+			rejection_description: rejectionReason,
+		};
+		onReject(id, data);
 	};
 
 	return (
@@ -49,32 +46,33 @@ export function ModalRejectionReason({
 				shadow={"lg"}
 			>
 				<ModalHeader pb={0}>
-                    <Text
-                        fontSize={"2xl"}
-                        color={"black"}
-                        fontWeight={"bold"}
-                        lineHeight={"1.875rem"}
-                    >
-                        Alasan Penolakan
-                    </Text>
 					<Text
-                        fontSize={"lg"}
-                        color={"black"}
+						fontSize={"2xl"}
+						color={"black"}
+						fontWeight={"bold"}
+						lineHeight={"1.875rem"}
+					>
+						Alasan Penolakan
+					</Text>
+					<Text
+						fontSize={"lg"}
+						color={"black"}
 						fontWeight={"normal"}
 						marginTop={"5px"}
-                        lineHeight={"1.875rem"}
-                    >
-                        Masukkan alasan penolakan untuk laporan ini:
-                    </Text>
+						lineHeight={"1.875rem"}
+					>
+						Masukkan alasan penolakan untuk laporan ini:
+					</Text>
 				</ModalHeader>
 				<ModalBody>
 					<Textarea
-						rows="8" 
+						rows="8"
 						className="resize-none h-36"
-						border={"2px solid var(--dark-colors-dark-3, rgba(130, 130, 130, 0.75))"}
-						onChange={(e)=>setRejectionReason(e.target.value)}
-					>
-					</Textarea>
+						border={
+							"2px solid var(--dark-colors-dark-3, rgba(130, 130, 130, 0.75))"
+						}
+						onChange={(e) => setRejectionReason(e.target.value)}
+					></Textarea>
 				</ModalBody>
 				<ModalFooter
 					pt={"20px"}
@@ -89,6 +87,7 @@ export function ModalRejectionReason({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
+						isLoading={rejectStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -99,7 +98,8 @@ export function ModalRejectionReason({
 						px={"4.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#FF0000" }}
-						onClick={()=>handleReject(target)}
+						onClick={() => handleReject(target)}
+						isLoading={rejectStatus === "loading"}
 					>
 						Tolak
 					</Button>
