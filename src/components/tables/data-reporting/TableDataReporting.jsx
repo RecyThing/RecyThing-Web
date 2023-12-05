@@ -17,6 +17,7 @@ import {
 	patchDataReport,
 	patchDataReportSelector,
 } from "@/store/report";
+import { formatDateToLocalDate } from "@/utils";
 
 const TableHead = [
 	"Report ID",
@@ -165,7 +166,7 @@ export function TableDataReporting({ data }) {
 						<TextCell content={row.report_type} />
 						<TextCell content={row.name} />
 						<TextCell content={row.location} />
-						<TextCell content={row.insident_date} />
+						<TextCell content={formatDateToLocalDate(row.created_at)} />
 						<BadgeCell
 							content={row.status}
 							colorScheme={handleBadges(row.status)}
