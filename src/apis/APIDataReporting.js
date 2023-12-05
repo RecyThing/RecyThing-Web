@@ -2,14 +2,15 @@ import { axiosInstance } from "@/configs";
 import { AxiosError } from "axios";
 
 export const APIDataReporting = {
-    getDatasRepoting: async ({ search = "", limit = 10, page = 1 }) => {
+	getDatasRepoting: async ({ search = "", limit = 10, page = 1, status }) => {
 		try {
 			const response = await axiosInstance.get(
-				`/admins/manage/reports?search=${search}&limit=${limit}&page=${page}`
+				`/admins/manage/reports?search=${search}&limit=${limit}&page=${page}${
+					status ? `&status=${status}` : ""
+				}`
 			);
 			return response.data;
 		} catch (error) {
-
 			if (error instanceof AxiosError)
 				throw new Error(error.response.data.message);
 		}
@@ -25,13 +26,13 @@ export const APIDataReporting = {
 		}
 	},
 
-	patchDataReporting: async ({id,data}) => {
+	patchDataReporting: async ({ id, data }) => {
 		try {
 			const response = await axiosInstance.patch(
 				`/admins/manage/reports/${id}`,
 				data,
 				{
-					headers : {
+					headers: {
 						"Content-Type": "application/json",
 					},
 				}

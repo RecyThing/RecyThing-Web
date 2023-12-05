@@ -91,15 +91,21 @@ export function TableDataReporting({ data }) {
 		onOpenRejectionReason();
 	};
 
-	const handlePatchData = (id, data) => {
+	const handleRejectedData = (id, data) => {
 		dispatch(patchDataReport({ id, data })).then((res) => {
 			if (res.payload) {
-				if (data.status === "diterima") {
-					onCloseApprove();
-				}
-				if (data.status === "ditolak") {
-					onCloseRejectionReason();
-				}
+				onCloseRejectionReason();
+			}
+		});
+	};
+
+	const handleApprovedData = (id) => {
+		const data = {
+			status: "diterima",
+		};
+		dispatch(patchDataReport({ id, data })).then((res) => {
+			if (res.payload) {
+				onCloseApprove();
 			}
 		});
 	};
@@ -115,7 +121,7 @@ export function TableDataReporting({ data }) {
 			<ModalApprove
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
-				onApprove={handlePatchData}
+				onApprove={handleApprovedData}
 				target={id}
 				title={"Apakah anda yakin ingin Menyetujui Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
@@ -135,7 +141,7 @@ export function TableDataReporting({ data }) {
 				isOpen={isOpenRejectionReason}
 				onClose={onCloseRejectionReason}
 				target={id}
-				onReject={handlePatchData}
+				onReject={handleRejectedData}
 				rejectStatus={status}
 			/>
 
