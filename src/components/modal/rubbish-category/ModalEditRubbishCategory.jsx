@@ -1,26 +1,27 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Button,
-  FormControl,
-  FormErrorMessage,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  Flex,
   Modal,
   ModalContent,
+  ModalHeader,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
-import { CloseSquare, ChevronDown, ChevronUp } from "react-iconly";
-import { useForm, Controller } from "react-hook-form";
+import { CloseSquare } from "react-iconly";
+import { useForm } from "react-hook-form";
 import * as Fields from "./RubbishCategoryFormFields";
+import { useSelector } from "react-redux";
+import {
+  fetchTrashSelector,
+  updateTrashesSelector,
+} from "@/store/trash-category";
+import { Spinner } from "@/components/spinner";
 
 export function ModalEditRubbishCategory({
   isOpen,
   onClose,
-  target,
   onSubmit,
-  error,
 }) {
   const {
     handleSubmit,
@@ -30,33 +31,21 @@ export function ModalEditRubbishCategory({
     setValue,
   } = useForm();
 
-  const [selectedUnit, setSelectedUnit] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuOpen = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const { data, status, message } = useSelector(fetchTrashSelector);
+  const { status: updateStatus } = useSelector(updateTrashesSelector);
 
   const handleOnSubmit = (data) => {
-    console.log(data);
-    onSubmit(target, data);
+    onSubmit(data);
     reset();
-    onClose();
-  };
-
-  const rules = {
-    selectUnit: {
-      required: "Satuan tidak boleh kosong",
-    },
   };
 
   useEffect(() => {
-    if (target) {
-      setValue("rubbishCategoryName", target[0]);
-      setValue("rewardPoint", target[1]);
-      setSelectedUnit(target[2]);
+    if (data) {
+      setValue("trash_type", data.trash_type);
+      setValue("point", data.point);
+      setValue("unit", data.unit)
     }
-  }, [target, setValue]);
+  }, [data, setValue]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -68,110 +57,75 @@ export function ModalEditRubbishCategory({
     <Modal isOpen={isOpen} onClose={onClose} size={"xl"} isCentered>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
       <ModalContent padding={"24px"} borderRadius={"xl"}>
-        <div className="flex justify-between">
-          <p className="font-bold text-2xl">Edit Kategori Sampah</p>
-          <div className="cursor-pointer" onClick={onClose}>
-            <CloseSquare primaryColor="#828282" size={32} />
-          </div>
-        </div>
-
-        <form className="mt-6" onSubmit={handleSubmit(handleOnSubmit)}>
-          <Fields.RubbishCategoryName
-            control={control}
-            error={errors.rubbishCategoryName}
-          />
-          <div className="flex justify-between mt-6 gap-4">
-            <div className="w-3/5">
-              <Fields.RewardPoint
+        {(status === "loading" || updateStatus === "loading") && (
+          <Spinner containerSize={"270px"} />
+        )}
+        {status === "failed" && <div>{message}</div>}
+        {status === "success" && updateStatus === "idle" && (
+          <>
+            <ModalHeader p={"0"}>
+              <Flex alignItems={"center"} justifyContent={"space-between"}>
+                <Text
+                  fontWeight={"bold"}
+                  fontSize={"2xl"}
+                  casing={"capitalize"}
+                >
+                  Edit Kategori Sampah
+                </Text>
+                <div className="cursor-pointer" onClick={onClose}>
+                  <CloseSquare primaryColor="#828282" size={32} />
+                </div>
+              </Flex>
+            </ModalHeader>
+            <form className="mt-6" onSubmit={handleSubmit(handleOnSubmit)}>
+              <Fields.TrashTypeField
                 control={control}
-                error={errors.rewardPoint}
+                error={errors.trash_type}
               />
-            </div>
-            <div className="w-2/5">
-              <Controller
-                name="selectUnit"
-                control={control}
-                rules={rules.selectUnit}
-                render={({ field }) => (
-                  <FormControl isInvalid={error}>
-                    <Menu>
-                      <MenuButton
-                        as={Button}
-                        px={4}
-                        py={2}
-                        width={"100%"}
-                        height={"53.6px"}
-                        transition="all 0.2s"
-                        borderRadius="lg"
-                        borderWidth="1px"
-                        borderColor={"#949494"}
-                        backgroundColor={"white"}
-                        _hover={{ bg: "gray.100" }}
-                        _expanded={{
-                          bg: "#35CC33",
-                          textColor: "white",
-                          borderColor: "#35CC33",
-                        }}
-                        rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}
-                        onClick={handleMenuOpen}
-                        isActive={menuOpen}
-                        textAlign="left"
-                        fontWeight="normal"
-                        fontSize={"14px"}
-                      >
-                        {field.value || "Pilih Satuan"}
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem
-                          onClick={() => {
-                            field.onChange("Barang");
-                          }}
-                        >
-                          Barang
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            field.onChange("Kilogram");
-                          }}
-                        >
-                          Kilogram
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                    <FormErrorMessage>{error?.message}</FormErrorMessage>
-                  </FormControl>
-                )}
-              />
-            </div>
-          </div>
-          <div className="mt-6 flex justify-end gap-4 text-white">
-            <Button
-              color={"white"}
-              bg={"#828282"}
-              borderRadius={"lg"}
-              px={"3.5rem"}
-              py={"1.75rem"}
-              _hover={{ bg: "#333333" }}
-              onClick={() => {
-                reset();
-                onClose();
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              color={"white"}
-              bg={"#35CC33"}
-              borderRadius={"lg"}
-              px={"3rem"}
-              py={"1.75rem"}
-              _hover={{ bg: "#2DA22D" }}
-              type="submit"
-            >
-              Simpan
-            </Button>
-          </div>
-        </form>
+              <div className="flex justify-between mt-6 gap-4">
+                <div className="w-3/5">
+                  <Fields.RewardPointField
+                    control={control}
+                    error={errors.point}
+                  />
+                </div>
+                <div className="w-2/5">
+                  <Fields.SelectUnitField
+                    control={control}
+                    error={errors.unit}
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end gap-4 text-white">
+                <Button
+                  color={"white"}
+                  bg={"#828282"}
+                  borderRadius={"lg"}
+                  px={"3.5rem"}
+                  py={"1.75rem"}
+                  _hover={{ bg: "#333333" }}
+                  onClick={() => {
+                    reset();
+                    onClose();
+                  }}
+                >
+                  Batal
+                </Button>
+                <Button
+                  color={"white"}
+                  bg={"#35CC33"}
+                  borderRadius={"lg"}
+                  px={"3rem"}
+                  py={"1.75rem"}
+                  _hover={{ bg: "#2DA22D" }}
+                  type="submit"
+                >
+                  Simpan
+                </Button>
+              </div>
+            </form>
+          </>
+        )}
       </ModalContent>
     </Modal>
   );
