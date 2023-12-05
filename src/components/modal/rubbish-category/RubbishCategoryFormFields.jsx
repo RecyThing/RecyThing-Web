@@ -44,6 +44,7 @@ export function RewardPointField({ control, error }) {
 						Logo={TicketStar}
 						type={"number"}
 						autoComplete={"off"}
+            error={error}
 						{...field}
 					/>
 					<FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -59,7 +60,7 @@ export function SelectUnitField({ control, error, target }) {
 
   useEffect(() => {
     if (target) {
-      setSelectedUnit(target[2]);
+      setSelectedUnit(target.unit || "");
     }
   }, [target]);
 
@@ -89,6 +90,7 @@ export function SelectUnitField({ control, error, target }) {
               _expanded={{
                 bg: "#35CC33",
                 textColor: "white",
+                textTransform: "capitalize",
                 borderColor: "#35CC33",
               }}
               rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}

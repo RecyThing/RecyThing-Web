@@ -37,7 +37,7 @@ export function ModalAddRubbishCategory({ isOpen, onClose, onSubmit }) {
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
       <ModalContent padding={"24px"} borderRadius={"xl"}>
         {createStatus === "loading" ? (
-          <Spinner containerSize={"xl"} />
+          <Spinner containerSize={"270px"} />
         ) : (
           <>
             <div className="flex justify-between">

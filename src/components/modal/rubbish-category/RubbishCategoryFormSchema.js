@@ -6,7 +6,7 @@ export const schema = yup.object().shape({
     .required("Nama jenis sampah tidak boleh kosong")
     .max(25, "Nama jenis sampah tidak boleh lebih dari 25 karakter")
     .min(5, "Nama jenis sampah tidak boleh kurang dari 5 karakter")
-    .matches(/^[a-zA-Z0-9 ]*$/, "Nama jenis sampah tidak boleh mengandung simbol"),
+    .matches(/^[a-zA-Z ]*$/, "Nama jenis sampah tidak boleh mengandung simbol & angka"),
   point: yup
     .number()
     .transform((value, originalValue) => {
