@@ -10,7 +10,7 @@ import {
 import recycle from "@/assets/recycle.png";
 import { authService } from "@/configs";
 
-const { role } = authService.getAdminRole();
+const data = authService.getAdminRole();
 
 export const sideBarMenuArray = [
 	{
@@ -39,7 +39,7 @@ export const sideBarMenuArray = [
 			{
 				name: "Daftar Admin",
 				path: "/dashboard/admin-list",
-				hidden: role !== "super_admin",
+				hidden: data?.role !== "super_admin",
 			},
 			{
 				name: "Lencana",
