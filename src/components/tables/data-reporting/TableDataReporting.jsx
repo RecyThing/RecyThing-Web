@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-	Button,
-	ButtonGroup,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Button, ButtonGroup, useDisclosure } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
 import { CustomIconButton } from "@/components/buttons";
@@ -12,11 +8,20 @@ import { TableBodyRow } from "../base-table/TableRows";
 import {
 	ModalApprove,
 	ModalReject,
-  	ModalRejectionReason,
+	ModalRejectionReason,
 	ModalViewReportingApproval,
 } from "@/components/modal";
 
-const TableHead = [ "Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal", "Status", "View", "Aksi", ];
+const TableHead = [
+	"Report ID",
+	"Tipe Laporan",
+	"Pelapor",
+	"Lokasi",
+	"Tanggal",
+	"Status",
+	"View",
+	"Aksi",
+];
 
 export function TableDataReporting({ data }) {
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -38,11 +43,11 @@ export function TableDataReporting({ data }) {
 		onClose: onCloseReject,
 	} = useDisclosure();
 
-  const {
-    isOpen: isOpenRejectionReason,
-    onOpen: onOpenRejectionReason,
-    onClose: onCloseRejectionReason,
-  } = useDisclosure();
+	const {
+		isOpen: isOpenRejectionReason,
+		onOpen: onOpenRejectionReason,
+		onClose: onCloseRejectionReason,
+	} = useDisclosure();
 
 	const handleBadges = (status) => {
 		switch (status) {
@@ -67,7 +72,7 @@ export function TableDataReporting({ data }) {
 		onOpenApprove();
 	};
 
-  const handleModalReject = (row) => {
+	const handleModalReject = (row) => {
 		setSelectedRow(row);
 		onOpenReject();
 	};
@@ -78,7 +83,7 @@ export function TableDataReporting({ data }) {
 
 	const handleRejectReport = () => {
 		console.log("id: ", selectedRow.id);
-    onOpenRejectionReason();
+		onOpenRejectionReason();
 	};
 
 	return (
@@ -159,7 +164,7 @@ export function TableDataReporting({ data }) {
 									>
 										Setujui
 									</Button>
-                  					<Button
+									<Button
 										colorScheme={"red"}
 										_hover={{ bg: "#B22222" }}
 										onClick={() => handleModalReject(row)}

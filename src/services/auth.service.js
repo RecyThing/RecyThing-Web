@@ -57,7 +57,12 @@ export class AuthService {
 
 	getDataAdmin() {
 		if (this.isAuthorized()) {
-			return JSON.parse(Cookies.get("data"));
+			return Cookies.get("data")
+				? JSON.parse(Cookies.get("data"))
+				: {
+						name: "Admin",
+						email: "email admin",
+				  };
 		}
 		return null;
 	}
@@ -69,14 +74,17 @@ export class AuthService {
 		// 	Cookies.set("refreshToken", refreshToken);
 		// }
 	}
-	
-	setDataAdmin( {fullname, email , image} ) {
+
+	setDataAdmin({ fullname, email, image }) {
+		const exp = jwtDecode(this.getToken()).exp;
 		const data = {
-			'name': fullname,
-			'email': email,
-			'image': image,
-		}
-		Cookies.set("data", JSON.stringify(data));
+			name: fullname,
+			email: email,
+			image: image,
+		};
+		Cookies.set("data", JSON.stringify(data), {
+			expires: new Date(exp * 1000),
+		});
 	}
 
 	clearCredentialsFromCookie() {
