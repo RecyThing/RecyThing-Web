@@ -23,6 +23,8 @@ import DataReporting from "@/pages/DataReporting";
 import ContentArticle from "@/pages/ContentArticle";
 import ManageEventCommuntity from "@/pages/ManageEventCommunity";
 import { globalRoute } from "@/utils";
+import { RoleBasedRoute } from "./role-based-route";
+import Unauthorized from "@/pages/Unauthorized";
 
 export default function AppRoutes() {
 	const navigate = useNavigate();
@@ -58,7 +60,11 @@ export default function AppRoutes() {
 					/>
 					<Route
 						path="admin-list"
-						element={<ManageAdmin />}
+						element={
+							<RoleBasedRoute>
+								<ManageAdmin />
+							</RoleBasedRoute>
+						}
 					/>
 					<Route
 						path="badge"
@@ -118,6 +124,10 @@ export default function AppRoutes() {
 					/>
 				</Route>
 			</Route>
+			<Route
+				path="unauthorized"
+				element={<Unauthorized />}
+			/>
 			<Route
 				path="*"
 				element={<PathNotFound />}
