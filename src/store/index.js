@@ -8,7 +8,13 @@ import {
   fetchVouchersReducer,
   updateVoucherReducer,
 } from "./voucher";
-import { deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer } from "./admin";
+import {
+  createAdminReducer,
+  deleteAdminReducer,
+  fetchAdminReducer,
+  fetchAdminsReducer,
+  updateAdminReducer,
+} from "./admin";
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +26,9 @@ export const store = configureStore({
 
     fetchAdmins: fetchAdminsReducer,
     fetchAdmin: fetchAdminReducer,
-	deleteAdmin: deleteAdminReducer,
+    deleteAdmin: deleteAdminReducer,
+    createAdmin: createAdminReducer,
+    updateAdmin: updateAdminReducer,
 
     fetchVouchers: fetchVouchersReducer,
     fetchVoucher: fetchVoucherReducer,

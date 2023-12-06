@@ -46,7 +46,7 @@ export const APIAdmin = {
 
   deleteAdmin: async (id) => {
      try {
-      const response = await axiosInstance.delete(`/admins/${id}`, data);
+      const response = await axiosInstance.delete(`/admins/${id}`);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError)

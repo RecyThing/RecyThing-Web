@@ -18,3 +18,17 @@ export {
   deleteAdminReducer,
   deleteAdminSelector,
 } from "./deleteAdminSlice";
+
+export {
+  clearCreateAdminState,
+  createAdmins,
+  createAdminSelector,
+  createAdminReducer,
+} from "./createAdminSlice";
+
+export {
+  clearUpdateAdminState,
+  updateAdmin,
+  updateAdminSelector,
+  updateAdminReducer,
+} from "./updateAdminSlice";
