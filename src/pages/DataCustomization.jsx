@@ -76,7 +76,7 @@ function DataCustomization() {
 				page: currentPage,
 			})
 		);
-	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
 
 	useEffect(() => {
 		fetchPromptsData();
@@ -100,6 +100,9 @@ function DataCustomization() {
 		};
 	}, [fetchPromptsData, updateStatus, deleteStatus, createStatus, dispatch]);
 
+	// useEffect(() => {
+	// 	setTotalItems(count_data);
+	// }, [count_data]);
 
 	useEffect(() => {
 		if (createStatus === "success" || createStatus === "failed") {

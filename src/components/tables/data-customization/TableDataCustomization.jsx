@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPrompt,
 	deletePrompt,
 	deletePromptSelector,
-	clearDeletePromptState,
+	updatePromptSelector,
 } from '@/store/prompt';
 import { ModalDelete, ModalEditCustomizationData } from "@/components/modal";
 
@@ -28,6 +28,7 @@ function formatDateToCustomFormat(dateString) {
 
 export function TableDataCustomization({ data }) {
 	const dispatch = useDispatch();
+	const [id, setId] = useState(null);
 
 	const {
 		isOpen: isOpenEdit,
@@ -44,43 +45,41 @@ export function TableDataCustomization({ data }) {
 	const [selectedQuestion, setSelectedQuestion] = useState(null);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 
-	const handleEditModal = async (row) => {
-		try {
-			const promptId = row.id;
-			await dispatch(fetchPrompt(promptId));
-		
-			setSelectedQuestion(row);
-			setSelectedCategory(row.category);
-		
-			onOpenEdit();
-		} catch (error) {
-			console.error('Error fetching prompt data:', error);
-		}
-	};
+	const handleEditModal = (row) => {
+		const promptId = row.id;
 	  
-	const { status: deleteStatus, message: deleteMessage } = useSelector(
-		deletePromptSelector
-	);
+		setId(promptId);
+		dispatch(fetchPrompt(promptId));
+
+		setSelectedQuestion(row);
+		setSelectedCategory(row.category);
+		
+		onOpenEdit();
+	};
+
+	const { status: updateStatus } = useSelector(updatePromptSelector);
+	const { status: deleteStatus } = useSelector(deletePromptSelector);
 
 	const handleDeleteModal = (row) => {
 		setSelectedQuestion(row);
 		onOpenDelete();
 	};
 
-	const handleDelete = async (row) => {
-		try {
-			await dispatch(deletePrompt(row.id));
-			onCloseDelete();
-		} catch (error) {
-		  	console.error("Error deleting prompt:", error);
-		}
+	const handleDelete = (row) => {
+		dispatch(deletePrompt(row.id));
 	};
 
 	useEffect(() => {
-		if (deleteStatus === "success") {
-			dispatch(clearDeletePromptState());
+		if (updateStatus === "success" || updateStatus === "failed") {
+			onCloseEdit();
 		}
-	}, [deleteStatus, selectedQuestion, dispatch]);	 
+	}, [updateStatus, onCloseEdit]);
+
+	useEffect(() => {
+		if (deleteStatus === "success" || deleteStatus === "failed") {
+			onCloseDelete();
+		}
+	}, [deleteStatus, onCloseDelete]);
 
 	const sortedData = [...data].sort((a, b) => {
 		const dateA = new Date(a.created_at);
