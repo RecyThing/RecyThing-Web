@@ -16,13 +16,13 @@ export function ModalApprove({
 	isOpen,
 	onClose,
 	target,
-	onApprove,
 	title,
 	message,
+	onApprove,
+	approveStatus,
 }) {
-	const handleApprove = () => {
+	const handleApprove = (target) => {
 		onApprove(target);
-		onClose();
 	};
 
 	return (
@@ -30,6 +30,7 @@ export function ModalApprove({
 			isOpen={isOpen}
 			onClose={onClose}
 			size={"md"}
+			closeOnOverlayClick={approveStatus !== "loading"}
 			isCentered
 		>
 			<ModalOverlay
@@ -84,6 +85,7 @@ export function ModalApprove({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
+						isLoading={approveStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -94,7 +96,8 @@ export function ModalApprove({
 						px={"3.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#2DA22D" }}
-						onClick={handleApprove}
+						onClick={() => handleApprove(target)}
+						isLoading={approveStatus === "loading"}
 					>
 						Verifikasi
 					</Button>
