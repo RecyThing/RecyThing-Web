@@ -32,14 +32,17 @@ export const sideBarMenuArray = [
 			{
 				name: "Detail Pengguna",
 				path: "/dashboard/user-detail",
+				role: "admin",
 			},
 			{
 				name: "Daftar Admin",
 				path: "/dashboard/admin-list",
+				role: "super_admin",
 			},
 			{
 				name: "Lencana",
 				path: "/dashboard/badge",
+				role: "admin",
 			},
 		],
 	},
@@ -65,14 +68,17 @@ export const sideBarMenuArray = [
 			{
 				name: "Konten Artikel",
 				path: "/dashboard/content-article",
+				role: "admin",
 			},
 			{
 				name: "Kategori Sampah",
 				path: "/dashboard/rubbish-category",
+				role: "admin",
 			},
 			{
 				name: "Data Drop Point",
 				path: "/dashboard/data-drop-point",
+				role: "admin",
 			},
 		],
 	},
@@ -88,10 +94,12 @@ export const sideBarMenuArray = [
 			{
 				name: "Daftar Misi",
 				path: "/dashboard/mission-list",
+				role: "admin",
 			},
 			{
 				name: "Approval Misi",
 				path: "/dashboard/mission-approval",
+				role: "admin",
 			},
 		],
 	},
@@ -107,10 +115,12 @@ export const sideBarMenuArray = [
 			{
 				name: "Daftar Voucher",
 				path: "/dashboard/voucher-list",
+				role: "admin",
 			},
 			{
 				name: "Daftar Transaksi",
 				path: "/dashboard/transaction-list",
+				role: "admin",
 			},
 		],
 	},
@@ -137,10 +147,12 @@ export const sideBarMenuArray = [
 			{
 				name: "Komunitas",
 				path: "/dashboard/community",
+				role: "admin",
 			},
 			{
 				name: "Kustomisasi Data",
 				path: "/dashboard/customize-data",
+				role: "admin",
 			},
 		],
 	},
