@@ -55,6 +55,18 @@ export class AuthService {
 		return null;
 	}
 
+	getDataAdmin() {
+		if (this.isAuthorized()) {
+			return Cookies.get("data")
+				? JSON.parse(Cookies.get("data"))
+				: {
+						name: "Admin",
+						email: "email admin",
+				  };
+		}
+		return null;
+	}
+
 	setCredentialsToCookie({ token }) {
 		const { exp } = jwtDecode(token);
 		Cookies.set("token", token, { expires: new Date(exp * 1000) });
@@ -63,9 +75,22 @@ export class AuthService {
 		// }
 	}
 
+	setDataAdmin({ fullname, email, image }) {
+		const exp = jwtDecode(this.getToken()).exp;
+		const data = {
+			name: fullname,
+			email: email,
+			image: image,
+		};
+		Cookies.set("data", JSON.stringify(data), {
+			expires: new Date(exp * 1000),
+		});
+	}
+
 	clearCredentialsFromCookie() {
 		if (Cookies.get("token")) Cookies.remove("token");
 		if (Cookies.get("refreshToken")) Cookies.remove("refreshToken");
+		if (Cookies.get("data")) Cookies.remove("data");
 	}
 
 	logout() {
