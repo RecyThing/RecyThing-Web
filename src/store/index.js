@@ -16,6 +16,7 @@ import {
   fetchTrashesReducer,
   updateTrashesReducer,
 } from "./trash-category";
+import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
 
 export const store = configureStore({
   reducer: {
@@ -46,5 +47,8 @@ export const store = configureStore({
     updateTrashes: updateTrashesReducer,
     deleteTrashes: deleteTrashesReducer,
     createTrashes: createTrashesReducer,
+    
+    fetchAchievements: fetchAchievementsReducer,
+		patchAchievements: patchAchievementsReducer,
   },
 });
