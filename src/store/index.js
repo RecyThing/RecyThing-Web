@@ -8,6 +8,7 @@ import {
   fetchVouchersReducer,
   updateVoucherReducer,
 } from "./voucher";
+import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
 import {
   createAdminReducer,
   deleteAdminReducer,
@@ -35,5 +36,16 @@ export const store = configureStore({
     updateVoucher: updateVoucherReducer,
     deleteVoucher: deleteVoucherReducer,
     createVoucher: createVoucherReducer,
+
+		fetchDataReports:fetchDataReportsReducer,
+		fetchDataReport:fetchDataReportReducer,
+		patchDataReport:patchDataReportReducer,
+
+    fetchTrash: fetchTrashReducer,
+    fetchTrashes: fetchTrashesReducer,
+    updateTrashes: updateTrashesReducer,
+    deleteTrashes: deleteTrashesReducer,
+    createTrashes: createTrashesReducer,
+
   },
 });
