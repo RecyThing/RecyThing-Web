@@ -7,6 +7,7 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import UnauthorizedImg from "@/assets/401_illustration.png";
 
 function Unauthorized() {
 	return (
@@ -20,7 +21,7 @@ function Unauthorized() {
 			centerContent
 		>
 			<Image
-				src="/src/assets/401_illustration.png"
+				src={UnauthorizedImg}
 				alt="Unauthorized"
 				aspectRatio={1 / 1}
 				maxW={{ base: "100%", md: "50%" }}
