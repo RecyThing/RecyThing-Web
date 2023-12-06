@@ -3,12 +3,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import recycleWhite from "@/assets/recycle-white.png";
 import recycle from "@/assets/recycle.png";
 import PropTypes from "prop-types";
+import { authService } from "@/configs";
 
 export function SideBarItem({
 	name,
 	logo,
 	path,
-	subMenu,
+	subMenu: _subMenu,
 	sideBarCollapse,
 	setCollapse,
 	expandedMenu,
@@ -16,6 +17,12 @@ export function SideBarItem({
 }) {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
+
+	// filter sub menu based on admin role
+	const role = authService.getAdminRole().role;
+	const subMenu = _subMenu?.filter(
+		(item) => item.role === role || role === "super_admin"
+	);
 
 	function handleClickMenu() {
 		if (path) {

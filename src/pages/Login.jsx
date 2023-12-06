@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Banner from "@/assets/LandingPage/banner-img.png";
+import { useCustomToast } from "@/hooks";
 
 const Login = () => {
 	// react hooks form
@@ -25,19 +26,12 @@ const Login = () => {
 	const dispatch = useDispatch();
 
 	// handle submit
-	const handleOnSubmit = (data, e) => {
-		e.preventDefault();
-		try {
-			dispatch(adminLogin(data))
-				.then(() => {
-					navigate("/dashboard");
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		} catch (error) {
-			console.error(error);
-		}
+	const handleOnSubmit = (data) => {
+		dispatch(adminLogin(data)).then((res) => {
+			if (res.payload.status) {
+				navigate("/dashboard");
+			}
+		});
 	};
 
 	// Handle untuk menampilkan password
@@ -49,6 +43,8 @@ const Login = () => {
 			setPasswordType("password");
 		}
 	};
+
+	useCustomToast(status, message);
 
 	return (
 		<>
@@ -153,9 +149,6 @@ const Login = () => {
 					>
 						{status === "loading" ? "Loading..." : "Login"}
 					</button>
-
-					{/* diganti toast nanti */}
-					<p>{message}</p>
 				</form>
 				{/* End Form Login */}
 			</div>
