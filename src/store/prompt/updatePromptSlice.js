@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const updatePrompt = createAsyncThunk(
-	"PUT /admins/manage/Prompts/id",
+	"PUT /admins/manage/prompts/id",
 	APIPrompt.updatePrompt
 );
 
@@ -21,7 +21,7 @@ export const updatePromptSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(updatePrompt.pending, (state) => {
+			builder.addCase(updatePrompt.pending, (state) => {
 			state.status = "loading";
 		});
 		builder.addCase(updatePrompt.fulfilled, (state, action) => {

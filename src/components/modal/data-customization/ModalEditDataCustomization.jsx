@@ -43,13 +43,19 @@ export function ModalEditCustomizationData({
 
 	const handleOnSubmit = async (data) => {
 		try {
-		  await dispatch(updatePrompt({ id: selectedQuestion.id, data }));
-		  reset();
-		  onClose();
+			console.log("Selected Question:", selectedQuestion);
+			if (selectedQuestion) {
+				await dispatch(updatePrompt({ id: selectedQuestion.id, data }));
+				reset();
+				onClose();
+			} else {
+				console.error("Selected question is undefined");
+			}
 		} catch (error) {
-		  console.error("Error updating prompt:", error);
+			console.error("Error updating prompt:", error);
 		}
 	};
+	
 
 	useEffect(() => {
 		if (selectedQuestion) {
@@ -84,7 +90,7 @@ export function ModalEditCustomizationData({
 				borderRadius="12px"
 			>
 				{(status === "loading" || updateStatus === "loading") && (
-					<Spinner containerSize={"xl"} />
+					<Spinner containerSize={"500px"} />
 				)}
 				{status === "failed" && <div>{message}</div>}
 				{status === "success" && updateStatus === "idle" && (
@@ -117,9 +123,17 @@ export function ModalEditCustomizationData({
 									value={editedCategory}
 									onChange={(e) => setEditedCategory(e.target.value)}
 								>
+									<option value="" disabled>Pilih Topik</option>
+									<option value="batasan">Batasan</option>
+									<option value="informasi">Informasi</option>
 									<option value="sampah anorganik">Sampah Anorganik</option>
 									<option value="sampah organik">Sampah Organik</option>
 								</select>
+								{errors && errors.category && errors.category.message && (
+									<p className="text-red-500 text-xs pt-4 -mb-8">
+										{errors.category.message}
+									</p>
+								)}
 								<label
 									htmlFor="topik"
 									className="text-xs absolute -top-2 left-3 bg-white px-1"
@@ -140,7 +154,7 @@ export function ModalEditCustomizationData({
 										{...field}
 									/>
 									{errors && errors.question && errors.question.message && (
-										<p className="text-red-500 text-xs pt-16 -mb-14">
+										<p className="text-red-500 text-xs pt-16 -mb-14 ml-4">
 											{errors.question.message}
 										</p>
 									)}

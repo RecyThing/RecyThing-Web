@@ -35,11 +35,11 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 
 	const handleOnSubmit = async (data) => {
 		try {
-		  await dispatch(createPrompt(data));
-		  reset();
-		  onClose();
+			await dispatch(createPrompt(data));
+			reset();
+			onClose();
 		} catch (error) {
-		  console.error("Error creating prompt:", error);
+		  	console.error("Error creating prompt:", error);
 		}
 	};			
 
@@ -55,7 +55,7 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 			<ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
 			<ModalContent maxW="900px" borderRadius="12px">
 				{createStatus === "loading" ? (
-					<Spinner containerSize={"5xl"} />
+					<Spinner containerSize={"500px"} />
 				) : (
 				<>
 					<ModalHeader className="flex justify-between mt-8">
@@ -85,9 +85,17 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 											style={{ color: "rgba(79, 79, 79, 1)" }}
 											{...field}
 										>
+											<option value="" disabled selected>Pilih Topik</option>
+											<option value="batasan">Batasan</option>
+											<option value="informasi">Informasi</option>
 											<option value="sampah anorganik">Sampah Anorganik</option>
 											<option value="sampah organik">Sampah Organik</option>
 										</select>
+										{errors && errors.category && errors.category.message && (
+											<p className="text-red-500 text-xs pt-4 -mb-8">
+												{errors.category.message}
+											</p>
+										)}
 										<label htmlFor="category" className="text-xs absolute -top-2 left-3 bg-white px-1" style={{ color: "rgba(130, 130, 130, 1)" }}>
 											Topik
 										</label>
@@ -107,7 +115,7 @@ export function ModalAddCustomizationData({ isOpen, onClose, onSubmit }) {
 										{...field}
 									/>
 									{errors && errors.question && errors.question.message && (
-										<p className="text-red-500 text-xs pt-16 -mb-14">
+										<p className="text-red-500 text-xs pt-16 -mb-14 ml-4">
 											{errors.question.message}
 										</p>
 									)}

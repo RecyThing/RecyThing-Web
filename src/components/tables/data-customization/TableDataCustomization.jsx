@@ -16,8 +16,17 @@ import { ModalDelete, ModalEditCustomizationData } from "@/components/modal";
 
 const TableHead = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
 
+function capitalizeWords(string) {
+	return string.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function formatDateToCustomFormat(dateString) {
+	const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+	const date = new Date(dateString);
+	return date.toLocaleDateString('en-GB', options);
+}
+
 export function TableDataCustomization({ data }) {
-	const [isEditData, setIsEditData] = useState(false);
 	const dispatch = useDispatch();
 
 	const {
@@ -45,7 +54,7 @@ export function TableDataCustomization({ data }) {
 		
 			onOpenEdit();
 		} catch (error) {
-		  	console.error('Error fetching prompt data:', error);
+			console.error('Error fetching prompt data:', error);
 		}
 	};
 	  
@@ -71,23 +80,21 @@ export function TableDataCustomization({ data }) {
 		if (deleteStatus === "success") {
 			dispatch(clearDeletePromptState());
 		}
-	}, [deleteStatus, dispatch]);
+	}, [deleteStatus, selectedQuestion, dispatch]);	 
 
-	const formatDate = () => {
-		const currentDate = new Date();
-		const day = currentDate.getDate().toString().padStart(2, "0");
-		const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-		const year = currentDate.getFullYear();
-		return `${day}/${month}/${year}`;
-	};	  
+	const sortedData = [...data].sort((a, b) => {
+		const dateA = new Date(a.created_at);
+		const dateB = new Date(b.created_at);
+		return dateB - dateA;
+	});
 
 	return (
 		<>
 			<ModalEditCustomizationData
 				isOpen={isOpenEdit}
 				onClose={onCloseEdit}
-				category={selectedCategory || ""}
-				question={selectedQuestion ? selectedQuestion[1] : ""}
+				selectedQuestion={selectedQuestion}
+    			selectedCategory={selectedCategory}
 			/>
 			<ModalDelete
 				isOpen={isOpenDelete}
@@ -99,14 +106,14 @@ export function TableDataCustomization({ data }) {
 				data={data}
 				heads={TableHead}
 			>
-				{data.map((row, rowIndex) => (
+				{sortedData.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
 						{/* ini buat datenya nanti kamu ganti kalo udah ada response dari BE @Putri-R */}
-						<CenteredCell>{formatDate()}</CenteredCell>
-						<TextCell content={row.category} />
+						<CenteredCell>{formatDateToCustomFormat(row.created_at)}</CenteredCell>
+						<TextCell content={capitalizeWords(row.category)} />
 						<TruncatedCell content={row.question} />
 
 						<CenteredCell>

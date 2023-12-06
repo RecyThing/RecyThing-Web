@@ -100,9 +100,6 @@ function DataCustomization() {
 		};
 	}, [fetchPromptsData, updateStatus, deleteStatus, createStatus, dispatch]);
 
-	useEffect(() => {
-		setTotalItems(count_data);
-	}, [count_data]);
 
 	useEffect(() => {
 		if (createStatus === "success" || createStatus === "failed") {
@@ -124,10 +121,10 @@ function DataCustomization() {
 	const filteredData = Object.values(data).filter((prompt) => {
 		const { category, question } = prompt;
 		return (
-			(activeFilter === "Semua" || category === activeFilter) &&
-			question.toLowerCase().includes(searchTerm.toLowerCase())
+		  (activeFilter === "Semua" || category.toLowerCase() === activeFilter.toLowerCase()) &&
+		  question.toLowerCase().includes(searchTerm.toLowerCase())
 		);
-	});
+	  });
 
 	// ini harusnya dari BE nanti kita dapet count data buat per category, aku masih tanya ini @Putri-R
 	const filteredDataCount = (filter) => {
@@ -140,6 +137,18 @@ function DataCustomization() {
 				return count_data;
 		}
 	};
+
+	useEffect(() => {
+		setTotalItems(filteredData.length);
+	}, [filteredData]);
+
+	useEffect(() => {
+		if (activeFilter !== "Semua") {
+			setTotalItems(filteredDataCount(activeFilter));
+		} else {
+			setTotalItems(count_data);
+		}
+	}, [count_data, activeFilter, filteredDataCount]);
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -154,7 +163,7 @@ function DataCustomization() {
 	const handleFilterClick = (filter) => {
 		setActiveFilter(filter);
 		setCurrentPage(1);
-	};
+	};	  
 
 	useCustomToast(updateStatus, updateMessage);
 	useCustomToast(deleteStatus, deleteMessage);
