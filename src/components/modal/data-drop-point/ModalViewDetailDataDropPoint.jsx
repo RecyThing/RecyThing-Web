@@ -2,38 +2,13 @@ import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import { Calendar, CloseSquare, Location } from "react-iconly";
 import { BsRecycle } from "react-icons/bs";
 
-const operationalHours = [
-	{
-		day: "Senin",
-		time: "09.00 - 18.30",
-	},
-	{
-		day: "Selasa",
-		time: "09.00 - 18.30",
-	},
-	{
-		day: "Rabu",
-		time: "09.00 - 18.30",
-	},
-	{
-		day: "Kamis",
-		time: "09.00 - 18.30",
-	},
-	{
-		day: "Jumat",
-		time: "09.00 - 18.30",
-	},
-	{
-		day: "Sabtu",
-		time: "Tutup",
-	},
-	{
-		day: "Minggu",
-		time: "Tutup",
-	},
-];
+const days = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"];
 
-export function ModalViewDetailDataDropPoint({ isOpen, onClose }) {
+export function ModalViewDetailDataDropPoint({ data, isOpen, onClose }) {
+	function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -51,7 +26,7 @@ export function ModalViewDetailDataDropPoint({ isOpen, onClose }) {
 			>
 				<div className="flex justify-between">
 					<p className="h-fit my-auto font-bold text-[#828282]">
-						ID Drop Point: 213712
+						ID Drop Point: {data?.id}
 					</p>
 					<div
 						className="cursor-pointer"
@@ -72,7 +47,7 @@ export function ModalViewDetailDataDropPoint({ isOpen, onClose }) {
 							<BsRecycle className="text-2xl" />
 							<p className="font-medium">Nama Drop Point</p>
 						</div>
-						<p className="font-bold">Ruko Gajah Mada Padang</p>
+						<p className="font-bold">{data?.name}</p>
 					</div>
 
 					<div className="pl-2 flex gap-10">
@@ -81,7 +56,7 @@ export function ModalViewDetailDataDropPoint({ isOpen, onClose }) {
 							<p className="font-medium">Lokasi Drop Point</p>
 						</div>
 						<p className="font-bold max-w-sm">
-							Jl. Gajah Mada, Kp. Olo, Kec. Naggalo, Kota Padang, Sumatera Barat
+							{data?.address}
 						</p>
 					</div>
 
@@ -91,14 +66,16 @@ export function ModalViewDetailDataDropPoint({ isOpen, onClose }) {
 							<p className="font-medium">Jam Operasional</p>
 						</div>
 						<div className="flex flex-col gap-4">
-							{operationalHours.map((operationalHour, index) => (
+							{days.map((day, index) => (
 								<div
 									key={index}
 									className="flex w-96"
 								>
-									<p className="flex-1 font-bold">{operationalHour.day}</p>
+									<p className="flex-1 font-bold">{capitalizeFirstLetter(day)}</p>
 									<p className="flex-1 font-bold ml-2">
-										{operationalHour.time}
+										{!data?.schedule.filter(item => item.day.toLowerCase() === day && !item.closed).shift()?.open_time ? "Tutup" :
+										`${data?.schedule.filter(item => item.day.toLowerCase() === day).shift()?.open_time || ""} 
+										- ${data?.schedule.filter(item => item.day.toLowerCase() === day).shift()?.close_time || ""}`}
 									</p>
 								</div>
 							))}

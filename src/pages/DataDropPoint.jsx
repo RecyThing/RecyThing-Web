@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import { SearchBar } from "@/components/navigation";
 import { BsPlus } from "react-icons/bs";
 import { Pagination } from "@/components/pagination";
@@ -6,53 +7,45 @@ import { useDisclosure } from "@chakra-ui/react";
 import { ModalAddDataDropPoint } from "@/components/modal";
 import { TableDataDropPoint } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
-
-const DummyData = [];
-const names = [
-	"Ruko Gajah Mada Padang",
-	"Stasiun Tabing Padang",
-	"Ruko Khatib Sulaiman",
-	"Ruko Panam Pekanbaru",
-];
-const addresses = [
-	"Jl. Adinegoro, Kataping Selatan, Kec. Bulu Kumbu, Kab. Semaran...",
-	"Jl. Gajah Mada Dalam, Kp. Olo, Kec. Batu Gede, Kab. Bekasi, Jaw...",
-];
-
-for (let i = 0; i < 50; i++) {
-	const address = addresses[Math.floor(Math.random() * addresses.length)];
-	const name = names[Math.floor(Math.random() * names.length)];
-	DummyData.push({
-		name,
-		address,
-		days: "Senin - Jumat , Sabtu - Minggu",
-		time: "09:30 - 18:30 , 10:00 - 18:00",
-	});
-}
+import { useCustomToast, useDebounce } from "@/hooks";
+import { APIDropPoint } from "@/apis/APIDropPoint";
+import { Spinner } from "@/components/spinner";
 
 function DataDropPoint() {
-	const [searchTerm, setSearchTerm] = useState("");
+	const [toastMessage, setToastMessage] = useState({ status: "", message: "" });
+	const [dropPointData, setDropPointData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [_searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useDebounce(_searchTerm, 500);
+	const [totalItems, setTotalItems] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+
 	const {
 		isOpen: isOpenViewCreate,
 		onOpen: onOpenViewCreate,
 		onClose: onCloseViewCreate,
 	} = useDisclosure();
 
-	const filteredData = DummyData.filter(({ name: addressName }) =>
-		addressName.toLowerCase().includes(searchTerm.toLowerCase())
-	);
-
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
-
 	const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
+
+	function getDropPointData() {
+    setIsLoading(true);
+    APIDropPoint.getAllDataDropPoint(searchTerm, itemsPerPage, currentPage).then(res => {
+      setDropPointData(res.data);
+      setTotalItems(res.count_data);
+    }).finally(() => {setToastMessage({ status: "", message: "" }); setIsLoading(false)});
+  }
+
+	useCustomToast(toastMessage.status, toastMessage.message);
+
+	useEffect(() => {
+		getDropPointData();
+	}, [currentPage, searchTerm, itemsPerPage]);
+
 
 	return (
 		<LayoutDashboardContent>
@@ -75,20 +68,32 @@ function DataDropPoint() {
 
 				<ModalAddDataDropPoint
 					isOpen={isOpenViewCreate}
-					onClose={onCloseViewCreate}
+					setToastMessage={setToastMessage}
+					onClose={(refresh) => {
+						onCloseViewCreate();
+						if (refresh) getDropPointData();
+					}}
 				/>
-				<TableDataDropPoint
-					data={paginatedData}
-					isOpenViewCreate={isOpenViewCreate}
-					onCloseViewCreate={onCloseViewCreate}
-				/>
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={filteredData.length}
-				/>
+				{
+					isLoading ? <Spinner /> :
+					<>
+						<TableDataDropPoint
+							data={dropPointData}
+							isOpenViewCreate={isOpenViewCreate}
+							setToastMessage={setToastMessage}
+							refetch={getDropPointData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={totalItems}
+						/>
+					</>
+				}
 			</div>
 		</LayoutDashboardContent>
 	);
