@@ -38,7 +38,7 @@ function DataCustomization() {
 		data = [],
 		status,
 		message,
-		count_data,
+		count,
 	} = useSelector(fetchPromptsSelector);
 	const { status: updateStatus, message: updateMessage } =
 		useSelector(updatePromptSelector);
@@ -60,13 +60,14 @@ function DataCustomization() {
 		setIsAddData(false);
 	};
 
-	const [activeFilter, setActiveFilter] = useState("Semua");
-
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-	const [totalItems, setTotalItems] = useState(0);
+	const [activeFilter, setActiveFilter] = useState({
+		label: "Semua",
+		value: "",
+	});
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { onClose } = useDisclosure();
 
 	const fetchPromptsData = useCallback(() => {
 		dispatch(
@@ -74,6 +75,7 @@ function DataCustomization() {
 				search: searchTerm,
 				limit: itemsPerPage,
 				page: currentPage,
+				filter: activeFilter.value,
 			})
 		);
 	}, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
@@ -100,10 +102,6 @@ function DataCustomization() {
 		};
 	}, [fetchPromptsData, updateStatus, deleteStatus, createStatus, dispatch]);
 
-	// useEffect(() => {
-	// 	setTotalItems(count_data);
-	// }, [count_data]);
-
 	useEffect(() => {
 		if (createStatus === "success" || createStatus === "failed") {
 			onClose();
@@ -120,38 +118,20 @@ function DataCustomization() {
 		};
 	}, [dispatch]);
 
-	// ini nanti dipake buat balikin data yang udah difilter berdasarkan searchTerm sama categorynya
 	const filteredData = Object.values(data).filter((prompt) => {
-		const { category, question } = prompt;
-		return (
-		  (activeFilter === "Semua" || category.toLowerCase() === activeFilter.toLowerCase()) &&
-		  question.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-	  });
+		return prompt.question?.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
-	// ini harusnya dari BE nanti kita dapet count data buat per category, aku masih tanya ini @Putri-R
 	const filteredDataCount = (filter) => {
 		switch (filter) {
-			case "sampah anorganik":
-				return 0; // sesuaiin nanti sama response dari BE
-			case "sampah organik":
-				return 0; // sesuaiin nanti sama response dari BE
+			case "Sampah Anorganik":
+				return count?.count_anorganic;
+			case "Sampah Organik":
+				return count?.count_organic;
 			default:
-				return count_data;
+				return count?.total_count;
 		}
 	};
-
-	useEffect(() => {
-		setTotalItems(filteredData.length);
-	}, [filteredData]);
-
-	useEffect(() => {
-		if (activeFilter !== "Semua") {
-			setTotalItems(filteredDataCount(activeFilter));
-		} else {
-			setTotalItems(count_data);
-		}
-	}, [count_data, activeFilter, filteredDataCount]);
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -162,11 +142,16 @@ function DataCustomization() {
 		dispatch(createPrompt(data));
 	};
 
-	// ini nanti kalo kita ngubah filternya, bakal refetch data dari BE
 	const handleFilterClick = (filter) => {
-		setActiveFilter(filter);
 		setCurrentPage(1);
-	};	  
+		if (filter === "Sampah Organik") {
+			setActiveFilter({ label: "Sampah Organik", value: "sampah organik" });
+		} else if (filter === "Sampah Anorganik") {
+			setActiveFilter({ label: "Sampah Anorganik", value: "sampah anorganik" });
+		} else {
+			setActiveFilter({ label: "Semua", value: "" });
+		}
+	};
 
 	useCustomToast(updateStatus, updateMessage);
 	useCustomToast(deleteStatus, deleteMessage);
@@ -216,7 +201,7 @@ function DataCustomization() {
 							<FilterButton
 								key={label}
 								label={label}
-								activeFilter={activeFilter}
+								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
 							/>
@@ -240,7 +225,7 @@ function DataCustomization() {
 								itemsPerPage={itemsPerPage}
 								onChangeItemsPerPage={setItemsPerPage}
 								onChangePage={setCurrentPage}
-								totalItems={totalItems}
+								totalItems={filteredDataCount(activeFilter.label)}
 							/>
 						</>
 					)}

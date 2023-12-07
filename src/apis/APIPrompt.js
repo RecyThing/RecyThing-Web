@@ -3,10 +3,12 @@ import { AxiosError } from "axios";
 
 // kalo content typenya diminta application/json, gausah ditambah ri, kecuali diminta multipart/form-data @Putri-R
 export const APIPrompt = {
-	getPrompts: async ({ search, limit, page }) => {
+	getPrompts: async ({ search, limit, page, filter }) => {
 		try {
 			const response = await axiosInstance.get(
-				`/admins/manage/prompts?search=${search}&limit=${limit}&page=${page}`
+				`/admins/manage/prompts?search=${search}&limit=${limit}&page=${page}${
+					filter ? `&filter=${filter}` : ""
+				}`
 			);
 			return response.data;
 		} catch (error) {
