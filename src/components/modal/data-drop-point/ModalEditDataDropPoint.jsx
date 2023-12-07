@@ -15,6 +15,7 @@ import { APIDropPoint } from "@/apis/APIDropPoint";
 export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose }) {
 	const [showMap, setShowMap] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
 	const [zoom, setZoom] = useState(10);
 	const [inputs, setInputs] = useState({
 		name: data?.name,
@@ -77,7 +78,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 		if (!lat || !lng) return;
 		axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.GOOGLE_MAP_API_KEY}`)
 		.then(res => {
-			const address = res.data.results[0].formatted_address;
+			const address = res.data.results[0]?.formatted_address;
 			setInputs(prev => ({ ...prev, address: address }));
 		}).catch(err => console.warn(err));
 	}
@@ -94,7 +95,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 		}).then((res) => {
 			setToastMessage({ status: "success", message: res.message });
 			onClose(true);
-		}).finally(() => setIsLoading(false))
+		}).catch(err => setError(err.message)).finally(() => setIsLoading(false))
 	}
 
 	useEffect(() => {
@@ -135,7 +136,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={() => onClose()}
+			onClose={() => {onClose(); setError("");}}
 			size={"3xl"}
 			isCentered
 		>
@@ -170,6 +171,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 				<div className="flex gap-4 mt-4">
 					<InputWithLogo
 						label={"Alamat Drop Point"}
+						disabled={true}
 						Logo={Location}
 						className={"w-full"}
 						value={inputs.address || ""}
@@ -181,6 +183,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 				<div className="flex gap-4 mt-4">
 					<InputWithLogo
 						type={"number"}
+						disabled={true}
 						label={"Latitude"}
 						Logo={Location}
 						className={"w-full"}
@@ -189,6 +192,7 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 					/>
 					<InputWithLogo
 						type={"number"}
+						disabled={true}
 						label={"Longitude"}
 						Logo={Location}
 						className={"w-full"}
@@ -199,10 +203,11 @@ export function ModalEditDataDropPoint({ data, isOpen, setToastMessage, onClose 
 
 				<OperationalSchedule operational_schedule={inputs.operational_schedule} setInputs={setInputs} />
 
+				{error && <p className="text-red-500">{error}</p>}
 				<div className="mt-9 flex justify-between text-white">
 					<button
 						disabled={isLoading}
-						onClick={() => onClose()}
+						onClick={() => { onClose(); setError(""); }}
 						className="p-4 w-[170px] rounded-lg bg-[#828282] hover:opacity-90 disabled:opacity-50"
 					>
 						Batal

@@ -15,8 +15,9 @@ import { Spinner } from "@/components/spinner";
 export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [showMap, setShowMap] = useState(false);
+	const [error, setError] = useState("");
 	const [zoom, setZoom] = useState(10);
-	const [inputs, setInputs] = useState({
+	const defaultInput = {
 		name: "",
 		address: "",
 		lat: -6.200000,
@@ -65,7 +66,8 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 				close_time: "",
 			}
 		],
-	});
+	}
+	const [inputs, setInputs] = useState(defaultInput);
 
 	const lat = useDebounce(inputs.lat, 500);
 	const lng = useDebounce(inputs.lng, 500);
@@ -76,7 +78,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 	function getAddressLocation(lat = inputs.lat, lng = inputs.lng) {
 		axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.GOOGLE_MAP_API_KEY}`)
 		.then(res => {
-			const address = res.data.results[0].formatted_address;
+			const address = res.data.results[0]?.formatted_address;
 			setInputs(prev => ({ ...prev, address: address }));
 		}).catch(err => console.warn(err));
 	}
@@ -92,7 +94,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 		}).then((res) => {
 			setToastMessage({ status: "success", message: res.message });
 			onClose(true);
-		}).finally(() => setIsLoading(false))
+		}).catch(err => setError(err.message)).finally(() => setIsLoading(false))
 	}
 
 	useEffect(() => {
@@ -117,7 +119,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={() => onClose()}
+			onClose={() => {onClose(); setInputs(defaultInput); setError("");}}
 			size={"3xl"}
 			isCentered
 		>
@@ -154,6 +156,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 				<div className="flex gap-4 mt-4">
 					<InputWithLogo
 						label={"Alamat Drop Point"}
+						disabled={true}
 						Logo={Location}
 						className={"w-full"}
 						value={inputs.address || ""}
@@ -165,6 +168,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 				<div className="flex gap-4 mt-4">
 					<InputWithLogo
 						type={"number"}
+						disabled={true}
 						label={"Latitude"}
 						Logo={Location}
 						className={"w-full"}
@@ -173,6 +177,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 					/>
 					<InputWithLogo
 						type={"number"}
+						disabled={true}
 						label={"Longitude"}
 						Logo={Location}
 						className={"w-full"}
@@ -182,10 +187,11 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 				</div>
 
 				<OperationalSchedule operational_schedule={inputs.operational_schedule} setInputs={setInputs} />
+				{error && <p className="text-red-500">{error}</p>}
 				<div className="mt-9 flex justify-between text-white">
 					<button
 						disabled={isLoading}
-						onClick={() => onClose()}
+						onClick={() => {onClose(); setInputs(defaultInput); setError("");}}
 						className="p-4 w-[170px] rounded-lg bg-[#828282] disabled:opacity-50 hover:opacity-90"
 					>
 						Batal
