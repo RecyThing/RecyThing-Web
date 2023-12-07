@@ -100,6 +100,7 @@ export function TableDataCustomization({ data }) {
 				onClose={onCloseDelete}
 				target={selectedQuestion}
 				onDelete={() => handleDelete(selectedQuestion)}
+				deleteStatus={deleteStatus}
 			/>
 			<BaseTable
 				data={data}
