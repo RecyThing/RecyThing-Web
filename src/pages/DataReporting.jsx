@@ -40,7 +40,6 @@ function DataReporting() {
 	});
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-	const [totalItems, setTotalItems] = useState(0);
 
 	useCustomToast(patchStatus, patchMessage);
 
@@ -52,11 +51,7 @@ function DataReporting() {
 				limit: itemsPerPage,
 				page: currentPage,
 			})
-		).then((res) => {
-			if (res.payload.count) {
-				setTotalItems(res.payload.count?.total_count);
-			}
-		});
+		);
 	}, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
 
 	useEffect(() => {
@@ -88,16 +83,14 @@ function DataReporting() {
 
 	const filteredDataCount = (filter) => {
 		switch (filter) {
-			case "Semua":
-				return count?.total_count || 0;
 			case "Perlu Tinjauan":
-				return count?.count_perlu_ditinjau || 0;
+				return count?.count_pending || 0;
 			case "Disetujui":
-				return count?.count_diterima || 0;
+				return count?.count_approved || 0;
 			case "Ditolak":
-				return count?.count_ditolak || 0;
+				return count?.count_rejected || 0;
 			default:
-				return 0;
+				return count?.total_count || 0;
 		}
 	};
 
@@ -166,7 +159,7 @@ function DataReporting() {
 							itemsPerPage={itemsPerPage}
 							onChangeItemsPerPage={setItemsPerPage}
 							onChangePage={setCurrentPage}
-							totalItems={totalItems}
+							totalItems={filteredDataCount(activeFilter.label)}
 						/>
 					</>
 				)}
