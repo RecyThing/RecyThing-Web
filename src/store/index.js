@@ -17,6 +17,13 @@ import {
   updateTrashesReducer,
 } from "./trash-category";
 import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
+import {
+	createPromptReducer,
+	deletePromptReducer,
+	fetchPromptReducer,
+	fetchPromptsReducer,
+	updatePromptReducer,
+} from "./prompt";
 
 export const store = configureStore({
   reducer: {
@@ -50,5 +57,11 @@ export const store = configureStore({
     
     fetchAchievements: fetchAchievementsReducer,
 		patchAchievements: patchAchievementsReducer,
+    
+    fetchPrompts: fetchPromptsReducer,
+		fetchPrompt: fetchPromptReducer,
+		updatePrompt: updatePromptReducer,
+		deletePrompt: deletePromptReducer,
+		createPrompt: createPromptReducer,
   },
 });
