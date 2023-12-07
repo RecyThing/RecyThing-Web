@@ -11,8 +11,9 @@ import {
 	ModalEditDataDropPoint,
 	ModalViewDetailDataDropPoint,
 } from "@/components/modal";
+import { APIDropPoint } from "@/apis/APIDropPoint";
 
-export function TableDataDropPoint({ data }) {
+export function TableDataDropPoint({ data, refetch, setToastMessage }) {
 	const TableHead = [
 		"No",
 		"Nama & Alamat Drop point",
@@ -35,15 +36,30 @@ export function TableDataDropPoint({ data }) {
 		onClose: onCloseDelete,
 	} = useDisclosure();
 	const [selectedRow, setSelectedRow] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+	}
 
 	function handleOpenDeleteModal(row) {
 		setSelectedRow(row);
 		onOpenDelete();
 	}
 
+	function handleOpenEditModal(row) {
+		setSelectedRow(row);
+		onOpenEdit();
+	}
+
 	function handleDelete(row) {
-		console.log("deleted!", row);
-		onCloseDelete();
+		setIsLoading(true);
+		APIDropPoint.deleteDataDropPoint(row.id)
+		.then(res => {
+			onCloseDelete();
+      setToastMessage({ status: "success", message: res.message });
+			refetch();
+		}).finally(() => setIsLoading(false));
 	}
 
 	return (
@@ -53,21 +69,28 @@ export function TableDataDropPoint({ data }) {
 				onClose={onCloseDelete}
 				target={selectedRow}
 				onDelete={handleDelete}
+				isLoading={isLoading}
 			/>
 			<ModalEditDataDropPoint
 				isOpen={isOpenEdit}
-				onClose={onCloseEdit}
+				onClose={(refresh) => {
+					if (refresh) refetch();
+					onCloseEdit();
+				}}
+				data={selectedRow}
+				setToastMessage={setToastMessage}
 			/>
 			<ModalViewDetailDataDropPoint
 				isOpen={isOpenDetail}
 				onClose={onCloseDetail}
+				data={selectedRow}
 			/>
 
 			<BaseTable
-				data={data}
+				data={data || []}
 				heads={TableHead}
 			>
-				{data.map((row, rowIndex) => (
+				{data?.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
@@ -75,26 +98,26 @@ export function TableDataDropPoint({ data }) {
 						<CenteredCell>{rowIndex + 1}</CenteredCell>
 						<LeftAlignCell maxWidth={"0"}>
 							<p className="w-fit">{row.name}</p>
-							<p className="overflow-hidden text-ellipsis">{row.address}</p>
+							<p className="overflow-hidden text-ellipsis text-sm leading-6 text-[#828282]">{row.address}</p>
 						</LeftAlignCell>
-						<LeftAlignCell>
-							<p>{row.days}</p>
-							<p>{row.time}</p>
+						<LeftAlignCell maxWidth={"0"}>
+							<p >{row.schedule.filter(item => item.open_time && !item.closed)?.map(item => `${capitalizeFirstLetter(item.day)}`).join(", ")}</p>
+							<p className="text-sm leading-6 text-ellipsis overflow-hidden text-[#828282]">{row.schedule.filter(item => item.open_time && !item.closed)?.map(item => `${item.open_time}-${item.close_time}`).join(", ")}</p>
 						</LeftAlignCell>
 
 						<CenteredCell>
 							<div className="flex gap-2">
 								<CustomIconButton
 									icon={<Eye />}
-									onClick={onOpenDetail}
+									onClick={() => {setSelectedRow(row); onOpenDetail();}}
 								/>
 								<CustomIconButton
 									icon={<Edit />}
-									onClick={onOpenEdit}
+									onClick={() => handleOpenEditModal(row)}
 								/>
 								<CustomIconButton
 									icon={<Trash color="#E53535" />}
-									onClick={() => handleOpenDeleteModal(row.name)}
+									onClick={() => handleOpenDeleteModal(row)}
 								/>
 							</div>
 						</CenteredCell>

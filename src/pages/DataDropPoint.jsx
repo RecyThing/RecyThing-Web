@@ -67,12 +67,17 @@ function DataDropPoint() {
 
 				<ModalAddDataDropPoint
 					isOpen={isOpenViewCreate}
-					onClose={onCloseViewCreate}
+					setToastMessage={setToastMessage}
+					onClose={(refresh) => {
+						onCloseViewCreate();
+						if (refresh) getDropPointData();
+					}}
 				/>
 				<TableDataDropPoint
 					data={dropPointData}
 					isOpenViewCreate={isOpenViewCreate}
-					onCloseViewCreate={onCloseViewCreate}
+					setToastMessage={setToastMessage}
+					refetch={getDropPointData}
 				/>
 				<Pagination
 					currentPage={currentPage}

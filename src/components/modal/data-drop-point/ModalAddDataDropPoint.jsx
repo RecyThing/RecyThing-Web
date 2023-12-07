@@ -9,8 +9,11 @@ import { useEffect, useState } from "react";
 import MyMapPicker from "./MyMapPicker";
 import axios from "axios";
 import { useDebounce } from "@/hooks";
+import { APIDropPoint } from "@/apis/APIDropPoint";
+import { Spinner } from "@/components/spinner";
 
-export function ModalAddDataDropPoint({ isOpen, onClose }) {
+export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
+	const [isLoading, setIsLoading] = useState(false);
 	const [showMap, setShowMap] = useState(false);
 	const [zoom, setZoom] = useState(10);
 	const [inputs, setInputs] = useState({
@@ -22,44 +25,44 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 			{
 				day: "Senin",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Selasa",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Rabu",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Kamis",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Jumat",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Sabtu",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			},
 			{
 				day: "Minggu",
 				isChecked: false,
-				start_time: "",
-				end_time: "",
+				open_time: "",
+				close_time: "",
 			}
 		],
 	});
@@ -75,12 +78,25 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 		.then(res => {
 			const address = res.data.results[0].formatted_address;
 			setInputs(prev => ({ ...prev, address: address }));
-		}).catch(err => console.warn(err)).finally(() => setShowMap(false));
+		}).catch(err => console.warn(err));
+	}
+
+	function handleSubmit() {
+		setIsLoading(true);
+		APIDropPoint.addDataDropPoint({
+			name: inputs.name,
+			address: inputs.address,
+			latitude: inputs.lat,
+			longitude: inputs.lng,
+			schedule: inputs.operational_schedule.filter(item => item.isChecked).map(item => ({ ...item, day: item.day.toLowerCase() }))
+		}).then((res) => {
+			setToastMessage({ status: "success", message: res.message });
+			onClose(true);
+		}).finally(() => setIsLoading(false))
 	}
 
 	useEffect(() => {
 		getAddressLocation(parseFloat(lat), parseFloat(lng));
-
 	}, [lat, lng])
 
 	if (showMap) return <Modal isOpen={isOpen} onClose={onClose} size={"7xl"} isCentered>
@@ -90,7 +106,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 				<div onClick={() => setShowMap(false)} className="absolute w-20 h-20 z-50 top-16 left-3 rounded-xl cursor-pointer bg-white">
 					<ArrowLeft className="mt-4 mx-auto" size={48} />
 				</div>
-				<button onClick={getAddressLocation} className="absolute z-50 w-[90%] mx-auto inset-x-0 py-4 bottom-14
+				<button onClick={() => {getAddressLocation(); setShowMap(false);}} className="absolute z-50 w-[90%] mx-auto inset-x-0 py-4 bottom-14
 				rounded-lg text-white bg-[#35CC33]">Pilih Lokasi</button>
 				<MyMapPicker defaultLocation={{lat: parseFloat(inputs.lat), lng: parseFloat(inputs.lng)}} zoom={zoom} mapTypeId="roadmap" style={{height:'100vh'}}
 				onChangeLocation={handleChangeLocation} onChangeZoom={handleChangeZoom} apiKey={process.env.GOOGLE_MAP_API_KEY} />
@@ -101,7 +117,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={() => onClose()}
 			size={"3xl"}
 			isCentered
 		>
@@ -119,7 +135,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 					<p className="font-medium text-2xl">Tambah Data Lokasi Drop Point</p>
 					<div
 						className="cursor-pointer"
-						onClick={onClose}
+						onClick={() => onClose()}
 					>
 						<CloseSquare
 							primaryColor="#828282"
@@ -165,21 +181,23 @@ export function ModalAddDataDropPoint({ isOpen, onClose }) {
 					/>
 				</div>
 
-				<OperationalSchedule inputs={inputs} setInputs={setInputs} />
+				<OperationalSchedule operational_schedule={inputs.operational_schedule} setInputs={setInputs} />
 				<div className="mt-9 flex justify-between text-white">
 					<button
-						onClick={onClose}
-						className="p-4 w-[170px] rounded-lg bg-[#828282] hover:opacity-90"
+						disabled={isLoading}
+						onClick={() => onClose()}
+						className="p-4 w-[170px] rounded-lg bg-[#828282] disabled:opacity-50 hover:opacity-90"
 					>
 						Batal
 					</button>
 					<button
-						disabled={inputs.name === "" || inputs.address === "" || inputs.lat === "" || inputs.lng === "" || 
-						inputs.operational_schedule.filter(item => item.start_time === "" || item.end_time === "").length > 6}
-						onClick={onClose}
-						className="p-4 w-[170px] rounded-lg bg-[#35CC33] disabled:opacity-50 hover:opacity-90"
+						disabled={isLoading || inputs.name === "" || inputs.address === "" || inputs.lat === "" || inputs.lng === "" || 
+						inputs.operational_schedule.filter(item => item.open_time === "" || item.close_time === "").length > 6}
+						onClick={handleSubmit}
+						className="p-4 flex gap-2 justify-center w-[170px] rounded-lg bg-[#35CC33] disabled:opacity-50 hover:opacity-90"
 					>
-						Simpan
+						<span className="my-auto">Simpan</span>
+						{isLoading && <Spinner containerSize={6} width={6} height={6} />}
 					</button>
 				</div>
 			</ModalContent>
