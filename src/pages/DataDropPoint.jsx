@@ -7,7 +7,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { ModalAddDataDropPoint } from "@/components/modal";
 import { TableDataDropPoint } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
-import { useCustomToast } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 import { APIDropPoint } from "@/apis/APIDropPoint";
 import { Spinner } from "@/components/spinner";
 
@@ -15,7 +15,8 @@ function DataDropPoint() {
 	const [toastMessage, setToastMessage] = useState({ status: "", message: "" });
 	const [dropPointData, setDropPointData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [searchTerm, setSearchTerm] = useState("");
+	const [_searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useDebounce(_searchTerm, 500);
 	const [totalItems, setTotalItems] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -45,7 +46,7 @@ function DataDropPoint() {
 		getDropPointData();
 	}, [currentPage, searchTerm, itemsPerPage]);
 
-	if (isLoading) return <Spinner />;
+
 	return (
 		<LayoutDashboardContent>
 			<p className="font-bold text-2xl">Kelola Drop Point Penukaran Sampah</p>
@@ -73,19 +74,24 @@ function DataDropPoint() {
 						if (refresh) getDropPointData();
 					}}
 				/>
-				<TableDataDropPoint
-					data={dropPointData}
-					isOpenViewCreate={isOpenViewCreate}
-					setToastMessage={setToastMessage}
-					refetch={getDropPointData}
-				/>
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={totalItems}
-				/>
+				{
+					isLoading ? <Spinner /> :
+					<>
+						<TableDataDropPoint
+							data={dropPointData}
+							isOpenViewCreate={isOpenViewCreate}
+							setToastMessage={setToastMessage}
+							refetch={getDropPointData}
+						/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={totalItems}
+						/>
+					</>
+				}
 			</div>
 		</LayoutDashboardContent>
 	);

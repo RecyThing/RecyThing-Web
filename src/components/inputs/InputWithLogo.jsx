@@ -12,7 +12,7 @@ export const InputWithLogo = forwardRef(
 					value={value}
 					id={`floating_outlined${id}`}
 					className={`block pl-12 pr-2.5 py-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border ${
-						props.error ? "border-red-600" : props.disabled ? "border-white" : "border-[#949494]"
+						props.error ? "border-red-600" : props.disabled || "border-[#949494]"
 					} appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
 					placeholder=" "
 					autoComplete="off"
