@@ -13,7 +13,7 @@ import {
 } from "@/components/modal";
 import { APIDropPoint } from "@/apis/APIDropPoint";
 
-export function TableDataDropPoint({ data, refetch, setToastMessage }) {
+export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, setToastMessage }) {
 	const TableHead = [
 		"No",
 		"Nama & Alamat Drop point",
@@ -95,7 +95,7 @@ export function TableDataDropPoint({ data, refetch, setToastMessage }) {
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>{rowIndex + 1}</CenteredCell>
+						<CenteredCell>{(currentPage - 1) * itemsPerPage + rowIndex + 1}</CenteredCell>
 						<LeftAlignCell maxWidth={"0"}>
 							<p className="w-fit">{row.name}</p>
 							<p className="overflow-hidden text-ellipsis text-sm leading-6 text-[#828282]">{row.address}</p>

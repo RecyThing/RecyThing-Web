@@ -82,6 +82,8 @@ function DataDropPoint() {
 							isOpenViewCreate={isOpenViewCreate}
 							setToastMessage={setToastMessage}
 							refetch={getDropPointData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
 						/>
 						<Pagination
 							currentPage={currentPage}

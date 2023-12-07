@@ -26,7 +26,7 @@ export function ModalViewDetailDataDropPoint({ data, isOpen, onClose }) {
 			>
 				<div className="flex justify-between">
 					<p className="h-fit my-auto font-bold text-[#828282]">
-						ID Drop Point: 213712
+						ID Drop Point: {data?.id}
 					</p>
 					<div
 						className="cursor-pointer"
