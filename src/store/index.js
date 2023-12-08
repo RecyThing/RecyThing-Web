@@ -24,6 +24,7 @@ import {
 	fetchPromptsReducer,
 	updatePromptReducer,
 } from "./prompt";
+import { fetchDatasTransactionReducer } from "./transaction-list";
 
 export const store = configureStore({
   reducer: {
@@ -63,5 +64,7 @@ export const store = configureStore({
 		updatePrompt: updatePromptReducer,
 		deletePrompt: deletePromptReducer,
 		createPrompt: createPromptReducer,
+
+    fetchDatasTransaction: fetchDatasTransactionReducer,
   },
 });

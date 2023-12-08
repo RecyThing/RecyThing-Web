@@ -9,6 +9,8 @@ import {
 	ModalEditDetailTransaction,
 	ModalViewDetailTransaction,
 } from "@/components/modal";
+import { useDispatch } from "react-redux";
+import { formatDateToLocalDate } from "@/utils";
 
 const TableHead = [
 	"No",
@@ -31,33 +33,36 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 		onOpen: onOpenUpdate,
 		onClose: onCloseUpdate,
 	} = useDisclosure();
-	const [selectedRow, setSelectedRow] = useState(null);
+	
 
 	const handleBadges = (status) => {
 		switch (status) {
-			case "Diproses":
+			case "diproses":
 				return "blue";
-			case "Terbaru":
+			case "terbaru":
 				return "yellow";
-			case "Berhasil":
+			case "selesai":
 				return "green";
 			default:
 				return "gray";
 		}
 	};
 
+	const [id, setId] = useState(null);
+
+	const dispatch = useDispatch();
 	const handleViewModal = (row) => {
-		setSelectedRow(row);
+		
 		onOpenView();
 	};
 
 	const handleUpdateModal = (row) => {
-		setSelectedRow(row);
+		
 		onOpenUpdate();
 	};
 
 	const handleUpdate = (row) => {
-		console.log("Updated!", row);
+		
 		onCloseUpdate();
 	};
 
@@ -66,13 +71,13 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 			<ModalViewDetailTransaction
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={selectedRow}
+				data={id}
 			/>
 
 			<ModalEditDetailTransaction
 				isOpen={isOpenUpdate}
 				onClose={onCloseUpdate}
-				target={selectedRow}
+				target={id}
 				onUpdate={handleUpdate}
 			/>
 			<BaseTable
@@ -85,16 +90,24 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 						index={rowIndex}
 					>
 						<CenteredCell>
-							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
+							{rowIndex+1}
 						</CenteredCell>
-						<TextCell content={row.name} />
-						<TextCell content={row.reward} />
-						<TextCell content={row.email} />
-						<TextCell content={row.points} />
-						<BadgeCell
-							content={row.status}
-							colorScheme={handleBadges(row.status)}
-						/>
+						<TextCell content={row.user} />
+						<TextCell content={row.voucher} />
+						<TextCell content={row.phone} />
+						<TextCell content={formatDateToLocalDate(row.created_at)} />
+						{row.status === "selesai" ? (
+							<BadgeCell
+								content={"Berhasil"}
+								colorScheme={handleBadges("selesai")}
+							/>
+							
+						): (
+							<BadgeCell
+								content={row.status}
+								colorScheme={handleBadges(row.status)}
+							/>
+						)}
 						<CenteredCell key={rowIndex}>
 							<CustomIconButton
 								icon={<Eye />}
