@@ -33,14 +33,15 @@ export function SideBarItem({
 	}
 
 	const isSubMenuSelected =
-		subMenu?.filter((e) => e.path === pathname).length > 0;
+		subMenu?.filter((e) => pathname.startsWith(e.path)).length > 0;
+
 
 	if (sideBarCollapse)
 		return (
 			<div
 				onClick={handleClickMenu}
 				className={`cursor-pointer p-3 rounded-lg ${
-					pathname === path || isSubMenuSelected
+					pathname.startsWith(path) || isSubMenuSelected
 						? "bg-[#35CC33] text-white"
 						: "hover:bg-slate-100"
 				}`}
@@ -48,7 +49,7 @@ export function SideBarItem({
 				{name === "Transaksi Drop Point" ? (
 					<img
 						src={
-							pathname === path || isSubMenuSelected ? recycleWhite : recycle
+							pathname.startsWith(path) || isSubMenuSelected ? recycleWhite : recycle
 						}
 						alt=""
 						className="shrink-0 w-6 h-6"
@@ -74,7 +75,7 @@ export function SideBarItem({
 					{name === "Transaksi Drop Point" ? (
 						<img
 							src={
-								pathname === path || isSubMenuSelected ? recycleWhite : recycle
+								pathname.startsWith(path) || isSubMenuSelected ? recycleWhite : recycle
 							}
 							alt=""
 							className="shrink-0 w-6 h-6"
@@ -108,14 +109,14 @@ export function SideBarItem({
 						key={index}
 						className={`pl-12 flex gap-4 py-2 rounded-lg 
           ${
-						item.path === pathname
+						pathname.startsWith(item.path)
 							? "text-white bg-[#35CC33]"
 							: "hover:bg-slate-100"
 					}`}
 					>
 						<div
 							className={`rounded-full my-auto w-2 h-2 ${
-								item.path === pathname ? "bg-white" : "bg-black"
+								pathname.startsWith(item.path) ? "bg-white" : "bg-black"
 							}`}
 						/>
 						<p className="overflow-hidden">{item.name}</p>

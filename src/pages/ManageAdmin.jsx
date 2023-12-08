@@ -1,18 +1,23 @@
 import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation/";
-import { Fragment, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ModalAddAdmin } from "@/components/modal";
 import { TableAdminList } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
 import { useCustomToast, useDebounce } from "@/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearCreateAdminState,
   clearDeleteAdminState,
   clearFetchAdminsState,
+  clearUpdateAdminState,
+  createAdminSelector,
+  createAdmins,
   deleteAdminSelector,
   fetchAdmins,
   fetchAdminsSelector,
+  updateAdminSelector,
 } from "@/store/admin";
 import { Spinner } from "@/components/spinner";
 
@@ -25,8 +30,14 @@ function ManageAdmin() {
     count_data,
     message,
   } = useSelector(fetchAdminsSelector);
-  const { status: deleteStatusAdmin, message: deleteMessageAdmin } =
+
+  const { status: updateStatus, message: updateMessage } =
+    useSelector(updateAdminSelector);
+  const { status: deleteStatus, message: deleteMessage } =
     useSelector(deleteAdminSelector);
+  const { status: createStatus, message: createMessage } =
+    useSelector(createAdminSelector);
+
   const [_searchTerm, setSearchTerm] = useState("");
   const searchTerm = useDebounce(_searchTerm);
 
@@ -34,6 +45,10 @@ function ManageAdmin() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useCustomToast(updateStatus, updateMessage);
+  useCustomToast(deleteStatus, deleteMessage);
+  useCustomToast(createStatus, createMessage);
 
   useEffect(() => {
     dispatch(
@@ -46,7 +61,9 @@ function ManageAdmin() {
   }, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
   useEffect(() => {
-    if (deleteStatusAdmin === "success") {
+    if (deleteStatus === "success") {
+      setSearchTerm("");
+      setCurrentPage(1);
       dispatch(
         fetchAdmins({
           search: searchTerm,
@@ -54,13 +71,11 @@ function ManageAdmin() {
           page: currentPage,
         })
       );
-      setSearchTerm("");
-      setCurrentPage(1);
       return () => {
-        if (deleteStatusAdmin !== "idle") dispatch(clearDeleteAdminState());
+        if (deleteStatus !== "idle") dispatch(clearDeleteAdminState());
       };
     }
-  }, [dispatch, deleteStatusAdmin]);
+  }, [dispatch, deleteStatus]);
 
   useEffect(() => {
     setTotalItems(count_data);
@@ -86,11 +101,50 @@ function ManageAdmin() {
   };
 
   const handleSubmitData = (data) => {
-    console.log(data);
-    onClose();
+    dispatch(createAdmins(data)).then((res) => {
+      if (res.payload) {
+        onClose();
+      }
+    });
   };
 
-  useCustomToast(deleteStatusAdmin, deleteMessageAdmin);
+  const fetchAdminData = useCallback(() => {
+    dispatch(
+      fetchAdmins({
+        search: searchTerm,
+        limit: itemsPerPage,
+        page: currentPage,
+      })
+    ).then((res) => {
+      if (res.payload) {
+        setTotalItems(res.payload.count_data);
+      }
+    });
+  }, [dispatch, searchTerm, itemsPerPage, currentPage]);
+
+  useEffect(() => {
+    fetchAdminData();
+  }, [searchTerm, itemsPerPage, currentPage, fetchAdminData]);
+
+  useEffect(() => {
+    if (
+      updateStatus === "success" ||
+      deleteStatus === "success" ||
+      createStatus === "success"
+    ) {
+      fetchAdminData();
+      setSearchTerm("");
+      setCurrentPage(1);
+    }
+
+    return () => {
+      if (updateStatus !== "idle") dispatch(clearUpdateAdminState());
+      if (deleteStatus !== "idle") dispatch(clearDeleteAdminState());
+      if (createStatus !== "idle") dispatch(clearCreateAdminState());
+    };
+  }, [fetchAdminData, updateStatus, deleteStatus, createStatus, dispatch]);
+
+  useCustomToast(deleteStatus, deleteMessage);
 
   useEffect(() => {
     console.log(totalItems);

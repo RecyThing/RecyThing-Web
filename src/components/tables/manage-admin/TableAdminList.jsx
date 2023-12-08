@@ -7,7 +7,12 @@ import { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { ModalDelete, ModalEditAdmin } from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAdmin, deleteAdminSelector } from "@/store/admin";
+import {
+  deleteAdmin,
+  deleteAdminSelector,
+  fetchAdmin,
+  updateAdmin,
+} from "@/store/admin";
 
 const TableHead = ["No", "Nama Lengkap", "Email", "Status", "Aksi"];
 
@@ -17,6 +22,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
   } = useDisclosure();
+  const [id, setId] = useState(null);
   const {
     isOpen: isOpenDelete,
     onOpen: onOpenDelete,
@@ -25,6 +31,12 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
   const [idAdmin, setIdAdmin] = useState(null);
   const dispatch = useDispatch();
   const { status: deleteStatusAdmin } = useSelector(deleteAdminSelector);
+
+  const handleEditModal = (target) => {
+    setId(target);
+    dispatch(fetchAdmin(target));
+    onOpenEdit();
+  };
 
   const handleDeleteModal = (id) => {
     setIdAdmin(id);
@@ -35,11 +47,19 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
     dispatch(deleteAdmin(id));
   };
 
- 	useEffect(() => {
-    if (deleteStatusAdmin === "success" || deleteStatusAdmin === "failed" ) {
+  useEffect(() => {
+    if (deleteStatusAdmin === "success" || deleteStatusAdmin === "failed") {
       onCloseDelete();
     }
   }, [dispatch, deleteStatusAdmin]);
+
+  const handleSubmitEdited = (data) => {
+    data.fullname = data.fullname[0];
+    data.email = data.email[0];
+    data.status = data.status[0];
+
+    dispatch(updateAdmin({ id, data }));
+  };
 
   const handleBadgeColor = (status) => {
     switch (status) {
@@ -52,21 +72,12 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
     }
   };
 
-  const handleEditModal = (target) => {
-    setIdAdmin(target);
-    onOpenEdit();
-  };
-
-  const submitDataEdit = (data, target) => {
-    console.log(data, target);
-  };
-
   return (
     <>
       <ModalEditAdmin
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
-        onSubmit={submitDataEdit}
+        onSubmit={handleSubmitEdited}
         target={idAdmin}
       />
       <ModalDelete
@@ -74,7 +85,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
         onClose={onCloseDelete}
         target={idAdmin}
         onDelete={handleDelete}
-		deleteStatus={deleteStatusAdmin}
+        deleteStatus={deleteStatusAdmin}
       />
       <BaseTable data={data} heads={TableHead}>
         {data.map((row, rowIndex) => (

@@ -35,6 +35,6 @@ export const createAdminSlice = createSlice({
   },
 });
 
-export const createAdminSelector = (state) => state.createAdmins;
+export const createAdminSelector = (state) => state.createAdmin;
 export const { clearCreateAdminState } = createAdminSlice.actions;
 export const createAdminReducer = createAdminSlice.reducer;
