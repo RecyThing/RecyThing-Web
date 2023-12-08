@@ -7,7 +7,6 @@ import Parse from 'html-react-parser';
 export function ArticleDetail({ setEditArticleData, currArticleData, onClose }) {
 
   if (!currArticleData) return null;
-
   return (
     <Modal isOpen={currArticleData} onClose={onClose} size={"lg"} isCentered>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(10px)"} />
@@ -16,7 +15,9 @@ export function ArticleDetail({ setEditArticleData, currArticleData, onClose }) 
         <img src={currArticleData.image} className="my-8 object-cover h-[148px]" alt="" />
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <p className="text-sm text-[#35CC33]">{currArticleData.categories.map(item => item.category).join(" ")}</p>
+            <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap max-w-[270px] text-[#35CC33]">
+              {currArticleData.categories.map(item => item.category).join(" ")}
+            </p>
             <div className="my-auto h-3 w-[1px] bg-[#C7C9D9]" />
             <p className="text-sm text-[#808080]">{formatDateToLocalDate(currArticleData.created_at, "numeric")}</p>
           </div>

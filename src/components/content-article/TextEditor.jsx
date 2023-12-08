@@ -1,7 +1,9 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useEffect, useState } from 'react';
 
 function TextEditor({ text, setArticleData, titleWidth, peerHeight, reduceHeight = 0 }) {
+  const [textData, setTextData] = useState("");
   function uploadAdapter(loader) {
     return {
       upload: () => {
@@ -21,6 +23,13 @@ function TextEditor({ text, setArticleData, titleWidth, peerHeight, reduceHeight
     }
   }
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setTextData(text || "");
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [text])
+
   return (
     <div className={`mt-6`}>
       <CKEditor
@@ -30,12 +39,12 @@ function TextEditor({ text, setArticleData, titleWidth, peerHeight, reduceHeight
 
           removePlugins: ["EasyImage","ImageUpload","MediaEmbed"]
         }}
-        data={text || ""}
+        data={textData}
         onReady={(editor) => {
           editor.editing.view.change((writer) => {
             writer.setStyle(
               "height",
-              `${peerHeight.current.clientHeight - reduceHeight - 150}px`,
+              `${peerHeight.current?.clientHeight - reduceHeight - 150}px`,
               editor.editing.view.document.getRoot()
             );
             writer.setStyle(
