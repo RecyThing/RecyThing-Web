@@ -52,7 +52,7 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
               flexDirection={"column"}
             >
               <Image
-                src={""}
+                src={data?.mission_image}
                 alt={"mission image"}
                 aspectRatio={"4/3"}
                 objectFit={"cover"}
@@ -69,7 +69,7 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
             <GridItem colSpan={2}>
               <Flex justifyContent={"space-between"}>
                 <Text fontSize={22} fontWeight={900} color={"#35CC33"}>
-                  {data?.title}
+                  {data?.name}
                 </Text>
                 <Tag bg={"#FBF5D0"}>
                   <TicketStar size={18} />
@@ -84,19 +84,19 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
             <GridItem>
               <Flex flexDirection={"column"}>
                 <Text color={"#828282"}>Dimulai</Text>
-                <Text fontWeight={500}>{data?.start_at}</Text>
+                <Text fontWeight={500}>{data?.start_date}</Text>
               </Flex>
             </GridItem>
             <GridItem>
               <Flex flexDirection={"column"}>
                 <Text color={"#828282"}>Berakhir</Text>
-                <Text fontWeight={500}>{data?.end_at}</Text>
+                <Text fontWeight={500}>{data?.end_date}</Text>
               </Flex>
             </GridItem>
             <GridItem colSpan={"2"}>
               <Flex flexDirection={"column"} gap={2}>
                 <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
-                {data?.steps.map((step, index) => {
+                {data?.mission_stages?.map((step, index) => {
                   return (
                     <MissionStepSection
                       key={index}

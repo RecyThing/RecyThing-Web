@@ -15,6 +15,13 @@ import {
   fetchTrashesReducer,
   updateTrashesReducer,
 } from "./trash-category";
+import {
+  createMissionReducer,
+  deleteMissionReducer,
+  fetchMissionReducer,
+  fetchMissionsReducer,
+  updateMissionReducer,
+} from "./mission";
 
 export const store = configureStore({
   reducer: {
@@ -35,5 +42,11 @@ export const store = configureStore({
     updateTrashes: updateTrashesReducer,
     deleteTrashes: deleteTrashesReducer,
     createTrashes: createTrashesReducer,
+
+    fetchMissions: fetchMissionsReducer,
+    fetchMission: fetchMissionReducer,
+    updateMission: updateMissionReducer,
+    deleteMission: deleteMissionReducer,
+    createMission: createMissionReducer,
   },
 });
