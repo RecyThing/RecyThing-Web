@@ -25,6 +25,14 @@ import {
 	updatePromptReducer,
 } from "./prompt";
 
+import {
+	createRecyclesReducer,
+	deleteRecyclesReducer,
+	fetchRecycleReducer,
+	fetchRecyclesReducer,
+  fetchCategoriesReducer,
+} from "./waste-exchange";
+
 export const store = configureStore({
   reducer: {
     auth: loginReducer,
@@ -63,5 +71,11 @@ export const store = configureStore({
 		updatePrompt: updatePromptReducer,
 		deletePrompt: deletePromptReducer,
 		createPrompt: createPromptReducer,
+
+    createRecycles: createRecyclesReducer,
+    deleteRecycles: deleteRecyclesReducer,
+    fetchRecycle: fetchRecycleReducer,
+    fetchRecycles: fetchRecyclesReducer,
+    fetchTrashCategories: fetchCategoriesReducer,
   },
 });

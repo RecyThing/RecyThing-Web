@@ -1,6 +1,6 @@
 import { Pagination } from "@/components/pagination/Pagination";
 import { Add } from "iconsax-react";
-import { Flex, Heading, Button } from "@chakra-ui/react";
+import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { SearchBar } from "@/components/navigation";
 import { ModalAddWasteExchangeData } from "@/components/modal";
@@ -31,20 +31,14 @@ function ManageWasteExchange() {
 		createRecyclesSelector
 	);
 
-	const [isAddData, setIsAddData] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-
-	const openForm = () => {
-		setIsAddData(true);
-	};
-
-	const closeForm = () => {
-		setIsAddData(false);
-	};
+	const [totalItems, setTotalItems] = useState(0);
 
 	const [_searchTerm, setSearchTerm] = useState("");
   	const searchTerm = useDebounce(_searchTerm, 500);
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const fetchRecycleData = useCallback(() => {
 		dispatch(
@@ -95,12 +89,9 @@ function ManageWasteExchange() {
 		};
 	}, [dispatch]);
 	
-	const filteredData = Object.values(data).filter((Recycles) => {
-		return (
-			Recycles.Recycle_type &&
-			Recycles.Recycle_type.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-	});	
+	const filteredData = Object.values(data).filter((recycle) => {
+		return recycle.username.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
 	// const filteredData = DummyData.filter(([username]) =>
 	// 	username.toLowerCase().includes(searchTerm.toLowerCase())
@@ -128,19 +119,16 @@ function ManageWasteExchange() {
 		});
 	};
 	
-	useCustomToast(updateStatus, updateMessage);
 	useCustomToast(deleteStatus, deleteMessage);
 	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>
-			{isAddData ? (
-				<ModalAddWasteExchangeData
-					isOpen={isAddData}
-					onClose={closeForm}
-					setIsAddData={setIsAddData}
-				/>
-			) : null}
+			<ModalAddWasteExchangeData
+				isOpen={isOpen}
+				onClose={onClose}
+				onSubmit={handleSubmitAdded}
+			/>
 			<Heading
 				as="h1"
 				color={"#201A18"}

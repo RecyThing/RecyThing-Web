@@ -8,7 +8,15 @@ const initialState = {
 
 export const createRecycles = createAsyncThunk(
   "POST /admins/manage/recycles",
-  APIRecycles.createRecycles
+  async (data) => {
+    try {
+      const response = await APIRecycles.createRecycles(data);
+      console.log(response); // Log the response
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 );
 
 export const createRecyclesSlice = createSlice({

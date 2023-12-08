@@ -25,3 +25,10 @@ export {
   createRecyclesSelector,
   createRecyclesReducer,
 } from "./createRecycleSlice";
+
+export {
+  clearFetchCategoriesState,
+  fetchCategories,
+  fetchCategoriesSelector,
+  fetchCategoriesReducer,
+} from "./fetchTrashCategoriesSlice";
