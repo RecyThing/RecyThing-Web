@@ -10,21 +10,39 @@ import Chart from "@/components/dashboard/Chart";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboardContent } from "@/layout";
 import RankingUser from "@/components/dashboard/RankingUser";
+import { ArrowDown2 } from "iconsax-react";
+import { useState } from "react";
+import FilterDropdown from "@/components/dashboard/FilterDropdown";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filter, setFilter] = useState("year");
+
   return (
     <LayoutDashboardContent>
       <div className="flex justify-between">
         <p className="font-bold text-2xl">Dashboard</p>
-        <Box
-          _hover={{ bg: "#F2F2F5", color: "#A7A19E" }}
-          className="flex gap-3 px-2 py-1 rounded-md bg-white cursor-pointer"
-          onClick={() => navigate("download")}
-        >
-          <Download className="my-auto" size={24} />
-          <p className="my-auto font-medium text-sm">Download</p>
-        </Box>
+        <div className="flex gap-6">
+          <div className="relative">
+            <Box
+              className="flex gap-3 px-2 py-1 h-8 rounded-md bg-white cursor-pointer"
+              onClick={() => setShowDropdown(prev => !prev)}
+            >
+              <p className="my-auto font-medium text-sm">{filter === "year" ? "Tahun ini" : "Bulan ini"}</p>
+              <ArrowDown2 className="my-auto" size={16} />
+            </Box>
+            {showDropdown && <FilterDropdown setShowDropdown={setShowDropdown} setFilter={setFilter} />}
+          </div>
+          <Box
+            _hover={{ bg: "#F2F2F5", color: "#A7A19E" }}
+            className="flex gap-3 px-2 py-1 rounded-md bg-white cursor-pointer"
+            onClick={() => navigate("download")}
+          >
+            <Download className="my-auto" size={24} />
+            <p className="my-auto font-medium text-sm">Download</p>
+          </Box>
+        </div>
       </div>
 
       <div className="grid grid-cols-4 gap-6 mt-5">
@@ -53,7 +71,7 @@ function Dashboard() {
           percentage={0.1}
         />
 
-				<Statistic />
+				<Statistic filter={filter} />
 				<Chart />
 				<RankingUser />
 			</div>
