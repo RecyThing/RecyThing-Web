@@ -4,10 +4,9 @@ import { AxiosError } from "axios";
 export const APITransactionList = {
 	getTransactionsList: async ({ search = "", limit = 10, page = 1, status }) => {
 		try {
-			console.log(status);
 			const response = await axiosInstance.get(
 				`/admins/manage/exchange-point?search=${search}&limit=${limit}&page=${page}${
-					status ? `&status=${status}` : ""
+					status ? `&filter=${status}` : ""
 				}`
 			);
 			return response.data;

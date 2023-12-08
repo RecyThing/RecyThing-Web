@@ -6,8 +6,8 @@ import { Pagination } from "@/components/pagination";
 import { TableTransactionList } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { clearDatasTransactionState, fetchDatasTransaction, fetchDatasTransactionSelector } from "@/store/transaction-list";
-import { useDebounce } from "@/hooks";
+import { clearDatasTransactionState, clearPatchDataTransactionState, fetchDatasTransaction, fetchDatasTransactionSelector, patchDataTransactionSelector } from "@/store/transaction-list";
+import { useCustomToast, useDebounce } from "@/hooks";
 import { Spinner } from "@/components/spinner";
 
 function TransactionList() {
@@ -20,6 +20,10 @@ function TransactionList() {
 		count,
 	} = useSelector(fetchDatasTransactionSelector);
 
+	const { status: patchStatus, message: patchMessage } = useSelector(
+		patchDataTransactionSelector
+	);
+
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
 
@@ -31,6 +35,8 @@ function TransactionList() {
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+
+	useCustomToast(patchStatus, patchMessage);
 
 	const fectchTransactionData = useCallback(() => {
 		dispatch(
@@ -46,6 +52,18 @@ function TransactionList() {
 	useEffect(() => {
 	  fectchTransactionData();
 	}, [fectchTransactionData, searchTerm,  itemsPerPage, currentPage])
+
+	useEffect(() => {
+		if (patchStatus === "success") {
+			fetchDatasTransaction();
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+
+		return () => {
+			if (patchStatus !== "idle") dispatch(clearPatchDataTransactionState());
+		};
+	}, [patchStatus, dispatch, fetchDatasTransaction]);
 
 	useEffect(() => {
 		return () => {
@@ -90,7 +108,7 @@ function TransactionList() {
 
 	return (
 		<LayoutDashboardContent>
-			{console.log(activeFilter.value)}
+			{console.log(data)}
 			<Heading
 				as="h1"
 				color={"#201A18"}

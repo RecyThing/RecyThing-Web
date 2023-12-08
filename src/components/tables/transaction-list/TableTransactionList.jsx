@@ -9,8 +9,10 @@ import {
 	ModalEditDetailTransaction,
 	ModalViewDetailTransaction,
 } from "@/components/modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDateToLocalDate } from "@/utils";
+import { fetchDataTransaction, patchDataTransaction } from "@/store/transaction-list";
+import { patchDataReportSelector } from "@/store/report";
 
 const TableHead = [
 	"No",
@@ -49,21 +51,25 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const [id, setId] = useState(null);
-
+	const { status } = useSelector(patchDataReportSelector);
 	const dispatch = useDispatch();
-	const handleViewModal = (row) => {
-		
+	const handleViewModal = (target) => {
+		dispatch(fetchDataTransaction(target))
 		onOpenView();
 	};
 
-	const handleUpdateModal = (row) => {
-		
+	const handleUpdateModal = (target) => {
+		dispatch(fetchDataTransaction(target))
 		onOpenUpdate();
 	};
 
-	const handleUpdate = (row) => {
+	const handleUpdate = (id,data) => {
+		dispatch(patchDataTransaction({ id, data })).then((res) => {
+			if (res.payload) {
+				onCloseUpdate();
+			}
+		});
 		
-		onCloseUpdate();
 	};
 
 	return (
@@ -113,13 +119,13 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 								icon={<Eye />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+								onClick={() => handleViewModal(row.id)}
 							/>
 							<CustomIconButton
 								icon={<Edit2 />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleUpdateModal(row)}
+								onClick={() => handleUpdateModal(row.id)}
 							/>
 						</CenteredCell>
 					</TableBodyRow>
