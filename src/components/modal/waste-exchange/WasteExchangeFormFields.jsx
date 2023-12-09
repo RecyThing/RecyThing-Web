@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
-import { fetchCategories, fetchCategoriesSelector } from "@/store/waste-exchange";
+import { fetchCategories, selectFetchCategoriesState } from "@/store/waste-exchange";
 import { InputWithLogo } from "@/components/inputs";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -77,86 +77,68 @@ export function DropPointLocation({ control, error }) {
     />
   );
 }
-
-export function SelectTrashTypeField({ control, error, target }) {
+export const SelectTrashTypeField = ({ isOpen, control, error, index, target }) => {
 	const dispatch = useDispatch();
-	const { categories, status } = useSelector(fetchCategoriesSelector);
-	const [selectedTrashType, setSelectedTrashType] = useState("");
-	const [menuOpen, setMenuOpen] = useState(false);
+	const { categories, status } = useSelector(selectFetchCategoriesState);
+	const [selectedUnit, setSelectedUnit] = useState("");
+  	const [menuOpen, setMenuOpen] = useState(false);
   
 	useEffect(() => {
-	  if (target && target.trash_type) {
-		setSelectedTrashType(target.trash_type);
-	  }
-	}, [target]);
-  
-	useEffect(() => {
-	  console.log("Status:", status);
-	  console.log("Categories:", categories);
-  
-	  if (status === "idle" || status === "failed") {
-		console.log("Dispatching fetchCategories");
+	  if (status === "idle") {
 		dispatch(fetchCategories());
 	  }
 	}, [dispatch, status]);
-  
+	useEffect(() => {
+		console.log("Categories data:", categories); // Check if categories is populated
+		if (target) {
+		  setSelectedUnit(target.unit || "");
+		}
+	  }, [target, categories]);
+
+	useEffect(() => {
+		if (target) {
+		 	setSelectedUnit(target.unit || "");
+		}
+	}, [target]);
+
 	const handleMenuOpen = () => {
-	  setMenuOpen(!menuOpen);
+		setMenuOpen(!menuOpen);
 	};
   
 	return (
-	  <Controller
-		name="trash_type"
-		control={control}
-		render={({ field }) => (
-		  <FormControl isInvalid={error}>
-			<Menu>
-			  <MenuButton
-				as={Button}
-				px={4}
-				py={2}
-				width={"220px"}
-				height={"41px"}
-				transition="all 0.2s"
-				borderRadius="lg"
-				borderWidth="1px"
-				borderColor={"#949494"}
-				backgroundColor={"white"}
-				_hover={{ bg: "gray.100" }}
-				_expanded={{
-					bg: "#35CC33",
-					textColor: "white",
-					textTransform: "capitalize",
-					borderColor: "#35CC33",
-				}}
-				rightIcon={menuOpen ? <ChevronUp /> : <ChevronDown />}
-				onClick={handleMenuOpen}
-				isActive={menuOpen}
-				textAlign="left"
-				fontWeight="normal"
-				fontSize={"14px"}
-			  >
-				{field.value || "Pilih Jenis Sampah"}
-			  </MenuButton>
-			  <MenuList fontSize={"14px"}>
-				{categories.map((category) => (
-				  <MenuItem
-					key={category.id}
-					onClick={() => {
-					  field.onChange(category.trash_type);
-					  setSelectedTrashType(category.trash_type);
-					  setMenuOpen(false);
-					}}
-					fontWeight={selectedTrashType === category.trash_type ? "bold" : "normal"}
+		<Controller
+		  name={`categories[${index}].trash_type`}
+		  control={control}
+		  defaultValue={target?.trash_type || ""}
+		  render={({ field }) => (
+			<FormControl isInvalid={error}>
+			  {status === "loading" ? (
+				<Spinner />
+			  ) : (
+				<Menu>
+				  <MenuButton
+					as={Button}
+					rightIcon={isOpen ? <ChevronUp /> : <ChevronDown />}
+					{...field}
 				  >
-					{category.trash_type}
-				  </MenuItem>
-				))}
-			  </MenuList>
-			</Menu>
-			<FormErrorMessage>{error?.message}</FormErrorMessage>
-		  </FormControl>
-		)}
-	  />
-	);
-  }
+					{field.value || "Pilih Jenis Sampah"}
+				  </MenuButton>
+				  <MenuList fontSize={"14px"}>
+				  <MenuItem
+						key={categories.id}
+						onClick={() => {
+							console.log("Selected trash_type:", categories?.trash_type); // Check the selected trash_type
+							field.onChange(categories?.trash_type);
+						}}
+					>
+						{categories?.trash_type}
+					</MenuItem>
+				</MenuList>
+				</Menu>
+			  )}
+			  <FormErrorMessage>{error?.message}</FormErrorMessage>
+			</FormControl>
+		  )}
+		/>
+	  );
+  };

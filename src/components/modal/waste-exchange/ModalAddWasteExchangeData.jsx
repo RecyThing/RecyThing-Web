@@ -1,4 +1,5 @@
 import * as Fields from "./WasteExchangeFormFields";
+const { SelectTrashTypeField } = Fields;
 import { Trash } from "iconsax-react";
 import { useEffect } from "react";
 import { AddSquare, CloseSquare } from "iconsax-react";
@@ -41,7 +42,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 
 	useEffect(() => {
 		if (!isOpen) {
-		  reset();
+			reset({ data: [] });
 		}
 	}, [isOpen, reset]);
 
@@ -157,7 +158,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 							color="rgba(130, 130, 130, 1)"
 							className="cursor-pointer"
 							onClick={() => {
-								reset({ data: [] });
+								reset();
 								onClose();
 							}}
 						/>
@@ -199,10 +200,10 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 												<td>
 													<div className="relative mt-6 w-52">
 														<div className="w-2/5">
-															<Fields.SelectTrashTypeField
-																control={control}
-																error={errors.unit}
-															/>
+														<SelectTrashTypeField
+															control={control}
+															error={errors.trash_type}
+														/>
 														</div>
 													</div>
 												</td>

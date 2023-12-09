@@ -90,11 +90,11 @@ function ManageWasteExchange() {
 	}, [dispatch]);
 	
 	const filteredData = Object.values(data).filter((recycle) => {
-		return recycle.username.toLowerCase().includes(searchTerm.toLowerCase());
+		return recycle.name.toLowerCase().includes(searchTerm.toLowerCase());
 	});
 
-	// const filteredData = DummyData.filter(([username]) =>
-	// 	username.toLowerCase().includes(searchTerm.toLowerCase())
+	// const filteredData = DummyData.filter(([name]) =>
+	// 	name.toLowerCase().includes(searchTerm.toLowerCase())
 	// );
 
 	const handleSearch = (term) => {

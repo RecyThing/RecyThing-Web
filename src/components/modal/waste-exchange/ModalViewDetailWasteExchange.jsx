@@ -8,6 +8,11 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import {
+  fetchRecycleSelector,
+} from "@/store/waste-exchange";
+import { Spinner } from "@/components/spinner";
 
 const dataTitle = {
 	exchangeId: "ID Penukaran",
@@ -28,7 +33,29 @@ const dataTableContents = {
 	DropPointLocation: "Drop Point A",
 };
 
+function capitalizeWords(string) {
+	if (typeof string !== 'string' || string === undefined) {
+	 	return '';
+	}
+	
+	return string.replace(/\b\w/g, (char) => char.toUpperCase());
+}  
+
+function formatDate(isoDate) {
+	const options = {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	};
+  
+	const [datePart] = isoDate.split("T");
+	const formattedDate = new Date(datePart).toLocaleDateString("id-ID", options);
+	return formattedDate;
+}  
+
 export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
+	const { data, status, message } = useSelector(fetchRecycleSelector);
+
 	const detailWrapperStyles = {
 		display: "flex",
 		gap: "8px",
@@ -44,6 +71,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		width: "24px",
 		height: "auto",
 		color: "rgba(148, 148, 148, 1)",
+		flexShrink: 0
 	};
 
 	const detailGroupStyles = {
@@ -101,13 +129,14 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		onClose();
 	};
 
-	const data = [
+	const data1 = [
 		{ wasteType: "Plastik", unit: 5, point: 500 },
 		{ wasteType: "Kertas", unit: 3, point: 700 },
 	];
 
-	const totalUnits = data.reduce((acc, curr) => acc + curr.unit, 0);
-	const totalPoint = data.reduce((acc, curr) => acc + curr.point, 0);
+	if (!data || !data.trash_exchange_details) {
+		return null;
+	}
 
 	return (
 		<Modal
@@ -135,7 +164,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								className="text-xl ml-2"
 								style={{ color: "#333" }}
 							>
-								{dataTableContents.exchangeId}
+								{data?.id}
 							</span>
 						</h5>
 						<CloseSquare
@@ -162,7 +191,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								>
 									<div style={{ ...thStyles }}>{dataTitle.username}</div>
 									<div style={{ ...tdStyles }}>
-										{dataTableContents.username}
+										{capitalizeWords(data?.name)}
 									</div>
 								</div>
 							</div>
@@ -177,7 +206,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								>
 									<div style={{ ...thStyles }}>{dataTitle.userEmail}</div>
 									<div style={{ ...tdStyles }}>
-										{dataTableContents.userEmail}
+										{data?.email}
 									</div>
 								</div>
 							</div>
@@ -194,7 +223,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								>
 									<div style={{ ...thStyles }}>{dataTitle.transactionTime}</div>
 									<div style={{ ...tdStyles }}>
-										{dataTableContents.transactionTime}
+										{formatDate(data?.created_at)}
 									</div>
 								</div>
 							</div>
@@ -211,7 +240,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 										{dataTitle.DropPointLocation}
 									</div>
 									<div style={{ ...tdStyles }}>
-										{dataTableContents.DropPointLocation}
+										{data?.address}
 									</div>
 								</div>
 							</div>
@@ -233,15 +262,15 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								</Tr>
 							</Thead>
 							<Tbody>
-								{data.map((set, index) => (
+								{data.trash_exchange_details.map((detail, index) => (
 									<Tr
 										key={index + 1}
 										bg={index % 2 === 0 ? "#F2F2F5" : "white"}
 										borderBlock={"2px solid #C4C4C4"}
 									>
 										<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
-										<Td style={{ ...tdTableStyles }}>{set.wasteType}</Td>
-										<Td style={{ ...tdTableStyles }}>{set.unit} kg</Td>
+										<Td style={{ ...tdTableStyles }}>{detail.trash_type}</Td>
+										<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${detail.unit}`}</Td>
 										<Td
 											style={{
 												...tdTableStyles,
@@ -249,7 +278,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 												fontWeight: 500,
 											}}
 										>
-											+{set.point}
+											+{detail.total_points}
 										</Td>
 									</Tr>
 								))}
@@ -260,13 +289,13 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
 							</div>
 							<div className="col-span-1">
-								<p style={{ ...unitStyle, paddingLeft: "38px" }}>
-									{totalUnits} kg
+								<p style={{ ...unitStyle, paddingLeft: "24px" }}>
+									{data?.total_unit}
 								</p>
 							</div>
 							<div className="col-span-1">
-								<p style={{ ...poinStyle, paddingLeft: "42px" }}>
-									+{totalPoint}
+								<p style={{ ...poinStyle, paddingLeft: "40px" }}>
+									+{data?.total_point}
 								</p>
 							</div>
 						</div>

@@ -32,7 +32,7 @@ export const fetchCategoriesSlice = createSlice({
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
       state.status = "success";
       state.message = action.payload.message;
-      state.categories = action.payload.data;
+      state.categories = action.payload.categories;
     });
     builder.addCase(fetchCategories.rejected, (state, action) => {
       state.status = "failed";
@@ -41,11 +41,11 @@ export const fetchCategoriesSlice = createSlice({
   },
 });
 
-export const selectFetchCategoriesState = (state) => state.fetchCategories;
+export const selectFetchCategories = (state) => state.fetchCategories;
 
 // Memoized selector using reselect
-export const fetchCategoriesSelector = createSelector(
-  [selectFetchCategoriesState],
+export const selectFetchCategoriesState = createSelector(
+  [selectFetchCategories],
   (fetchCategoriesState) => fetchCategoriesState || { status: 'idle', categories: [] }
 );
 

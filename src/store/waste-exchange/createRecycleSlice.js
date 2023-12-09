@@ -14,6 +14,7 @@ export const createRecycles = createAsyncThunk(
       console.log(response); // Log the response
       return response.data;
     } catch (error) {
+      console.error("Error creating recycles:", error);
       throw error;
     }
   }

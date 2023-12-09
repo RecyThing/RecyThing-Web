@@ -29,6 +29,6 @@ export {
 export {
   clearFetchCategoriesState,
   fetchCategories,
-  fetchCategoriesSelector,
+  selectFetchCategoriesState,
   fetchCategoriesReducer,
 } from "./fetchTrashCategoriesSlice";

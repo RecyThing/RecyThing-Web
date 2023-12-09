@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
 	status: "idle",
 	message: "",
-	data: {},
+	data: [],
 };
 
 export const fetchRecycle = createAsyncThunk(

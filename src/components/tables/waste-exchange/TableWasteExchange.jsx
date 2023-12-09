@@ -5,6 +5,7 @@ import { deleteRecycles, deleteRecyclesSelector, fetchRecycle } from "@/store/wa
 import { Eye, Trash } from "iconsax-react";
 import { ModalDelete, ModalViewDetailWasteExchange } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
+import { TruncatedCell } from "../base-table/TableCells";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -55,12 +56,6 @@ export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
 		}
 	}, [deletestatus, onCloseDelete]);
 
-	const formatId = (id) => {
-		const desiredLength = 3;
-		const paddedId = String(id).padStart(desiredLength, "0");
-		return `PS${paddedId}`;
-	};
-
 	return (
 		<>
 			<ModalViewDetailWasteExchange
@@ -86,15 +81,15 @@ export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
 						index={rowIndex}
 					>
 						<CenteredCell>
-							{formatId((currentPage - 1) * itemsPerPage + rowIndex + 1)}
+							{row.id}
 						</CenteredCell>
 
 						<TextCell
 							casing={"capitalize"}
-							content={row.username}
+							content={row.name}
 						/>
-						<TextCell content={row.userEmail} />
-						<TextCell content={row.point} />
+						<TextCell content={row.email} />
+						<TextCell content={row.address} className="overflow-hidden text-ellipsis"/>
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}
