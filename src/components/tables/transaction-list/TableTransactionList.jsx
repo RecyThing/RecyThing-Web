@@ -3,7 +3,7 @@ import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Eye } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import {
 	ModalEditDetailTransaction,
@@ -114,20 +114,36 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 								colorScheme={handleBadges(row.status)}
 							/>
 						)}
-						<CenteredCell key={rowIndex}>
-							<CustomIconButton
-								icon={<Eye />}
-								color={"#828282"}
-								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row.id)}
-							/>
-							<CustomIconButton
-								icon={<Edit2 />}
-								color={"#828282"}
-								hoverColor={"#333333"}
-								onClick={() => handleUpdateModal(row.id)}
-							/>
-						</CenteredCell>
+						{ row.status === "selesai" ? (
+							<CenteredCell key={rowIndex}>
+								<Flex alignItems={"center"} justifyContent={"center"}>
+									<CustomIconButton
+										icon={<Eye />}
+										color={"#828282"}
+										hoverColor={"#333333"}
+										onClick={() => handleViewModal(row.id)}
+									/>
+									<Text padding={"10px"}>
+										-
+									</Text>
+								</Flex>
+							</CenteredCell>
+						) : (
+							<CenteredCell key={rowIndex}>
+								<CustomIconButton
+									icon={<Eye />}
+									color={"#828282"}
+									hoverColor={"#333333"}
+									onClick={() => handleViewModal(row.id)}
+								/>
+								<CustomIconButton
+									icon={<Edit2 />}
+									color={"#828282"}
+									hoverColor={"#333333"}
+									onClick={() => handleUpdateModal(row.id)}
+								/>
+							</CenteredCell>
+						)}
 					</TableBodyRow>
 				))}
 			</BaseTable>

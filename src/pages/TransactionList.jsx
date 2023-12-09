@@ -55,7 +55,7 @@ function TransactionList() {
 
 	useEffect(() => {
 		if (patchStatus === "success") {
-			fetchDatasTransaction();
+			fectchTransactionData();
 			setSearchTerm("");
 			setCurrentPage(1);
 		}
@@ -108,7 +108,7 @@ function TransactionList() {
 
 	return (
 		<LayoutDashboardContent>
-			{console.log(data)}
+			{console.log(patchStatus)}
 			<Heading
 				as="h1"
 				color={"#201A18"}

@@ -1,6 +1,7 @@
 import { Spinner } from "@/components/spinner";
 import { fetchDataTransactionSelector } from "@/store/transaction-list";
 import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
+import { formatTime2DigitHoursMinutes } from "@/utils/format-time/formatTime2DigitHoursMinutes";
 import {
   Button,
   Flex,
@@ -142,7 +143,7 @@ export function ModalViewDetailTransaction({ isOpen, onClose }) {
                             : key === "tanggal"
                             ? formatDateToLocalDate(data.created_at)
                             : key === "waktu"
-                            ? data.time_transaction
+                            ? formatTime2DigitHoursMinutes(data.time_transaction)
                             : key === "reward"
                             ? data.voucher
                             : key === "goal"

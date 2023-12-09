@@ -1,6 +1,7 @@
 import { Spinner } from "@/components/spinner";
 import { fetchDataTransactionSelector } from "@/store/transaction-list";
 import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
+import { formatTime2DigitHoursMinutes } from "@/utils/format-time/formatTime2DigitHoursMinutes";
 import {
   Box,
   Button,
@@ -45,18 +46,15 @@ const labels = {
   status: { title: "Status", icon: <Location /> },
 };
 
-export function ModalEditDetailTransaction({
-  isOpen,
-  onClose,
-  onUpdate,
-}) {
-	const { data, status, message } = useSelector(fetchDataTransactionSelector);
+export function ModalEditDetailTransaction({ isOpen, onClose, onUpdate }) {
+  const { data, status, message } = useSelector(fetchDataTransactionSelector);
+
   const handleUpdate = () => {
-    onUpdate(data.id,{status:`${statusData}`});
+    onUpdate(data.id, { status: `${statusData}` });
     onClose();
   };
 
-  const [statusData, setStatusData] = useState(data.status);
+  const [statusData, setStatusData] = useState();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} isCentered>
@@ -155,7 +153,7 @@ export function ModalEditDetailTransaction({
                             fontWeight={"bold"}
                             color={"#333333"}
                             letterSpacing={"tight"}
-							casing={"capitalize"}
+                            casing={"capitalize"}
                           >
                             {data.user}
                           </Text>
@@ -164,7 +162,7 @@ export function ModalEditDetailTransaction({
                             fontWeight={"bold"}
                             color={"#333333"}
                             letterSpacing={"tight"}
-							casing={"capitalize"}
+                            casing={"capitalize"}
                           >
                             {formatDateToLocalDate(data.created_at)}
                           </Text>
@@ -173,16 +171,16 @@ export function ModalEditDetailTransaction({
                             fontWeight={"bold"}
                             color={"#333333"}
                             letterSpacing={"tight"}
-							casing={"capitalize"}
+                            casing={"capitalize"}
                           >
-                            {data.time_transaction}
+                            {formatTime2DigitHoursMinutes(data.time_transaction)}
                           </Text>
                         ) : key === "reward" ? (
                           <Text
                             fontWeight={"bold"}
                             color={"#333333"}
                             letterSpacing={"tight"}
-							casing={"capitalize"}
+                            casing={"capitalize"}
                           >
                             {data.voucher}
                           </Text>
@@ -191,7 +189,7 @@ export function ModalEditDetailTransaction({
                             fontWeight={"bold"}
                             color={"#333333"}
                             letterSpacing={"tight"}
-							casing={"capitalize"}
+                            casing={"capitalize"}
                           >
                             {data.phone}
                           </Text>
@@ -217,9 +215,9 @@ export function ModalEditDetailTransaction({
                                   minWidth={"219px"}
                                   textAlign={"start"}
                                 >
-									<Text casing={"capitalize"}>
-                                  		{statusData}
-									</Text>
+                                  <Text casing={"capitalize"}>
+                                    {statusData ? statusData : data.status}
+                                  </Text>
                                 </Box>
                                 <Box flex={"1"} marginStart={"20px"}>
                                   <ArrowDown2 />
@@ -227,27 +225,32 @@ export function ModalEditDetailTransaction({
                               </Flex>
                             </MenuButton>
                             <MenuList>
-                              <MenuItem
-                                onClick={() => {
-                                  setStatusData("terbaru");
-                                }}
-                              >
-                                Terbaru
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => {
-                                  setStatusData("diproses");
-                                }}
-                              >
-                                Diproses
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => {
-                                  setStatusData("selesai");
-                                }}
-                              >
-                                Selesai
-                              </MenuItem>
+                              {data.status === "diproses" ? (
+                                <MenuItem
+                                  onClick={() => {
+                                    setStatusData("selesai");
+                                  }}
+                                >
+                                  Selesai
+                                </MenuItem>
+                              ) : (
+                                <>
+                                  <MenuItem
+                                    onClick={() => {
+                                      setStatusData("diproses");
+                                    }}
+                                  >
+                                    Diproses
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={() => {
+                                      setStatusData("selesai");
+                                    }}
+                                  >
+                                    Selesai
+                                  </MenuItem>
+                                </>
+                              )}
                             </MenuList>
                           </Menu>
                         )}
