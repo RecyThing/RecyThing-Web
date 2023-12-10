@@ -40,10 +40,14 @@ export function ModalEditRubbishCategory({
   };
 
   useEffect(() => {
-    if (data) {
-      setValue("trash_type", data.trash_type);
+    const capitalizeFirstLetter = (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
+    if (data && data.trash_type && data.unit) {
+      setValue("trash_type", capitalizeFirstLetter(data.trash_type));
       setValue("point", data.point);
-      setValue("unit", data.unit)
+      setValue("unit", capitalizeFirstLetter(data.unit));
     }
   }, [data, setValue]);
 
