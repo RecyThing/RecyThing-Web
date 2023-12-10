@@ -1,17 +1,34 @@
 import { BaseTable } from "../base-table/BaseTable";
-import { CenteredCell } from "../base-table/TableCells";
+import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { TruncatedCell } from "../base-table/TableCells";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Trash } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPrompt,
+	deletePrompt,
+	deletePromptSelector,
+	updatePromptSelector,
+} from '@/store/prompt';
 import { ModalDelete, ModalEditCustomizationData } from "@/components/modal";
 
 const TableHead = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
 
+function capitalizeWords(string) {
+	return string.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function formatDateToCustomFormat(dateString) {
+	const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+	const date = new Date(dateString);
+	return date.toLocaleDateString('en-GB', options);
+}
+
 export function TableDataCustomization({ data }) {
-	const [isEditData, setIsEditData] = useState(false);
+	const dispatch = useDispatch();
+	const [id, setId] = useState(null);
 
 	const {
 		isOpen: isOpenEdit,
@@ -26,13 +43,22 @@ export function TableDataCustomization({ data }) {
 	} = useDisclosure();
 
 	const [selectedQuestion, setSelectedQuestion] = useState(null);
-	const [selectedTopic, setSelectedTopic] = useState(null);
+	const [selectedCategory, setSelectedCategory] = useState(null);
 
 	const handleEditModal = (row) => {
+		const promptId = row.id;
+	  
+		setId(promptId);
+		dispatch(fetchPrompt(promptId));
+
 		setSelectedQuestion(row);
-		setSelectedTopic(row);
+		setSelectedCategory(row.category);
+		
 		onOpenEdit();
 	};
+
+	const { status: updateStatus } = useSelector(updatePromptSelector);
+	const { status: deleteStatus } = useSelector(deletePromptSelector);
 
 	const handleDeleteModal = (row) => {
 		setSelectedQuestion(row);
@@ -40,51 +66,56 @@ export function TableDataCustomization({ data }) {
 	};
 
 	const handleDelete = (row) => {
-		console.log("deleted!", row);
-		onCloseDelete();
+		dispatch(deletePrompt(row.id));
 	};
 
-	const formatDate = () => {
-		const date = new Date("2023-01-21");
-		const day = date.getDate().toString().padStart(2, "0");
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const year = date.getFullYear();
-		return `${day}/${month}/${year}`;
-	};
+	useEffect(() => {
+		if (updateStatus === "success" || updateStatus === "failed") {
+			onCloseEdit();
+		}
+	}, [updateStatus, onCloseEdit]);
+
+	useEffect(() => {
+		if (deleteStatus === "success" || deleteStatus === "failed") {
+			onCloseDelete();
+		}
+	}, [deleteStatus, onCloseDelete]);
+
+	const sortedData = [...data].sort((a, b) => {
+		const dateA = new Date(a.created_at);
+		const dateB = new Date(b.created_at);
+		return dateB - dateA;
+	});
 
 	return (
 		<>
 			<ModalEditCustomizationData
 				isOpen={isOpenEdit}
 				onClose={onCloseEdit}
-				setIsEditData={setIsEditData}
-				topic={selectedTopic ? selectedTopic[0] : ""}
-				question={selectedQuestion ? selectedQuestion[1] : ""}
+				selectedQuestion={selectedQuestion}
+    			selectedCategory={selectedCategory}
 			/>
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
 				target={selectedQuestion}
-				onDelete={handleDelete}
+				onDelete={() => handleDelete(selectedQuestion)}
+				deleteStatus={deleteStatus}
 			/>
 			<BaseTable
 				data={data}
 				heads={TableHead}
 			>
-				{data.map((row, rowIndex) => (
+				{sortedData.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>{formatDate()}</CenteredCell>
+						{/* ini buat datenya nanti kamu ganti kalo udah ada response dari BE @Putri-R */}
+						<CenteredCell>{formatDateToCustomFormat(row.created_at)}</CenteredCell>
+						<TextCell content={capitalizeWords(row.category)} />
+						<TruncatedCell content={row.question} />
 
-						{row.map((cell, cellIndex) => (
-							<TruncatedCell
-								key={cellIndex}
-								content={cell}
-								maxWidth={17}
-							/>
-						))}
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Edit2 />}
