@@ -20,6 +20,9 @@ import {
 	ModalReject,
 	ModalViewMissionApproval,
 } from "@/components/modal";
+import { formatDateToLocalDate } from "@/utils";
+import { useDispatch } from "react-redux";
+import { fetchApproval } from "@/store/approval-mission";
 
 const TableHead = [
 	"ID Misi",
@@ -32,18 +35,14 @@ const TableHead = [
 ];
 
 const rejectMenu = [
-	{
-		label: "Bukti tidak jelas",
-	},
-	{
-		label: "Bukti kurang lengkap",
-	},
-	{
-		label: "Tidak ada detail kejadian",
-	},
+	"Bukti tidak jelas",
+	"Bukti kurang lengkap",
+	"Tidak ada detail kejadian",
 ];
 
 export function TableMissionApproval({ data }) {
+	const dispatch = useDispatch();
+
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [rejectReason, setRejectReason] = useState(null);
 	const {
@@ -65,20 +64,31 @@ export function TableMissionApproval({ data }) {
 	} = useDisclosure();
 
 	const handleBadges = (status) => {
+		status = status.toLowerCase();
 		switch (status) {
-			case "Perlu Tinjauan":
+			case "perlu tinjauan":
 				return "yellow";
-			case "Disetujui":
+			case "disetujui":
 				return "green";
-			case "Ditolak":
+			case "ditolak":
 				return "red";
 			default:
 				return "gray";
 		}
 	};
 
-	const handleViewModal = (row) => {
-		setSelectedRow(row);
+	const handleTextAlign = () => {
+		return TableHead.map((head) => {
+			if (head === "ID Misi" || head === "View" || head === "Aksi") {
+				return "center";
+			} else {
+				return "left";
+			}
+		});
+	};
+
+	const handleViewModal = (target) => {
+		dispatch(fetchApproval(target));
 		onOpenView();
 	};
 
@@ -108,7 +118,6 @@ export function TableMissionApproval({ data }) {
 			<ModalViewMissionApproval
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={tabsData} // changed later
 			/>
 
 			<ModalApprove
@@ -132,37 +141,37 @@ export function TableMissionApproval({ data }) {
 			<BaseTable
 				data={data}
 				heads={TableHead}
-				textAligns={TableHead.map((head) => {
-					if (head === "ID Misi" || head === "View" || head === "Aksi") {
-						return "center";
-					} else {
-						return "left";
-					}
-				})}
+				textAligns={handleTextAlign()}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>{row.id}</CenteredCell>
-						<TextCell content={row.name} />
-						<TextCell content={row.username} />
+						<CenteredCell>{row.mission_id}</CenteredCell>
+						<TextCell
+							casing={"capitalize"}
+							content={row.mission_name}
+						/>
+						<TextCell
+							casing={"capitalize"}
+							content={row.user}
+						/>
 						<BadgeCell
 							content={row.status}
 							colorScheme={handleBadges(row.status)}
 						/>
-						<TextCell content={row.date} />
+						<TextCell content={formatDateToLocalDate(row.created_at)} />
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+								onClick={() => handleViewModal(row.id)}
 							/>
 						</CenteredCell>
 						<CenteredCell>
-							{row.status === "Perlu Tinjauan" ? (
+							{row.status.toLowerCase() === "perlu tinjauan" ? (
 								<ButtonGroup>
 									<Button
 										colorScheme={"mainGreen"}
@@ -184,13 +193,13 @@ export function TableMissionApproval({ data }) {
 												{rejectMenu.map((item, index) => (
 													<MenuItemOption
 														key={index}
-														value={item.label}
-														onClick={() => handleRejectModal(row, item.label)}
+														value={item}
+														onClick={() => handleRejectModal(row, item)}
 														_hover={{ bg: "#EBEBF0" }}
 														_checked={{ bg: "#EBEBF0" }}
 														py={"0.5rem"}
 													>
-														{item.label}
+														{item}
 													</MenuItemOption>
 												))}
 											</MenuOptionGroup>
@@ -207,53 +216,3 @@ export function TableMissionApproval({ data }) {
 		</>
 	);
 }
-
-// dummy
-const tabsData = [
-	{
-		tab: "1",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 1",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 2",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 3",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-	{
-		tab: "2",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 1",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-	{
-		tab: "3",
-		images: [
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 2",
-			},
-			{
-				src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg0p1LxMUPefoY0uoosNfK1L37K2HVPOY15Q&usqp=CAU",
-				alt: "image 3",
-			},
-		],
-		description: "Saya telah membuang sampah yang berserakan pada tempatnya.",
-		uploadTime: new Date(),
-	},
-];
-// end dummy

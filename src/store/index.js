@@ -39,6 +39,10 @@ import {
 	fetchCommunityReducer,
 	updateCommunityReducer,
 } from "./community";
+import {
+	fetchApprovalReducer,
+	fetchApprovalsReducer,
+} from "./approval-mission";
 
 export const store = configureStore({
 	reducer: {
@@ -82,5 +86,8 @@ export const store = configureStore({
 		fetchCommunities: fetchCommunitiesReducer,
 		fetchCommunity: fetchCommunityReducer,
 		updateCommunity: updateCommunityReducer,
+
+		fetchApprovals: fetchApprovalsReducer,
+		fetchApproval: fetchApprovalReducer,
 	},
 });
