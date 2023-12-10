@@ -2,21 +2,28 @@ import { configureStore } from "@reduxjs/toolkit";
 import { loginReducer } from "./auth";
 import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
 import {
-  createVoucherReducer,
-  deleteVoucherReducer,
-  fetchVoucherReducer,
-  fetchVouchersReducer,
-  updateVoucherReducer,
+	createVoucherReducer,
+	deleteVoucherReducer,
+	fetchVoucherReducer,
+	fetchVouchersReducer,
+	updateVoucherReducer,
 } from "./voucher";
-import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
 import {
-  createTrashesReducer,
-  deleteTrashesReducer,
-  fetchTrashReducer,
-  fetchTrashesReducer,
-  updateTrashesReducer,
+	fetchDataReportReducer,
+	fetchDataReportsReducer,
+	patchDataReportReducer,
+} from "./report";
+import {
+	createTrashesReducer,
+	deleteTrashesReducer,
+	fetchTrashReducer,
+	fetchTrashesReducer,
+	updateTrashesReducer,
 } from "./trash-category";
-import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
+import {
+	fetchAchievementsReducer,
+	patchAchievementsReducer,
+} from "@/store/achievements";
 import {
 	createPromptReducer,
 	deletePromptReducer,
@@ -25,48 +32,55 @@ import {
 	updatePromptReducer,
 } from "./prompt";
 import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
+import {
+	createCommunityReducer,
+	deleteCommunityReducer,
+	fetchCommunitiesReducer,
+	fetchCommunityReducer,
+	updateCommunityReducer,
+} from "./community";
 
 export const store = configureStore({
-  reducer: {
-    auth: loginReducer,
+	reducer: {
+		auth: loginReducer,
 
-    fetchUsers: fetchUsersReducer,
-    fetchUser: fetchUserReducer,
-    deleteUser: deleteUserReducer,
+		deleteUser: deleteUserReducer,
+		fetchUser: fetchUserReducer,
+		fetchUsers: fetchUsersReducer,
 
-    fetchVouchers: fetchVouchersReducer,
-    fetchVoucher: fetchVoucherReducer,
-    updateVoucher: updateVoucherReducer,
-    deleteVoucher: deleteVoucherReducer,
-    createVoucher: createVoucherReducer,
-
-		fetchVouchers: fetchVouchersReducer,
-		fetchVoucher: fetchVoucherReducer,
-		updateVoucher: updateVoucherReducer,
-		deleteVoucher: deleteVoucherReducer,
 		createVoucher: createVoucherReducer,
+		deleteVoucher: deleteVoucherReducer,
+		fetchVoucher: fetchVoucherReducer,
+		fetchVouchers: fetchVouchersReducer,
+		updateVoucher: updateVoucherReducer,
 
-		fetchDataReports:fetchDataReportsReducer,
-		fetchDataReport:fetchDataReportReducer,
-		patchDataReport:patchDataReportReducer,
+		fetchDataReport: fetchDataReportReducer,
+		fetchDataReports: fetchDataReportsReducer,
+		patchDataReport: patchDataReportReducer,
 
-    fetchTrash: fetchTrashReducer,
-    fetchTrashes: fetchTrashesReducer,
-    updateTrashes: updateTrashesReducer,
-    deleteTrashes: deleteTrashesReducer,
-    createTrashes: createTrashesReducer,
-    
-    fetchAchievements: fetchAchievementsReducer,
+		createTrashes: createTrashesReducer,
+		deleteTrashes: deleteTrashesReducer,
+		fetchTrash: fetchTrashReducer,
+		fetchTrashes: fetchTrashesReducer,
+		updateTrashes: updateTrashesReducer,
+
+		fetchAchievements: fetchAchievementsReducer,
 		patchAchievements: patchAchievementsReducer,
-    
-    fetchPrompts: fetchPromptsReducer,
-		fetchPrompt: fetchPromptReducer,
-		updatePrompt: updatePromptReducer,
-		deletePrompt: deletePromptReducer,
-		createPrompt: createPromptReducer,
 
+		createPrompt: createPromptReducer,
+		deletePrompt: deletePromptReducer,
+		fetchPrompt: fetchPromptReducer,
+		fetchPrompts: fetchPromptsReducer,
+		updatePrompt: updatePromptReducer,
+    
     fetchDatasTransaction: fetchDatasTransactionReducer,
     fetchDataTransaction: fetchDataTransactionReducer,
     patchDataTransaction: patchDataTransactionReducer,
-  },
+
+		createCommunity: createCommunityReducer,
+		deleteCommunity: deleteCommunityReducer,
+		fetchCommunities: fetchCommunitiesReducer,
+		fetchCommunity: fetchCommunityReducer,
+		updateCommunity: updateCommunityReducer,
+	},
 });
