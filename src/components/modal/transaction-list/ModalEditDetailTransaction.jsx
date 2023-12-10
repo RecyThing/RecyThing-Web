@@ -46,18 +46,17 @@ const labels = {
   status: { title: "Status", icon: <Location /> },
 };
 
-export function ModalEditDetailTransaction({ isOpen, onClose, onUpdate }) {
+export function ModalEditDetailTransaction({ isOpen, onClose, onUpdate, onEdit }) {
   const { data, status, message } = useSelector(fetchDataTransactionSelector);
 
   const handleUpdate = () => {
     onUpdate(data.id, { status: `${statusData}` });
-    onClose();
   };
 
   const [statusData, setStatusData] = useState();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} isCentered closeOnOverlayClick={onEdit !== "loading"}>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
       <ModalContent
         p={"1.5rem"}
@@ -270,6 +269,7 @@ export function ModalEditDetailTransaction({ isOpen, onClose, onUpdate }) {
                 py={"1.75rem"}
                 _hover={{ bg: "#333333" }}
                 onClick={handleUpdate}
+                isLoading={onEdit === "loading"}
               >
                 Simpan
               </Button>

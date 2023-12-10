@@ -85,6 +85,7 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 				onClose={onCloseUpdate}
 				target={id}
 				onUpdate={handleUpdate}
+				onEdit={status}
 			/>
 			<BaseTable
 				data={data}
