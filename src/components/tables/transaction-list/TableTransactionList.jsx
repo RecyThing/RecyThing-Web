@@ -123,9 +123,6 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 										hoverColor={"#333333"}
 										onClick={() => handleViewModal(row.id)}
 									/>
-									<Text padding={"10px"}>
-										-
-									</Text>
 								</Flex>
 							</CenteredCell>
 						) : (
