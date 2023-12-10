@@ -16,6 +16,10 @@ import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { CloseSquare } from "react-iconly";
 import * as Fields from "./CommunityFormFields";
+import { createCommunitySelector } from "@/store/community";
+import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./CommunityFormSchema";
 
 export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 	const {
@@ -23,12 +27,14 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 		formState: { errors },
 		handleSubmit,
 		reset,
-	} = useForm();
+	} = useForm({
+		resolver: yupResolver(schema),
+	});
+
+	const { status } = useSelector(createCommunitySelector);
 
 	const handleSubmitForm = (data) => {
 		onSubmit(data);
-		reset();
-		onClose();
 	};
 
 	const imageRef = useRef(null);
@@ -94,7 +100,7 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 					>
 						<Fields.CommunityImageField
 							control={control}
-							error={errors.communityImage}
+							error={errors.image}
 							imageRef={imageRef}
 							handleImageRef={handleImageRef}
 						/>
@@ -107,25 +113,25 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 							<GridItem colSpan={"3"}>
 								<Fields.CommunityNameField
 									control={control}
-									error={errors.communityName}
+									error={errors.name}
 								/>
 							</GridItem>
 							<GridItem colSpan={"3"}>
 								<Fields.CommunityDescField
 									control={control}
-									error={errors.communityDescription}
+									error={errors.description}
 								/>
 							</GridItem>
 							<GridItem colSpan={2}>
 								<Fields.CommunityLocationField
 									control={control}
-									error={errors.communityLocation}
+									error={errors.location}
 								/>
 							</GridItem>
 							<GridItem colSpan={1}>
 								<Fields.CommunityMembersField
 									control={control}
-									error={errors.communityMembers}
+									error={errors.max_members}
 								/>
 							</GridItem>
 						</Grid>
@@ -146,6 +152,7 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 							py={"1.75rem"}
 							_hover={{ bg: "#333333" }}
 							onClick={onClose}
+							isDisabled={status === "loading"}
 						>
 							Batal
 						</Button>
@@ -157,6 +164,7 @@ export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 							px={"3rem"}
 							py={"1.75rem"}
 							_hover={{ bg: "#2DA22D" }}
+							isLoading={status === "loading"}
 						>
 							Tambah
 						</Button>

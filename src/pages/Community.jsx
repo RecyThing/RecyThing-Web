@@ -2,59 +2,103 @@ import { AddSquare } from "iconsax-react";
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ModalAddCommunity } from "@/components/modal";
 import { TableCommunityList } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
-
-// dummy
-const DummyData = [];
-const names = [
-	"Zero Waste Community Indonesia",
-	"Rumah Edukasi Sampah",
-	"Komunitas Peduli Sampah",
-	"Komunitas Zero Waste",
-	"Komunitas Peduli Lingkungan",
-];
-const locations = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Bali"];
-
-for (let i = 0; i < 50; i++) {
-	const id = Math.floor(Math.random() * 10000);
-	const name = names[Math.floor(Math.random() * names.length)];
-	const createdAt = new Date(
-		Math.floor(Math.random() * 3) + 2021,
-		Math.floor(Math.random() * 12),
-		Math.floor(Math.random() * 31)
-	);
-	const location = locations[Math.floor(Math.random() * locations.length)];
-
-	DummyData.push({
-		id,
-		name,
-		createdAt,
-		location,
-		description: "Lorem ipsum dolor sit amet, consectetur adipisci",
-		image: "https://picsum.photos/200",
-		members: Math.floor(Math.random() * 100),
-	});
-}
-// end dummy
+import { useDispatch, useSelector } from "react-redux";
+import {
+	clearDeleteCommunityState,
+	clearFetchCommunitiesState,
+	clearFetchCommunityState,
+	clearUpdateCommunityState,
+	createCommunity,
+	createCommunitySelector,
+	deleteCommunitySelector,
+	fetchCommunities,
+	fetchCommunitiesSelector,
+	updateCommunitySelector,
+} from "@/store/community";
+import { Spinner } from "@/components/spinner";
+import { useCustomToast, useDebounce } from "@/hooks";
 
 function Community() {
-	const [searchTerm, setSearchTerm] = useState("");
+	const dispatch = useDispatch();
+	const {
+		data = [],
+		status,
+		message,
+		count_data,
+	} = useSelector(fetchCommunitiesSelector);
+
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deleteCommunitySelector
+	);
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateCommunitySelector
+	);
+	const { status: createStatus, message: createMessage } = useSelector(
+		createCommunitySelector
+	);
+
+	const [_searchTerm, setSearchTerm] = useState("");
+	const searchTerm = useDebounce(_searchTerm, 500);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const filteredData = DummyData.filter((data) => {
-		return data.name.toLowerCase().includes(searchTerm.toLowerCase());
-	});
+	const fetchCommunitiesData = useCallback(() => {
+		dispatch(
+			fetchCommunities({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
+	useEffect(() => {
+		fetchCommunitiesData();
+	}, [fetchCommunitiesData, searchTerm, itemsPerPage, currentPage]);
+
+	useEffect(() => {
+		if (
+			deleteStatus === "success" ||
+			updateStatus === "success" ||
+			createStatus === "success"
+		) {
+			fetchCommunitiesData();
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+
+		return () => {
+			if (updateStatus !== "idle") dispatch(clearUpdateCommunityState());
+			if (deleteStatus !== "idle") dispatch(clearDeleteCommunityState());
+			if (createStatus !== "idle") dispatch(clearDeleteCommunityState());
+		};
+	}, [
+		deleteStatus,
+		updateStatus,
+		createStatus,
+		dispatch,
+		fetchCommunitiesData,
+	]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchCommunitiesState());
+			dispatch(clearFetchCommunityState());
+			dispatch(clearUpdateCommunityState());
+			dispatch(clearDeleteCommunityState());
+		};
+	}, [dispatch]);
+
+	const filteredData = Object.values(data).filter((community) => {
+		return community.name?.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -65,10 +109,16 @@ function Community() {
 		onOpen();
 	};
 
-	const handleSubmitAdded = (data) => {
-		console.log("added!", data);
-		onClose();
+	const handleSubmitAdded = (target) => {
+		target.image = target.image[0];
+		dispatch(createCommunity(target)).then(() => {
+			onClose();
+		});
 	};
+
+	useCustomToast(createStatus, createMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(updateStatus, updateMessage);
 
 	return (
 		<LayoutDashboardContent>
@@ -114,19 +164,25 @@ function Community() {
 					</Button>
 				</Flex>
 
-				<TableCommunityList
-					data={paginatedData}
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-				/>
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableCommunityList
+							data={filteredData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
 
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={filteredData.length}
-				/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={count_data}
+						/>
+					</>
+				)}
 			</Flex>
 
 			<ModalAddCommunity
