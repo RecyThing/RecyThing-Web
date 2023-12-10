@@ -31,6 +31,7 @@ import {
 	fetchPromptsReducer,
 	updatePromptReducer,
 } from "./prompt";
+import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
 import {
 	createCommunityReducer,
 	deleteCommunityReducer,
@@ -71,6 +72,10 @@ export const store = configureStore({
 		fetchPrompt: fetchPromptReducer,
 		fetchPrompts: fetchPromptsReducer,
 		updatePrompt: updatePromptReducer,
+    
+    fetchDatasTransaction: fetchDatasTransactionReducer,
+    fetchDataTransaction: fetchDataTransactionReducer,
+    patchDataTransaction: patchDataTransactionReducer,
 
 		createCommunity: createCommunityReducer,
 		deleteCommunity: deleteCommunityReducer,
