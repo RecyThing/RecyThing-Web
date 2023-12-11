@@ -1,6 +1,6 @@
 import LineGraph from "./LineGraph";
 
-function Statistic() {
+function Statistic({ filter, data }) {
   
   return (
     <div className="col-span-3 p-6 max-h-[372px] rounded-xl shadow-md bg-white">
@@ -19,7 +19,7 @@ function Statistic() {
         </div>
       </div>
 
-      <LineGraph />
+      <LineGraph graphData={data} filter={filter} />
     </div>
   )
 }

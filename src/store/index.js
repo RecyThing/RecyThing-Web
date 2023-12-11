@@ -32,9 +32,9 @@ import {
   updatePromptReducer,
 } from "./prompt";
 import {
-  fetchDataTransactionReducer,
-  fetchDatasTransactionReducer,
-  patchDataTransactionReducer,
+	fetchDataTransactionReducer,
+	fetchDatasTransactionReducer,
+	patchDataTransactionReducer,
 } from "./transaction-list";
 import {
   createCommunityReducer,
@@ -43,6 +43,11 @@ import {
   fetchCommunityReducer,
   updateCommunityReducer,
 } from "./community";
+import {
+	fetchApprovalReducer,
+	fetchApprovalsReducer,
+	updateApprovalReducer,
+} from "./approval-mission";
 import {
   createMissionReducer,
   deleteMissionReducer,
@@ -78,21 +83,25 @@ export const store = configureStore({
     fetchAchievements: fetchAchievementsReducer,
     patchAchievements: patchAchievementsReducer,
 
-    createPrompt: createPromptReducer,
-    deletePrompt: deletePromptReducer,
-    fetchPrompt: fetchPromptReducer,
-    fetchPrompts: fetchPromptsReducer,
-    updatePrompt: updatePromptReducer,
+		createPrompt: createPromptReducer,
+		deletePrompt: deletePromptReducer,
+		fetchPrompt: fetchPromptReducer,
+		fetchPrompts: fetchPromptsReducer,
+		updatePrompt: updatePromptReducer,
 
-    fetchDatasTransaction: fetchDatasTransactionReducer,
-    fetchDataTransaction: fetchDataTransactionReducer,
-    patchDataTransaction: patchDataTransactionReducer,
+		fetchDatasTransaction: fetchDatasTransactionReducer,
+		fetchDataTransaction: fetchDataTransactionReducer,
+		patchDataTransaction: patchDataTransactionReducer,
 
-    createCommunity: createCommunityReducer,
-    deleteCommunity: deleteCommunityReducer,
-    fetchCommunities: fetchCommunitiesReducer,
-    fetchCommunity: fetchCommunityReducer,
-    updateCommunity: updateCommunityReducer,
+		createCommunity: createCommunityReducer,
+		deleteCommunity: deleteCommunityReducer,
+		fetchCommunities: fetchCommunitiesReducer,
+		fetchCommunity: fetchCommunityReducer,
+		updateCommunity: updateCommunityReducer,
+
+		fetchApproval: fetchApprovalReducer,
+		fetchApprovals: fetchApprovalsReducer,
+		updateApproval: updateApprovalReducer,
 
     fetchMissions: fetchMissionsReducer,
     fetchMission: fetchMissionReducer,

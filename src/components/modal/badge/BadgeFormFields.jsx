@@ -12,6 +12,11 @@ export function BadgeNameFields({ control, error }) {
         <FormControl isInvalid={error}>
           <Input
             label={"Nama Lencana"}
+            style={{
+              cursor: "not-allowed",
+              color: "#73737A",
+              textTransform: "capitalize",
+            }}
             autoComplete={"off"}
             error={error}
             {...field}
@@ -33,8 +38,8 @@ export function BadgeTargetField({ control, error }) {
           <Input
             label={"Target Poin"}
             autoComplete={"off"}
-            error={error}
             type={"number"}
+            error={error}
             {...field}
           />
           <FormErrorMessage>{error?.message}</FormErrorMessage>

@@ -4,13 +4,13 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-function Chart() {
+function Chart({ chartData }) {
   const data = {
     labels: ["Individu", "Perusahaan"],
     datasets: [
       {
         label: "% Pelanggaran",
-        data: [60, 40],
+        data: [chartData.person, chartData.company],
         backgroundColor: ["#4339F2", "#FF3A29"],
       },
     ],
