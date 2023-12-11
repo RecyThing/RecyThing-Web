@@ -10,7 +10,6 @@ export const schema = yup.object().shape({
   email: yup
     .string()
     .required("Email tidak boleh kosong")
-    .max(25, "Email tidak boleh lebih dari 25 karakter")
     .min(5, "Email tidak boleh kurang dari 5 karakter"),
   password: yup
     .string()

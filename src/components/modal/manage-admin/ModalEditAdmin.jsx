@@ -1,6 +1,8 @@
 import { InputWithLogo } from "@/components/inputs";
 import {
   Button,
+  FormControl,
+  FormErrorMessage,
   IconButton,
   Modal,
   ModalBody,
@@ -114,14 +116,20 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
                     <Controller
                       name={"password"}
                       control={control}
-                      render={() => (
-                        <InputWithLogo
-                          label={"Masukkan kata sandi"}
-                          id={"password"}
-                          Logo={Lock}
-                          type={passwordType}
-                          error={errors.password}
-                        />
+                      render={({ field }) => (
+                        <FormControl isInvalid={errors.confirm_password}>
+                          <InputWithLogo
+                            label={"Masukkan kata sandi"}
+                            id={"password"}
+                            Logo={Lock}
+                            type={passwordType}
+                            error={errors.password}
+                            {...field}
+                          />
+                          <FormErrorMessage>
+                            {errors?.password?.message}
+                          </FormErrorMessage>
+                        </FormControl>
                       )}
                     />
 

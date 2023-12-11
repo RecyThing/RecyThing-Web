@@ -1,8 +1,17 @@
 import { Controller } from "react-hook-form";
-import { Button, FormControl, FormErrorMessage, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { Input } from "@/components/inputs";
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
+import { InputWithLogo } from "@/components/inputs";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Document } from "react-iconly";
+import { ChevronDown, ChevronUp, Document, Message } from "react-iconly";
+import { Profile } from "iconsax-react";
 
 export function AdminNameFields({ control, error }) {
   return (
@@ -11,8 +20,9 @@ export function AdminNameFields({ control, error }) {
       control={control}
       render={({ field }) => (
         <FormControl isInvalid={error}>
-          <Input
+          <InputWithLogo
             label={"Nama Lengkap"}
+            Logo={Profile}
             className={"mt-8"}
             autoComplete={"off"}
             error={error}
@@ -33,13 +43,13 @@ export function AdminEmailFields({ control, error }) {
       control={control}
       render={({ field }) => (
         <FormControl isInvalid={error}>
-          <Input
-            label={"Tambahkan email"}
+          <InputWithLogo
+            label={"Tambahkan Email"}
+            Logo={Message}
             className={"my-4"}
             autoComplete={"off"}
             error={error}
             {...field}
-            type={"email"}
           />
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>
@@ -48,9 +58,8 @@ export function AdminEmailFields({ control, error }) {
   );
 }
 
-export function SelectedStatus({ control, error}) {
+export function SelectedStatus({ control, error }) {
   const [menuOpen, setMenuOpen] = useState(false);
-
 
   const handleMenuOpen = () => {
     setMenuOpen(!menuOpen);
