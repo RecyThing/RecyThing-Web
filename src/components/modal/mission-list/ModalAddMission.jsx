@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {
+  Box,
   Button,
   Flex,
   Grid,
@@ -127,16 +128,20 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                     />
                   </GridItem>
                   <GridItem colSpan={"2"}>
-                    <Flex flexDirection={"column"} gap={"16px"}>
+                    <Flex flexDirection={"column"} gap={3}>
                       <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
-                      <Fields.MissionTitleStageField
-                        control={control}
-                        error={errors.missionTitleStage}
-                      />
-                      <Fields.MissionDescriptionStageField
-                        control={control}
-                        error={errors.missionDescriptionStage}
-                      />
+                      <Box border={"1px solid #828282"} borderRadius={"lg"} p={3}>
+                        <Flex flexDirection={"column"} gap={"16px"}>
+                          <Fields.MissionTitleStageField
+                            control={control}
+                            error={errors.missionTitleStage}
+                          />
+                          <Fields.MissionDescriptionStageField
+                            control={control}
+                            error={errors.missionDescriptionStage}
+                          />
+                        </Flex>
+                      </Box>
                     </Flex>
                   </GridItem>
                   {/* <GridItem colSpan={"2"}>

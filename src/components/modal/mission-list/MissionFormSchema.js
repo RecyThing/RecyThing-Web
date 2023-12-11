@@ -4,7 +4,7 @@ export const schema = yup.object().shape({
 	missionTitle: yup
 		.string()
 		.required("Nama misi tidak boleh kosong")
-		.max(25, "Nama misi tidak boleh lebih dari 25 karakter")
+		.max(100, "Nama misi tidak boleh lebih dari 100 karakter")
 		.min(5, "Nama misi tidak boleh kurang dari 5 karakter")
 		.matches(/^[a-zA-Z0-9 ]*$/, "Nama misi tidak boleh mengandung simbol"),
 	missionPoint: yup
@@ -36,9 +36,9 @@ export const schema = yup.object().shape({
 			"start-date",
 			"Tanggal mulai misi harus sebelum tanggal berakhir misi",
 			function (value) {
-				const { end_date } = this.parent;
-				if (value && end_date) {
-					return new Date(value) < new Date(end_date);
+				const { missionEndDate } = this.parent;
+				if (value && missionEndDate) {
+					return new Date(value) < new Date(missionEndDate);
 				}
 				return true;
 			}
@@ -50,9 +50,9 @@ export const schema = yup.object().shape({
 			"end-date",
 			"Tanggal berakhir misi harus setelah tanggal mulai misi",
 			function (value) {
-				const { start_date } = this.parent;
-				if (value && start_date) {
-					return new Date(value) > new Date(start_date);
+				const { missionStartDate } = this.parent;
+				if (value && missionStartDate) {
+					return new Date(value) > new Date(missionStartDate);
 				}
 				return true;
 			}
@@ -66,7 +66,7 @@ export const schema = yup.object().shape({
 		missionDescriptionStage: yup
 		.string()
 		.required("Tahapan / Tantangan deskripsi misi tidak boleh kosong")
-		.max(100, "Tahapan / Tantangan deskripsi misi tidak boleh lebih dari 100 karakter")
+		.max(250, "Tahapan / Tantangan deskripsi misi tidak boleh lebih dari 250 karakter")
 		.min(5, "Tahapan / Tantangan deskripsi misi tidak boleh kurang dari 5 karakter")
 		.matches(/^[a-zA-Z0-9 ]*$/, "Tahapan / Tantangan Deskripsi tidak boleh mengandung simbol"),
 });

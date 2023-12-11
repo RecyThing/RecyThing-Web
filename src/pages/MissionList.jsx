@@ -2,7 +2,6 @@
 import {
   Button,
   ButtonGroup,
-  Container,
   Flex,
   Heading,
   useDisclosure,
@@ -31,10 +30,16 @@ import {
   fetchMissionsSelector,
   updateMissionSelector,
 } from "@/store/mission";
+import { LayoutDashboardContent } from "@/layout";
 
 function MissionList() {
   const dispatch = useDispatch();
-  const { data = [], status, message, count } = useSelector(fetchMissionsSelector);
+  const {
+    data = [],
+    status,
+    message,
+    count,
+  } = useSelector(fetchMissionsSelector);
   const { status: updateStatus, message: updateMessage } = useSelector(
     updateMissionSelector
   );
@@ -49,12 +54,11 @@ function MissionList() {
   const searchTerm = useDebounce(_searchTerm, 500);
   const buttonLabels = ["Semua", "Aktif", "Melewati Tenggat"];
   const [activeFilter, setActiveFilter] = useState({
-		label: "Semua",
-		value: "",
-	});
+    label: "Semua",
+    value: "",
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useCustomToast(updateStatus, updateMessage);
@@ -69,11 +73,7 @@ function MissionList() {
         limit: itemsPerPage,
         page: currentPage,
       })
-    ).then((res) => {
-      if (res.payload) {
-        setTotalItems(res.payload.count.total_count);
-      }
-    });
+    );
   }, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
 
   useEffect(() => {
@@ -109,21 +109,19 @@ function MissionList() {
   }, [dispatch]);
 
   const filteredData = Object.values(data).filter((mission) => {
-    return (
-      mission.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return mission.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const filteredDataCount = (filter) => {
-		switch (filter) {
-			case "Aktif":
-				return count?.count_active || 0;
-			case "Melewati Tenggat":
-				return count?.count_expired || 0;
-			default:
-				return count?.count_active+count?.count_expired || 0;
-		}
-	};
+    switch (filter) {
+      case "Aktif":
+        return count?.count_active || 0;
+      case "Melewati Tenggat":
+        return count?.count_expired || 0;
+      default:
+        return count?.total_count || 0;
+    }
+  };
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -131,15 +129,15 @@ function MissionList() {
   };
 
   const handleFilterClick = (filter) => {
-		setCurrentPage(1);
-		if (filter === "Aktif") {
-			setActiveFilter({ label: "Aktif", value: "aktif" });
-		} else if (filter === "Melewati Tenggat") {
-			setActiveFilter({ label: "Melewati Tenggat", value: "melewati tenggat" });
-		}  else {
-			setActiveFilter({ label: "Semua", value: "" });
-		}
-	};
+    setCurrentPage(1);
+    if (filter === "Aktif") {
+      setActiveFilter({ label: "Aktif", value: "aktif" });
+    } else if (filter === "Melewati Tenggat") {
+      setActiveFilter({ label: "Melewati Tenggat", value: "melewati tenggat" });
+    } else {
+      setActiveFilter({ label: "Semua", value: "" });
+    }
+  };
 
   const handleAddModal = () => {
     onOpen();
@@ -147,7 +145,7 @@ function MissionList() {
 
   const handleSubmitAdded = (data) => {
     data.missionStartDate = formatDateToISOString(data.missionStartDate);
-		data.missionEndDate = formatDateToISOString(data.missionEndDate);
+    data.missionEndDate = formatDateToISOString(data.missionEndDate);
     const formData = new FormData();
     formData.append("image", data.missionImage);
     formData.append("title", data.missionTitle);
@@ -165,12 +163,7 @@ function MissionList() {
   };
 
   return (
-    <Container
-      as={"section"}
-      maxW={"container.2xl"}
-      bg={"#EBEBF0"}
-      p={"1.5rem"}
-    >
+    <LayoutDashboardContent>
       <Heading
         as="h1"
         color={"#201A18"}
@@ -232,7 +225,7 @@ function MissionList() {
               itemsPerPage={itemsPerPage}
               onChangeItemsPerPage={setItemsPerPage}
               onChangePage={setCurrentPage}
-              totalItems={totalItems}
+              totalItems={filteredDataCount(activeFilter.label)}
             />
           </>
         )}
@@ -242,7 +235,7 @@ function MissionList() {
         onClose={onClose}
         onSubmit={handleSubmitAdded}
       />
-    </Container>
+    </LayoutDashboardContent>
   );
 }
 

@@ -133,8 +133,8 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
             <CenteredCell>
               {(currentPage - 1) * itemsPerPage + rowIndex + 1}
             </CenteredCell>
-            <TextCell content={row.name} />
-            <TextCell content={row.creator} />
+            <TextCell casing={"capitalize"} content={row.name} />
+            <TextCell casing={"capitalize"} content={row.creator} />
             <BadgeCell
               content={row.status}
               colorScheme={handleBadges(row.status)}

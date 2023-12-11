@@ -1,21 +1,19 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-export function MissionStepSection({no, title, description }) {
+export function MissionStepSection({ title, description }) {
   return (
-    <Box border={"1px"} borderRadius={"lg"} p={3}>
-      <Flex gap={2}>
-        <Text fontSize={"18px"} fontWeight={500} lineHeight={1.2}>
-          {no}
-        </Text>
-        <Box>
-          <Text fontSize={"14px"} fontWeight={500}>
-            {title}
-          </Text>
-          <Text fontSize={"12px"} color={"#828282"}>
-            {description}
-          </Text>
-        </Box>
-      </Flex>
-    </Box>
+    <Flex flexDirection={"column"} gap={3}>
+      <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
+      <Box border={"1px solid #828282"} borderRadius={"lg"} p={3}>
+        <Flex flexDirection={"column"} gap={2}>
+            <Text casing={"capitalize"} fontSize={"16px"} fontWeight={600}>
+              {title}
+            </Text>
+            <Text fontSize={"14px"} color={"#828282"}>
+              {description}
+            </Text>
+        </Flex>
+      </Box>
+    </Flex>
   );
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { MissionStepSection } from "@/components/sections";
+import { formatDateToLocalDate } from "@/utils";
 import {
   Button,
   Flex,
@@ -86,28 +87,18 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
             </GridItem>
             <GridItem>
               <Flex flexDirection={"column"}>
-                <Text color={"#828282"}>Dimulai</Text>
-                <Text fontWeight={500}>{data?.start_date}</Text>
+                <Text color={"#828282"}>Dimulai</Text>                
+                <Text fontWeight={500}>{formatDateToLocalDate(data?.start_date)}</Text>
               </Flex>
             </GridItem>
             <GridItem>
               <Flex flexDirection={"column"}>
                 <Text color={"#828282"}>Berakhir</Text>
-                <Text fontWeight={500}>{data?.end_date}</Text>
+                <Text fontWeight={500}>{formatDateToLocalDate(data?.end_date)}</Text>
               </Flex>
             </GridItem>
             <GridItem colSpan={"2"}>
-              <Flex flexDirection={"column"} gap={2}>
-                <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
-                <Flex flexDirection={"column"}>
-                  <Text color={"#828282"}>Judul</Text>
-                  <Text fontWeight={500}>{data?.title_stage}</Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text color={"#828282"}>Deskripsi</Text>
-                  <Text fontWeight={500}>{data?.description_stage}</Text>
-                </Flex>
-              </Flex>
+              <MissionStepSection title={data?.title_stage} description={data?.description_stage}/>
             </GridItem>
           </Grid>
         </ModalBody>
