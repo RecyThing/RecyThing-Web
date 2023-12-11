@@ -10,7 +10,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
 import { useCustomToast } from "@/hooks";
-import { patchAchievementsSelector } from "@/store/achievements";
+import {
+  clearPatchAchievementsState,
+  patchAchievementsSelector,
+} from "@/store/achievements";
 
 function Badge() {
   const {
@@ -20,7 +23,9 @@ function Badge() {
     shouldFetchLatestAchievements,
   } = useSelector(fetchAchievementsSelector);
 
-  const { status: statusPatch, message: messagePatch } = useSelector(patchAchievementsSelector);
+  const { status: statusPatch, message: messagePatch } = useSelector(
+    patchAchievementsSelector
+  );
   useCustomToast(statusPatch, messagePatch);
 
   const dispatch = useDispatch();
@@ -31,6 +36,9 @@ function Badge() {
       dispatch(toggleShouldFetchLatestAchievements());
       dispatch(fetchAchievements());
     }
+    return () => {
+      dispatch(clearPatchAchievementsState());
+    };
   }, [dispatch, shouldFetchLatestAchievements]);
 
   return (
