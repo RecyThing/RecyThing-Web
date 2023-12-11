@@ -99,8 +99,8 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 						<CenteredCell>
 							{rowIndex+1}
 						</CenteredCell>
-						<TextCell content={row.user} />
-						<TextCell content={row.voucher} />
+						<TextCell content={row.user.charAt(0)?.toUpperCase() + row.user.slice(1)} />
+            			<TextCell content={row.voucher?.toUpperCase()} />
 						<TextCell content={row.phone} />
 						<TextCell content={formatDateToLocalDate(row.created_at)} />
 						{row.status === "selesai" ? (
