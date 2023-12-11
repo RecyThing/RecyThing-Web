@@ -37,6 +37,7 @@ export function BadgeTargetField({ control, error }) {
         <FormControl isInvalid={error}>
           <Input
             label={"Target Poin"}
+            type={"number"}
             autoComplete={"off"}
             error={error}
             {...field}
