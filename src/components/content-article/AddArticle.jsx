@@ -54,7 +54,7 @@ function AddArticle({ onClose, setToastMessage }) {
       <div className="mt-4 flex gap-9 pl-3 pr-6 py-6 rounded-xl min-h-[85vh] bg-white">
         <div  className="flex-1">
           <p className="mb-2 text-sm font-medium">Masukkan Judul</p>
-          <input ref={titleWidth} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={50}
+          <input ref={titleWidth} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={100}
           className="w-full pl-6 py-4 rounded-xl border border-[#828282]" type="text" placeholder="Masukkan Judul Disini..." />
           <TextEditor titleWidth={titleWidth} setArticleData={setArticleData} peerHeight={categoryHeight} />
         </div>
