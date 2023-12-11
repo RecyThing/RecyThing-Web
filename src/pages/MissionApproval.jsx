@@ -1,15 +1,18 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
 import {
+	clearFetchApprovalState,
 	clearFetchApprovalsState,
+	clearUpdateApprovalState,
 	fetchApprovals,
 	fetchApprovalsSelector,
+	updateApprovalSelector,
 } from "@/store/approval-mission";
 import { FilterButton } from "@/components/buttons";
 import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { TableMissionApproval } from "@/components/tables";
-import { useDebounce } from "@/hooks";
+import { useCustomToast, useDebounce } from "@/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { Spinner } from "@/components/spinner";
@@ -24,6 +27,9 @@ function MissionApproval() {
 		message,
 		count,
 	} = useSelector(fetchApprovalsSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateApprovalSelector
+	);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
@@ -51,8 +57,22 @@ function MissionApproval() {
 	}, [fetchApprovalsData]);
 
 	useEffect(() => {
+		if (updateStatus === "success" || updateStatus === "failed") {
+			fetchApprovalsData();
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+
+		return () => {
+			if (updateStatus !== "idle") dispatch(clearUpdateApprovalState());
+		};
+	}, [updateStatus, dispatch, fetchApprovalsData]);
+
+	useEffect(() => {
 		return () => {
 			dispatch(clearFetchApprovalsState());
+			dispatch(clearFetchApprovalState());
+			dispatch(clearUpdateApprovalState());
 		};
 	}, [dispatch]);
 
@@ -83,13 +103,15 @@ function MissionApproval() {
 		if (filter === "Perlu Tinjauan") {
 			setActiveFilter({ label: "Perlu Tinjauan", value: "perlu tinjauan" });
 		} else if (filter === "Disetujui") {
-			setActiveFilter({ label: "Disetujui", value: "diterima" });
+			setActiveFilter({ label: "Disetujui", value: "disetujui" });
 		} else if (filter === "Ditolak") {
 			setActiveFilter({ label: "Ditolak", value: "ditolak" });
 		} else {
 			setActiveFilter({ label: "Semua", value: "" });
 		}
 	};
+
+	useCustomToast(updateStatus, updateMessage);
 
 	return (
 		<LayoutDashboardContent>

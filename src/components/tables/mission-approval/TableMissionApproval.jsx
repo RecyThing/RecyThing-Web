@@ -21,8 +21,12 @@ import {
 	ModalViewMissionApproval,
 } from "@/components/modal";
 import { formatDateToLocalDate } from "@/utils";
-import { useDispatch } from "react-redux";
-import { fetchApproval } from "@/store/approval-mission";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	fetchApproval,
+	updateApproval,
+	updateApprovalSelector,
+} from "@/store/approval-mission";
 
 const TableHead = [
 	"ID Misi",
@@ -42,9 +46,11 @@ const rejectMenu = [
 
 export function TableMissionApproval({ data }) {
 	const dispatch = useDispatch();
+	const { status } = useSelector(updateApprovalSelector);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [rejectReason, setRejectReason] = useState(null);
+
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -92,13 +98,22 @@ export function TableMissionApproval({ data }) {
 		onOpenView();
 	};
 
-	const handleApproveModal = (row) => {
-		setSelectedRow(row);
+	const handleApproveModal = (target) => {
+		setSelectedRow(target);
 		onOpenApprove();
 	};
 
 	const handleApproveMission = () => {
-		console.log("id: ", selectedRow.id);
+		dispatch(
+			updateApproval({
+				id: selectedRow.id,
+				data: {
+					status: "disetujui",
+				},
+			})
+		).then(() => {
+			onCloseApprove();
+		});
 	};
 
 	const handleRejectModal = (row, reason) => {
@@ -108,9 +123,18 @@ export function TableMissionApproval({ data }) {
 	};
 
 	const handleRejectMission = () => {
-		console.log("id: ", selectedRow.id);
-		console.log("reason: ", rejectReason);
-		setRejectReason(null);
+		dispatch(
+			updateApproval({
+				id: selectedRow.id,
+				data: {
+					status: "ditolak",
+					reason: rejectReason,
+				},
+			})
+		).then(() => {
+			onCloseReject();
+			setRejectReason(null);
+		});
 	};
 
 	return (
@@ -124,18 +148,18 @@ export function TableMissionApproval({ data }) {
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
 				onApprove={handleApproveMission}
-				target={selectedRow}
 				title={"Apakah anda yakin ingin Menerima Verifikasi Misi?"}
 				message={"Misi yang terverifikasi tidak dapat diubah kembali"}
+				approveStatus={status}
 			/>
 
 			<ModalReject
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
 				onReject={handleRejectMission}
-				target={selectedRow}
 				title={"Apakah anda yakin ingin Menolak Verifikasi Misi?"}
 				message={"Misi yang ditolak tidak dapat diubah kembali"}
+				rejectStatus={status}
 			/>
 
 			<BaseTable
@@ -190,16 +214,16 @@ export function TableMissionApproval({ data }) {
 										</MenuButton>
 										<MenuList py={0}>
 											<MenuOptionGroup type={"radio"}>
-												{rejectMenu.map((item, index) => (
+												{rejectMenu.map((reason, index) => (
 													<MenuItemOption
 														key={index}
-														value={item}
-														onClick={() => handleRejectModal(row, item)}
+														value={reason}
+														onClick={() => handleRejectModal(row, reason)}
 														_hover={{ bg: "#EBEBF0" }}
 														_checked={{ bg: "#EBEBF0" }}
 														py={"0.5rem"}
 													>
-														{item}
+														{reason}
 													</MenuItemOption>
 												))}
 											</MenuOptionGroup>

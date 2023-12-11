@@ -27,4 +27,18 @@ export const APIApprovalMission = {
 				throw new Error(error.response.data.message);
 		}
 	},
+
+	updateApproval: async ({ id, data }) => {
+		try {
+			console.log(id, data);
+			const response = await axiosInstance.put(
+				`/admins/manage/missions/approvals/${id}`,
+				data
+			);
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError)
+				throw new Error(error.response.data.message);
+		}
+	},
 };

@@ -11,3 +11,10 @@ export {
 	fetchApprovalReducer,
 	fetchApproval,
 } from "./fetchApprovalSlice";
+
+export {
+	updateApprovalSelector,
+	clearUpdateApprovalState,
+	updateApprovalReducer,
+	updateApproval,
+} from "./updateApprovalSlice";
