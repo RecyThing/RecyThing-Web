@@ -63,24 +63,28 @@ function Dashboard() {
           count={parseInt(dashboardData.user_active?.total_user_active)}
           image={activeUserImage}
           percentage={parseInt(dashboardData.user_active?.percentage)}
+          filter={filter}
         />
         <InfoCard
           title="Transaksi Tukar Poin"
           count={parseInt(dashboardData.exchange?.total_exchange)}
           image={voucherImage}
           percentage={parseInt(dashboardData.exchange.percentage)}
+          filter={filter}
         />
         <InfoCard
           title="Total Laporan"
           count={parseInt(dashboardData.report?.total_report)}
           image={megaphoneImage}
           percentage={parseInt(dashboardData.report.percentage)}
+          filter={filter}
         />
         <InfoCard
           title="Transaksi Daur Ulang"
           count={parseInt(dashboardData.recycle?.total_recycle)}
           image={recycleImage}
           percentage={parseInt(dashboardData.recycle.percentage)}
+          filter={filter}
         />
 
 				<Statistic data={dashboardData} filter={filter} />

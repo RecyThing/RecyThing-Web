@@ -31,11 +31,11 @@ function RankingUser({ data }) {
             </LeftAlignCell>
             <LeftAlignCell>{row.email}</LeftAlignCell>
             <LeftAlignCell>{row.point.toLocaleString()}</LeftAlignCell>
-            <LeftAlignCell>
-              <div className={`relative rounded-full text-white w-6 h-6 ${!row.isBearish ? 'bg-[#0033FF]' : 'bg-[#FF3A29]'}`}>
+            <CenteredCell>
+              <div className={`mx-auto relative rounded-full text-white w-6 h-6 ${!row.isBearish ? 'bg-[#0033FF]' : 'bg-[#FF3A29]'}`}>
                 {!row.isBearish ? <FiTrendingUp className="absolute inset-0 m-auto" /> : <FiTrendingDown className="absolute inset-0 m-auto" />}
               </div>
-            </LeftAlignCell>
+            </CenteredCell>
           </TableBodyRow>
         ))}
       </BaseTable>
