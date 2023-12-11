@@ -15,7 +15,7 @@ import { Line } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function LineGraph({ graphData, filter }) {
-  const labels = filter === "years" ? ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Nov', 'Okt', 'Des'] : ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+  const labels = filter === "years" ? ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] : ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
   const [data, setData] = useState({
     labels,
     datasets: [
