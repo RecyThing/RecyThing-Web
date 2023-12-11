@@ -6,7 +6,7 @@ const initialState = {
 	message: "",
 	data: {},
 	pagination: {},
-	count_data: 0,
+	count: {},
 };
 
 export const fetchMissions = createAsyncThunk(
@@ -23,7 +23,7 @@ export const fetchMissionsSlice = createSlice({
 			state.message = "";
 			state.data = {};
 			state.pagination = {};
-			state.count_data = 0;
+			state.count = {};
 		},
 	},
 	extraReducers: (builder) => {
@@ -35,7 +35,7 @@ export const fetchMissionsSlice = createSlice({
 			state.message = action.payload.message;
 			state.data = action.payload.data;
 			state.pagination = action.payload.pagination;
-			state.count_data = action.payload.count_data;
+			state.count = action.payload.count;
 		});
 		builder.addCase(fetchMissions.rejected, (state, action) => {
 			state.status = "failed";

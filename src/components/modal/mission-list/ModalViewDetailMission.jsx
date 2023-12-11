@@ -46,8 +46,6 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
               aspectRatio={"4/3"}
               justifyContent={"center"}
               alignItems={"center"}
-              border={"2px dashed #828282"}
-              borderColor={"#828282"}
               borderRadius={"lg"}
               flexDirection={"column"}
             >
@@ -68,7 +66,12 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
           >
             <GridItem colSpan={2}>
               <Flex justifyContent={"space-between"}>
-                <Text fontSize={22} fontWeight={900} color={"#35CC33"}>
+                <Text
+                  fontSize={22}
+                  fontWeight={900}
+                  color={"#35CC33"}
+                  casing={"capitalize"}
+                >
                   {data?.name}
                 </Text>
                 <Tag bg={"#FBF5D0"}>
@@ -96,16 +99,14 @@ export function ModalViewDetailMission({ isOpen, onClose, data }) {
             <GridItem colSpan={"2"}>
               <Flex flexDirection={"column"} gap={2}>
                 <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
-                {data?.mission_stages?.map((step, index) => {
-                  return (
-                    <MissionStepSection
-                      key={index}
-                      no={index + 1}
-                      title={step?.title}
-                      description={step?.description}
-                    />
-                  );
-                })}
+                <Flex flexDirection={"column"}>
+                  <Text color={"#828282"}>Judul</Text>
+                  <Text fontWeight={500}>{data?.title_stage}</Text>
+                </Flex>
+                <Flex flexDirection={"column"}>
+                  <Text color={"#828282"}>Deskripsi</Text>
+                  <Text fontWeight={500}>{data?.description_stage}</Text>
+                </Flex>
               </Flex>
             </GridItem>
           </Grid>

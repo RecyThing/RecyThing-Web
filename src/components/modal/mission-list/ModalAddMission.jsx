@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {
-  Box,
   Button,
   Flex,
   Grid,
@@ -17,12 +16,12 @@ import {
 import * as Fields from "./MissionFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { AddCircle } from "iconsax-react";
-import { InputMissionStepSection } from "@/components/sections";
 import { CloseSquare } from "react-iconly";
 import { Spinner } from "@/components/spinner";
 import { createMissionSelector } from "@/store/mission";
 import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./MissionFormSchema";
 
 export function ModalAddMission({ isOpen, onClose, onSubmit }) {
   const {
@@ -30,12 +29,8 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
     control,
     formState: { errors },
     reset,
-    setValue,
-    watch,
   } = useForm({
-    defaultValues: {
-      missionSteps: [],
-    },
+    resolver: yupResolver(schema),
   });
   const { status: createStatus } = useSelector(createMissionSelector);
 
@@ -55,19 +50,8 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
   useEffect(() => {
     if (!isOpen) {
       reset();
-    } else {
-      setValue("missionSteps", []);
     }
-  }, [isOpen, reset, setValue]);
-
-  const missionSteps = watch("missionSteps");
-
-  const removeStep = (no) => {
-    const temp = missionSteps.filter((val, idx) => {
-      return idx !== no - 1;
-    });
-    setValue("missionSteps", temp);
-  };
+  }, [isOpen, reset]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>
@@ -145,6 +129,19 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                   <GridItem colSpan={"2"}>
                     <Flex flexDirection={"column"} gap={"16px"}>
                       <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
+                      <Fields.MissionTitleStageField
+                        control={control}
+                        error={errors.missionTitleStage}
+                      />
+                      <Fields.MissionDescriptionStageField
+                        control={control}
+                        error={errors.missionDescriptionStage}
+                      />
+                    </Flex>
+                  </GridItem>
+                  {/* <GridItem colSpan={"2"}>
+                    <Flex flexDirection={"column"} gap={"16px"}>
+                      <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
                       {missionSteps.map((step, index) => {
                         return (
                           <InputMissionStepSection
@@ -189,7 +186,7 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                         Tambah Tahapan / Tantangan
                       </Box>
                     </Flex>
-                  </GridItem>
+                  </GridItem> */}
                 </Grid>
               </ModalBody>
               <ModalFooter gap={4}>

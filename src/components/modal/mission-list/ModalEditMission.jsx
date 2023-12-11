@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  Box,
   Button,
   Flex,
   Grid,
@@ -17,8 +16,6 @@ import {
 import * as Fields from "./MissionFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { AddCircle } from "iconsax-react";
-import { InputMissionStepSection } from "@/components/sections";
 import { CloseSquare } from "react-iconly";
 import { fetchMissionSelector, updateMissionSelector } from "@/store/mission";
 import { useSelector } from "react-redux";
@@ -31,7 +28,6 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
     formState: { errors },
     reset,
     setValue,
-    watch,
   } = useForm();
   const { data, status, message } = useSelector(fetchMissionSelector);
   const { status: updateStatus } = useSelector(updateMissionSelector);
@@ -48,14 +44,6 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
     reset();
   };
 
-  const missionSteps = watch("missionSteps");
-  const removeStep = (no) => {
-    const temp = missionSteps.filter((val, idx) => {
-      return idx !== no - 1;
-    });
-    setValue("missionSteps", temp);
-  };
-
   useEffect(() => {
     if (data) {
       setValue("missionImage", data.mission_image);
@@ -64,7 +52,8 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
       setValue("missionDescription", data.description);
       setValue("missionStartDate", data.start_date);
       setValue("missionEndDate", data.end_date);
-      setValue("missionSteps", data.mission_stages);
+      setValue("missionTitleStage", data.title_stage);
+      setValue("missionDescriptionStage", data.description_stage);
     }
   }, [data, setValue]);
 
@@ -72,7 +61,6 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
     if (!isOpen) {
       reset();
     }
-    setValue("missionSteps", data?.steps);
   }, [isOpen, reset]);
 
   return (
@@ -153,6 +141,19 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
                   <GridItem colSpan={"2"}>
                     <Flex flexDirection={"column"} gap={"16px"}>
                       <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
+                      <Fields.MissionTitleStageField
+                        control={control}
+                        error={errors.missionTitleStage}
+                      />
+                      <Fields.MissionDescriptionStageField
+                        control={control}
+                        error={errors.missionDescriptionStage}
+                      />
+                    </Flex>
+                  </GridItem>
+                  {/* <GridItem colSpan={"2"}>
+                    <Flex flexDirection={"column"} gap={"16px"}>
+                      <Text color={"#828282"}>Tahapan/Tantangan Misi</Text>
                       {missionSteps?.map((step, index) => {
                         return (
                           <InputMissionStepSection
@@ -209,7 +210,7 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
                         Tambah Tahapan / Tantangan
                       </Box>
                     </Flex>
-                  </GridItem>
+                  </GridItem> */}
                 </Grid>
               </ModalBody>
               <ModalFooter gap={4}>

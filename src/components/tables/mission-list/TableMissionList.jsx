@@ -16,11 +16,11 @@ import {
   deleteMission,
   deleteMissionSelector,
   fetchMission,
+  fetchMissionSelector,
   updateMission,
   updateMissionSelector,
 } from "@/store/mission";
 import { formatDateToISOString } from "@/utils";
-import { APIMission } from "@/apis";
 
 const TableHead = ["ID Misi", "Nama Misi", "Pembuat", "Status", "Aksi"];
 
@@ -40,6 +40,7 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
 
   const { status: updateStatus } = useSelector(updateMissionSelector);
   const { status: deleteStatus } = useSelector(deleteMissionSelector);
+  const { dataRow } = useSelector(fetchMissionSelector);
   const {
     isOpen: isOpenView,
     onOpen: onOpenView,
@@ -59,12 +60,15 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
 
   const handleViewModal = (target) => {
     setSelectedRow(target);
+    setId(target.id);
+		dispatch(fetchMission(target));
     onOpenView();
   };
 
   const handleEditModal = (target) => {
     setId(target.id);
 		dispatch(fetchMission(target));
+    setSelectedRow(dataRow);
     onOpenEdit();
   };
 
@@ -78,11 +82,13 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
     formData.append("description", data.missionDescription);
     formData.append("start_date", data.missionStartDate);
     formData.append("end_date", data.missionEndDate);
+    formData.append("title_stage", data.missionTitleStage);
+    formData.append("description_stage", data.missionDescriptionStage);
     dispatch(updateMission({id, data: formData}));
   };
 
   const handleDeleteModal = (target) => {
-    setSelectedRow(target);
+    setId(target.id);
     onOpenDelete();
   };
 
@@ -117,6 +123,7 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
       <ModalDelete
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
+        target={id}
         onDelete={handleDelete}
         deleteStatus={deleteStatus}
       />
@@ -126,8 +133,8 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
             <CenteredCell>
               {(currentPage - 1) * itemsPerPage + rowIndex + 1}
             </CenteredCell>
-            <TextCell key={rowIndex} content={row.name} />
-            <TextCell key={rowIndex} content={row.creator} />
+            <TextCell content={row.name} />
+            <TextCell content={row.creator} />
             <BadgeCell
               content={row.status}
               colorScheme={handleBadges(row.status)}

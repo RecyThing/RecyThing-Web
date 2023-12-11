@@ -2,10 +2,12 @@ import { AxiosError } from "axios";
 import { axiosInstance } from "../configs/axios/index";
 
 export const APIMission = {
-  getMissions: async ({search = "", limit = 10, page = 1}) => {
+  getMissions: async ({search = "", limit = 10, page = 1, status}) => {
     try {
       const response = await axiosInstance.get(
-        `/admins/manage/missions?search=${search}&limit=${limit}&page=${page}`
+        `/admins/manage/missions?search=${search}&limit=${limit}&page=${page}${
+					status ? `&filter=${status}` : ""
+				}`
       );
       return response.data;
     } catch (error) {
@@ -59,7 +61,7 @@ export const APIMission = {
     }
   },
 
-  deleteMission: async ({id}) => {
+  deleteMission: async (id) => {
     try {
       const response = await axiosInstance.delete(
         `/admins/manage/missions/${id}`
