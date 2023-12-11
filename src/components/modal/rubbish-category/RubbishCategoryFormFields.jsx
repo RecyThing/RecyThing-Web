@@ -1,57 +1,57 @@
 import { ChevronDown, ChevronUp, Delete, TicketStar } from "react-iconly";
 import {
-	Button,
-	FormControl,
-	FormErrorMessage,
-	Menu,
-	MenuButton,
-	MenuList,
-	MenuItem,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
 import { InputWithLogo } from "@/components/inputs";
 import { useState, useEffect } from "react";
 
 export function TrashTypeField({ control, error }) {
-	return (
-		<Controller
-			name="trash_type"
-			control={control}
-			render={({ field }) => (
-				<FormControl isInvalid={error}>
-					<InputWithLogo
-						label={"Masukan nama jenis sampah"}
-						Logo={Delete}
-						autoComplete={"off"}
-						{...field}
-					/>
-					<FormErrorMessage>{error?.message}</FormErrorMessage>
-				</FormControl>
-			)}
-		/>
-	);
+  return (
+    <Controller
+      name="trash_type"
+      control={control}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <InputWithLogo
+            label={"Masukan nama jenis sampah"}
+            Logo={Delete}
+            autoComplete={"off"}
+            {...field}
+          />
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
+  );
 }
 
 export function RewardPointField({ control, error }) {
-	return (
-		<Controller
-			name="point"
-			control={control}
-			render={({ field }) => (
-				<FormControl isInvalid={error}>
-					<InputWithLogo
-						label={"Masukan poin reward"}
-						Logo={TicketStar}
-						type={"number"}
-						autoComplete={"off"}
+  return (
+    <Controller
+      name="point"
+      control={control}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <InputWithLogo
+            label={"Masukan poin reward"}
+            Logo={TicketStar}
+            type={"number"}
+            autoComplete={"off"}
             error={error}
-						{...field}
-					/>
-					<FormErrorMessage>{error?.message}</FormErrorMessage>
-				</FormControl>
-			)}
-		/>
-	);
+            {...field}
+          />
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
+  );
 }
 
 export function SelectUnitField({ control, error, target }) {

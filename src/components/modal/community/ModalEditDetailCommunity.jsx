@@ -1,6 +1,5 @@
 import {
 	Button,
-	Flex,
 	Grid,
 	GridItem,
 	Heading,
@@ -17,6 +16,10 @@ import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { CloseSquare } from "react-iconly";
 import * as Fields from "./CommunityFormFields";
+import { schema } from "./CommunityFormSchema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updateCommunitySelector } from "@/store/community";
+import { useSelector } from "react-redux";
 
 export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 	const {
@@ -25,12 +28,12 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 		handleSubmit,
 		setValue,
 		reset,
-	} = useForm();
+	} = useForm({ resolver: yupResolver(schema) });
 
-	const handleUpdate = (data) => {
-		onUpdate(data);
-		reset();
-		onClose();
+	const { status } = useSelector(updateCommunitySelector);
+
+	const handleUpdate = (target) => {
+		onUpdate(target);
 	};
 
 	const imageRef = useRef(null);
@@ -47,11 +50,11 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 
 	useEffect(() => {
 		if (data) {
-			setValue("communityImage", data?.image);
-			setValue("communityName", data?.name);
-			setValue("communityDescription", data?.description);
-			setValue("communityLocation", data?.location);
-			setValue("communityMembers", data?.members);
+			setValue("image", data?.image);
+			setValue("name", data?.name);
+			setValue("description", data?.description);
+			setValue("location", data?.location);
+			setValue("max_members", data?.max_members);
 		}
 	}, [data, setValue]);
 
@@ -61,6 +64,7 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 			onClose={onClose}
 			size={"5xl"}
 			isCentered
+			closeOnOverlayClick={status !== "loading"}
 		>
 			<ModalOverlay
 				bg={"#0000000D"}
@@ -106,7 +110,7 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 					>
 						<Fields.CommunityImageField
 							control={control}
-							error={errors.communityImage}
+							error={errors.image}
 							imageRef={imageRef}
 							handleImageRef={handleImageRef}
 						/>
@@ -119,25 +123,25 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 							<GridItem colSpan={3}>
 								<Fields.CommunityNameField
 									control={control}
-									error={errors.communityName}
+									error={errors.name}
 								/>
 							</GridItem>
 							<GridItem colSpan={3}>
 								<Fields.CommunityDescField
 									control={control}
-									error={errors.communityDescription}
+									error={errors.description}
 								/>
 							</GridItem>
 							<GridItem colSpan={2}>
 								<Fields.CommunityLocationField
 									control={control}
-									error={errors.communityLocation}
+									error={errors.location}
 								/>
 							</GridItem>
 							<GridItem colSpan={1}>
 								<Fields.CommunityMembersField
 									control={control}
-									error={errors.communityMembers}
+									error={errors.max_members}
 								/>
 							</GridItem>
 						</Grid>
@@ -157,6 +161,7 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 							py={"1.75rem"}
 							_hover={{ bg: "#333333" }}
 							onClick={onClose}
+							isDisabled={status === "loading"}
 						>
 							Batal
 						</Button>
@@ -168,6 +173,7 @@ export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 							px={"3rem"}
 							py={"1.75rem"}
 							_hover={{ bg: "#2DA22D" }}
+							isLoading={status === "loading"}
 						>
 							Simpan
 						</Button>

@@ -3,6 +3,8 @@ export { APIUser } from "./APIUser";
 export { APIVoucher } from "./APIVoucher";
 export { APIDataReporting } from "./APIDataReporting";
 export { APITrashes } from "./APITrashes";
-export { APIAchievements } from "./APIAchievements"
+export { APIAchievements } from "./APIAchievements";
 export { APIPrompt } from "./APIPrompt";
+export { APITransactionList } from "./APITransactionList";
+export { APICommunity } from "./APICommunity";
 export { APIMission } from "./APIMission";
