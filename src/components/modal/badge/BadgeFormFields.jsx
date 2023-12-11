@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { Input } from "@/components/inputs";
 
+// Input Name Badge
 export function BadgeNameFields({ control, error }) {
   return (
     <Controller
@@ -28,6 +29,7 @@ export function BadgeNameFields({ control, error }) {
   );
 }
 
+// Input Target
 export function BadgeTargetField({ control, error }) {
   return (
     <Controller
