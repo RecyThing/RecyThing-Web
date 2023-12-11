@@ -21,7 +21,7 @@ export function ModalApprove({
 	onApprove,
 	approveStatus,
 }) {
-	const handleApprove = (target) => {
+	const handleApprove = () => {
 		onApprove(target);
 	};
 
@@ -85,7 +85,7 @@ export function ModalApprove({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
-						isLoading={approveStatus === "loading"}
+						isDisabled={approveStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -96,7 +96,7 @@ export function ModalApprove({
 						px={"3.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#2DA22D" }}
-						onClick={() => handleApprove(target)}
+						onClick={() => handleApprove()}
 						isLoading={approveStatus === "loading"}
 					>
 						Verifikasi

@@ -31,7 +31,11 @@ import {
 	fetchPromptsReducer,
 	updatePromptReducer,
 } from "./prompt";
-import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
+import {
+	fetchDataTransactionReducer,
+	fetchDatasTransactionReducer,
+	patchDataTransactionReducer,
+} from "./transaction-list";
 import {
 	createCommunityReducer,
 	deleteCommunityReducer,
@@ -39,6 +43,11 @@ import {
 	fetchCommunityReducer,
 	updateCommunityReducer,
 } from "./community";
+import {
+	fetchApprovalReducer,
+	fetchApprovalsReducer,
+	updateApprovalReducer,
+} from "./approval-mission";
 
 export const store = configureStore({
 	reducer: {
@@ -72,15 +81,19 @@ export const store = configureStore({
 		fetchPrompt: fetchPromptReducer,
 		fetchPrompts: fetchPromptsReducer,
 		updatePrompt: updatePromptReducer,
-    
-    fetchDatasTransaction: fetchDatasTransactionReducer,
-    fetchDataTransaction: fetchDataTransactionReducer,
-    patchDataTransaction: patchDataTransactionReducer,
+
+		fetchDatasTransaction: fetchDatasTransactionReducer,
+		fetchDataTransaction: fetchDataTransactionReducer,
+		patchDataTransaction: patchDataTransactionReducer,
 
 		createCommunity: createCommunityReducer,
 		deleteCommunity: deleteCommunityReducer,
 		fetchCommunities: fetchCommunitiesReducer,
 		fetchCommunity: fetchCommunityReducer,
 		updateCommunity: updateCommunityReducer,
+
+		fetchApproval: fetchApprovalReducer,
+		fetchApprovals: fetchApprovalsReducer,
+		updateApproval: updateApprovalReducer,
 	},
 });
