@@ -12,7 +12,7 @@ function InfoCard({ title, count, image, percentage }) {
       <p className="text-[32px] font-semibold"><CountUp start={0} end={count} /></p>
 
       <div className={`mt-4 flex ${percentage > 0 ? 'text-[#1A9882]' : 'text-[#E53535]'}`}>
-        <p className="text-sm font-bold">{percentage * 100}%</p>
+        <p className="text-sm font-bold">{percentage}%</p>
         {percentage > 0 ? <FaCaretUp className="my-auto ml-[2px]" /> : <FaCaretDown className="my-auto ml-[2px]" />}
         <p className="ml-1 text-sm font-medium my-auto text-[#858D9D]">1 Minggu Terakhir</p>
       </div>
