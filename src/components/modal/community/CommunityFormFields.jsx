@@ -13,24 +13,6 @@ import { Edit2 } from "iconsax-react";
 import { Controller } from "react-hook-form";
 import { Location, People } from "react-iconly";
 
-const rules = {
-	communityImage: {
-		required: "Gambar Reward Tidak Boleh Kosong!",
-	},
-	communityName: {
-		required: "Nama Komunitas Tidak Boleh Kosong!",
-	},
-	communityDescription: {
-		required: "Deskripsi Komunitas Tidak Boleh Kosong!",
-	},
-	communityLocation: {
-		required: "Lokasi Komunitas Tidak Boleh Kosong!",
-	},
-	communityMembers: {
-		required: "Maksimal Total Anggota Tidak Boleh Kosong!",
-	},
-};
-
 export function CommunityImageField({
 	control,
 	error,
@@ -39,9 +21,8 @@ export function CommunityImageField({
 }) {
 	return (
 		<Controller
-			name="communityImage"
+			name="image"
 			control={control}
-			rules={rules.communityImage}
 			render={({ field }) => (
 				<FormControl isInvalid={error}>
 					<Flex
@@ -49,14 +30,12 @@ export function CommunityImageField({
 						gap={"1rem"}
 					>
 						<Input
-							name="voucherImage"
+							name="image"
 							type="file"
 							display={"none"}
 							ref={imageRef}
 							accept={".jpg,.jpeg"}
-							onInput={(e) => {
-								field.onChange(e.target.files[0]);
-							}}
+							onChange={(e) => field.onChange(e.target.files)}
 						/>
 						<Text color={error ? "red.500" : "#828282"}>Gambar Komunitas</Text>
 						<Flex
@@ -76,8 +55,8 @@ export function CommunityImageField({
 								<>
 									<Image
 										src={
-											field.value && field.value instanceof File
-												? URL.createObjectURL(field.value)
+											field.value && field.value[0] instanceof File
+												? URL.createObjectURL(field.value[0])
 												: field.value
 										}
 										alt={"community image"}
@@ -130,8 +109,7 @@ export function CommunityNameField({ control, error }) {
 		<FormControl isInvalid={error}>
 			<Controller
 				control={control}
-				name="communityName"
-				rules={rules.communityName}
+				name="name"
 				render={({ field }) => (
 					<InputWithLogo
 						label={"Nama Komunitas"}
@@ -152,8 +130,7 @@ export function CommunityDescField({ control, error }) {
 		<FormControl isInvalid={error}>
 			<Controller
 				control={control}
-				name="communityDescription"
-				rules={rules.communityDescription}
+				name="description"
 				render={({ field }) => (
 					<InputTextArea
 						label={"Deskripsi Komunitas"}
@@ -173,8 +150,7 @@ export function CommunityLocationField({ control, error }) {
 		<FormControl isInvalid={error}>
 			<Controller
 				control={control}
-				name="communityLocation"
-				rules={rules.communityLocation}
+				name="location"
 				render={({ field }) => (
 					<InputWithLogo
 						label={"Lokasi Komunitas"}
@@ -195,8 +171,7 @@ export function CommunityMembersField({ control, error }) {
 		<FormControl isInvalid={error}>
 			<Controller
 				control={control}
-				name="communityMembers"
-				rules={rules.communityMembers}
+				name="max_members"
 				render={({ field }) => (
 					<InputWithLogo
 						label={"Maksimal Total Anggota"}

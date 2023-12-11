@@ -15,9 +15,8 @@ import { CloseSquare } from "react-iconly";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import * as Fields from "./BadgeFormFields";
-import { patchAchievements } from "@/store/achievements";
-import { useDispatch } from "react-redux";
-import { toggleShouldFetchLatestAchievements } from "@/store/achievements/getAchievementsSlice";
+import { useSelector } from "react-redux";
+import { patchAchievementsSelector } from "@/store/achievements";
 
 export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
   const {
@@ -28,23 +27,11 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
     setValue,
   } = useForm();
 
-  const dispatch = useDispatch();
+  const { status } = useSelector(patchAchievementsSelector);
 
   const handleOnSubmit = (row) => {
-    onSubmit({ target_point: parseInt(row.target_point)});
-    dispatch(toggleShouldFetchLatestAchievements());
-    reset();
-    onClose();
+    onSubmit({ target_point: parseInt(row.target_point) });
   };
-
-
-  useEffect(() => {
-    if (target) {
-      setValue("name", target.name);
-      setValue("target_point", target.target_point);
-      dispatch(patchAchievements());
-    }
-  }, [target, setValue, dispatch]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -52,8 +39,21 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
     }
   }, [isOpen, reset]);
 
+  useEffect(() => {
+    if (target) {
+      setValue("name", target?.name || "");
+      setValue("target_point", target?.target_point || "");
+    }
+  }, [target, setValue]);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"lg"} isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={"lg"}
+      isCentered
+      closeOnOverlayClick={status !== "loading"}
+    >
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
       <ModalContent borderRadius="12px">
         <ModalHeader>
@@ -76,9 +76,7 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
             onClick={onClose}
           />
         </ModalHeader>
-        <form
-          onSubmit={handleSubmit(handleOnSubmit)}
-        >
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
           <ModalBody>
             <Flex direction={"column"} gap={3}>
               <Fields.BadgeNameFields control={control} error={errors.name} />
@@ -110,17 +108,20 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
                   reset();
                   onClose();
                 }}
+                isDisabled={status === "loading"}
               >
                 Batal
               </Button>
+
               <Button
+                type="submit"
                 color={"white"}
                 bg={"#35CC33"}
                 borderRadius={"lg"}
                 px={"2rem"}
                 py={"1.5rem"}
                 _hover={{ bg: "#2DA22D" }}
-                type="submit"
+                isLoading={status === "loading"}
               >
                 Simpan
               </Button>

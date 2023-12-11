@@ -9,12 +9,17 @@ import {
   updateVoucherReducer,
 } from "./voucher";
 import {
-  createAdminReducer,
-  deleteAdminReducer,
-  fetchAdminReducer,
-  fetchAdminsReducer,
-  updateAdminReducer,
-} from "./admin";
+  fetchDataReportReducer,
+  fetchDataReportsReducer,
+  patchDataReportReducer,
+} from "./report";
+import {
+  createTrashesReducer,
+  deleteTrashesReducer,
+  fetchTrashReducer,
+  fetchTrashesReducer,
+  updateTrashesReducer,
+} from "./trash-category";
 import {
   fetchAchievementsReducer,
   patchAchievementsReducer,
@@ -27,49 +32,59 @@ import {
   updatePromptReducer,
 } from "./prompt";
 import {
-  fetchDataReportReducer,
-  fetchDataReportsReducer,
-  patchDataReportReducer,
-} from "./report";
-import { createTrashesReducer, deleteTrashesReducer, fetchTrashReducer, fetchTrashesReducer, updateTrashesReducer } from "./trash-category";
+  fetchDataTransactionReducer,
+  fetchDatasTransactionReducer,
+  patchDataTransactionReducer,
+} from "./transaction-list";
+import {
+  createCommunityReducer,
+  deleteCommunityReducer,
+  fetchCommunitiesReducer,
+  fetchCommunityReducer,
+  updateCommunityReducer,
+} from "./community";
 
 export const store = configureStore({
   reducer: {
     auth: loginReducer,
 
-    fetchUsers: fetchUsersReducer,
-    fetchUser: fetchUserReducer,
     deleteUser: deleteUserReducer,
+    fetchUser: fetchUserReducer,
+    fetchUsers: fetchUsersReducer,
 
-    fetchAdmins: fetchAdminsReducer,
-    fetchAdmin: fetchAdminReducer,
-    deleteAdmin: deleteAdminReducer,
-    createAdmin: createAdminReducer,
-    updateAdmin: updateAdminReducer,
-
-    fetchVouchers: fetchVouchersReducer,
-    fetchVoucher: fetchVoucherReducer,
-    updateVoucher: updateVoucherReducer,
-    deleteVoucher: deleteVoucherReducer,
     createVoucher: createVoucherReducer,
+    deleteVoucher: deleteVoucherReducer,
+    fetchVoucher: fetchVoucherReducer,
+    fetchVouchers: fetchVouchersReducer,
+    updateVoucher: updateVoucherReducer,
 
+    fetchDataReport: fetchDataReportReducer,
+    fetchDataReports: fetchDataReportsReducer,
+    patchDataReport: patchDataReportReducer,
+
+    createTrashes: createTrashesReducer,
+    deleteTrashes: deleteTrashesReducer,
     fetchTrash: fetchTrashReducer,
     fetchTrashes: fetchTrashesReducer,
     updateTrashes: updateTrashesReducer,
-    deleteTrashes: deleteTrashesReducer,
-    createTrashes: createTrashesReducer,
-
-    fetchDataReports: fetchDataReportsReducer,
-    fetchDataReport: fetchDataReportReducer,
-    patchDataReport: patchDataReportReducer,
 
     fetchAchievements: fetchAchievementsReducer,
     patchAchievements: patchAchievementsReducer,
 
-    fetchPrompts: fetchPromptsReducer,
-    fetchPrompt: fetchPromptReducer,
-    updatePrompt: updatePromptReducer,
-    deletePrompt: deletePromptReducer,
     createPrompt: createPromptReducer,
+    deletePrompt: deletePromptReducer,
+    fetchPrompt: fetchPromptReducer,
+    fetchPrompts: fetchPromptsReducer,
+    updatePrompt: updatePromptReducer,
+
+    fetchDatasTransaction: fetchDatasTransactionReducer,
+    fetchDataTransaction: fetchDataTransactionReducer,
+    patchDataTransaction: patchDataTransactionReducer,
+
+    createCommunity: createCommunityReducer,
+    deleteCommunity: deleteCommunityReducer,
+    fetchCommunities: fetchCommunitiesReducer,
+    fetchCommunity: fetchCommunityReducer,
+    updateCommunity: updateCommunityReducer,
   },
 });

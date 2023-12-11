@@ -20,9 +20,12 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Text,
+	useDisclosure,
 } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
 import { useSelector } from "react-redux";
+import { ModalViewImageReporting } from "./ModalViewImageReporting";
+import { useState } from "react";
 
 const labels = {
 	address_point: "Lokasi Patokan",
@@ -44,6 +47,12 @@ const labels = {
 
 export function ModalViewReportingApproval({ isOpen, onClose }) {
 	const { data, status, message } = useSelector(fetchDataReportSelector);
+	const [imageKey, setImageKey] = useState(0);
+	const {
+		isOpen: isOpenImage,
+		onOpen: onOpenImage,
+		onClose: onCloseImage,
+	} = useDisclosure();
 
 	const handleStatus = (status) => {
 		switch (status) {
@@ -56,6 +65,11 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 			default:
 				return { color: "#FFCC00", bgColor: "#FFF4CC" };
 		}
+	};
+
+	const handleImageView = (key) => {
+		setImageKey(key);
+		onOpenImage();
 	};
 
 	return (
@@ -79,6 +93,16 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 				{status === "failed" && <p>{message}</p>}
 				{status === "success" && (
 					<>
+						<ModalViewImageReporting
+							isOpen={isOpenImage}
+							onClose={onCloseImage}
+							companyName={data.company_name}
+							currentImage={imageKey}
+							data={data.images}
+							onChangeImage={setImageKey}
+							totalImage={data.images?.length}
+						/>
+
 						<ModalHeader p={0}>
 							<Flex
 								alignItems={"center"}
@@ -144,7 +168,6 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 							gap={"2rem"}
 						>
 							<Flex
-								onCanPlayCapture={"0.5rem"}
 								gap={"2rem"}
 								width={"full"}
 							>
@@ -425,7 +448,7 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 												flexWrap={"wrap"}
 												gap={"3rem"}
 											>
-												{data.images.map((data, index) => (
+												{data.images?.map((data, index) => (
 													<Image
 														key={index}
 														src={data.image}
@@ -434,6 +457,8 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 														w={"10rem"}
 														boxShadow={"lg"}
 														borderRadius={"10px"}
+														onClick={() => handleImageView(index)}
+														_hover={{ cursor: "pointer" }}
 													/>
 												))}
 											</Flex>
@@ -586,7 +611,7 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 												flexWrap={"wrap"}
 												gap={"3rem"}
 											>
-												{data.images.map((data, index) => (
+												{data.images?.map((data, index) => (
 													<Image
 														key={index}
 														src={data.image}
@@ -595,6 +620,8 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 														w={"10rem"}
 														boxShadow={"lg"}
 														borderRadius={"10px"}
+														onClick={() => handleImageView(index)}
+														_hover={{ cursor: "pointer" }}
 													/>
 												))}
 											</Flex>
