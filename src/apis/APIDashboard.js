@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 export const APIDashboard = {
   getDashboardData: async (filter = "years") => {
     try {
-      const response = await axiosInstance.get(`/admins/dashboard/${filter}`);
+      const response = await axiosInstance.get(`/dashboard/${filter}`);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError)
