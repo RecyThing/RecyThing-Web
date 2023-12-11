@@ -38,6 +38,7 @@ export function BadgeTargetField({ control, error }) {
           <Input
             label={"Target Poin"}
             autoComplete={"off"}
+            type={"number"}
             error={error}
             {...field}
           />
