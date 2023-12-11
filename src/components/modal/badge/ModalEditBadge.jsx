@@ -15,11 +15,12 @@ import { CloseSquare } from "react-iconly";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import * as Fields from "./BadgeFormFields";
-import { patchAchievements } from "@/store/achievements";
 import { useDispatch } from "react-redux";
 import { toggleShouldFetchLatestAchievements } from "@/store/achievements/getAchievementsSlice";
 
 export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
+  const dispatch = useDispatch();
+
   const {
     handleSubmit,
     control,
@@ -28,23 +29,19 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
     setValue,
   } = useForm();
 
-  const dispatch = useDispatch();
-
   const handleOnSubmit = (row) => {
-    onSubmit({ target_point: parseInt(row.target_point)});
+    onSubmit({ target_point: parseInt(row.target_point) });
     dispatch(toggleShouldFetchLatestAchievements());
     reset();
     onClose();
   };
 
-
   useEffect(() => {
     if (target) {
-      setValue("name", target.name);
-      setValue("target_point", target.target_point);
-      dispatch(patchAchievements());
+      setValue("name", target?.name || ""); // Check if target.name exists before setting value
+      setValue("target_point", target?.target_point || "");
     }
-  }, [target, setValue, dispatch]);
+  }, [target, setValue]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -76,9 +73,7 @@ export function ModalEditBadge({ isOpen, onClose, onSubmit, target }) {
             onClick={onClose}
           />
         </ModalHeader>
-        <form
-          onSubmit={handleSubmit(handleOnSubmit)}
-        >
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
           <ModalBody>
             <Flex direction={"column"} gap={3}>
               <Fields.BadgeNameFields control={control} error={errors.name} />

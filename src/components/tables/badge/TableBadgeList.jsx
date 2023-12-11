@@ -5,9 +5,13 @@ import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ModalEditBadge } from "../../modal/badge/ModalEditBadge";
-import { patchAchievements } from "@/store/achievements";
+import {
+  patchAchievements,
+  patchAchievementsSelector,
+} from "@/store/achievements";
+import { Spinner } from "@/components/spinner";
 
 const TableHeads = [
   "No",
@@ -33,18 +37,30 @@ export function TableBadgeList({ data }) {
   };
 
   const handleSubmitModal = (data) => {
-    dispatch(patchAchievements({ id: selectedRow.id, data }));
+    dispatch(patchAchievements({ id: selectedRow?.id, data }));
   };
+  const { status: statusPatch, message: messagePatch } = useSelector(
+    patchAchievementsSelector
+  );
 
   return (
     <>
+      {statusPatch === "loading" && <Spinner />}
+      {statusPatch === "failed" && <p>{messagePatch}</p>}
+      {statusPatch === "success" && (
+        <ModalEditBadge
+          isOpen={isOpenView}
+          onClose={onCloseView}
+          onSubmit={handleSubmitModal}
+          target={selectedRow}
+        />
+      )}
       <ModalEditBadge
         isOpen={isOpenView}
         onClose={onCloseView}
         onSubmit={handleSubmitModal}
         target={selectedRow}
       />
-
       <BaseTable data={data} heads={TableHeads}>
         {data.map((row, rowIndex) => (
           <TableBodyRow key={rowIndex} index={rowIndex}>
