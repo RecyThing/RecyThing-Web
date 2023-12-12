@@ -11,15 +11,6 @@ export const schema = yup.object().shape({
     dropPointLocation: yup
         .string()
         .required("Lokasi drop point tidak boleh kosong"),
-    trash_type: yup
-        .string()
-        .required("Jenis sampah tidak boleh kosong"),
-    unit: yup
-        .number()
-        .transform((value, originalValue) => {
-            return originalValue.trim() === "" ? undefined : value;
-        })
-        .required("Satuan tidak boleh kosong")
-        .min(1, "Satuan tidak boleh kurang dari 1")
-        .max(99999, "Satuan tidak boleh lebih dari 99999"),
+
+      
 });

@@ -9,9 +9,7 @@ import {
 	ModalFooter,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import {
-  fetchRecycleSelector,
-} from "@/store/waste-exchange";
+import { fetchRecycleSelector } from "@/store/waste-exchange";
 import { Spinner } from "@/components/spinner";
 
 const dataTitle = {
@@ -129,11 +127,6 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		onClose();
 	};
 
-	const data1 = [
-		{ wasteType: "Plastik", unit: 5, point: 500 },
-		{ wasteType: "Kertas", unit: 3, point: 700 },
-	];
-
 	if (!data || !data.trash_exchange_details) {
 		return null;
 	}
@@ -153,154 +146,160 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 				borderRadius="12px"
 				className="max-h-[80vh] overflow-y-auto"
 			>
-				<ModalHeader>
-					<div className="flex justify-between font-medium">
-						<h5
-							className="text-xl"
-							style={{ color: "#828282" }}
-						>
-							{dataTitle.exchangeId} :
-							<span
-								className="text-xl ml-2"
-								style={{ color: "#333" }}
-							>
-								{data?.id}
-							</span>
-						</h5>
-						<CloseSquare
-							size="32"
-							color="rgba(130, 130, 130, 1)"
-							className="cursor-pointer"
-							onClick={handleClose}
-						/>
-					</div>
-				</ModalHeader>
-				<ModalBody>
-					<h6 className="text-base font-bold mb-6">Detail Informasi</h6>
-
-					<div className="flex flex-col gap-6">
-						<div className="flex">
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Profile style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
+				{status === "loading" && <Spinner containerSize={"lg"} />}
+				{status === "failed" && <p>{message}</p>}
+				{status === "success" && (
+					<>
+						<ModalHeader>
+							<div className="flex justify-between font-medium">
+								<h5
+									className="text-xl"
+									style={{ color: "#828282" }}
 								>
-									<div style={{ ...thStyles }}>{dataTitle.username}</div>
-									<div style={{ ...tdStyles }}>
-										{capitalizeWords(data?.name)}
-									</div>
-								</div>
-							</div>
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Sms style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>{dataTitle.userEmail}</div>
-									<div style={{ ...tdStyles }}>
-										{data?.email}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="flex">
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Calendar style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>{dataTitle.transactionTime}</div>
-									<div style={{ ...tdStyles }}>
-										{formatDate(data?.created_at)}
-									</div>
-								</div>
-							</div>
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Location style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>
-										{dataTitle.DropPointLocation}
-									</div>
-									<div style={{ ...tdStyles }}>
-										{data?.address}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</ModalBody>
-				<ModalFooter>
-					<div
-						className="mb-6"
-						style={{ width: "560px" }}
-					>
-						<Table>
-							<Thead>
-								<Tr>
-									<Th style={{ ...thTableStyles, width: "46px" }}>No</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.wasteType}</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.unit}</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.point}</Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								{data.trash_exchange_details.map((detail, index) => (
-									<Tr
-										key={index + 1}
-										bg={index % 2 === 0 ? "#F2F2F5" : "white"}
-										borderBlock={"2px solid #C4C4C4"}
+									{dataTitle.exchangeId} :
+									<span
+										className="text-xl ml-2"
+										style={{ color: "#333" }}
 									>
-										<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
-										<Td style={{ ...tdTableStyles }}>{detail.trash_type}</Td>
-										<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${detail.unit}`}</Td>
-										<Td
-											style={{
-												...tdTableStyles,
-												color: "#D4AF35",
-												fontWeight: 500,
-											}}
+										{data?.id}
+									</span>
+								</h5>
+								<CloseSquare
+									size="32"
+									color="rgba(130, 130, 130, 1)"
+									className="cursor-pointer"
+									onClick={handleClose}
+								/>
+							</div>
+						</ModalHeader>
+						<ModalBody>
+							<h6 className="text-base font-bold mb-6">Detail Informasi</h6>
+
+							<div className="flex flex-col gap-6">
+								<div className="flex">
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Profile style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
 										>
-											+{detail.total_points}
-										</Td>
-									</Tr>
-								))}
-							</Tbody>
-						</Table>
-						<div className="grid grid-cols-4 mt-4">
-							<div className="col-span-2">
-								<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
+											<div style={{ ...thStyles }}>{dataTitle.username}</div>
+											<div style={{ ...tdStyles }}>
+												{capitalizeWords(data?.name)}
+											</div>
+										</div>
+									</div>
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Sms style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>{dataTitle.userEmail}</div>
+											<div style={{ ...tdStyles }}>
+												{data?.email}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="flex">
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Calendar style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>{dataTitle.transactionTime}</div>
+											<div style={{ ...tdStyles }}>
+												{formatDate(data?.created_at)}
+											</div>
+										</div>
+									</div>
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Location style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>
+												{dataTitle.DropPointLocation}
+											</div>
+											<div style={{ ...tdStyles }}>
+												{data?.drop_point_name}
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div className="col-span-1">
-								<p style={{ ...unitStyle, paddingLeft: "24px" }}>
-									{data?.total_unit}
-								</p>
+						</ModalBody>
+						<ModalFooter>
+							<div
+								className="mb-6"
+								style={{ width: "560px" }}
+							>
+								<Table>
+									<Thead>
+										<Tr>
+											<Th style={{ ...thTableStyles, width: "46px" }}>No</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.wasteType}</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.unit}</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.point}</Th>
+										</Tr>
+									</Thead>
+									<Tbody>
+										{data.trash_exchange_details.map((detail, index) => (
+											<Tr
+												key={index + 1}
+												bg={index % 2 === 0 ? "#F2F2F5" : "white"}
+												borderBlock={"2px solid #C4C4C4"}
+											>
+												<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
+												<Td style={{ ...tdTableStyles }}>{detail.trash_type}</Td>
+												<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${capitalizeWords(detail.unit.toLowerCase() === 'kilogram' ? 'Kg' : detail.unit)}`}</Td>
+												<Td
+													style={{
+														...tdTableStyles,
+														color: "#D4AF35",
+														fontWeight: 500,
+													}}
+												>
+													+{detail.total_points}
+												</Td>
+											</Tr>
+										))}
+									</Tbody>
+								</Table>
+								<div className="grid grid-cols-4 mt-4">
+									<div className="col-span-2">
+										<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
+									</div>
+									<div className="col-span-1">
+										<p style={{ ...unitStyle, paddingLeft: "24px" }}>
+											{data?.total_unit}
+										</p>
+									</div>
+									<div className="col-span-1">
+										<p style={{ ...poinStyle, paddingLeft: "40px" }}>
+											+{data?.total_point}
+										</p>
+									</div>
+								</div>
 							</div>
-							<div className="col-span-1">
-								<p style={{ ...poinStyle, paddingLeft: "40px" }}>
-									+{data?.total_point}
-								</p>
-							</div>
-						</div>
-					</div>
-				</ModalFooter>
+						</ModalFooter>
+				</>
+				)}
 			</ModalContent>
 		</Modal>
 	);

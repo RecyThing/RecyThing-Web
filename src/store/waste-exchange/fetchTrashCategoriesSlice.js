@@ -46,8 +46,25 @@ export const selectFetchCategories = (state) => state.fetchCategories;
 // Memoized selector using reselect
 export const selectFetchCategoriesState = createSelector(
   [selectFetchCategories],
-  (fetchCategoriesState) => fetchCategoriesState || { status: 'idle', categories: [] }
+  (fetchCategoriesState) => {
+    // Check if fetchCategoriesState is undefined
+    if (!fetchCategoriesState) {
+      // If undefined, return default values or handle it as per your requirement
+      return { data: [], status: 'idle', message: '' };
+    }
+
+    // Destructure properties from fetchCategoriesState
+    const { categories, status, message } = fetchCategoriesState;
+
+    // Return the modified object
+    return {
+      data: categories,
+      status,
+      message,
+    };
+  }
 );
+
 
 export const { clearFetchCategoriesState } = fetchCategoriesSlice.actions;
 export const fetchCategoriesReducer = fetchCategoriesSlice.reducer;

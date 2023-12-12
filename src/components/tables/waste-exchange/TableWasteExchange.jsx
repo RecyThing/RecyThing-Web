@@ -88,8 +88,8 @@ export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
 							casing={"capitalize"}
 							content={row.name}
 						/>
-						<TextCell content={row.email} />
-						<TextCell content={row.address} className="overflow-hidden text-ellipsis"/>
+						<TextCell content={row.email} className="overflow-hidden text-ellipsis"/>
+						<TextCell content={row.drop_point_name} className="overflow-hidden text-ellipsis"/>
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}

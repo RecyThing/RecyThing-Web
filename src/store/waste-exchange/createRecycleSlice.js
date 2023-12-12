@@ -11,7 +11,7 @@ export const createRecycles = createAsyncThunk(
   async (data) => {
     try {
       const response = await APIRecycles.createRecycles(data);
-      console.log(response); // Log the response
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error("Error creating recycles:", error);
