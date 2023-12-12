@@ -6,3 +6,4 @@ export { APITrashes } from "./APITrashes";
 export { APIAchievements } from "./APIAchievements";
 export { APIPrompt } from "./APIPrompt";
 export { APICommunity } from "./APICommunity";
+export { APIEventCommunity } from "./APIEventCommunity";

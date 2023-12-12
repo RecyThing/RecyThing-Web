@@ -4,10 +4,10 @@ import {
   Heading,
   Button,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { FilterButton } from "@/components/buttons";
+import { useEffect, useState } from "react";
 import { Pagination } from "@/components/pagination";
 import { LayoutDashboardContent } from "@/layout";
 import { ArrowLeftSquare } from "react-iconly";
@@ -16,95 +16,117 @@ import { Add } from "iconsax-react";
 import { ModalAddEventCommunity } from "@/components/modal";
 import { TableManageEventCommunity } from "@/components/tables/manage-event-community/TableManageEventCommunity";
 
-// dummy
-const DummyData = [];
-const names = [
-  "Bersih-bersih pantai pandawa",
-  "Gunung Rinjani Bersih dari Polusi",
-  "Sungai Citarum Sik Resik",
-];
-// const tglPelaksanaan = ["21 Oktober 2023"];
-const kuotaEvent = [1000, 2000, 3000];
-const labels = ["Berjalan", "Belum Berjalan", "Selesai"];
-const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
-const locations = ["Desa Kutuh, Badung, Kuta, Bali"];
-const gMap = ["https://maps.app.goo.gl/Kqzyv87jsVF67yVV8"];
-const gForm = ["https://forms.google/bla0812hxkasaonca112klasap12m1lxale/view"];
-const description = [
-  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id nobis vel voluptatibus architecto est reiciendis perspiciatis? Doloribus neque voluptatum molestias. Necessitatibus libero at ex fuga facilis dolor ipsa ratione non.",
-];
-
-for (let i = 0; i < 10; i++) {
-  const name = names[Math.floor(Math.random() * names.length)];
-  // const tanggal = ["20 Oktober 2023"];
-  const tanggal = new Date(
-    Math.floor(Math.random() * 3) + 2021,
-    Math.floor(Math.random() * 12),
-    Math.floor(Math.random() * 31)
-  );
-  const kuota = kuotaEvent[Math.floor(Math.random() * kuotaEvent.length)];
-  const status = labels[Math.floor(Math.random() * labels.length)];
-  const points = Math.floor(Math.random() * 10000);
-  const location = locations[Math.floor(Math.random() * locations.length)];
-  const gMaps = gMap[Math.floor(Math.random() * gMap.length)];
-  const gForms = gForm[Math.floor(Math.random() * gForm.length)];
-  const descriptions =
-    description[Math.floor(Math.random() * description.length)];
-  DummyData.push({
-    name,
-    tanggal,
-    kuota,
-    points,
-    status,
-    location,
-    descriptions,
-    gMaps,
-    gForms,
-    image: "https://picsum.photos/200",
-  });
-}
-// end dummy
+import {
+  clearDeleteEventState,
+  clearFetchEventsState,
+  clearFetchEventState,
+  clearUpdateEventState,
+  createEvent,
+  createEventSelector,
+  deleteEventSelector,
+  fetchEvents,
+  fetchEventsSelector,
+  updateEventSelector,
+} from "@/store/event-community";
+import { useDispatch, useSelector } from "react-redux";
 
 function ManageEventCommunity() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+  const {
+    data = [],
+    status,
+    message,
+    count_data,
+  } = useSelector(fetchEventsSelector);
+
+  const { status: deleteStatus, message: deleteMessage } =
+    useSelector(deleteEventSelector);
+  const { status: updateStatus, message: updateMessage } =
+    useSelector(updateEventSelector);
+  const { status: createStatus, message: createMessage } =
+    useSelector(createEventSelector);
+
+  const [_searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useDebounce(_searchTerm, 500);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [activeFilter, setActiveFilter] = useState("Berjalan");
-
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // const [activeFilter, setActiveFilter] = useState("Berjalan");
 
-  const filteredData = () => {
-    return DummyData.filter(
-      (data) =>
-        (activeFilter === "Semua" || data.status === activeFilter) &&
-        data.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).sort((a) => (a.status === "Terbaru" ? -1 : 1));
-  };
+  const fetchEventsData = useCallback(() => {
+    dispatch(
+      fetchEvents({
+        search: searchTerm,
+        limit: itemsPerPage,
+        page: currentPage,
+      })
+    );
+  }, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
-  const filteredDataCount = (filter) => {
-    return DummyData.filter((data) =>
-      filter === "Semua" ? true : data.status === filter
-    ).length;
-  };
+  useEffect(() => {
+    fetchEventsData();
+  }, [fetchEventsData, searchTerm, itemsPerPage, currentPage]);
 
-  const paginatedData = filteredData().slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    if (
+      deleteStatus === "success" ||
+      updateStatus === "success" ||
+      createStatus === "success"
+    ) {
+      fetchEventsData();
+      setSearchTerm("");
+      setCurrentPage(1);
+    }
+
+    return () => {
+      if (updateStatus !== "idle") dispatch(clearUpdateEventState());
+      if (deleteStatus !== "idle") dispatch(clearDeleteEventState());
+      if (createStatus !== "idle") dispatch(clearDeleteEventState());
+    };
+  }, [deleteStatus, updateStatus, createStatus, dispatch, fetchEventsData]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearFetchEventsState());
+      dispatch(clearFetchEventState());
+      dispatch(clearUpdateEventState());
+      dispatch(clearDeleteEventState());
+    };
+  }, [dispatch]);
+
+  const filteredData = Object.values(data).filter((event) => {
+    return event.name?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  // const handleSearch = (term) => {
+  //   setSearchTerm(term);
+  //   setCurrentPage(1);
+  // };
 
   const handleAddModal = () => {
     onOpen();
   };
 
-  const handleSubmitAdded = (data) => {
-    console.log("added!", data);
-    onClose();
+  // const paginatedData = filteredData().slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage
+  // );
+
+  const handleSubmitAdded = (target) => {
+    target.image = target.image[0];
+    dispatch(createEvent(target)).then(() => {
+      onClose();
+    });
   };
 
-  const handleFilterClick = (filter) => {
-    setActiveFilter(filter);
-    setCurrentPage(1);
-  };
+  useCustomToast(createStatus, createMessage);
+  useCustomToast(deleteStatus, deleteMessage);
+  useCustomToast(updateStatus, updateMessage);
+
+  // const handleFilterClick = (filter) => {
+  //   setActiveFilter(filter);
+  //   setCurrentPage(1);
+  // };
 
   const navigate = useNavigate();
 
@@ -132,7 +154,7 @@ function ManageEventCommunity() {
           justifyContent={"space-between"}
           alignItems="center"
         >
-          <ButtonGroup spacing={0}>
+          {/* <ButtonGroup spacing={0}>
             {buttonLabels.map((label) => (
               <FilterButton
                 key={label}
@@ -142,7 +164,7 @@ function ManageEventCommunity() {
                 filteredDataCount={filteredDataCount}
               />
             ))}
-          </ButtonGroup>
+          </ButtonGroup> */}
           <Flex justifyContent="flex-end" alignItems="center">
             <Button
               leftIcon={<ArrowLeftSquare />}
@@ -176,18 +198,25 @@ function ManageEventCommunity() {
           </Flex>
         </Flex>
 
-        <TableManageEventCommunity
-          currentPage={currentPage}
-          data={paginatedData}
-          itemsPerPage={itemsPerPage}
-        />
-        <Pagination
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          onChangeItemsPerPage={setItemsPerPage}
-          onChangePage={setCurrentPage}
-          totalItems={filteredData().length}
-        />
+        {status === "loading" && <Spinner />}
+        {status === "failed" && <div>{message}</div>}
+        {status === "success" && (
+          <>
+            {" "}
+            <TableManageEventCommunity
+              currentPage={currentPage}
+              data={filteredData}
+              itemsPerPage={itemsPerPage}
+            />
+            <Pagination
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              onChangeItemsPerPage={setItemsPerPage}
+              onChangePage={setCurrentPage}
+              totalItems={count_data}
+            />
+          </>
+        )}
       </Flex>
       <ModalAddEventCommunity
         isOpen={isOpen}
