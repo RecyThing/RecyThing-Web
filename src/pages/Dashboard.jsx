@@ -31,7 +31,7 @@ function Dashboard() {
   }, [filter]);
 
   if (isLoading || !dashboardData) return <Spinner />
-  console.log(dashboardData)
+  
   return (
     <LayoutDashboardContent>
       <div className="flex justify-between">
