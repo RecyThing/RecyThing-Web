@@ -12,10 +12,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Lock, Camera, CloseSquare, Show, Hide } from "react-iconly";
+import { Lock, CloseSquare, Show, Hide } from "react-iconly";
 import * as Fields from "./AdminFormFields";
-import { useEffect, useState } from "react";
-import AdminImage from "@/assets/AdminImage.svg";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./AdminFormSchema";
@@ -39,6 +38,14 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
       setPasswordType("text");
     } else {
       setPasswordType("password");
+    }
+  }; 
+
+  const imageRef = useRef();
+
+  const handleImageRef = () => {
+    if (imageRef.current) {
+      imageRef.current.click();
     }
   };
 
@@ -89,21 +96,8 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
               />
               <form onSubmit={handleSubmit(handleOnSubmit)}>
                 <ModalBody gap={"1.5rem"} p={4}>
-                  <div className="wrapper relative w-2/3 mx-auto">
-                    <img
-                      src={AdminImage}
-                      className="relative mx-auto rounded-full"
-                      width={150}
-                      height={150}
-                      alt=""
-                    />
-                    <button
-                      className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
-                      type="button"
-                    >
-                      <Camera />
-                    </button>
-                  </div>
+                  <Fields.AdminImageFields control={control} error={errors.image} imageRef={imageRef} handleImageRef={handleImageRef} />
+
                   <Fields.AdminNameFields
                     control={control}
                     error={errors.fullname}

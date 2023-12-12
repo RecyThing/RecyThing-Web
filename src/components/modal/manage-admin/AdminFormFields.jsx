@@ -10,8 +10,59 @@ import {
 } from "@chakra-ui/react";
 import { InputWithLogo } from "@/components/inputs";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Document, Message } from "react-iconly";
+import { Camera, ChevronDown, ChevronUp, Document, Message } from "react-iconly";
 import { Profile } from "iconsax-react";
+import AdminImage from "@/assets/AdminImage.svg";
+
+
+export function AdminImageFields({control, error, imageRef, handleImageRef}) {
+  return (
+    <Controller
+      name="image"
+      control={control}
+      render={({ field }) => (
+        <div
+          className="wrapper relative w-2/3 mx-auto"
+          onClick={handleImageRef}
+        >
+          <img
+            src={
+              field.value
+                ? field.value[0] instanceof File
+                  ? URL.createObjectURL(field.value[0])
+                  : field.value
+                : AdminImage
+            }
+            className="relative mx-auto aspect-square rounded-full object-contain border"
+            width={150}
+            height={150}
+            alt=""
+          />
+          <input
+            name="image"
+            type="file"
+            className="hidden"
+            ref={imageRef}
+            accept={".jpg,.png"}
+            onChange={(e) => field.onChange(e.target.files)}
+          />
+          <button
+            className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
+            type="button"
+          >
+            <Camera/>
+          </button>
+          <FormErrorMessage
+						justifyContent={"center"}
+						textAlign={"center"}
+					>
+						{error?.message}
+					</FormErrorMessage>
+        </div>
+      )}
+    />
+  );
+}
 
 export function AdminNameFields({ control, error }) {
   return (

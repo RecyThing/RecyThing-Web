@@ -1,6 +1,6 @@
 import { Tab } from "@chakra-ui/react";
 
-export function TabButton({ tab }) {
+export function TabButton({ tabNumber }) {
 	return (
 		<Tab
 			px={"0.5rem"}
@@ -13,7 +13,7 @@ export function TabButton({ tab }) {
 				color: "#3BA639",
 			}}
 		>
-			{tab}
+			{tabNumber}
 		</Tab>
 	);
 }

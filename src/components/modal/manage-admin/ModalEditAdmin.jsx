@@ -12,10 +12,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Lock, Camera, CloseSquare, Show, Hide } from "react-iconly";
-import { useEffect, useState } from "react";
+import { Lock, CloseSquare, Show, Hide } from "react-iconly";
+import { useEffect, useRef, useState } from "react";
 import * as Fields from "./AdminFormFields";
-import AdminImage from "@/assets/AdminImage.svg";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./AdminFormSchema";
@@ -50,14 +49,24 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
     reset();
   };
 
+  const imageRef = useRef();
+
+  const handleImageRef = () => {
+    if (imageRef.current) {
+      imageRef.current.click();
+    }
+  };
+
   useEffect(() => {
     if (!isOpen) reset();
   }, [isOpen, reset]);
 
   useEffect(() => {
     if (data) {
+      setValue("image", data.image);
       setValue("fullname", data.fullname);
       setValue("email", data.email);
+      setValue("password", data.password);
       setValue("status", data.status);
     }
   }, [data, setValue]);
@@ -89,21 +98,12 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
 
               <form onSubmit={handleSubmit(handleOnSubmit)}>
                 <ModalBody pb={8}>
-                  <div className="wrapper relative w-2/3 mx-auto">
-                    <img
-                      src={AdminImage}
-                      className="relative mx-auto rounded-full"
-                      width={150}
-                      height={150}
-                      alt=""
-                    />
-                    <button
-                      className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
-                      type="button"
-                    >
-                      <Camera />
-                    </button>
-                  </div>
+                  <Fields.AdminImageFields
+                    control={control}
+                    error={errors.image}
+                    imageRef={imageRef}
+                    handleImageRef={handleImageRef}
+                  />
                   <Fields.AdminNameFields
                     control={control}
                     error={errors.fullname}

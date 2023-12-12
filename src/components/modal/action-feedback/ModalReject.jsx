@@ -19,10 +19,10 @@ export function ModalReject({
 	onReject,
 	title,
 	message,
+	rejectStatus,
 }) {
 	const handleReject = () => {
 		onReject(target);
-		onClose();
 	};
 
 	return (
@@ -84,6 +84,7 @@ export function ModalReject({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
+						isDisabled={rejectStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -95,6 +96,7 @@ export function ModalReject({
 						py={"1.75rem"}
 						_hover={{ bg: "#FF0000" }}
 						onClick={handleReject}
+						isLoading={rejectStatus === "loading"}
 					>
 						Tolak
 					</Button>

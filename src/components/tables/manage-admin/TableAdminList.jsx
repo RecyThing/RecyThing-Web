@@ -62,10 +62,11 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
   };
 
   const handleBadgeColor = (status) => {
+    status = status.toLowerCase();
     switch (status) {
-      case "active":
+      case "aktif":
         return "green";
-      case "non active":
+      case "tidak aktif":
         return "red";
       default:
         return "grey";
@@ -96,7 +97,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
             <TextCell content={row.fullname} />
             <TextCell content={row.email} />
             <BadgeCell
-              content={row.status}
+              content={row.status || "tidak ada status"}
               colorScheme={handleBadgeColor(row.status)}
             />
             <CenteredCell>

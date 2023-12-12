@@ -26,7 +26,7 @@ function ManageAdmin() {
   const {
     data = [],
     status,
-    pagination,
+    // pagination,
     count_data,
     message,
   } = useSelector(fetchAdminsSelector);
@@ -43,70 +43,11 @@ function ManageAdmin() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useCustomToast(updateStatus, updateMessage);
   useCustomToast(deleteStatus, deleteMessage);
   useCustomToast(createStatus, createMessage);
-
-  useEffect(() => {
-    dispatch(
-      fetchAdmins({
-        search: searchTerm,
-        limit: itemsPerPage,
-        page: currentPage,
-      })
-    );
-  }, [dispatch, searchTerm, itemsPerPage, currentPage]);
-
-  useEffect(() => {
-    if (deleteStatus === "success") {
-      setSearchTerm("");
-      setCurrentPage(1);
-      dispatch(
-        fetchAdmins({
-          search: searchTerm,
-          limit: itemsPerPage,
-          page: currentPage,
-        })
-      );
-      return () => {
-        if (deleteStatus !== "idle") dispatch(clearDeleteAdminState());
-      };
-    }
-  }, [dispatch, deleteStatus]);
-
-  useEffect(() => {
-    setTotalItems(count_data);
-  }, [count_data]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearFetchAdminsState());
-    };
-  }, [dispatch]);
-
-  const filteredData = Object.values(data).filter((admin) => {
-    return admin.fullname.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-    setCurrentPage(1);
-  };
-
-  const handleAddModal = () => {
-    onOpen();
-  };
-
-  const handleSubmitData = (data) => {
-    dispatch(createAdmins(data)).then((res) => {
-      if (res.payload) {
-        onClose();
-      }
-    });
-  };
 
   const fetchAdminData = useCallback(() => {
     dispatch(
@@ -115,11 +56,7 @@ function ManageAdmin() {
         limit: itemsPerPage,
         page: currentPage,
       })
-    ).then((res) => {
-      if (res.payload) {
-        setTotalItems(res.payload.count_data);
-      }
-    });
+    );
   }, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
   useEffect(() => {
@@ -144,11 +81,32 @@ function ManageAdmin() {
     };
   }, [fetchAdminData, updateStatus, deleteStatus, createStatus, dispatch]);
 
-  useCustomToast(deleteStatus, deleteMessage);
-
   useEffect(() => {
-    console.log(totalItems);
-  }, [totalItems]);
+    return () => {
+      dispatch(clearFetchAdminsState());
+    };
+  }, [dispatch]);
+
+  const filteredData = Object.values(data).filter((admin) => {
+    return admin.fullname?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  };
+
+  const handleAddModal = () => {
+    onOpen();
+  };
+
+  const handleSubmitData = (data) => {
+    dispatch(createAdmins(data)).then((res) => {
+      if (res.payload) {
+        onClose();
+      }
+    });
+  };
 
   return (
     <LayoutDashboardContent>
@@ -225,7 +183,7 @@ function ManageAdmin() {
               itemsPerPage={itemsPerPage}
               onChangeItemsPerPage={setItemsPerPage}
               onChangePage={setCurrentPage}
-              totalItems={totalItems}
+              totalItems={count_data}
             />
           </>
         )}

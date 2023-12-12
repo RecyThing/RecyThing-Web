@@ -1,6 +1,16 @@
 import * as yup from "yup";
 
 export const schema = yup.object().shape({
+  image: yup
+    .mixed()
+    .required("Gambar admin tidak boleh kosong")
+    .test("fileFormat", "Format gambar tidak valid", (value) => {
+      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+      return value && validTypes.includes(value[0].type);
+    })
+    .test("fileSize", "Ukuran gambar tidak boleh lebih dari 5 MB", (value) => {
+      return value && value[0].size <= 5000000;
+    }),
   fullname: yup
     .string()
     .required("Nama lengkap tidak boleh kosong")
@@ -42,14 +52,4 @@ export const schema = yup.object().shape({
         return true;
       }
     ),
-  // image: yup
-  //   .mixed()
-  //   .required("Gambar admin tidak boleh kosong")
-  //   .test("fileFormat", "Format gambar tidak valid", (value) => {
-  //     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-  //     return value && validTypes.includes(value[0].type);
-  //   })
-  //   .test("fileSize", "Ukuran gambar tidak boleh lebih dari 5 MB", (value) => {
-  //     return value && value[0].size <= 5000000;
-  //   }),
 });

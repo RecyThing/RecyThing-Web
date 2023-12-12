@@ -8,4 +8,5 @@ export { APIAchievements } from "./APIAchievements";
 export { APIPrompt } from "./APIPrompt";
 export { APITransactionList } from "./APITransactionList";
 export { APICommunity } from "./APICommunity";
-
+export { APIApprovalMission } from "./APIApprovalMission";
+export { APIMission } from "./APIMission";

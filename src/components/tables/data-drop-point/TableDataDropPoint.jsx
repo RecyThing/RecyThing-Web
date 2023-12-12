@@ -3,8 +3,7 @@ import { BaseTable } from "../base-table/BaseTable";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CenteredCell, LeftAlignCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
-import { Eye, Trash } from "iconsax-react";
-import { Edit } from "react-iconly";
+import { Eye, Trash, Edit2 } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
 	ModalDelete,
@@ -112,7 +111,7 @@ export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, s
 									onClick={() => {setSelectedRow(row); onOpenDetail();}}
 								/>
 								<CustomIconButton
-									icon={<Edit />}
+									icon={<Edit2 />}
 									onClick={() => handleOpenEditModal(row)}
 								/>
 								<CustomIconButton
