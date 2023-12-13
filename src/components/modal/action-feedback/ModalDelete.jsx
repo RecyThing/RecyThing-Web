@@ -1,28 +1,7 @@
-import {
-	Button,
-	Center,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
+import { Button, Center, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
-import { Spinner } from "@/components/spinner";
 
-export function ModalDelete({
-	isOpen,
-	onClose,
-	target,
-	onDelete,
-	title,
-	message,
-	deleteStatus,
-	isLoading,
-}) {
+export function ModalDelete({ isOpen, onClose, target, onDelete, title, message, isLoading }) {
 	const handleDelete = () => {
 		onDelete(target);
 	};
@@ -32,6 +11,7 @@ export function ModalDelete({
 			isOpen={isOpen}
 			onClose={onClose}
 			size={"md"}
+			closeOnOverlayClick={isLoading ? false : true}
 			isCentered
 		>
 			<ModalOverlay
@@ -45,72 +25,65 @@ export function ModalDelete({
 				py={"0.5rem"}
 				shadow={"lg"}
 			>
-				{deleteStatus === "loading" ? (
-					<Spinner containerSize={"sm"} />
-				) : (
-					<>
-						<ModalHeader pb={0}>
-							<Center>
-								<DangerCircleIcon />
-							</Center>
-						</ModalHeader>
+				<ModalHeader pb={0}>
+					<Center>
+						<DangerCircleIcon />
+					</Center>
+				</ModalHeader>
 
-						<ModalBody>
-							<VStack
-								spacing={"1.5rem"}
-								textAlign={"center"}
-							>
-								<Text
-									fontSize={"2xl"}
-									color={"black"}
-									fontWeight={"medium"}
-									lineHeight={"1.875rem"}
-								>
-									{title || "Anda yakin ingin menghapus data ini?"}
-								</Text>
-								<Text
-									color={"#828282"}
-									fontWeight={"semibold"}
-								>
-									{message || "Data yang dihapus tidak dapat dipulihkan"}
-								</Text>
-							</VStack>
-						</ModalBody>
-						<ModalFooter
-							pt={0}
-							display={"flex"}
-							justifyContent={"space-around"}
+				<ModalBody>
+					<VStack
+						spacing={"1.5rem"}
+						textAlign={"center"}
+					>
+						<Text
+							fontSize={"2xl"}
+							color={"black"}
+							fontWeight={"medium"}
+							lineHeight={"1.875rem"}
 						>
-							<Button
-								color={"white"}
-								bg={"#828282"}
-								borderRadius={"lg"}
-								px={"3.5rem"}
-								py={"1.75rem"}
-								_hover={{ bg: "#333333" }}
-								onClick={onClose}
-								isDisabled={isLoading}
-								className="w-40"
-							>
-								Batal
-							</Button>
-							<Button
-								color={"white"}
-								bg={"#FF5C5C"}
-								borderRadius={"lg"}
-								px={"3.5rem"}
-								py={"1.75rem"}
-								_hover={{ bg: "#FF0000" }}
-								isDisabled={isLoading}
-								onClick={handleDelete}
-								className="w-40 !flex !gap-2 !justify-center disabled:!opacity-70"
-							>
-							<span>Hapus</span>
-							{isLoading && <Spinner containerSize={6} width={6} height={6} />}
-							</Button>
-						</ModalFooter>
-					</>
-				)}
+							{title || "Anda yakin ingin menghapus data ini?"}
+						</Text>
+						<Text
+							color={"#828282"}
+							fontWeight={"semibold"}
+						>
+							{message || "Data yang dihapus tidak dapat dipulihkan"}
+						</Text>
+					</VStack>
+				</ModalBody>
+				<ModalFooter
+					pt={0}
+					display={"flex"}
+					justifyContent={"space-around"}
+				>
+					<Button
+						color={"white"}
+						bg={"#828282"}
+						borderRadius={"lg"}
+						px={"3.5rem"}
+						py={"1.75rem"}
+						_hover={{ bg: "#333333" }}
+						onClick={onClose}
+						isDisabled={isLoading}
+						className="w-40"
+					>
+						Batal
+					</Button>
+					<Button
+						color={"white"}
+						bg={"#FF5C5C"}
+						borderRadius={"lg"}
+						px={"3.5rem"}
+						py={"1.75rem"}
+						_hover={{ bg: "#FF0000" }}
+						isLoading={isLoading}
+						onClick={handleDelete}
+						className="w-40 !flex !gap-2 !justify-center disabled:!opacity-70"
+					>
+						Hapus
+					</Button>
+				</ModalFooter>
 			</ModalContent>
 		</Modal>
 	);
