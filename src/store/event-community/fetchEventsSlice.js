@@ -4,25 +4,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   status: "idle",
   message: "",
-  data: { data: null },
+  data: {},
   pagination: {},
   count_data: 0,
 };
 
 export const fetchEvents = createAsyncThunk(
   "GET /admins/manage/event/id",
-  async ({ communityId, limit, page }) => {
-    try {
-      const response = await APIEventCommunity.getEventCommunities({
-        communityId,
-        limit,
-        page,
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
+  APIEventCommunity.getEventCommunities
 );
 
 export const fetchEventsSlice = createSlice({
@@ -57,4 +46,4 @@ export const fetchEventsSlice = createSlice({
 
 export const fetchEventsSelector = (state) => state.fetchEvents;
 export const { clearFetchEventsState } = fetchEventsSlice.actions;
-export const fetchEventsReducer = fetchEvents.reducer;
+export const fetchEventsReducer = fetchEventsSlice.reducer;
