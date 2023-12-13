@@ -72,15 +72,17 @@ export function TableBadgeList({ data }) {
             <TextCell content={row.total_claimed} />
             <TextCell content={row.target_point} />
             <CenteredCell>
-              <CustomIconButton
-                icon={<Edit />}
-                colorScheme={"yellow"}
-                hoverColor={"green"}
-                variant={"solid"}
-                size={"sm"}
-                mr={2}
-                onClick={() => handleEditModal(row)}
-              />
+              {rowIndex !== 3 && (
+                <CustomIconButton
+                  icon={<Edit />}
+                  colorScheme={"yellow"}
+                  hoverColor={"green"}
+                  variant={"solid"}
+                  size={"sm"}
+                  mr={2}
+                  onClick={() => handleEditModal(row)}
+                />
+              )}
             </CenteredCell>
           </TableBodyRow>
         ))}
