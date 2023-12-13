@@ -1,45 +1,31 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
+import { clearDataReportState, clearDataReportsState, clearPatchDataReportState, fetchDataReports, fetchDataReportsSelector, patchDataReportSelector } from "@/store/report";
+import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { TableDataReporting } from "@/components/tables";
-import { TabButton } from "@/components/buttons";
-import { LayoutDashboardContent } from "@/layout";
-import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
+import { TabButton } from "@/components/buttons";
+import { TableDataReporting } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
 import { useCustomToast, useDebounce } from "@/hooks";
-import {
-	clearDataReportsState,
-	clearPatchDataReportState,
-	fetchDataReports,
-	fetchDataReportsSelector,
-	patchDataReportSelector,
-} from "@/store/report";
+import { useDispatch, useSelector } from "react-redux";
+
+const FILTER_LABELS = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
 
 function DataReporting() {
 	const dispatch = useDispatch();
-
-	const {
-		data = [],
-		status,
-		message,
-		count,
-	} = useSelector(fetchDataReportsSelector);
-
-	const { status: patchStatus, message: patchMessage } = useSelector(
-		patchDataReportSelector
-	);
+	const { data = [], status, message, count } = useSelector(fetchDataReportsSelector);
+	const { status: patchStatus, message: patchMessage } = useSelector(patchDataReportSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
-
-	const buttonLabels = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
 	const [activeFilter, setActiveFilter] = useState({
 		label: "Semua",
 		value: "",
 	});
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [refreshData, setRefreshData] = useState(false);
 
 	useCustomToast(patchStatus, patchMessage);
 
@@ -56,24 +42,23 @@ function DataReporting() {
 
 	useEffect(() => {
 		fetchReportingData();
-	}, [fetchReportingData, searchTerm, itemsPerPage, currentPage]);
+	}, [fetchReportingData, refreshData]);
 
 	// For Patch Data
 	useEffect(() => {
 		if (patchStatus === "success") {
-			fetchReportingData();
 			setSearchTerm("");
 			setCurrentPage(1);
-		}
+			setRefreshData((prev) => !prev);
 
-		return () => {
 			if (patchStatus !== "idle") dispatch(clearPatchDataReportState());
-		};
-	}, [patchStatus, dispatch, fetchReportingData]);
+		}
+	}, [patchStatus, dispatch]);
 
 	useEffect(() => {
 		return () => {
 			dispatch(clearDataReportsState());
+			dispatch(clearDataReportState());
 		};
 	}, [dispatch]);
 
@@ -94,11 +79,6 @@ function DataReporting() {
 		}
 	};
 
-	const handleSearch = (term) => {
-		setSearchTerm(term);
-		setCurrentPage(1);
-	};
-
 	const handleFilterClick = (filter) => {
 		setCurrentPage(1);
 		if (filter === "Perlu Tinjauan") {
@@ -110,6 +90,11 @@ function DataReporting() {
 		} else {
 			setActiveFilter({ label: "Semua", value: "" });
 		}
+	};
+
+	const handleSearch = (term) => {
+		setSearchTerm(term);
+		setCurrentPage(1);
 	};
 
 	return (
@@ -133,7 +118,7 @@ function DataReporting() {
 			>
 				<Flex gap={"1.5rem"}>
 					<ButtonGroup spacing={0}>
-						{buttonLabels.map((label) => (
+						{FILTER_LABELS.map((label) => (
 							<TabButton
 								key={label}
 								label={label}

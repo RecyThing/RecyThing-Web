@@ -1,30 +1,12 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-import { CustomRoundBadge, CustomSquareBadge } from "@/components/badge";
-import { Spinner } from "@/components/spinner";
-import { fetchDataReportSelector } from "@/store/report";
-import { formatDateToCustomDate } from "@/utils";
-import {
-	Avatar,
-	Box,
-	Button,
-	Flex,
-	Grid,
-	GridItem,
-	IconButton,
-	Image,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
-import { useSelector } from "react-redux";
+import { CustomRoundBadge, CustomSquareBadge } from "@/components/badge";
+import { DetailScaleReport } from "./DetailScaleReport";
+import { DetailTrashReport } from "./DetailTrashReport";
+import { fetchDataReportSelector } from "@/store/report";
 import { ModalViewImageReporting } from "./ModalViewImageReporting";
+import { Spinner } from "@/components/spinner";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 const labels = {
@@ -48,13 +30,10 @@ const labels = {
 export function ModalViewReportingApproval({ isOpen, onClose }) {
 	const { data, status, message } = useSelector(fetchDataReportSelector);
 	const [imageKey, setImageKey] = useState(0);
-	const {
-		isOpen: isOpenImage,
-		onOpen: onOpenImage,
-		onClose: onCloseImage,
-	} = useDisclosure();
+	const { isOpen: isOpenImage, onOpen: onOpenImage, onClose: onCloseImage } = useDisclosure();
 
 	const handleStatus = (status) => {
+		status = status.toLowerCase();
 		switch (status) {
 			case "perlu ditinjau":
 				return { color: "#5F5207", bgColor: "#FBF5D0" };
@@ -110,10 +89,7 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 							>
 								<Avatar
 									size={"lg"}
-									src={
-										data.user_image ||
-										`https://ui-avatars.com/api/?name=${data.fullname}&background=0D8ABC&color=fff&size=128`
-									}
+									src={data.user_image || `https://ui-avatars.com/api/?name=${data.fullname}&background=0D8ABC&color=fff&size=128`}
 								/>
 								<Flex
 									ml={"1.5rem"}
@@ -184,11 +160,7 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 									</Text>
 									<CustomRoundBadge
 										color={"#fff"}
-										bgColor={
-											data.report_type === "tumpukan sampah"
-												? "#828282"
-												: "#FFCC00"
-										}
+										bgColor={data.report_type === "tumpukan sampah" ? "#828282" : "#FFCC00"}
 									>
 										{data.report_type}
 									</CustomRoundBadge>
@@ -202,20 +174,15 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 										color={"#828282"}
 										letterSpacing={"tight"}
 									>
-										{data.report_type === "tumpukan sampah" &&
-											labels.trash_type}
-										{data.report_type === "pelanggaran sampah" &&
-											labels.scale_type}
+										{data.report_type === "tumpukan sampah" && labels.trash_type}
+										{data.report_type === "pelanggaran sampah" && labels.scale_type}
 									</Text>
 
 									{data.report_type === "tumpukan sampah" && (
 										<CustomRoundBadge
 											color={"#fff"}
-											bgColor={
-												data.trash_type === "sampah kering"
-													? "#5B79EF"
-													: "#FDD948"
-											}
+											bgColor={data.trash_type === "sampah kering" ? "#5B79EF" : "#FDD948"}
+											
 										>
 											{data.trash_type}
 										</CustomRoundBadge>
@@ -224,11 +191,7 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 									{data.report_type === "pelanggaran sampah" && (
 										<CustomRoundBadge
 											color={"#fff"}
-											bgColor={
-												data.scale_type === "skala kecil"
-													? "#4F4F4F"
-													: "#000000"
-											}
+											bgColor={data.scale_type === "skala kecil" ? "#4F4F4F" : "#000000"}
 										>
 											{data.scale_type}
 										</CustomRoundBadge>
@@ -256,404 +219,23 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 
 							{/* tipe laporan pelanggaran sampah */}
 							{data.report_type === "pelanggaran sampah" && (
-								<Grid
-									templateColumns={"0.4fr 1fr"}
-									rowGap={"2rem"}
-								>
-									{data.created_at && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.created_at}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{formatDateToCustomDate(
-														data.created_at || "2021-08-01 00:00:00"
-													)}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.location && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.location}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.location}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.address_point && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.address_point}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.address_point}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.insident_date && data.insident_time && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.insident_date}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{formatDateToCustomDate(
-														`${data.insident_date} ${data.insident_time}`
-													)}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.dangerous_waste && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#FF5C5C"}
-													letterSpacing={"tight"}
-												>
-													{labels.dangerous_waste}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#FF0000"}
-													letterSpacing={"tight"}
-												>
-													{data.dangerous_waste ? "Ya" : "Tidak"}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.company_name && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.company_name}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.company_name}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.description && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.description}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.description}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.images && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.image}
-												</Text>
-											</GridItem>
-											<Flex
-												flexDirection={"row"}
-												flexWrap={"wrap"}
-												gap={"3rem"}
-											>
-												{data.images?.map((data, index) => (
-													<Image
-														key={index}
-														src={data.image}
-														aspectRatio={1}
-														objectFit={"cover"}
-														w={"10rem"}
-														boxShadow={"lg"}
-														borderRadius={"10px"}
-														onClick={() => handleImageView(index)}
-														_hover={{ cursor: "pointer" }}
-													/>
-												))}
-											</Flex>
-
-											{data.rejection_description && (
-												<>
-													<GridItem>
-														<Text
-															fontWeight={"medium"}
-															color={"#828282"}
-															letterSpacing={"tight"}
-														>
-															{labels.rejection_description}
-														</Text>
-													</GridItem>
-
-													<GridItem>
-														<Text
-															fontWeight={"bold"}
-															color={"#333333"}
-															letterSpacing={"tight"}
-														>
-															{data.rejection_description}
-														</Text>
-													</GridItem>
-												</>
-											)}
-										</>
-									)}
-								</Grid>
+								<DetailTrashReport
+									data={data}
+									labels={labels}
+									handleImageView={handleImageView}
+								/>
 							)}
 
 							{/* tipe laporan tumpukan sampah */}
 							{data.report_type === "tumpukan sampah" && (
-								<Grid
-									templateColumns={"0.4fr 1fr"}
-									rowGap={"2rem"}
-								>
-									{data.created_at && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.created_at}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{formatDateToCustomDate(
-														data.created_at || "2021-08-01 00:00:00"
-													)}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.location && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.location}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.location}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.address_point && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.address_point}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.address_point}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.description && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.description}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.description}
-												</Text>
-											</GridItem>
-										</>
-									)}
-
-									{data.images && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.image}
-												</Text>
-											</GridItem>
-											<Flex
-												flexDirection={"row"}
-												flexWrap={"wrap"}
-												gap={"3rem"}
-											>
-												{data.images?.map((data, index) => (
-													<Image
-														key={index}
-														src={data.image}
-														aspectRatio={1}
-														objectFit={"cover"}
-														w={"10rem"}
-														boxShadow={"lg"}
-														borderRadius={"10px"}
-														onClick={() => handleImageView(index)}
-														_hover={{ cursor: "pointer" }}
-													/>
-												))}
-											</Flex>
-										</>
-									)}
-
-									{data.rejection_description && (
-										<>
-											<GridItem>
-												<Text
-													fontWeight={"medium"}
-													color={"#828282"}
-													letterSpacing={"tight"}
-												>
-													{labels.rejection_description}
-												</Text>
-											</GridItem>
-
-											<GridItem>
-												<Text
-													fontWeight={"bold"}
-													color={"#333333"}
-													letterSpacing={"tight"}
-												>
-													{data.rejection_description}
-												</Text>
-											</GridItem>
-										</>
-									)}
-								</Grid>
+								<DetailScaleReport
+									data={data}
+									labels={labels}
+									handleImageView={handleImageView}
+								/>
 							)}
 						</ModalBody>
+
 						<ModalFooter p={0}>
 							<Button
 								color={"white"}
