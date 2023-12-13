@@ -1,24 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
 import { Add } from "iconsax-react";
-import {
-	Button,
-	ButtonGroup,
-	Flex,
-	Heading,
-	useDisclosure,
-} from "@chakra-ui/react";
-import { Pagination } from "@/components/pagination/Pagination";
-import { SearchBar } from "@/components/navigation";
-import { FilterButton } from "@/components/buttons";
-import { TableDataCustomization } from "@/components/tables";
-import { LayoutDashboardContent } from "@/layout";
-import { ModalAddCustomizationData } from "@/components/modal";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, ButtonGroup, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import {
 	clearCreatePromptState,
 	clearDeletePromptState,
-	clearFetchPromptState,
 	clearFetchPromptsState,
+	clearFetchPromptState,
 	clearUpdatePromptState,
 	createPrompt,
 	createPromptSelector,
@@ -27,47 +13,41 @@ import {
 	fetchPromptsSelector,
 	updatePromptSelector,
 } from "@/store/prompt";
+import { FilterButton } from "@/components/buttons";
+import { LayoutDashboardContent } from "@/layout";
+import { ModalAddCustomizationData } from "@/components/modal";
+import { Pagination } from "@/components/pagination/Pagination";
+import { SearchBar } from "@/components/navigation";
 import { Spinner } from "@/components/spinner";
+import { TableDataCustomization } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
 import { useCustomToast, useDebounce } from "@/hooks";
+import { useDispatch, useSelector } from "react-redux";
 
-const buttonLabels = ["Semua", "Sampah Anorganik", "Sampah Organik"];
+const BUTTON_LABELS = ["Semua", "Sampah Anorganik", "Sampah Organik", "Informasi", "Batasan"];
 
 function DataCustomization() {
 	const dispatch = useDispatch();
-	const {
-		data = [],
-		status,
-		message,
-		count,
-	} = useSelector(fetchPromptsSelector);
-	const { status: updateStatus, message: updateMessage } =
-		useSelector(updatePromptSelector);
-	const { status: deleteStatus, message: deleteMessage } =
-		useSelector(deletePromptSelector);
-	const { status: createStatus, message: createMessage } =
-		useSelector(createPromptSelector);
+	const { data = [], status, message, count } = useSelector(fetchPromptsSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(updatePromptSelector);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deletePromptSelector);
+	const { status: createStatus, message: createMessage } = useSelector(createPromptSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
-
-	const [isAddData, setIsAddData] = useState(false);
-
-	const openForm = () => {
-		setIsAddData(true);
-	};
-
-	const closeForm = () => {
-		setIsAddData(false);
-	};
-
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [refreshData, setRefreshData] = useState(false);
 	const [activeFilter, setActiveFilter] = useState({
 		label: "Semua",
 		value: "",
 	});
 
-	const { onClose } = useDisclosure();
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
 
 	const fetchPromptsData = useCallback(() => {
 		dispatch(
@@ -82,39 +62,24 @@ function DataCustomization() {
 
 	useEffect(() => {
 		fetchPromptsData();
-	}, [searchTerm, itemsPerPage, currentPage, fetchPromptsData]);
+	}, [fetchPromptsData, refreshData]);
 
 	useEffect(() => {
-		if (
-			updateStatus === "success" ||
-			deleteStatus === "success" ||
-			createStatus === "success"
-		) {
-			fetchPromptsData();
+		if (updateStatus === "success" || deleteStatus === "success" || createStatus === "success") {
 			setSearchTerm("");
 			setCurrentPage(1);
-		}
+			setRefreshData((prev) => !prev);
 
-		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdatePromptState());
 			if (deleteStatus !== "idle") dispatch(clearDeletePromptState());
 			if (createStatus !== "idle") dispatch(clearCreatePromptState());
-		};
-	}, [fetchPromptsData, updateStatus, deleteStatus, createStatus, dispatch]);
-
-	useEffect(() => {
-		if (createStatus === "success" || createStatus === "failed") {
-			onClose();
 		}
-	}, [createStatus, onClose]);
+	}, [updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {
 		return () => {
 			dispatch(clearFetchPromptsState());
 			dispatch(clearFetchPromptState());
-			dispatch(clearUpdatePromptState());
-			dispatch(clearDeletePromptState());
-			dispatch(clearCreatePromptState());
 		};
 	}, [dispatch]);
 
@@ -125,11 +90,30 @@ function DataCustomization() {
 	const filteredDataCount = (filter) => {
 		switch (filter) {
 			case "Sampah Anorganik":
-				return count?.count_anorganic;
+				return count?.count_anorganic || 0;
 			case "Sampah Organik":
-				return count?.count_organic;
+				return count?.count_organic || 0;
+			case "Informasi":
+				return count?.count_information || 0;
+			case "Batasan":
+				return count?.count_limitation || 0;
 			default:
-				return count?.total_count;
+				return count?.total_count || 0;
+		}
+	};
+
+	const handleFilterClick = (filter) => {
+		setCurrentPage(1);
+		if (filter === "Sampah Organik") {
+			setActiveFilter({ label: "Sampah Organik", value: "sampah organik" });
+		} else if (filter === "Sampah Anorganik") {
+			setActiveFilter({ label: "Sampah Anorganik", value: "sampah anorganik" });
+		} else if (filter === "Informasi") {
+			setActiveFilter({ label: "Informasi", value: "informasi" });
+		} else if (filter === "Batasan") {
+			setActiveFilter({ label: "Batasan", value: "batasan" });
+		} else {
+			setActiveFilter({ label: "Semua", value: "" });
 		}
 	};
 
@@ -139,33 +123,15 @@ function DataCustomization() {
 	};
 
 	const handleSubmitAdded = (data) => {
-		dispatch(createPrompt(data));
+		dispatch(createPrompt(data)).then(() => {
+			if (createStatus === "success") {
+				onClose();
+			}
+		});
 	};
-
-	const handleFilterClick = (filter) => {
-		setCurrentPage(1);
-		if (filter === "Sampah Organik") {
-			setActiveFilter({ label: "Sampah Organik", value: "sampah organik" });
-		} else if (filter === "Sampah Anorganik") {
-			setActiveFilter({ label: "Sampah Anorganik", value: "sampah anorganik" });
-		} else {
-			setActiveFilter({ label: "Semua", value: "" });
-		}
-	};
-
-	useCustomToast(updateStatus, updateMessage);
-	useCustomToast(deleteStatus, deleteMessage);
-	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>
-			{isAddData ? (
-				<ModalAddCustomizationData
-					isOpen={isAddData}
-					onClose={closeForm}
-					onSubmit={handleSubmitAdded}
-				/>
-			) : null}
 			<div className="flex justify-between align-center">
 				<Heading
 					as="h1"
@@ -186,7 +152,7 @@ function DataCustomization() {
 					lineHeight={"1.5rem"}
 					px={"1.5rem"}
 					py={"1.5rem"}
-					onClick={openForm}
+					onClick={onOpen}
 				>
 					Tambah Data
 				</Button>
@@ -197,7 +163,7 @@ function DataCustomization() {
 					p={"0.5rem"}
 				>
 					<ButtonGroup spacing={0}>
-						{buttonLabels.map((label) => (
+						{BUTTON_LABELS.map((label) => (
 							<FilterButton
 								key={label}
 								label={label}
@@ -231,6 +197,11 @@ function DataCustomization() {
 					)}
 				</Flex>
 			</div>
+			<ModalAddCustomizationData
+				isOpen={isOpen}
+				onClose={onClose}
+				onSubmit={handleSubmitAdded}
+			/>
 		</LayoutDashboardContent>
 	);
 }
