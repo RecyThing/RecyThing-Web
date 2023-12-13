@@ -90,8 +90,8 @@ function VoucherList() {
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 
-		dispatch(createVoucher(data)).then((res) => {
-			if (res.payload) {
+		dispatch(createVoucher(data)).then(() => {
+			if (createStatus === "success") {
 				onClose();
 			}
 		});
