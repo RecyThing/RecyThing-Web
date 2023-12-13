@@ -73,12 +73,12 @@ function ManageWasteExchange() {
 			if (createStatus !== "idle") dispatch(clearCreateRecyclesState());
 		};
 	}, [fetchRecycleData, deleteStatus, createStatus, dispatch]);
-
+	
 	useEffect(() => {
-		if (createStatus === "success" || createStatus === "failed") {
-		  	onClose();
+		if (createStatus === "success") {
+			onClose();
 		}
-	}, [createStatus, onClose]);
+	}, [createStatus, onClose]);	
 
 	useEffect(() => {
 		return () => {

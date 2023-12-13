@@ -15,7 +15,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./WasteExchangeFormSchema";
 import { useSelector } from "react-redux";
-import { createRecyclesSelector, createRecycles, clearCreateRecyclesState } from "@/store/waste-exchange";
+import { createRecyclesSelector, createRecycles } from "@/store/waste-exchange";
 import { APIRecycles } from "@/apis/APIWasteExchange";
 import { Spinner } from "@/components/spinner";
 
@@ -27,7 +27,7 @@ function capitalizeWords(string) {
 	return string.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
+export function ModalAddWasteExchangeData({ isOpen, onClose, onOpen, onSubmit }) {
 	const dispatch = useDispatch();
 	const [categoriesData, setCategoriesData] = useState([]);
 	const {
@@ -74,8 +74,6 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 			console.log("Submitting data:", newData);
 
 			await dispatch(createRecycles(newData));
-			reset();
-			onClose();
 		} catch (error) {
 			console.error("Error submitting data:", error);
 		}
@@ -89,12 +87,11 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 				userEmail: "",
 				dropPointLocation: "",
 			});
-			dispatch(clearCreateRecyclesState());
 		}
-	}, [isOpen, reset, dispatch]);
+	}, [isOpen, reset]);
 
 	const handleAddData = () => {
-		const newEntry = { trash_type: "", amount: 0};
+		const newEntry = { trash_type: "", amount: ""};
 		append(newEntry);
 	};	 
 	
@@ -245,6 +242,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 											name={`data[${index}].amount`}
 											min="0"
 											step="1"
+											placeholder="0"
 											/>
 										</td>
 										<td>
