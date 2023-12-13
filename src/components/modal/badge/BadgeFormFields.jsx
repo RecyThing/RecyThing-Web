@@ -2,7 +2,7 @@ import { Controller } from "react-hook-form";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { Input } from "@/components/inputs";
 
-// Input Name Badge
+// Input Name
 export function BadgeNameFields({ control, error }) {
   return (
     <Controller
@@ -39,7 +39,6 @@ export function BadgeTargetField({ control, error }) {
         <FormControl isInvalid={error}>
           <Input
             label={"Target Poin"}
-            type={"number"}
             autoComplete={"off"}
             type={"number"}
             error={error}
