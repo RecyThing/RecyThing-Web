@@ -54,7 +54,7 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 				onClose={onCloseDelete}
 				target={id}
 				onDelete={handleDelete}
-				deleteStatus={deletestatus}
+				isLoading={deletestatus === "loading"}
 			/>
 			<BaseTable
 				data={data}

@@ -1,12 +1,5 @@
 import { Add } from "iconsax-react";
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { Pagination } from "@/components/pagination";
-import { SearchBar } from "@/components/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { TableVoucherList } from "@/components/tables";
-import { ModalAddVoucher } from "@/components/modal";
-import { LayoutDashboardContent } from "@/layout";
-import { useDispatch, useSelector } from "react-redux";
 import {
 	clearCreateVoucherState,
 	clearDeleteVoucherState,
@@ -20,29 +13,29 @@ import {
 	fetchVouchersSelector,
 	updateVoucherSelector,
 } from "@/store/voucher";
-import { Spinner } from "@/components/spinner";
-import { useCustomToast, useDebounce } from "@/hooks";
 import { formatDateToISOString } from "@/utils";
+import { LayoutDashboardContent } from "@/layout";
+import { ModalAddVoucher } from "@/components/modal";
+import { Pagination } from "@/components/pagination";
+import { SearchBar } from "@/components/navigation";
+import { Spinner } from "@/components/spinner";
+import { TableVoucherList } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
+import { useCustomToast, useDebounce } from "@/hooks";
+import { useDispatch, useSelector } from "react-redux";
 
 function VoucherList() {
 	const dispatch = useDispatch();
-	const { data = [], status, message } = useSelector(fetchVouchersSelector);
-	const { status: updateStatus, message: updateMessage } = useSelector(
-		updateVoucherSelector
-	);
-	const { status: deleteStatus, message: deleteMessage } = useSelector(
-		deleteVoucherSelector
-	);
-	const { status: createStatus, message: createMessage } = useSelector(
-		createVoucherSelector
-	);
+	const { data = [], status, message, count_data } = useSelector(fetchVouchersSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(updateVoucherSelector);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deleteVoucherSelector);
+	const { status: createStatus, message: createMessage } = useSelector(createVoucherSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
-
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-	const [totalItems, setTotalItems] = useState(0);
+	const [refreshData, setRefreshData] = useState(false);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,59 +50,39 @@ function VoucherList() {
 				limit: itemsPerPage,
 				page: currentPage,
 			})
-		).then((res) => {
-			if (res.payload) {
-				setTotalItems(res.payload.count_data);
-			}
-		});
+		);
 	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
 		fetchVouchersData();
-	}, [searchTerm, itemsPerPage, currentPage, fetchVouchersData]);
+	}, [fetchVouchersData, refreshData]);
 
 	useEffect(() => {
-		if (
-			updateStatus === "success" ||
-			deleteStatus === "success" ||
-			createStatus === "success"
-		) {
-			fetchVouchersData();
+		if (updateStatus === "success" || deleteStatus === "success" || createStatus === "success") {
 			setSearchTerm("");
 			setCurrentPage(1);
-		}
+			setRefreshData((prev) => !prev);
 
-		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
 			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
 			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
-		};
-	}, [fetchVouchersData, updateStatus, deleteStatus, createStatus, dispatch]);
+		}
+	}, [updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {
 		return () => {
 			dispatch(clearFetchVouchersState());
 			dispatch(clearFetchVoucherState());
-			dispatch(clearUpdateVoucherState());
-			dispatch(clearDeleteVoucherState());
-			dispatch(clearCreateVoucherState());
 		};
 	}, [dispatch]);
 
 	const filteredData = Object.values(data).filter((voucher) => {
-		return (
-			voucher.reward_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			voucher.point.toString().includes(searchTerm)
-		);
+		return voucher?.reward_name.toLowerCase().includes(searchTerm.toLowerCase()) || voucher?.point.toString().includes(searchTerm);
 	});
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
-	};
-
-	const handleAddModal = () => {
-		onOpen();
 	};
 
 	const handleSubmitAdded = (data) => {
@@ -145,7 +118,10 @@ function VoucherList() {
 			>
 				<Flex justifyContent={"space-between"}>
 					<Box w={"35%"}>
-						<SearchBar onSearch={handleSearch} />
+						<SearchBar
+							onSearch={handleSearch}
+							value={_searchTerm}
+						/>
 					</Box>
 					<Button
 						leftIcon={<Add />}
@@ -157,7 +133,7 @@ function VoucherList() {
 						lineHeight={"1.5rem"}
 						px={"1.5rem"}
 						py={"1.75rem"}
-						onClick={handleAddModal}
+						onClick={onOpen}
 					>
 						Tambah Voucher
 					</Button>
@@ -177,7 +153,7 @@ function VoucherList() {
 							itemsPerPage={itemsPerPage}
 							onChangeItemsPerPage={setItemsPerPage}
 							onChangePage={setCurrentPage}
-							totalItems={totalItems}
+							totalItems={count_data}
 						/>
 					</>
 				)}

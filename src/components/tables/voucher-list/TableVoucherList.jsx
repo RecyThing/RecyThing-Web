@@ -1,48 +1,31 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
-import {
-	deleteVoucher,
-	deleteVoucherSelector,
-	fetchVoucher,
-	updateVoucher,
-	updateVoucherSelector,
-} from "@/store/voucher";
-import { formatDateToISOString, formatDateToLocalDateString } from "@/utils";
+import { deleteVoucher, deleteVoucherSelector, fetchVoucher, updateVoucher, updateVoucherSelector } from "@/store/voucher";
+import { formatDateToISOString, formatDateToLocalDate, formatWithCommas } from "@/utils";
 import { ModalDelete, ModalEditVoucher } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
 import { Trash, Edit2 } from "iconsax-react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const TableHead = [
-	"No",
-	"Nama Reward",
-	"Poin Reward",
-	"Tanggal Mulai",
-	"Tanggal Berakhir",
-	"Aksi",
-];
+const TABLEHEADS = ["No", "Nama Reward", "Poin Reward", "Tanggal Mulai", "Tanggal Berakhir", "Aksi"];
 
+/**
+ * TableVoucherList is a table component that is used to display voucher data.
+ * @param {{data: any[], currentPage: number, itemsPerPage: number}} props - The props object.
+ * @returns {JSX.Element} The TableVoucherList component.
+ */
 export function TableVoucherList({ data, currentPage, itemsPerPage }) {
+	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
+	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+
 	const [id, setId] = useState(null);
+
 	const dispatch = useDispatch();
-
-	const { status: updateStatus } = useSelector(updateVoucherSelector);
 	const { status: deleteStatus } = useSelector(deleteVoucherSelector);
-
-	const {
-		isOpen: isOpenEdit,
-		onOpen: onOpenEdit,
-		onClose: onCloseEdit,
-	} = useDisclosure();
-
-	const {
-		isOpen: isOpenDelete,
-		onOpen: onOpenDelete,
-		onClose: onCloseDelete,
-	} = useDisclosure();
+	const { status: updateStatus } = useSelector(updateVoucherSelector);
 
 	const handleEditModal = (target) => {
 		setId(target);
@@ -55,7 +38,11 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 
-		dispatch(updateVoucher({ id, data }));
+		dispatch(updateVoucher({ id, data })).then(() => {
+			if (updateStatus === "success") {
+				onCloseEdit();
+			}
+		});
 	};
 
 	const handleDeleteModal = (target) => {
@@ -64,20 +51,10 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleDelete = (target) => {
-		dispatch(deleteVoucher(target));
-	};
-
-	useEffect(() => {
-		if (updateStatus === "success" || updateStatus === "failed") {
-			onCloseEdit();
-		}
-	}, [updateStatus, onCloseEdit]);
-
-	useEffect(() => {
-		if (deleteStatus === "success" || deleteStatus === "failed") {
+		dispatch(deleteVoucher(target)).then(() => {
 			onCloseDelete();
-		}
-	}, [deleteStatus, onCloseDelete]);
+		});
+	};
 
 	return (
 		<>
@@ -92,28 +69,26 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 				onClose={onCloseDelete}
 				target={id}
 				onDelete={handleDelete}
-				deleteStatus={deleteStatus}
+				isLoading={deleteStatus === "loading"}
 			/>
 
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>
-							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
-						</CenteredCell>
+						<CenteredCell>{(currentPage - 1) * itemsPerPage + rowIndex + 1}</CenteredCell>
 						<TextCell
 							casing={"uppercase"}
 							content={row.reward_name}
 						/>
-						<TextCell content={row.point} />
-						<TextCell content={formatDateToLocalDateString(row.start_date)} />
-						<TextCell content={formatDateToLocalDateString(row.end_date)} />
+						<TextCell content={formatWithCommas(row.point)} />
+						<TextCell content={formatDateToLocalDate(row.start_date)} />
+						<TextCell content={formatDateToLocalDate(row.end_date)} />
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Edit2 />}
