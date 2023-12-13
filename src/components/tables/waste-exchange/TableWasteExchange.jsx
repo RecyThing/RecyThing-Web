@@ -1,11 +1,13 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
+import { deleteRecycles, deleteRecyclesSelector, fetchRecycle } from "@/store/waste-exchange";
 import { Eye, Trash } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
 import { ModalDelete, ModalViewDetailWasteExchange } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDisclosure } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 const TableHead = [
 	"ID Penukaran",
@@ -15,7 +17,7 @@ const TableHead = [
 	"Aksi",
 ];
 
-export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
+export function TableWasteExchange({ data }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,
@@ -28,42 +30,45 @@ export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
 		onClose: onCloseDelete,
 	} = useDisclosure();
 
-	const [selectedRow, setSelectedRow] = useState(null);
+	const [id, setId] = useState(null);
 
-	const handleViewModal = (row) => {
-		setSelectedRow(row);
+	const dispatch = useDispatch();
+	const { status: deletestatus } = useSelector(deleteRecyclesSelector);
+
+	const handleViewModal = (target) => {
+		dispatch(fetchRecycle(target));
 		onOpenView();
 	};
 
-	const handleDeleteModal = (row) => {
-		setSelectedRow(row);
+	const handleDeleteModal = (target) => {
+		setId(target);
 		onOpenDelete();
 	};
 
-	const handleDelete = (row) => {
-		console.log("deleted!", row);
-		onCloseDelete();
+	const handleDelete = (target) => {
+		dispatch(deleteRecycles(target));
 	};
 
-	const formatId = (id) => {
-		const desiredLength = 3;
-		const paddedId = String(id).padStart(desiredLength, "0");
-		return `PS${paddedId}`;
-	};
+	useEffect(() => {
+		if (deletestatus === "success" || deletestatus === "failed") {
+			onCloseDelete();
+		}
+	}, [deletestatus, onCloseDelete]);
 
 	return (
 		<>
 			<ModalViewDetailWasteExchange
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={selectedRow}
+				data={id}
 			/>
 
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
-				target={selectedRow}
+				target={id}
 				onDelete={handleDelete}
+				deleteStatus={deletestatus}
 			/>
 			<BaseTable
 				data={data}
@@ -75,27 +80,27 @@ export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
 						index={rowIndex}
 					>
 						<CenteredCell>
-							{formatId((currentPage - 1) * itemsPerPage + rowIndex + 1)}
+							{row.id}
 						</CenteredCell>
 
-						{row.map((cell, cellIndex) => (
-							<TextCell
-								key={cellIndex}
-								content={cell}
-							/>
-						))}
+						<TextCell
+							casing={"capitalize"}
+							content={row.name}
+						/>
+						<TextCell content={row.email} className="overflow-hidden text-ellipsis"/>
+						<TextCell content={row.drop_point_name} className="overflow-hidden text-ellipsis"/>
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}
 								color={"#828282"}
 								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+								onClick={() => handleViewModal(row.id)}
 							/>
 							<CustomIconButton
 								icon={<Trash />}
 								color={"#E53535"}
 								hoverColor={"#B22222"}
-								onClick={() => handleDeleteModal(row)}
+								onClick={() => handleDeleteModal(row.id)}
 							/>
 						</CenteredCell>
 					</TableBodyRow>
