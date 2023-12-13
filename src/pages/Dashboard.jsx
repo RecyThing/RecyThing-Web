@@ -31,6 +31,7 @@ function Dashboard() {
   }, [filter]);
 
   if (isLoading || !dashboardData) return <Spinner />
+  
   return (
     <LayoutDashboardContent>
       <div className="flex justify-between">
@@ -60,6 +61,7 @@ function Dashboard() {
       <div className="grid grid-cols-4 gap-6 mt-5">
         <InfoCard
           title="Pengguna Aktif"
+          status={dashboardData.user_active?.status}
           count={parseInt(dashboardData.user_active?.total_user_active)}
           image={activeUserImage}
           percentage={parseInt(dashboardData.user_active?.percentage)}
@@ -67,6 +69,7 @@ function Dashboard() {
         />
         <InfoCard
           title="Transaksi Tukar Poin"
+          status={dashboardData.exchange?.status}
           count={parseInt(dashboardData.exchange?.total_exchange)}
           image={voucherImage}
           percentage={parseInt(dashboardData.exchange.percentage)}
@@ -74,6 +77,7 @@ function Dashboard() {
         />
         <InfoCard
           title="Total Laporan"
+          status={dashboardData.report?.status}
           count={parseInt(dashboardData.report?.total_report)}
           image={megaphoneImage}
           percentage={parseInt(dashboardData.report.percentage)}
@@ -81,6 +85,7 @@ function Dashboard() {
         />
         <InfoCard
           title="Transaksi Daur Ulang"
+          status={dashboardData.recycle?.status}
           count={parseInt(dashboardData.recycle?.total_recycle)}
           image={recycleImage}
           percentage={parseInt(dashboardData.recycle.percentage)}

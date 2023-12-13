@@ -9,3 +9,4 @@ export { APIRecycles } from "./APIWasteExchange";
 export { APITransactionList } from "./APITransactionList";
 export { APICommunity } from "./APICommunity";
 export { APIApprovalMission } from "./APIApprovalMission";
+export { APIMission } from "./APIMission";
