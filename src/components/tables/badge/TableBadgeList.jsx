@@ -1,4 +1,4 @@
-import { Edit } from "react-iconly";
+import {  Edit2 } from "iconsax-react";
 import { BaseTable } from "../base-table/BaseTable";
 import { TableBodyRow } from "../base-table/TableRows";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
@@ -74,7 +74,7 @@ export function TableBadgeList({ data }) {
             <CenteredCell>
               {rowIndex !== 3 && (
                 <CustomIconButton
-                  icon={<Edit />}
+                  icon={<Edit2 />}
                   colorScheme={"yellow"}
                   hoverColor={"green"}
                   variant={"solid"}
