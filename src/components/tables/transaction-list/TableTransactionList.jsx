@@ -3,12 +3,16 @@ import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
 import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Eye } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import {
 	ModalEditDetailTransaction,
 	ModalViewDetailTransaction,
 } from "@/components/modal";
+import { useDispatch, useSelector } from "react-redux";
+import { formatDateToLocalDate } from "@/utils";
+import { fetchDataTransaction, patchDataTransaction } from "@/store/transaction-list";
+import { patchDataReportSelector } from "@/store/report";
 
 const TableHead = [
 	"No",
@@ -31,34 +35,41 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 		onOpen: onOpenUpdate,
 		onClose: onCloseUpdate,
 	} = useDisclosure();
-	const [selectedRow, setSelectedRow] = useState(null);
+	
 
 	const handleBadges = (status) => {
 		switch (status) {
-			case "Diproses":
+			case "diproses":
 				return "blue";
-			case "Terbaru":
+			case "terbaru":
 				return "yellow";
-			case "Berhasil":
+			case "selesai":
 				return "green";
 			default:
 				return "gray";
 		}
 	};
 
-	const handleViewModal = (row) => {
-		setSelectedRow(row);
+	const [id, setId] = useState(null);
+	const { status } = useSelector(patchDataReportSelector);
+	const dispatch = useDispatch();
+	const handleViewModal = (target) => {
+		dispatch(fetchDataTransaction(target))
 		onOpenView();
 	};
 
-	const handleUpdateModal = (row) => {
-		setSelectedRow(row);
+	const handleUpdateModal = (target) => {
+		dispatch(fetchDataTransaction(target))
 		onOpenUpdate();
 	};
 
-	const handleUpdate = (row) => {
-		console.log("Updated!", row);
-		onCloseUpdate();
+	const handleUpdate = (id,data) => {
+		dispatch(patchDataTransaction({ id, data })).then((res) => {
+			if (res.payload) {
+				onCloseUpdate();
+			}
+		});
+		
 	};
 
 	return (
@@ -66,14 +77,15 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 			<ModalViewDetailTransaction
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={selectedRow}
+				data={id}
 			/>
 
 			<ModalEditDetailTransaction
 				isOpen={isOpenUpdate}
 				onClose={onCloseUpdate}
-				target={selectedRow}
+				target={id}
 				onUpdate={handleUpdate}
+				onEdit={status}
 			/>
 			<BaseTable
 				data={data}
@@ -85,30 +97,51 @@ export function TableTransactionList({ data, currentPage, itemsPerPage }) {
 						index={rowIndex}
 					>
 						<CenteredCell>
-							{(currentPage - 1) * itemsPerPage + rowIndex + 1}
+							{rowIndex+1}
 						</CenteredCell>
-						<TextCell content={row.name} />
-						<TextCell content={row.reward} />
-						<TextCell content={row.email} />
-						<TextCell content={row.points} />
-						<BadgeCell
-							content={row.status}
-							colorScheme={handleBadges(row.status)}
-						/>
-						<CenteredCell key={rowIndex}>
-							<CustomIconButton
-								icon={<Eye />}
-								color={"#828282"}
-								hoverColor={"#333333"}
-								onClick={() => handleViewModal(row)}
+						<TextCell content={row.user} />
+						<TextCell content={row.voucher} />
+						<TextCell content={row.phone} />
+						<TextCell content={formatDateToLocalDate(row.created_at)} />
+						{row.status === "selesai" ? (
+							<BadgeCell
+								content={"Berhasil"}
+								colorScheme={handleBadges("selesai")}
 							/>
-							<CustomIconButton
-								icon={<Edit2 />}
-								color={"#828282"}
-								hoverColor={"#333333"}
-								onClick={() => handleUpdateModal(row)}
+							
+						): (
+							<BadgeCell
+								content={row.status}
+								colorScheme={handleBadges(row.status)}
 							/>
-						</CenteredCell>
+						)}
+						{ row.status === "selesai" ? (
+							<CenteredCell key={rowIndex}>
+								<Flex alignItems={"center"} justifyContent={"center"}>
+									<CustomIconButton
+										icon={<Eye />}
+										color={"#828282"}
+										hoverColor={"#333333"}
+										onClick={() => handleViewModal(row.id)}
+									/>
+								</Flex>
+							</CenteredCell>
+						) : (
+							<CenteredCell key={rowIndex}>
+								<CustomIconButton
+									icon={<Eye />}
+									color={"#828282"}
+									hoverColor={"#333333"}
+									onClick={() => handleViewModal(row.id)}
+								/>
+								<CustomIconButton
+									icon={<Edit2 />}
+									color={"#828282"}
+									hoverColor={"#333333"}
+									onClick={() => handleUpdateModal(row.id)}
+								/>
+							</CenteredCell>
+						)}
 					</TableBodyRow>
 				))}
 			</BaseTable>

@@ -7,7 +7,11 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ModalEditBadge } from "../../modal/badge/ModalEditBadge";
-import { patchAchievements } from "@/store/achievements";
+import {
+  patchAchievements,
+  toggleShouldFetchLatestAchievements,
+} from "@/store/achievements";
+// import { toggleShouldFetchLatestAchievements } from "@/store/achievements/getAchievementsSlice";
 
 const TableHeads = [
   "No",
@@ -33,7 +37,10 @@ export function TableBadgeList({ data }) {
   };
 
   const handleSubmitModal = (data) => {
-    dispatch(patchAchievements({ id: selectedRow.id, data }));
+    dispatch(patchAchievements({ id: selectedRow?.id, data })).then(() => {
+      onCloseView();
+      dispatch(toggleShouldFetchLatestAchievements());
+    });
   };
 
   return (

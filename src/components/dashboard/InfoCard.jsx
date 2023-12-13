@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 
-function InfoCard({ title, count, image, percentage }) {
+function InfoCard({ title, count, image, percentage, filter }) {
   return (
     <div className={"basis-1/4 h-[146px] p-4 shadow-md rounded-xl bg-white"}>
       <div className="flex justify-between">
@@ -12,9 +12,9 @@ function InfoCard({ title, count, image, percentage }) {
       <p className="text-[32px] font-semibold"><CountUp start={0} end={count} /></p>
 
       <div className={`mt-4 flex ${percentage > 0 ? 'text-[#1A9882]' : 'text-[#E53535]'}`}>
-        <p className="text-sm font-bold">{percentage * 100}%</p>
+        <p className="text-sm font-bold">{percentage}%</p>
         {percentage > 0 ? <FaCaretUp className="my-auto ml-[2px]" /> : <FaCaretDown className="my-auto ml-[2px]" />}
-        <p className="ml-1 text-sm font-medium my-auto text-[#858D9D]">1 Minggu Terakhir</p>
+        <p className="ml-1 text-sm font-medium my-auto text-[#858D9D]">1 {filter === "years" ? 'Tahun' : 'Bulan'} Terakhir</p>
       </div>
     </div>
   )

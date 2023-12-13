@@ -71,8 +71,8 @@ export function TableDataReporting({ data }) {
 	};
 
 	const [id, setId] = useState(null);
-
-	const dispatch = useDispatch();
+	const dispatch = useDispatch()
+	
 	const handleViewModal = (target) => {
 		dispatch(fetchDataReport(target));
 		onOpenView();

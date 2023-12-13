@@ -81,9 +81,9 @@ function EditArticle({ editArticleData, onClose, setToastMessage }) {
       isOpen={isOpenDelete} target={editArticleData} onClose={onCloseDelete} onDelete={handleDelete} isLoading={isDeleteLoading} />
       <p className="text-2xl font-bold">Edit Konten</p>
       <div className="mt-4 flex gap-9 pl-3 pr-6 py-6 rounded-xl min-h-[85vh] bg-white">
-        <div  className="flex-1 w-fit">
+        <div  className="flex-1">
           <p className="mb-2 text-sm font-medium">Masukkan Judul</p>
-          <input ref={titleWidth} value={articleData.title} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={50}
+          <input ref={titleWidth} value={articleData.title} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={100}
           className="w-full pl-6 py-4 rounded-xl border border-[#828282]" type="text" placeholder="Masukkan Judul Disini..." />
           <TextEditor text={articleData.content} setArticleData={setArticleData} titleWidth={titleWidth} peerHeight={categoryHeight} reduceHeight={101} />
           <button disabled={isDeleteLoading || isEditLoading} onClick={onOpenDelete} className="mt-[45px] p-4 rounded-lg w-[170px] font-bold 
