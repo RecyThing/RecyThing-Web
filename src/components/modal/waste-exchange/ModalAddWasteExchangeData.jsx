@@ -106,20 +106,15 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 	};
 
 	const calculateTotalPoints = () => {
-		let total_points = 0;
-	  
-		if (fields) {
-			fields.forEach((field, index) => {
-				const trashType = watch(`data[${index}].trash_type`);
-				const amount = parseFloat(watch(`data[${index}].amount`) || 0);
-				console.log("trashType", trashType, "amount", amount);
-				total_points += calculatePoints(trashType, amount);
-			});
-		}
-	  
-		console.log("totalPoints", total_points);
-		return total_points;
-	  };	  
+		let totalPoints = 0;
+		fields.forEach((field, index) => {
+			totalPoints += calculatePoints(
+				watch(`data[${index}].trash_type`),
+				parseFloat(watch(`data[${index}].amount`) || 0)
+			)*90/100;
+		});
+		return totalPoints;
+	};
 	  
 	const handleRemoveData = (index) => {
 		remove(index);
@@ -179,17 +174,17 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 						<div className="flex gap-x-5 mb-6">
 							<Fields.Username
 								control={control}
-								error={errors.name}
+								error={errors.username}
 							/>
 							<Fields.UserEmail
 								control={control}
-								error={errors.email}
+								error={errors.userEmail}
 							/>
 						</div>
 						<div className="mb-6">
 							<Fields.DropPointLocation
 								control={control}
-								error={errors.drop_point_name}
+								error={errors.dropPointLocation}
 							/>
 						</div>
 						<div className="w-full">
@@ -313,7 +308,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 									}}
 									name="total_points"
 								>
-									+{calculateTotalPoints()}
+									+{calculateTotalPoints()} <span style={{ fontSize: "14px" }}>(-10%)</span>
 								</p>
 							</div>
 						</div>
