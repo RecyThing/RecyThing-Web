@@ -41,6 +41,7 @@ export function BadgeTargetField({ control, error }) {
             label={"Target Poin"}
             type={"number"}
             autoComplete={"off"}
+            type={"number"}
             error={error}
             {...field}
           />

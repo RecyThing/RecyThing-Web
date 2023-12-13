@@ -5,8 +5,6 @@ const initialState = {
 	status: "idle",
 	message: "",
 	data: {},
-	pagination: {},
-	count_data: 0,
 };
 
 export const fetchCommunity = createAsyncThunk(
