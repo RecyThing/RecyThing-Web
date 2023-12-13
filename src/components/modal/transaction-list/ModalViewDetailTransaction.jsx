@@ -40,10 +40,6 @@ const labels = {
 export function ModalViewDetailTransaction({ isOpen, onClose }) {
   const { data, status, message } = useSelector(fetchDataTransactionSelector);
 
-  useEffect(() => {
-    dispatch(fetchRecycle());
-  }, []);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} isCentered>
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />

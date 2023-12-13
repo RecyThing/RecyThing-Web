@@ -93,19 +93,10 @@ function ManageWasteExchange() {
 		return recycle.name.toLowerCase().includes(searchTerm.toLowerCase());
 	});
 
-	// const filteredData = DummyData.filter(([name]) =>
-	// 	name.toLowerCase().includes(searchTerm.toLowerCase())
-	// );
-
 	const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
-
-	// const paginatedData = filteredData.slice(
-	// 	(currentPage - 1) * itemsPerPage,
-	// 	currentPage * itemsPerPage
-	// );
 
 	const handleAddModal = () => {
 		onOpen();

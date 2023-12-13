@@ -5,7 +5,6 @@ import { deleteRecycles, deleteRecyclesSelector, fetchRecycle } from "@/store/wa
 import { Eye, Trash } from "iconsax-react";
 import { ModalDelete, ModalViewDetailWasteExchange } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
-import { TruncatedCell } from "../base-table/TableCells";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -18,7 +17,7 @@ const TableHead = [
 	"Aksi",
 ];
 
-export function TableWasteExchange({ data, currentPage, itemsPerPage }) {
+export function TableWasteExchange({ data }) {
 	const {
 		isOpen: isOpenView,
 		onOpen: onOpenView,

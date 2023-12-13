@@ -9,8 +9,6 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
 	Select
 } from "@chakra-ui/react";
@@ -32,8 +30,6 @@ function capitalizeWords(string) {
 export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 	const dispatch = useDispatch();
 	const [categoriesData, setCategoriesData] = useState([]);
-	const [pointPerUnit, setPointPerUnit] = useState(0);
-	const [exchangeData, setExchangeData] = useState({ category_id: [] });
 	const {
 		control,
 		handleSubmit,
@@ -58,35 +54,47 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 
 	const handleOnSubmit = async (data) => {
 		try {
-		  const newData = {
-			...data,
-			trash_exchange_details: data.trash_exchange_details?.map((detail) => ({
-			  ...detail,
-			  amount: parseFloat(detail.unit) || 0,
-			  total_points: calculatePoints(detail.trash_type, parseFloat(detail.unit) || 0),
-			})) || [],
-		  };
-	  
-		  // Calculate total points before submitting
-		  newData.total_points = calculateTotalPoints(newData.trash_exchange_details);
-	  
-		  await dispatch(createRecycles(newData));
-		  console.log("Submitted data:", data);
-		  reset();
-		  onClose();
+			const newData = {
+				name: data.username,
+				email: data.userEmail,
+				drop_point_name: data.dropPointLocation,
+				trash_exchange_details: data.data?.map((detail) => {
+					const selectedCategory = categoriesData.find(
+						(category) => category.id === detail.trash_type
+					);
+					const trashTypeName = selectedCategory ? selectedCategory.trash_type : "";
+					
+					return {
+						trash_type: trashTypeName,
+						amount: parseFloat(detail.amount) || 0,
+					};
+				}) || [],
+			};
+		
+			console.log("Submitting data:", newData);
+
+			await dispatch(createRecycles(newData));
+			reset();
+			onClose();
 		} catch (error) {
-		  console.error("Error submitting data:", error);
+			console.error("Error submitting data:", error);
 		}
-	};
+	};		
 	
 	useEffect(() => {
 		if (!isOpen) {
-			reset({ data: [] });
+			reset({
+				data: [],
+				username: "",
+				userEmail: "",
+				dropPointLocation: "",
+			});
+			dispatch(clearCreateRecyclesState());
 		}
-	}, [isOpen, reset]);
+	}, [isOpen, reset, dispatch]);
 
 	const handleAddData = () => {
-		const newEntry = { trash_type: "", unit: 0, amount: 0, total_points: 0 };
+		const newEntry = { trash_type: "", amount: 0};
 		append(newEntry);
 	};	 
 	
@@ -101,12 +109,12 @@ export function ModalAddWasteExchangeData({ isOpen, onClose, onSubmit }) {
 		let total_points = 0;
 	  
 		if (fields) {
-		  fields.forEach((field, index) => {
-			const trashType = watch(`data[${index}].trash_type`);
-			const amount = parseFloat(watch(`data[${index}].amount`) || 0);
-			console.log("trashType", trashType, "amount", amount);
-			total_points += calculatePoints(trashType, amount);
-		  });
+			fields.forEach((field, index) => {
+				const trashType = watch(`data[${index}].trash_type`);
+				const amount = parseFloat(watch(`data[${index}].amount`) || 0);
+				console.log("trashType", trashType, "amount", amount);
+				total_points += calculatePoints(trashType, amount);
+			});
 		}
 	  
 		console.log("totalPoints", total_points);

@@ -1,16 +1,14 @@
 import * as yup from "yup";
 
 export const schema = yup.object().shape({
-    username: yup
+    name: yup
         .string()
         .required("Nama pengguna tidak boleh kosong")
         .matches(/^[a-zA-Z ]*$/, "Nama Pengguna tidak boleh mengandung simbol & angka"),
-    userEmail: yup
+    email: yup
         .string()
         .required("Email tidak boleh kosong"),
-    dropPointLocation: yup
+    drop_point_name: yup
         .string()
-        .required("Lokasi drop point tidak boleh kosong"),
-
-      
+        .required("Lokasi drop point tidak boleh kosong"),  
 });

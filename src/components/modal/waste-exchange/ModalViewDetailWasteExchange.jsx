@@ -13,22 +13,14 @@ import { fetchRecycleSelector } from "@/store/waste-exchange";
 import { Spinner } from "@/components/spinner";
 
 const dataTitle = {
-	exchangeId: "ID Penukaran",
-	username: "Nama Lengkap",
-	userEmail: "Email",
+	id: "ID Penukaran",
+	name: "Nama Lengkap",
+	email: "Email",
 	point: "Poin",
-	transactionTime: "Tanggal Transaksi",
-	DropPointLocation: "Lokasi Drop Point",
+	created_at: "Tanggal Transaksi",
+	drop_point_name: "Lokasi Drop Point",
 	wasteType: "Jenis Sampah",
 	unit: "Satuan",
-};
-
-const dataTableContents = {
-	exchangeId: "PS001",
-	username: "John Doe",
-	userEmail: "johndoe@gmail.com",
-	transactionTime: "22 November 2000",
-	DropPointLocation: "Drop Point A",
 };
 
 function capitalizeWords(string) {
@@ -156,7 +148,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 									className="text-xl"
 									style={{ color: "#828282" }}
 								>
-									{dataTitle.exchangeId} :
+									{dataTitle.id} :
 									<span
 										className="text-xl ml-2"
 										style={{ color: "#333" }}
@@ -186,7 +178,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											className="items-start"
 											style={{ detailGroupStyles }}
 										>
-											<div style={{ ...thStyles }}>{dataTitle.username}</div>
+											<div style={{ ...thStyles }}>{dataTitle.name}</div>
 											<div style={{ ...tdStyles }}>
 												{capitalizeWords(data?.name)}
 											</div>
@@ -201,7 +193,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											className="items-start"
 											style={{ detailGroupStyles }}
 										>
-											<div style={{ ...thStyles }}>{dataTitle.userEmail}</div>
+											<div style={{ ...thStyles }}>{dataTitle.email}</div>
 											<div style={{ ...tdStyles }}>
 												{data?.email}
 											</div>
@@ -218,7 +210,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											className="items-start"
 											style={{ detailGroupStyles }}
 										>
-											<div style={{ ...thStyles }}>{dataTitle.transactionTime}</div>
+											<div style={{ ...thStyles }}>{dataTitle.created_at}</div>
 											<div style={{ ...tdStyles }}>
 												{formatDate(data?.created_at)}
 											</div>
@@ -234,7 +226,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											style={{ detailGroupStyles }}
 										>
 											<div style={{ ...thStyles }}>
-												{dataTitle.DropPointLocation}
+												{dataTitle.drop_point_name}
 											</div>
 											<div style={{ ...tdStyles }}>
 												{data?.drop_point_name}

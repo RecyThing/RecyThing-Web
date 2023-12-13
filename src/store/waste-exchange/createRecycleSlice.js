@@ -35,7 +35,7 @@ export const createRecyclesSlice = createSlice({
     });
     builder.addCase(createRecycles.fulfilled, (state, action) => {
       state.status = "success";
-      state.message = action.payload.message;
+      state.message = action.payload && action.payload.message ? action.payload.message : "Berhasil Menambahkan Data";
     });
     builder.addCase(createRecycles.rejected, (state, action) => {
       state.status = "failed";
