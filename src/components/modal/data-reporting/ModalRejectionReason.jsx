@@ -1,22 +1,12 @@
-import {
-	Button,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	Textarea,
-} from "@chakra-ui/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
-export function ModalRejectionReason({
-	isOpen,
-	onClose,
-	target,
-	onReject,
-	rejectStatus,
-}) {
+
+/**
+ * ModalRejectionReason is a modal component that is used to display rejection reason modal.
+ * @param {{isOpen: boolean, onClose: () => void, target: string, onReject: (target: string) => void, rejectStatus: string | boolean}} props - The props object.
+ * @returns {JSX.Element} The ModalRejectionReason component.
+ */
+export function ModalRejectionReason({ isOpen, onClose, target, onReject, rejectStatus }) {
 	const [rejectionReason, setRejectionReason] = useState("tidak begitu jelas");
 
 	const handleReject = (id) => {
@@ -33,6 +23,7 @@ export function ModalRejectionReason({
 			onClose={onClose}
 			size={"md"}
 			isCentered
+			closeOnOverlayClick={rejectStatus !== "loading"}
 		>
 			<ModalOverlay
 				bg={"#0000000D"}
@@ -68,9 +59,7 @@ export function ModalRejectionReason({
 					<Textarea
 						rows="8"
 						className="resize-none h-36"
-						border={
-							"2px solid var(--dark-colors-dark-3, rgba(130, 130, 130, 0.75))"
-						}
+						border={"2px solid var(--dark-colors-dark-3, rgba(130, 130, 130, 0.75))"}
 						onChange={(e) => setRejectionReason(e.target.value)}
 					></Textarea>
 				</ModalBody>
