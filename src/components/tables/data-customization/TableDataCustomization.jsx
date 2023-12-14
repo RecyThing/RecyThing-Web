@@ -55,7 +55,7 @@ export function TableDataCustomization({ data }) {
 	};
 
 	useEffect(() => {
-		if (updateStatus === "success" || updateStatus === "success") {
+		if (updateStatus === "success") {
 			onCloseEdit();
 		}
 	}, [updateStatus, onCloseEdit]);
@@ -79,7 +79,7 @@ export function TableDataCustomization({ data }) {
 				onClose={onCloseDelete}
 				target={selectedQuestion}
 				onDelete={() => handleDelete(selectedQuestion)}
-				deleteStatus={deleteStatus}
+				isLoading={deleteStatus === "loading"}
 			/>
 			<BaseTable
 				data={data}

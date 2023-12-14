@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { InputTextArea } from "@/components/inputs";
 import { CloseSquare } from "iconsax-react";
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
@@ -16,8 +16,6 @@ import { Spinner } from "@/components/spinner";
  */
 export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, selectedCategory }) {
 	const dispatch = useDispatch();
-
-	const [editedQuestion, setEditedQuestion] = useState("");
 	const [editedCategory, setEditedCategory] = useState("");
 
 	const {
@@ -30,7 +28,7 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 		resolver: yupResolver(schema),
 	});
 
-	const { data, status, message } = useSelector(fetchPromptSelector);
+	const { data, status } = useSelector(fetchPromptSelector);
 	const { status: updateStatus } = useSelector(updatePromptSelector);
 
 	const handleOnSubmit = async (data) => {
@@ -48,15 +46,14 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 	};
 
 	useEffect(() => {
-		if (selectedQuestion) {
-			setEditedQuestion(selectedQuestion.question);
+		if (selectedCategory) {
 			setEditedCategory(selectedCategory);
 
 			if (!isOpen) {
 				reset();
 			}
 		}
-	}, [selectedQuestion, selectedCategory, isOpen, reset]);
+	}, [selectedCategory, isOpen, reset]);
 
 	useEffect(() => {
 		if (data) {
@@ -70,6 +67,7 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 			isOpen={isOpen}
 			onClose={onClose}
 			isCentered
+			closeOnOverlayClick={updateStatus !== "loading"}
 		>
 			<ModalOverlay
 				bg={"#0000000D"}
@@ -79,9 +77,9 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 				maxW="900px"
 				borderRadius="12px"
 			>
-				{(status === "loading" || updateStatus === "loading") && <Spinner containerSize={"500px"} />}
-				{status === "failed" && <div>{message}</div>}
-				{status === "success" && updateStatus === "idle" && (
+				{status === "loading" ? (
+					<Spinner containerSize={"500px"} />
+				) : (
 					<>
 						<ModalHeader className="flex justify-between mt-8">
 							<h4 className="text-gray-800 text-2xl font-bold font-inter mb-2">Edit Data for Open AI</h4>
@@ -161,6 +159,7 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 										reset();
 										onClose();
 									}}
+									isDisabled={updateStatus === "loading"}
 								>
 									Batal
 								</Button>
@@ -172,6 +171,7 @@ export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, 
 									py={"1.7rem"}
 									_hover={{ bg: "#2DA22D" }}
 									type="submit"
+									isLoading={updateStatus === "loading"}
 								>
 									Simpan
 									<br />
