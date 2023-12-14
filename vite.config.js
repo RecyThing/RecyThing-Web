@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => {
 				usePolling: true,
 			},
 			host: true,
-			strictPort: true,
-			port: 5173,
+			strictPort: false,
+			port: process.env.PORT || 5173
 		},
 	};
 });
