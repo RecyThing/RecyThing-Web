@@ -283,7 +283,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 										</p>
 									</div>
 									<div className="col-span-1">
-										<p style={{ ...poinStyle, paddingLeft: "40px" }}>
+										<p style={{ ...poinStyle, paddingLeft: "20px", whiteSpace: 'nowrap' }}>
 											+{data?.total_point}
 										</p>
 									</div>
