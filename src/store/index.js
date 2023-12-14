@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { createAdminReducer, deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer, updateAdminReducer } from "./admin";
 import { createCommunityReducer, deleteCommunityReducer, fetchCommunitiesReducer, fetchCommunityReducer, updateCommunityReducer } from "./community";
 import { createEventReducer, deleteEventReducer, fetchEventsReducer, fetchEventReducer, updateEventReducer } from "./event-community";
 import { createMissionReducer, deleteMissionReducer, fetchMissionReducer, fetchMissionsReducer, updateMissionReducer } from "./mission";
@@ -7,11 +8,10 @@ import { createRecyclesReducer, deleteRecyclesReducer, fetchCategoriesReducer, f
 import { createTrashesReducer, deleteTrashesReducer, fetchTrashReducer, fetchTrashesReducer, updateTrashesReducer } from "./trash-category";
 import { createVoucherReducer, deleteVoucherReducer, fetchVoucherReducer, fetchVouchersReducer, updateVoucherReducer } from "./voucher";
 import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
-import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
+import { fetchAchievementsReducer, patchAchievementsReducer } from "./achievements";
 import { fetchApprovalReducer, fetchApprovalsReducer, updateApprovalReducer } from "./approval-mission";
 import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
 import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
-import { createAdminReducer, deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer, updateAdminReducer } from "./admin";
 import { loginReducer } from "./auth";
 
 export const store = configureStore({
@@ -73,11 +73,11 @@ export const store = configureStore({
 		fetchMissions: fetchMissionsReducer,
 		updateMission: updateMissionReducer,
 
-    fetchAdmins: fetchAdminsReducer,
-    fetchAdmin: fetchAdminReducer,
-    updateAdmin: updateAdminReducer,
-    deleteAdmin: deleteAdminReducer,
-    createAdmin: createAdminReducer,
+		createAdmin: createAdminReducer,
+		deleteAdmin: deleteAdminReducer,
+		fetchAdmin: fetchAdminReducer,
+		fetchAdmins: fetchAdminsReducer,
+		updateAdmin: updateAdminReducer,
 
 		createEvent: createEventReducer,
 		deleteEvent: deleteEventReducer,

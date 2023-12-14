@@ -1,10 +1,8 @@
 export { APIAchievements } from "./APIAchievements";
+export { APIAdmin } from "./APIAdmin";
 export { APIApprovalMission } from "./APIApprovalMission";
 export { APIAuth } from "./APILogin";
 export { APICommunity } from "./APICommunity";
-export { APIUser } from "./APIUser";
-export { APIVoucher } from "./APIVoucher";
-export { APIAdmin } from "./APIAdmin";
 export { APIDataReporting } from "./APIDataReporting";
 export { APIEventCommunity } from "./APIEventCommunity";
 export { APIMission } from "./APIMission";
