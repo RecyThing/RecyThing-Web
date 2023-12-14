@@ -85,10 +85,10 @@ export const store = configureStore({
     fetchCommunity: fetchCommunityReducer,
     updateCommunity: updateCommunityReducer,
 
-    createEventReducer: createEventReducer,
-    deleteEventReducer: deleteEventReducer,
-    fetchEventsReducer: fetchEventsReducer,
-    fetchEventReducer: fetchEventReducer,
-    updateEventReducer: updateEventReducer,
+    createEvent: createEventReducer,
+    deleteEvent: deleteEventReducer,
+    fetchEvents: fetchEventsReducer,
+    fetchEvent: fetchEventReducer,
+    updateEvent: updateEventReducer,
   },
 });

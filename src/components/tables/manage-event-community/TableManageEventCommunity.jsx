@@ -38,7 +38,8 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
     onClose: onCloseDelete,
   } = useDisclosure();
 
-  const [selectedRow, setSelectedRow] = useState(null);
+  // const [selectedRow, setSelectedRow] = useState(null);
+
   const handleTextAlign = (heads) => {
     return heads.map((head) => {
       if (head === "No" || head === "Event" || head === "Aksi") {
@@ -62,9 +63,11 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
   };
 
   const dispatch = useDispatch();
+  const [currData, setCurrData] = useState(null);
+
   const handleViewModal = (id) => {
     dispatch(fetchEvent(id)).then((res) => {
-      setSelectedRow(res.payload.data);
+      setCurrData(res.payload.data);
     });
     onOpenView();
   };
@@ -80,7 +83,7 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
     target.image = target.image[0];
     dispatch(
       updateEvent({
-        id: selectedRow.id,
+        id: currData.id,
         data: target,
       })
     ).then(() => {
@@ -89,7 +92,7 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
   };
 
   const handleDeleteModal = (row) => {
-    setSelectedRow(row);
+    setCurrData(row);
     onOpenDelete();
   };
 
@@ -116,12 +119,12 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
         isOpen={isOpenUpdate}
         onClose={onCloseUpdate}
         onUpdate={handleSubmitUpdatedData}
-        data={selectedRow}
+        data={currData}
       />
       <ModalDelete
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
-        target={selectedRow}
+        target={currData}
         onDelete={handleDelete}
         title={"Anda yakin ingin Menghapus Komunitas?"}
         message={"Komunitas yang dihapus tidak dapat dipulihkan"}

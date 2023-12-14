@@ -22,7 +22,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
 import { useState } from "react";
 import { CopyIcon } from "@/components/icons";
-import { ModalEditCommunity } from "./ModalEditCommunity";
+// import { ModalEditCommunity } from "./ModalEditCommunity";
 
 export function ModalViewDetailEvent({ isOpen, onClose, onOpenUpdate, data }) {
   const {
@@ -59,11 +59,11 @@ export function ModalViewDetailEvent({ isOpen, onClose, onOpenUpdate, data }) {
 
   return (
     <>
-      <ModalEditCommunity
+      {/* <ModalEditCommunity
         isOpen={isOpenView}
         onClose={onCloseView}
         data={selectedRow}
-      />
+      /> */}
 
       <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>
         <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />

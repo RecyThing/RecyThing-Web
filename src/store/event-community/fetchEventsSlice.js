@@ -6,11 +6,11 @@ const initialState = {
   message: "",
   data: {},
   pagination: {},
-  count_data: 0,
+  count_data: {},
 };
 
 export const fetchEvents = createAsyncThunk(
-  "GET /admins/manage/event/id",
+  "GET /admins/manage/event/communityId",
   APIEventCommunity.getEventCommunities
 );
 
@@ -23,7 +23,7 @@ export const fetchEventsSlice = createSlice({
       state.message = "";
       state.data = {};
       state.pagination = {};
-      state.count_data = 0;
+      state.count_data = {};
     },
   },
   extraReducers: (builder) => {

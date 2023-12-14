@@ -7,12 +7,13 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pagination } from "@/components/pagination";
 import { LayoutDashboardContent } from "@/layout";
 import { ArrowLeftSquare } from "react-iconly";
 import { Add } from "iconsax-react";
-
+import { FilterButton } from "@/components/buttons";
+import { useCustomToast, useDebounce } from "@/hooks";
 import { ModalAddEventCommunity } from "@/components/modal";
 import { TableManageEventCommunity } from "@/components/tables/manage-event-community/TableManageEventCommunity";
 
@@ -51,17 +52,25 @@ function ManageEventCommunity() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [activeFilter, setActiveFilter] = useState("Berjalan");
+  const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
+  const [activeFilter, setActiveFilter] = useState({
+    label: "Berjalan",
+    value: "",
+  });
 
   const fetchEventsData = useCallback(() => {
     dispatch(
-      fetchEvents({
-        search: searchTerm,
-        limit: itemsPerPage,
-        page: currentPage,
-      })
+      fetchEvents(
+        {
+          status: activeFilter.value,
+          search: searchTerm,
+          limit: itemsPerPage,
+          page: currentPage,
+        },
+        [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]
+      )
     );
-  }, [dispatch, searchTerm, itemsPerPage, currentPage]);
+  });
 
   useEffect(() => {
     fetchEventsData();
@@ -83,7 +92,7 @@ function ManageEventCommunity() {
       if (deleteStatus !== "idle") dispatch(clearDeleteEventState());
       if (createStatus !== "idle") dispatch(clearDeleteEventState());
     };
-  }, [deleteStatus, updateStatus, createStatus, dispatch, fetchEventsData]);
+  }, [fetchEventsData, deleteStatus, updateStatus, createStatus, dispatch]);
 
   useEffect(() => {
     return () => {
@@ -102,7 +111,16 @@ function ManageEventCommunity() {
   //   setSearchTerm(term);
   //   setCurrentPage(1);
   // };
-
+  const filteredDataCount = (filter) => {
+    switch (filter) {
+      case "Berjalan":
+        return count_data?.count_data || 1;
+      case "Melewati Tenggat":
+        return count_data?.count_data || 2;
+      default:
+        return count_data?.total_data || 3;
+    }
+  };
   const handleAddModal = () => {
     onOpen();
   };
@@ -123,10 +141,16 @@ function ManageEventCommunity() {
   useCustomToast(deleteStatus, deleteMessage);
   useCustomToast(updateStatus, updateMessage);
 
-  // const handleFilterClick = (filter) => {
-  //   setActiveFilter(filter);
-  //   setCurrentPage(1);
-  // };
+  const handleFilterClick = (filter) => {
+    setCurrentPage(1);
+    if (filter === "Aktif") {
+      setActiveFilter({ label: "Berjalan", value: "Berjalan" });
+    } else if (filter === "Belum Berjalan") {
+      setActiveFilter({ label: "Belum Berjalan", value: "melewati tenggat" });
+    } else {
+      setActiveFilter({ label: "Semua", value: "" });
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -154,7 +178,7 @@ function ManageEventCommunity() {
           justifyContent={"space-between"}
           alignItems="center"
         >
-          {/* <ButtonGroup spacing={0}>
+          <ButtonGroup spacing={0}>
             {buttonLabels.map((label) => (
               <FilterButton
                 key={label}
@@ -164,7 +188,7 @@ function ManageEventCommunity() {
                 filteredDataCount={filteredDataCount}
               />
             ))}
-          </ButtonGroup> */}
+          </ButtonGroup>
           <Flex justifyContent="flex-end" alignItems="center">
             <Button
               leftIcon={<ArrowLeftSquare />}

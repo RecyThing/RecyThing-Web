@@ -14,9 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { updateEventSelector } from "@/store/event-community";
 import { CloseSquare } from "react-iconly";
 import * as Fields from "./CommunityEditFormFields";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./CommunityEventFormSchema";
+import { useSelector } from "react-redux";
 export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
   const {
     control,
@@ -24,12 +27,12 @@ export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
     handleSubmit,
     setValue,
     reset,
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const { status } = useSelector(updateEventSelector);
 
   const handleUpdate = (data) => {
     onUpdate(data);
-    reset();
-    onClose();
   };
 
   const imageRef = useRef(null);
@@ -37,30 +40,36 @@ export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
   const handleImageRef = () => {
     imageRef.current.click();
   };
-
-  useEffect(() => {
-    console.log("Data", data);
-    if (data) {
-      setValue("communityImage", data?.image);
-      setValue("communityName", data?.name);
-      setValue("communityDescription", data?.descriptions);
-      setValue("communityLocation", data?.location);
-      setValue("CommunityLinkLocationEvent", data?.gMaps);
-      setValue("CommunityLinkGoogleForm", data?.gForms);
-      setValue("KuotaMaksimal", data?.kuota);
-      setValue("CommunityDateField", data?.tanggal);
-      setValue("selectUnit", data?.status);
-    }
-  }, [data, setValue]);
-
   useEffect(() => {
     if (!isOpen) {
       reset();
     }
   }, [isOpen, reset]);
+
+  useEffect(() => {
+    // console.log("Data", data);
+    if (data) {
+      setValue("communityImage", data?.image);
+      setValue("communityName", data?.title);
+      setValue("communityDescription", data?.description);
+      setValue("communityLocation", data?.location);
+      setValue("CommunityLinkLocationEvent", data?.maplink);
+      setValue("CommunityLinkGoogleForm", data?.formlink);
+      setValue("KuotaMaksimal", data?.kuota);
+      setValue("CommunityDateField", data?.date);
+      setValue("selectUnit", data?.status);
+    }
+  }, [data, setValue]);
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={"5xl"}
+        isCentered
+        closeOnOverlayClick={status !== "loading"}
+      >
         <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
 
         <ModalContent
@@ -183,6 +192,7 @@ export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
                 py={"1.75rem"}
                 _hover={{ bg: "#333333" }}
                 onClick={onClose}
+                isDisabled={status === "loading"}
               >
                 Batal
               </Button>
@@ -194,6 +204,7 @@ export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
                 px={"3rem"}
                 py={"1.75rem"}
                 _hover={{ bg: "#2DA22D" }}
+                isDisabled={status === "loading"}
               >
                 Simpan
               </Button>

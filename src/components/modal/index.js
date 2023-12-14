@@ -14,6 +14,7 @@ export { ModalEditDetailCommunity } from "./community/ModalEditDetailCommunity";
 export { ModalEditDetailTransaction } from "./transaction-list/ModalEditDetailTransaction";
 export { ModalEditRubbishCategory } from "./rubbish-category/ModalEditRubbishCategory";
 export { ModalEditVoucher } from "./voucher-list/ModalEditVoucher";
+export { ModalEditCommunity } from "./event-community/ModalEditCommunity";
 
 export { ModalViewCommunityModal } from "./community/ModalViewDetailCommunity";
 export { ModalViewDetailDataDropPoint } from "./data-drop-point/ModalViewDetailDataDropPoint";
@@ -22,6 +23,7 @@ export { ModalViewDetailWasteExchange } from "./waste-exchange/ModalViewDetailWa
 export { ModalViewMissionApproval } from "./mission-approval/ModalViewMissionApproval";
 export { ModalViewUserDetail } from "./manage-user/ModalViewUserDetail";
 export { ModalViewReportingApproval } from "./data-reporting/ModalViewReportingApproval";
+export { ModalViewDetailEvent } from "./event-community/ModalViewDetailEvent";
 
 export { ModalApprove } from "./action-feedback/ModalApprove";
 export { ModalDelete } from "./action-feedback/ModalDelete";
@@ -34,4 +36,3 @@ export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
 export { ModalAddMission } from "./mission-list/ModalAddMission";
 export { ModalEditMission } from "./mission-list/ModalEditMission";
 export { ModalViewDetailMission } from "./mission-list/ModalViewDetailMission";
-
