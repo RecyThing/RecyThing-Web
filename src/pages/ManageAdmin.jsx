@@ -26,7 +26,6 @@ function ManageAdmin() {
   const {
     data = [],
     status,
-    // pagination,
     count_data,
     message,
   } = useSelector(fetchAdminsSelector);

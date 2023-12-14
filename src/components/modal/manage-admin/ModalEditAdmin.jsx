@@ -34,8 +34,6 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
 			setValue("image", data.image);
 			setValue("fullname", data.fullname);
 			setValue("email", data.email);
-			// setValue("password", data.password);
-			// setValue("confirm_password", data.confirm_password);
 			setValue("status", data.status);
 		}
 	}, [data, setValue]);
@@ -89,7 +87,7 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
 								<ModalBody
 									as={Flex}
 									direction={"column"}
-									gap={"0.5rem"}
+									gap={"1rem"}
 								>
 									<Fields.AdminImageFields
 										control={control}
@@ -112,7 +110,7 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
 									/>
 									<Fields.AdminPasswordFields
 										name={"confirm_password"}
-										label={"Konfirmasi Password"}
+										label={"Konfirmasi Kata Sandi"}
 										control={control}
 										error={errors.confirm_password}
 									/>

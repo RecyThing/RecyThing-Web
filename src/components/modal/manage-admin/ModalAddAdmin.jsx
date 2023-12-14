@@ -72,7 +72,7 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
 								<ModalBody
 									as={Flex}
 									direction={"column"}
-									gap={"0.5rem"}
+									gap={"1rem"}
 								>
 									<Fields.AdminImageFields
 										control={control}
@@ -96,7 +96,7 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
 									/>
 									<Fields.AdminPasswordFields
 										name={"confirm_password"}
-										label={"Konfirmasi Password"}
+										label={"Konfirmasi Kata Sandi"}
 										control={control}
 										error={errors.confirm_password}
 									/>

@@ -174,7 +174,7 @@ export function AdminPasswordFields({ name, control, error, label }) {
 				<FormControl isInvalid={error}>
 					<div className="relative">
 						<InputWithLogo
-							label={label || "Kata Sandi"}
+							label={label || "Masukkan Kata Sandi"}
 							Logo={Lock}
 							type={type}
 							error={error}

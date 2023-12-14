@@ -41,9 +41,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
 	}, [dispatch, deleteStatusAdmin, onCloseDelete]);
 
 	const handleSubmitEdited = (data) => {
-    console.log(data);
     data.image = data.image[0];
-    console.log(data);
 		dispatch(updateAdmin({ id, data }));
 	};
 
