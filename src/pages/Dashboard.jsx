@@ -31,7 +31,7 @@ function Dashboard() {
   }, [filter]);
 
   if (isLoading || !dashboardData) return <Spinner />
-  
+
   return (
     <LayoutDashboardContent>
       <div className="flex justify-between">
@@ -68,11 +68,11 @@ function Dashboard() {
           filter={filter}
         />
         <InfoCard
-          title="Transaksi Tukar Poin"
-          status={dashboardData.exchange?.status}
-          count={parseInt(dashboardData.exchange?.total_exchange)}
+          title="Pemasukan"
+          status={dashboardData.income?.status}
+          count={parseInt(dashboardData.income?.total_income)}
           image={voucherImage}
-          percentage={parseInt(dashboardData.exchange.percentage)}
+          percentage={parseInt(dashboardData.income.percentage)}
           filter={filter}
         />
         <InfoCard

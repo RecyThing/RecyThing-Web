@@ -16,7 +16,7 @@ export function ArticleDetail({ setEditArticleData, currArticleData, onClose }) 
         <div className="flex justify-between">
           <div className="flex gap-2">
             <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap max-w-[270px] text-[#35CC33]">
-              {currArticleData.categories.map(item => item.category).join(" ")}
+              {currArticleData.categories?.map(item => item.category).join(" ")}
             </p>
             <div className="my-auto h-3 w-[1px] bg-[#C7C9D9]" />
             <p className="text-sm text-[#808080]">{formatDateToLocalDate(currArticleData.created_at, "numeric")}</p>
@@ -31,7 +31,7 @@ export function ArticleDetail({ setEditArticleData, currArticleData, onClose }) 
         </div>
 
         <div className="mt-2 max-h-[353px] overflow-y-scroll">
-          {Parse(currArticleData.content)}
+          {Parse(currArticleData.content || "")}
         </div>
 
         <div className="mt-8 flex gap-3 justify-between text-white">
