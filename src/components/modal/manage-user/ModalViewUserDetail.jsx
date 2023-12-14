@@ -22,7 +22,7 @@ const LABELS = {
  * @returns {JSX.Element} The ModalViewUserDetail component.
  */
 export function ModalViewUserDetail({ isOpen, onClose }) {
-	const { data, status, message } = useSelector(fetchUserSelector);
+  const { data, status, message } = useSelector(fetchUserSelector);
 
 	return (
 		<Modal

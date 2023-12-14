@@ -55,6 +55,7 @@ import {
   fetchMissionsReducer,
   updateMissionReducer,
 } from "./mission";
+import { createAdminReducer, deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer, updateAdminReducer } from "./admin";
 
 import {
 	createRecyclesReducer,
@@ -122,6 +123,12 @@ export const store = configureStore({
     updateMission: updateMissionReducer,
     deleteMission: deleteMissionReducer,
     createMission: createMissionReducer,
+
+    fetchAdmins: fetchAdminsReducer,
+    fetchAdmin: fetchAdminReducer,
+    updateAdmin: updateAdminReducer,
+    deleteAdmin: deleteAdminReducer,
+    createAdmin: createAdminReducer,
   },
 
 });
