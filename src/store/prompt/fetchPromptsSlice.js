@@ -1,7 +1,6 @@
 import { APIPrompt } from "@/apis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-// ini kalo udah dibenerin response bodynya dari BE sesuaiin lagi ya @Putri-R
 const initialState = {
 	status: "idle",
 	message: "",
