@@ -8,27 +8,44 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { fetchRecycleSelector } from "@/store/waste-exchange";
+import { Spinner } from "@/components/spinner";
 
 const dataTitle = {
-	exchangeId: "ID Penukaran",
-	username: "Nama Lengkap",
-	userEmail: "Email",
+	id: "ID Penukaran",
+	name: "Nama Lengkap",
+	email: "Email",
 	point: "Poin",
-	transactionTime: "Tanggal Transaksi",
-	DropPointLocation: "Lokasi Drop Point",
+	created_at: "Tanggal Transaksi",
+	drop_point_name: "Lokasi Drop Point",
 	wasteType: "Jenis Sampah",
 	unit: "Satuan",
 };
 
-const dataTableContents = {
-	exchangeId: "PS001",
-	username: "John Doe",
-	userEmail: "johndoe@gmail.com",
-	transactionTime: "22 November 2000",
-	DropPointLocation: "Drop Point A",
-};
+function capitalizeWords(string) {
+	if (typeof string !== 'string' || string === undefined) {
+	 	return '';
+	}
+	
+	return string.replace(/\b\w/g, (char) => char.toUpperCase());
+}  
+
+function formatDate(isoDate) {
+	const options = {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	};
+  
+	const [datePart] = isoDate.split("T");
+	const formattedDate = new Date(datePart).toLocaleDateString("id-ID", options);
+	return formattedDate;
+}  
 
 export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
+	const { data, status, message } = useSelector(fetchRecycleSelector);
+
 	const detailWrapperStyles = {
 		display: "flex",
 		gap: "8px",
@@ -44,6 +61,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		width: "24px",
 		height: "auto",
 		color: "rgba(148, 148, 148, 1)",
+		flexShrink: 0
 	};
 
 	const detailGroupStyles = {
@@ -101,13 +119,9 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		onClose();
 	};
 
-	const data = [
-		{ wasteType: "Plastik", unit: 5, point: 500 },
-		{ wasteType: "Kertas", unit: 3, point: 700 },
-	];
-
-	const totalUnits = data.reduce((acc, curr) => acc + curr.unit, 0);
-	const totalPoint = data.reduce((acc, curr) => acc + curr.point, 0);
+	if (!isOpen) {
+		return null;
+	  }
 
 	return (
 		<Modal
@@ -124,154 +138,160 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 				borderRadius="12px"
 				className="max-h-[80vh] overflow-y-auto"
 			>
-				<ModalHeader>
-					<div className="flex justify-between font-medium">
-						<h5
-							className="text-xl"
-							style={{ color: "#828282" }}
-						>
-							{dataTitle.exchangeId} :
-							<span
-								className="text-xl ml-2"
-								style={{ color: "#333" }}
-							>
-								{dataTableContents.exchangeId}
-							</span>
-						</h5>
-						<CloseSquare
-							size="32"
-							color="rgba(130, 130, 130, 1)"
-							className="cursor-pointer"
-							onClick={handleClose}
-						/>
-					</div>
-				</ModalHeader>
-				<ModalBody>
-					<h6 className="text-base font-bold mb-6">Detail Informasi</h6>
-
-					<div className="flex flex-col gap-6">
-						<div className="flex">
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Profile style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
+				{status === "loading" && <Spinner containerSize={"lg"} />}
+				{status === "failed" && <p>{message}</p>}
+				{status === "success" && (
+					<>
+						<ModalHeader>
+							<div className="flex justify-between font-medium">
+								<h5
+									className="text-xl"
+									style={{ color: "#828282" }}
 								>
-									<div style={{ ...thStyles }}>{dataTitle.username}</div>
-									<div style={{ ...tdStyles }}>
-										{dataTableContents.username}
-									</div>
-								</div>
-							</div>
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Sms style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>{dataTitle.userEmail}</div>
-									<div style={{ ...tdStyles }}>
-										{dataTableContents.userEmail}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="flex">
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Calendar style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>{dataTitle.transactionTime}</div>
-									<div style={{ ...tdStyles }}>
-										{dataTableContents.transactionTime}
-									</div>
-								</div>
-							</div>
-							<div
-								className="items-center"
-								style={{ ...detailWrapperStyles }}
-							>
-								<Location style={{ ...detailIconStyles }} />
-								<div
-									className="items-start"
-									style={{ detailGroupStyles }}
-								>
-									<div style={{ ...thStyles }}>
-										{dataTitle.DropPointLocation}
-									</div>
-									<div style={{ ...tdStyles }}>
-										{dataTableContents.DropPointLocation}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</ModalBody>
-				<ModalFooter>
-					<div
-						className="mb-6"
-						style={{ width: "560px" }}
-					>
-						<Table>
-							<Thead>
-								<Tr>
-									<Th style={{ ...thTableStyles, width: "46px" }}>No</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.wasteType}</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.unit}</Th>
-									<Th style={{ ...thTableStyles }}>{dataTitle.point}</Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								{data.map((set, index) => (
-									<Tr
-										key={index + 1}
-										bg={index % 2 === 0 ? "#F2F2F5" : "white"}
-										borderBlock={"2px solid #C4C4C4"}
+									{dataTitle.id} :
+									<span
+										className="text-xl ml-2"
+										style={{ color: "#333" }}
 									>
-										<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
-										<Td style={{ ...tdTableStyles }}>{set.wasteType}</Td>
-										<Td style={{ ...tdTableStyles }}>{set.unit} kg</Td>
-										<Td
-											style={{
-												...tdTableStyles,
-												color: "#D4AF35",
-												fontWeight: 500,
-											}}
+										{data?.id}
+									</span>
+								</h5>
+								<CloseSquare
+									size="32"
+									color="rgba(130, 130, 130, 1)"
+									className="cursor-pointer"
+									onClick={handleClose}
+								/>
+							</div>
+						</ModalHeader>
+						<ModalBody>
+							<h6 className="text-base font-bold mb-6">Detail Informasi</h6>
+
+							<div className="flex flex-col gap-6">
+								<div className="flex">
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Profile style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
 										>
-											+{set.point}
-										</Td>
-									</Tr>
-								))}
-							</Tbody>
-						</Table>
-						<div className="grid grid-cols-4 mt-4">
-							<div className="col-span-2">
-								<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
+											<div style={{ ...thStyles }}>{dataTitle.name}</div>
+											<div style={{ ...tdStyles }}>
+												{capitalizeWords(data?.name)}
+											</div>
+										</div>
+									</div>
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Sms style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>{dataTitle.email}</div>
+											<div style={{ ...tdStyles }}>
+												{data?.email}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="flex">
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Calendar style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>{dataTitle.created_at}</div>
+											<div style={{ ...tdStyles }}>
+												{formatDate(data?.created_at)}
+											</div>
+										</div>
+									</div>
+									<div
+										className="items-center"
+										style={{ ...detailWrapperStyles }}
+									>
+										<Location style={{ ...detailIconStyles }} />
+										<div
+											className="items-start"
+											style={{ detailGroupStyles }}
+										>
+											<div style={{ ...thStyles }}>
+												{dataTitle.drop_point_name}
+											</div>
+											<div style={{ ...tdStyles }}>
+												{data?.drop_point_name}
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div className="col-span-1">
-								<p style={{ ...unitStyle, paddingLeft: "38px" }}>
-									{totalUnits} kg
-								</p>
+						</ModalBody>
+						<ModalFooter>
+							<div
+								className="mb-6"
+								style={{ width: "560px" }}
+							>
+								<Table>
+									<Thead>
+										<Tr>
+											<Th style={{ ...thTableStyles, width: "46px" }}>No</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.wasteType}</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.unit}</Th>
+											<Th style={{ ...thTableStyles }}>{dataTitle.point}</Th>
+										</Tr>
+									</Thead>
+									<Tbody>
+										{data.trash_exchange_details.map((detail, index) => (
+											<Tr
+												key={index + 1}
+												bg={index % 2 === 0 ? "#F2F2F5" : "white"}
+												borderBlock={"2px solid #C4C4C4"}
+											>
+												<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
+												<Td style={{ ...tdTableStyles }}>{detail.trash_type}</Td>
+												<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${capitalizeWords(detail.unit.toLowerCase() === 'kilogram' ? 'Kg' : detail.unit)}`}</Td>
+												<Td
+													style={{
+														...tdTableStyles,
+														color: "#D4AF35",
+														fontWeight: 500,
+													}}
+												>
+													+{detail.total_points}
+												</Td>
+											</Tr>
+										))}
+									</Tbody>
+								</Table>
+								<div className="grid grid-cols-4 mt-4">
+									<div className="col-span-2">
+										<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
+									</div>
+									<div className="col-span-1">
+										<p style={{ ...unitStyle, paddingLeft: "24px" }}>
+											{data?.total_unit}
+										</p>
+									</div>
+									<div className="col-span-1">
+										<p style={{ ...poinStyle, paddingLeft: "20px", whiteSpace: 'nowrap' }}>
+											+{data?.total_point}
+										</p>
+									</div>
+								</div>
 							</div>
-							<div className="col-span-1">
-								<p style={{ ...poinStyle, paddingLeft: "42px" }}>
-									+{totalPoint}
-								</p>
-							</div>
-						</div>
-					</div>
-				</ModalFooter>
+						</ModalFooter>
+					</>
+				)}
 			</ModalContent>
 		</Modal>
 	);

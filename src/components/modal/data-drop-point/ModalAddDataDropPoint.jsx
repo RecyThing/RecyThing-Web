@@ -94,7 +94,7 @@ export function ModalAddDataDropPoint({ isOpen, onClose, setToastMessage }) {
 		}).then((res) => {
 			setToastMessage({ status: "success", message: res.message });
 			onClose(true);
-		}).catch(err => setError(err.message)).finally(() => setIsLoading(false))
+		}).catch(err => setError(err.message)).finally(() => { setInputs(defaultInput); setIsLoading(false) })
 	}
 
 	useEffect(() => {

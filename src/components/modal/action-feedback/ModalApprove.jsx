@@ -1,27 +1,13 @@
-import {
-	Button,
-	Center,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
 import { ApproveIcon } from "@/components/icons";
+import { Button, Center, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from "@chakra-ui/react";
 
-export function ModalApprove({
-	isOpen,
-	onClose,
-	target,
-	title,
-	message,
-	onApprove,
-	approveStatus,
-}) {
-	const handleApprove = (target) => {
+/**
+ * ModalApprove is a modal component that is used to display approve modal.
+ * @param {{isOpen: boolean, onClose: () => void, target: string, title: string, message: string, onApprove: (target: string) => void, approveStatus: string | boolean}} props - The props object.
+ * @returns {JSX.Element} The ModalApprove component.
+ */
+export function ModalApprove({ isOpen, onClose, target, title, message, onApprove, approveStatus }) {
+	const handleApprove = () => {
 		onApprove(target);
 	};
 
@@ -85,7 +71,7 @@ export function ModalApprove({
 						py={"1.75rem"}
 						_hover={{ bg: "#333333" }}
 						onClick={onClose}
-						isLoading={approveStatus === "loading"}
+						isDisabled={approveStatus === "loading"}
 					>
 						Batal
 					</Button>
@@ -96,7 +82,7 @@ export function ModalApprove({
 						px={"3.5rem"}
 						py={"1.75rem"}
 						_hover={{ bg: "#2DA22D" }}
-						onClick={() => handleApprove(target)}
+						onClick={() => handleApprove()}
 						isLoading={approveStatus === "loading"}
 					>
 						Verifikasi

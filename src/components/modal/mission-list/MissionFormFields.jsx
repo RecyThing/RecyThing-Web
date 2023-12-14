@@ -44,6 +44,12 @@ const rules = {
   missionDescriptionStep: {
     required: "Tahapan / Tantangan Deskripsi misi tidak boleh kosong",
   },
+  missionTitleStage: {
+    required: "Tahapan / Tantangan Judul misi tidak boleh kosong",
+  },
+  missionDescriptionStage: {
+    required: "Tahapan / Tantangan Deskripsi misi tidak boleh kosong",
+  },
 };
 
 export function MissionImageField({
@@ -104,6 +110,7 @@ export function MissionImageField({
                     right={"0"}
                     bottom={"0"}
                     bg={"#00000066"}
+                    zIndex={10}
                   >
                     <Edit2 color="white" size={24} />
                   </Box>
@@ -116,7 +123,13 @@ export function MissionImageField({
               )}
               <Image src={frame} position={"absolute"} bottom={0}/>
             </Flex>
-            
+            <Text
+							color={error ? "red.500" : "#828282"}
+							fontSize={"sm"}
+							textAlign={"center"}
+						>
+							Max 5 Mb, Format JPG & JPEG
+						</Text>
           </Flex>
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>
@@ -260,6 +273,46 @@ export function MissionDescriptionStepField({ control, error, no, disabled }) {
             autoComplete={"off"}
             {...field}
             disabled={disabled}
+          />
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
+  );
+}
+
+export function MissionTitleStageField({ control, error }) {
+  return (
+    <Controller
+      name="missionTitleStage"
+      control={control}
+      rules={rules.missionTitleStage}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <InputWithoutLogo
+            label={"Judul"}
+            autoComplete={"off"}
+            {...field}
+          />
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      )}
+    />
+  );
+}
+
+export function MissionDescriptionStageField({ control, error }) {
+  return (
+    <Controller
+      name="missionDescriptionStage"
+      control={control}
+      rules={rules.missionDescriptionStage}
+      render={({ field }) => (
+        <FormControl isInvalid={error}>
+          <InputWithoutLogo
+            label={"Deskripsi"}
+            autoComplete={"off"}
+            {...field}
           />
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>

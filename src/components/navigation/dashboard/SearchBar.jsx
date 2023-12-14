@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-iconly";
 
-export function SearchBar({ onSearch, maxLength = 25, className }) {
+export function SearchBar({ onSearch, maxLength = 25, className, value }) {
 	const handleSearch = (e) => {
 		onSearch(e.target.value);
 	};
@@ -32,6 +31,7 @@ export function SearchBar({ onSearch, maxLength = 25, className }) {
 				py={"1.75rem"}
 				onChange={handleSearch}
 				maxLength={maxLength}
+				value={value}
 			/>
 		</InputGroup>
 	);

@@ -19,8 +19,8 @@ function AddArticle({ onClose, setToastMessage }) {
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     try {
       if (event.target.files && event.target.files[0]) {
-        if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("File harus image"); 
-        if (event.target.files[0].size > 5000000) return setErrorImage("Ukuran gambar terlalu besar"); 
+        if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("File harus image");
+        if (event.target.files[0].size > 5000000) return setErrorImage("Ukuran gambar terlalu besar");
         const objUrl = URL.createObjectURL(event.target.files[0]);
         setPreviewImage(objUrl);
         setArticleData(prev => ({ ...prev, image: event.target.files[0] }));
@@ -54,7 +54,7 @@ function AddArticle({ onClose, setToastMessage }) {
       <div className="mt-4 flex gap-9 pl-3 pr-6 py-6 rounded-xl min-h-[85vh] bg-white">
         <div className="flex-1">
           <p className="mb-2 text-sm font-medium">Masukkan Judul</p>
-          <input ref={titleWidth} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={50}
+          <input ref={titleWidth} onChange={(event) => setArticleData(prev => ({ ...prev, title: event.target.value }))} maxLength={100}
           className="w-full pl-6 py-4 rounded-xl border border-[#828282]" type="text" placeholder="Masukkan Judul Disini..." />
           <TextEditor titleWidth={titleWidth} setArticleData={setArticleData} peerHeight={categoryHeight} />
         </div>
@@ -73,7 +73,7 @@ function AddArticle({ onClose, setToastMessage }) {
           <p className="mt-2 text-sm text-center text-[#828282]">Max 5 Mb, Format JPG & JPEG</p>
           <div className="mt-auto flex gap-3 justify-between text-white">
             <button disabled={isLoading} onClick={() => onClose()} className="p-4 w-full rounded-lg bg-[#828282] disabled:opacity-50 hover:opacity-90">Batal</button>
-            <button disabled={isLoading || !articleData.title || !articleData.image || !articleData.content || !articleData.category_id.length > 0} 
+            <button disabled={isLoading || !articleData.title || !articleData.image || !articleData.content || !articleData.category_id.length > 0}
             onClick={handleCreateArticle} className="p-4 w-full rounded-lg bg-[#35CC33] disabled:opacity-50 hover:opacity-90 flex gap-2 justify-center">
               <span className="my-auto">Bagikan</span>
               {isLoading && <Spinner containerSize={6} width={6} height={6} />}

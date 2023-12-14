@@ -1,68 +1,97 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
+import {
+	clearFetchApprovalState,
+	clearFetchApprovalsState,
+	clearUpdateApprovalState,
+	fetchApprovals,
+	fetchApprovalsSelector,
+	updateApprovalSelector,
+} from "@/store/approval-mission";
+import { FilterButton } from "@/components/buttons";
+import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
-import { useState } from "react";
-import { FilterButton } from "@/components/buttons";
 import { TableMissionApproval } from "@/components/tables";
-import { LayoutDashboardContent } from "@/layout";
+import { useCustomToast, useDebounce } from "@/hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect, useState } from "react";
+import { Spinner } from "@/components/spinner";
 
-// dummy
-const DummyData = [];
-const names = ["Misi 1", "Misi 2", "Misi 3", "Misi 4", "Misi 5"];
-const users = ["Putri", " Budi", " Joko", " Andi", " Siti"];
-const months = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"Mei",
-	"Jun",
-	"Jul",
-	"Agu",
-	"Sep",
-	"Okt",
-	"Nov",
-	"Des",
-];
-const labels = ["Perlu Tinjauan", "Disetujui", "Ditolak"];
 const buttonLabels = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
 
-for (let i = 0; i < 50; i++) {
-	const id = `MIS${i < 10 ? `0${i}` : i}`;
-	const name = names[Math.floor(Math.random() * names.length)];
-	const username = users[Math.floor(Math.random() * users.length)];
-	const date = `${Math.floor(Math.random() * 30) + 1} ${
-		months[Math.floor(Math.random() * months.length)]
-	} 2023`;
-	const status = labels[Math.floor(Math.random() * labels.length)];
-	DummyData.push({ id, name, username, date, status });
-}
-// end dummy
-
 function MissionApproval() {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [activeFilter, setActiveFilter] = useState("Semua");
+	const dispatch = useDispatch();
+	const {
+		data = [],
+		status,
+		message,
+		count,
+	} = useSelector(fetchApprovalsSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(
+		updateApprovalSelector
+	);
+
+	const [_searchTerm, setSearchTerm] = useState("");
+	const searchTerm = useDebounce(_searchTerm, 500);
+
+	const [activeFilter, setActiveFilter] = useState({
+		label: "Semua",
+		value: "",
+	});
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
-	const filteredData = () => {
-		return DummyData.filter(
-			(data) =>
-				(activeFilter === "Semua" || data.status === activeFilter) &&
-				data.name.toLowerCase().includes(searchTerm.toLowerCase())
-		).sort((a) => (a.status === "Perlu Tinjauan" ? -1 : 1));
-	};
+	const fetchApprovalsData = useCallback(() => {
+		dispatch(
+			fetchApprovals({
+				filter: activeFilter.value,
+				limit: itemsPerPage,
+				page: currentPage,
+				search: searchTerm,
+			})
+		);
+	}, [dispatch, currentPage, itemsPerPage, activeFilter, searchTerm]);
+
+	useEffect(() => {
+		fetchApprovalsData();
+	}, [fetchApprovalsData]);
+
+	useEffect(() => {
+		if (updateStatus === "success" || updateStatus === "failed") {
+			fetchApprovalsData();
+			setSearchTerm("");
+			setCurrentPage(1);
+		}
+
+		return () => {
+			if (updateStatus !== "idle") dispatch(clearUpdateApprovalState());
+		};
+	}, [updateStatus, dispatch, fetchApprovalsData]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchApprovalsState());
+			dispatch(clearFetchApprovalState());
+			dispatch(clearUpdateApprovalState());
+		};
+	}, [dispatch]);
+
+	const filteredData = Object.values(data).filter((approval) => {
+		return approval.user?.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
 	const filteredDataCount = (filter) => {
-		return DummyData.filter((data) =>
-			filter === "Semua" ? true : data.status === filter
-		).length;
+		switch (filter) {
+			case "Perlu Tinjauan":
+				return count?.count_pending || 0;
+			case "Disetujui":
+				return count?.count_approved || 0;
+			case "Ditolak":
+				return count?.count_rejected || 0;
+			default:
+				return count?.total_count || 0;
+		}
 	};
-
-	const paginatedData = filteredData().slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
@@ -70,9 +99,19 @@ function MissionApproval() {
 	};
 
 	const handleFilterClick = (filter) => {
-		setActiveFilter(filter);
 		setCurrentPage(1);
+		if (filter === "Perlu Tinjauan") {
+			setActiveFilter({ label: "Perlu Tinjauan", value: "perlu tinjauan" });
+		} else if (filter === "Disetujui") {
+			setActiveFilter({ label: "Disetujui", value: "disetujui" });
+		} else if (filter === "Ditolak") {
+			setActiveFilter({ label: "Ditolak", value: "ditolak" });
+		} else {
+			setActiveFilter({ label: "Semua", value: "" });
+		}
 	};
+
+	useCustomToast(updateStatus, updateMessage);
 
 	return (
 		<LayoutDashboardContent>
@@ -99,7 +138,7 @@ function MissionApproval() {
 							<FilterButton
 								key={label}
 								label={label}
-								activeFilter={activeFilter}
+								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
 							/>
@@ -107,18 +146,20 @@ function MissionApproval() {
 					</ButtonGroup>
 					<SearchBar onSearch={handleSearch} />
 				</Flex>
-				<TableMissionApproval
-					currentPage={currentPage}
-					data={paginatedData}
-					itemsPerPage={itemsPerPage}
-				/>
-				<Pagination
-					currentPage={currentPage}
-					itemsPerPage={itemsPerPage}
-					onChangeItemsPerPage={setItemsPerPage}
-					onChangePage={setCurrentPage}
-					totalItems={filteredData().length}
-				/>
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableMissionApproval data={filteredData} />
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={filteredDataCount(activeFilter.label)}
+						/>
+					</>
+				)}
 			</Flex>
 		</LayoutDashboardContent>
 	);

@@ -16,7 +16,7 @@ function ArticleCategory({ categories, articleData, setArticleData }) {
       <div>
         {showCategory && (
           <div className="grid grid-cols-2 gap-y-5 px-6 pb-6 pt-12 mt-[-32px] rounded-xl border border-[#828282]">
-            {categories && categories.map((category, index) => <Checkbox onChange={(event) => setArticleData(prev => ({ ...prev, category_id: event.target.checked ? 
+            {categories && categories?.map((category, index) => <Checkbox onChange={(event) => setArticleData(prev => ({ ...prev, category_id: event.target.checked ?
             [...prev.category_id, category.id] : prev.category_id.filter(id => id !== category.id).filter(item => item.category !== category.trash_type) }))} 
             isChecked={articleData.category_id.includes(category.id)}
             key={index} colorScheme={"mainGreen"} className="flex-1 w-fit">{category.trash_type}</Checkbox>)}

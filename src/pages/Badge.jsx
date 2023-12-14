@@ -9,6 +9,11 @@ import { Heading, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "@/components/spinner";
+import { useCustomToast } from "@/hooks";
+import {
+  clearPatchAchievementsState,
+  patchAchievementsSelector,
+} from "@/store/achievements";
 
 function Badge() {
   const {
@@ -17,15 +22,23 @@ function Badge() {
     message: messageFetch,
     shouldFetchLatestAchievements,
   } = useSelector(fetchAchievementsSelector);
+
+  const { status: statusPatch, message: messagePatch } = useSelector(
+    patchAchievementsSelector
+  );
+  useCustomToast(statusPatch, messagePatch);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAchievements());
-
     if (shouldFetchLatestAchievements) {
       dispatch(toggleShouldFetchLatestAchievements());
       dispatch(fetchAchievements());
     }
+    return () => {
+      dispatch(clearPatchAchievementsState());
+    };
   }, [dispatch, shouldFetchLatestAchievements]);
 
   return (

@@ -1,34 +1,12 @@
-import { Spinner } from "@/components/spinner";
-import { fetchUserSelector } from "@/store/user";
-import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
-import {
-	Avatar,
-	Box,
-	Button,
-	Flex,
-	IconButton,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-} from "@chakra-ui/react";
-import {
-	Calendar,
-	CloseSquare,
-	Location,
-	Message,
-	TicketStar,
-	TickSquare,
-	User,
-} from "react-iconly";
+import { Avatar, Box, Button, Flex, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
+import { Calendar, CloseSquare, Location, Message, TicketStar, TickSquare, User } from "react-iconly";
 import { DetailUserField } from "./DetailUserField";
+import { fetchUserSelector } from "@/store/user";
+import { formatDateToCustomDate, formatDateToLocalDate, formatWithCommas } from "@/utils";
+import { Spinner } from "@/components/spinner";
 import { useSelector } from "react-redux";
 
-const labels = {
+const LABELS = {
 	fullname: { title: "Nama Pengguna", icon: <User /> },
 	email: { title: "Email", icon: <Message /> },
 	date_of_birth: { title: "Tanggal Lahir", icon: <Calendar /> },
@@ -38,6 +16,11 @@ const labels = {
 	created_at: { title: "Akun Terdaftar", icon: null },
 };
 
+/**
+ * ModalViewUserDetail is a modal component that is used to display user detail.
+ * @param {{isOpen: boolean, onClose: () => void}} props - The props object.
+ * @returns {JSX.Element} The ModalViewUserDetail component.
+ */
 export function ModalViewUserDetail({ isOpen, onClose }) {
 	const { data, status, message } = useSelector(fetchUserSelector);
 
@@ -69,10 +52,7 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 							>
 								<Avatar
 									size={"lg"}
-									src={
-										data.image ||
-										`https://ui-avatars.com/api/?name=${data.fullname}&background=0D8ABC&color=fff&size=128`
-									}
+									src={data.image || `https://ui-avatars.com/api/?name=${data.fullname}&background=0D8ABC&color=fff&size=128`}
 								/>
 								<Flex
 									ml={"1.5rem"}
@@ -94,7 +74,7 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 											fontWeight={"medium"}
 											color={"#828282"}
 										>
-											{labels.created_at.title} :{" "}
+											{LABELS.created_at.title} :{" "}
 										</Text>
 										<Text
 											as={"span"}
@@ -135,35 +115,37 @@ export function ModalViewUserDetail({ isOpen, onClose }) {
 								Detail Informasi
 							</Text>
 							<DetailUserField
-								icon={labels.fullname.icon}
-								title={labels.fullname.title}
+								icon={LABELS.fullname.icon}
+								title={LABELS.fullname.title}
 								value={data.fullname}
 								casing={"capitalize"}
 							/>
 							<DetailUserField
-								icon={labels.email.icon}
-								title={labels.email.title}
+								icon={LABELS.email.icon}
+								title={LABELS.email.title}
 								value={data.email}
 							/>
 							<DetailUserField
-								icon={labels.date_of_birth.icon}
-								title={labels.date_of_birth.title}
+								icon={LABELS.date_of_birth.icon}
+								title={LABELS.date_of_birth.title}
 								value={formatDateToLocalDate(data.date_of_birth)}
 							/>
 							<DetailUserField
-								icon={labels.point.icon}
-								title={labels.point.title}
-								value={data.point}
+								icon={LABELS.point.icon}
+								title={LABELS.point.title}
+								value={formatWithCommas(data.point)}
 							/>
 							<DetailUserField
-								icon={labels.purpose.icon}
-								title={labels.purpose.title}
+								icon={LABELS.purpose.icon}
+								title={LABELS.purpose.title}
 								value={data.purpose}
+								casing={"capitalize"}
 							/>
 							<DetailUserField
-								icon={labels.address.icon}
-								title={labels.address.title}
+								icon={LABELS.address.icon}
+								title={LABELS.address.title}
 								value={data.address}
+								casing={"capitalize"}
 							/>
 						</ModalBody>
 						<ModalFooter p={0}>

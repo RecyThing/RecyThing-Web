@@ -1,10 +1,10 @@
 import { Badge, Td, Text } from "@chakra-ui/react";
 
-export function TextCell({ content, ...props }) {
+export function TextCell({ content, maxWidth = "8rem", ...props }) {
 	return (
 		<Td
 			color={"#383838"}
-			maxW={"12.5rem"}
+			maxW={maxWidth}
 			isTruncated
 		>
 			<Text {...props}>{content}</Text>
@@ -206,10 +206,7 @@ export function NotFoundCell({ count }) {
 }
 
 export function TruncatedCell({ content, maxCharLength, maxWidth }) {
-	const truncatedContent =
-		content.length > maxCharLength
-			? `${content.substring(0, maxCharLength)}...`
-			: content;
+	const truncatedContent = content.length > maxCharLength ? `${content.substring(0, maxCharLength)}...` : content;
 
 	return (
 		<Td

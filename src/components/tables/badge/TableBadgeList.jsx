@@ -1,4 +1,4 @@
-import { Edit } from "react-iconly";
+import {  Edit2 } from "iconsax-react";
 import { BaseTable } from "../base-table/BaseTable";
 import { TableBodyRow } from "../base-table/TableRows";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
@@ -7,7 +7,11 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ModalEditBadge } from "../../modal/badge/ModalEditBadge";
-import { patchAchievements } from "@/store/achievements";
+import {
+  patchAchievements,
+  toggleShouldFetchLatestAchievements,
+} from "@/store/achievements";
+// import { toggleShouldFetchLatestAchievements } from "@/store/achievements/getAchievementsSlice";
 
 const TableHeads = [
   "No",
@@ -33,7 +37,10 @@ export function TableBadgeList({ data }) {
   };
 
   const handleSubmitModal = (data) => {
-    dispatch(patchAchievements({ id: selectedRow.id, data }));
+    dispatch(patchAchievements({ id: selectedRow?.id, data })).then(() => {
+      onCloseView();
+      dispatch(toggleShouldFetchLatestAchievements());
+    });
   };
 
   return (
@@ -65,15 +72,17 @@ export function TableBadgeList({ data }) {
             <TextCell content={row.total_claimed} />
             <TextCell content={row.target_point} />
             <CenteredCell>
-              <CustomIconButton
-                icon={<Edit />}
-                colorScheme={"yellow"}
-                hoverColor={"green"}
-                variant={"solid"}
-                size={"sm"}
-                mr={2}
-                onClick={() => handleEditModal(row)}
-              />
+              {rowIndex !== 3 && (
+                <CustomIconButton
+                  icon={<Edit2 />}
+                  colorScheme={"yellow"}
+                  hoverColor={"green"}
+                  variant={"solid"}
+                  size={"sm"}
+                  mr={2}
+                  onClick={() => handleEditModal(row)}
+                />
+              )}
             </CenteredCell>
           </TableBodyRow>
         ))}
