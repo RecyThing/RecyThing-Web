@@ -1,32 +1,30 @@
-import {
-	Button,
-	Grid,
-	GridItem,
-	Heading,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-} from "@chakra-ui/react";
-import * as Fields from "./VoucherFormFields";
+import { Button, Grid, GridItem, Heading, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { fetchVoucherSelector, updateVoucherSelector } from "@/store/voucher";
+import { schema } from "./VoucherFormSchema";
+import { Spinner } from "@/components/spinner";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { fetchVoucherSelector, updateVoucherSelector } from "@/store/voucher";
 import { useSelector } from "react-redux";
-import { Spinner } from "@/components/spinner";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Fields from "./VoucherFormFields";
 
+/**
+ * ModalEditVoucher is a modal component that is used to edit voucher data.
+ * @param {{isOpen: boolean, onClose: () => void, onSubmit: (data: any) => void}} props - The props object.
+ * @returns {JSX.Element} The ModalEditVoucher component.
+ */
 export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 	const {
-		handleSubmit,
 		control,
 		formState: { errors },
+		handleSubmit,
 		reset,
 		setValue,
-	} = useForm();
+	} = useForm({
+		resolver: yupResolver(schema),
+	});
 
-	const { data, status, message } = useSelector(fetchVoucherSelector);
+	const { data, status } = useSelector(fetchVoucherSelector);
 	const { status: updateStatus } = useSelector(updateVoucherSelector);
 
 	const imageRef = useRef();
@@ -39,7 +37,6 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 
 	const handleOnSubmit = (data) => {
 		onSubmit(data);
-		reset();
 	};
 
 	useEffect(() => {
@@ -65,6 +62,7 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 			onClose={onClose}
 			size={"5xl"}
 			isCentered
+			closeOnOverlayClick={updateStatus !== "loading"}
 		>
 			<ModalOverlay
 				bg={"#0000000D"}
@@ -75,11 +73,9 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 				gap={"1.5rem"}
 				py={"1rem"}
 			>
-				{(status === "loading" || updateStatus === "loading") && (
-					<Spinner containerSize={"xl"} />
-				)}
-				{status === "failed" && <div>{message}</div>}
-				{status === "success" && updateStatus === "idle" && (
+				{status === "loading" ? (
+					<Spinner containerSize={"lg"} />
+				) : (
 					<>
 						<ModalHeader pb={"0"}>
 							<Heading
@@ -100,7 +96,7 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 							>
 								<Fields.VoucherImageField
 									control={control}
-									error={errors.voucherImage}
+									error={errors.image}
 									imageRef={imageRef}
 									handleImageRef={handleImageRef}
 								/>
@@ -150,10 +146,8 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 									px={"3.5rem"}
 									py={"1.75rem"}
 									_hover={{ bg: "#333333" }}
-									onClick={() => {
-										reset();
-										onClose();
-									}}
+									onClick={onClose}
+									isDisabled={updateStatus === "loading"}
 								>
 									Batal
 								</Button>
@@ -165,6 +159,7 @@ export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 									py={"1.75rem"}
 									_hover={{ bg: "#2DA22D" }}
 									type="submit"
+									isLoading={updateStatus === "loading"}
 								>
 									Ubah Data
 								</Button>

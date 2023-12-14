@@ -8,12 +8,7 @@ const initialState = {
 	pagination: {},
 	count_data: 0,
 };
-
-export const fetchUsers = createAsyncThunk(
-	"GET /admins/manage/users",
-	APIUser.getUsers
-);
-
+export const fetchUsers = createAsyncThunk("GET /admins/manage/users", APIUser.getUsers);
 export const fetchUsersSlice = createSlice({
 	name: "fetchUsers",
 	initialState,

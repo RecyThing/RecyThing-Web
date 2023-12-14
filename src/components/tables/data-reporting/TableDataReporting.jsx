@@ -1,63 +1,35 @@
-import { useState } from "react";
-import { Button, ButtonGroup, useDisclosure } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
+import { Button, ButtonGroup, useDisclosure } from "@chakra-ui/react";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye } from "iconsax-react";
-import { TableBodyRow } from "../base-table/TableRows";
-import {
-	ModalApprove,
-	ModalReject,
-	ModalRejectionReason,
-	ModalViewReportingApproval,
-} from "@/components/modal";
-import { useDispatch, useSelector } from "react-redux";
-import {
-	fetchDataReport,
-	patchDataReport,
-	patchDataReportSelector,
-} from "@/store/report";
+import { fetchDataReport, patchDataReport, patchDataReportSelector } from "@/store/report";
 import { formatDateToLocalDate } from "@/utils";
+import { ModalApprove, ModalReject, ModalRejectionReason, ModalViewReportingApproval } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-const TableHead = [
-	"Report ID",
-	"Tipe Laporan",
-	"Pelapor",
-	"Lokasi",
-	"Tanggal",
-	"Status",
-	"View",
-	"Aksi",
-];
+const TABLEHEADS = ["Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal", "Status", "View", "Aksi"];
 
+/**
+ * TableDataReporting is a table component that is used to display data reporting.
+ * @param {{data: any[]}} props - The props object.
+ * @returns {JSX.Element} The TableDataReporting component.
+ */
 export function TableDataReporting({ data }) {
-	const {
-		isOpen: isOpenView,
-		onOpen: onOpenView,
-		onClose: onCloseView,
-	} = useDisclosure();
+	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
+	const { isOpen: isOpenApprove, onOpen: onOpenApprove, onClose: onCloseApprove } = useDisclosure();
+	const { isOpen: isOpenReject, onOpen: onOpenReject, onClose: onCloseReject } = useDisclosure();
+	const { isOpen: isOpenRejectionReason, onOpen: onOpenRejectionReason, onClose: onCloseRejectionReason } = useDisclosure();
 
-	const {
-		isOpen: isOpenApprove,
-		onOpen: onOpenApprove,
-		onClose: onCloseApprove,
-	} = useDisclosure();
+	const [id, setId] = useState(null);
 
-	const {
-		isOpen: isOpenReject,
-		onOpen: onOpenReject,
-		onClose: onCloseReject,
-	} = useDisclosure();
-
-	const {
-		isOpen: isOpenRejectionReason,
-		onOpen: onOpenRejectionReason,
-		onClose: onCloseRejectionReason,
-	} = useDisclosure();
-
+	const dispatch = useDispatch();
 	const { status } = useSelector(patchDataReportSelector);
 
 	const handleBadges = (status) => {
+		status = status.toLowerCase();
 		switch (status) {
 			case "perlu ditinjau":
 				return "yellow";
@@ -70,9 +42,16 @@ export function TableDataReporting({ data }) {
 		}
 	};
 
-	const [id, setId] = useState(null);
-	const dispatch = useDispatch()
-	
+	const handleTextAlign = () => {
+		return TABLEHEADS.map((head) => {
+			if (head === "Report ID" || head === "View" || head === "Aksi") {
+				return "center";
+			} else {
+				return "left";
+			}
+		});
+	};
+
 	const handleViewModal = (target) => {
 		dispatch(fetchDataReport(target));
 		onOpenView();
@@ -93,8 +72,8 @@ export function TableDataReporting({ data }) {
 	};
 
 	const handleRejectedData = (id, data) => {
-		dispatch(patchDataReport({ id, data })).then((res) => {
-			if (res.payload) {
+		dispatch(patchDataReport({ id, data })).then(() => {
+			if (status === "success") {
 				onCloseRejectionReason();
 			}
 		});
@@ -104,8 +83,8 @@ export function TableDataReporting({ data }) {
 		const data = {
 			status: "diterima",
 		};
-		dispatch(patchDataReport({ id, data })).then((res) => {
-			if (res.payload) {
+		dispatch(patchDataReport({ id, data })).then(() => {
+			if (status === "success") {
 				onCloseApprove();
 			}
 		});
@@ -122,20 +101,20 @@ export function TableDataReporting({ data }) {
 			<ModalApprove
 				isOpen={isOpenApprove}
 				onClose={onCloseApprove}
-				onApprove={handleApprovedData}
 				target={id}
 				title={"Apakah anda yakin ingin Menyetujui Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
+				onApprove={handleApprovedData}
 				approveStatus={status}
 			/>
 
 			<ModalReject
 				isOpen={isOpenReject}
 				onClose={onCloseReject}
-				onReject={handleModalRejectReason}
 				target={id}
 				title={"Apakah anda yakin ingin Menolak Laporan?"}
 				message={"Laporan tidak dapat dikembalikan"}
+				onReject={handleModalRejectReason}
 			/>
 
 			<ModalRejectionReason
@@ -148,14 +127,8 @@ export function TableDataReporting({ data }) {
 
 			<BaseTable
 				data={data}
-				heads={TableHead}
-				textAligns={TableHead.map((head) => {
-					if (head === "Report ID" || head === "View" || head === "Aksi") {
-						return "center";
-					} else {
-						return "left";
-					}
-				})}
+				heads={TABLEHEADS}
+				textAligns={handleTextAlign()}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
@@ -163,10 +136,25 @@ export function TableDataReporting({ data }) {
 						index={rowIndex}
 					>
 						<CenteredCell>{row.id}</CenteredCell>
-						<TextCell content={row.report_type} />
-						<TextCell content={row.name} />
-						<TextCell content={row.location} />
-						<TextCell content={formatDateToLocalDate(row.created_at)} />
+						<TextCell
+							content={row.report_type}
+							casing={"capitalize"}
+							isTruncated
+						/>
+						<TextCell
+							content={row.name}
+							casing={"capitalize"}
+							isTruncated
+						/>
+						<TextCell
+							content={row.location}
+							casing={"capitalize"}
+							isTruncated
+						/>
+						<TextCell
+							content={formatDateToLocalDate(row.created_at)}
+							isTruncated
+						/>
 						<BadgeCell
 							content={row.status}
 							colorScheme={handleBadges(row.status)}

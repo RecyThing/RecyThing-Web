@@ -6,12 +6,7 @@ const initialState = {
 	message: "",
 	data: {},
 };
-
-export const fetchUser = createAsyncThunk(
-	"GET /admins/manage/users/id",
-	APIUser.getUser
-);
-
+export const fetchUser = createAsyncThunk("GET /admins/manage/users/id", APIUser.getUser);
 export const fetchUserSlice = createSlice({
 	name: "fetchUser",
 	initialState,

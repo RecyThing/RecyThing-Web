@@ -1,26 +1,12 @@
-import {
-	Button,
-	Center,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
+import { Button, Center, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
 
-export function ModalReject({
-	isOpen,
-	onClose,
-	target,
-	onReject,
-	title,
-	message,
-	rejectStatus,
-}) {
+/**
+ * ModalReject is a modal component that is used to display reject modal.
+ * @param {{isOpen: boolean, onClose: () => void, target: string, title: string, message: string, onReject: (target: string) => void, rejectStatus: string | boolean}} props - The props object.
+ * @returns {JSX.Element} The ModalReject component.
+ */
+export function ModalReject({ isOpen, onClose, target, onReject, title, message, rejectStatus }) {
 	const handleReject = () => {
 		onReject(target);
 	};
@@ -31,6 +17,7 @@ export function ModalReject({
 			onClose={onClose}
 			size={"md"}
 			isCentered
+			closeOnOverlayClick={rejectStatus !== "loading"}
 		>
 			<ModalOverlay
 				bg={"#0000000D"}

@@ -57,6 +57,14 @@ import {
 } from "./mission";
 import { createAdminReducer, deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer, updateAdminReducer } from "./admin";
 
+import {
+	createRecyclesReducer,
+	deleteRecyclesReducer,
+	fetchRecycleReducer,
+	fetchRecyclesReducer,
+  fetchCategoriesReducer,
+} from "./waste-exchange";
+
 export const store = configureStore({
   reducer: {
     auth: loginReducer,
@@ -83,6 +91,12 @@ export const store = configureStore({
 
     fetchAchievements: fetchAchievementsReducer,
     patchAchievements: patchAchievementsReducer,
+
+		createRecycles: createRecyclesReducer,
+		deleteRecycles: deleteRecyclesReducer,
+		fetchRecycle: fetchRecycleReducer,
+		fetchRecycles: fetchRecyclesReducer,
+		fetchTrashCategories: fetchCategoriesReducer,
 
 		createPrompt: createPromptReducer,
 		deletePrompt: deletePromptReducer,
@@ -116,4 +130,5 @@ export const store = configureStore({
     deleteAdmin: deleteAdminReducer,
     createAdmin: createAdminReducer,
   },
+
 });

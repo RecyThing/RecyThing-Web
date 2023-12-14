@@ -7,16 +7,13 @@ const initialState = {
 	data: {},
 };
 
-export const fetchDataReport = createAsyncThunk(
-	"GET /admins/manage/reports/id",
-	APIDataReporting.getDataReporting
-);
+export const fetchDataReport = createAsyncThunk("GET /admins/manage/reports/id", APIDataReporting.getDataReporting);
 
 export const fetchDataReportSlice = createSlice({
 	name: "fetchDataReport",
 	initialState,
 	reducers: {
-		clearfetchDataReportState: (state) => {
+		clearDataReportState: (state) => {
 			state.status = "idle";
 			state.message = "";
 			state.data = {};

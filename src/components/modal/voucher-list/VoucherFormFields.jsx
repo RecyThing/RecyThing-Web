@@ -1,24 +1,16 @@
-import { UploadImageIcon } from "@/components/icons";
-import { Edit2 } from "iconsax-react";
+import { Box, Flex, FormControl, FormErrorMessage, Image, Input, Text } from "@chakra-ui/react";
 import { Calendar, Discount } from "react-iconly";
-import {
-	Box,
-	Flex,
-	FormControl,
-	FormErrorMessage,
-	Image,
-	Input,
-	Text,
-} from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
+import { Edit2 } from "iconsax-react";
 import { InputDate, InputTextArea, InputWithLogo } from "@/components/inputs";
+import { UploadImageIcon } from "@/components/icons";
 
-export function VoucherImageField({
-	control,
-	error,
-	imageRef,
-	handleImageRef,
-}) {
+/**
+ * VoucherImageField is a component that is used as a form field for voucher image.
+ * @param {{control: any, error: any, imageRef: ref, handleImageRef: () => void}} props - The props object.
+ * @returns {JSX.Element} The VoucherImageField component.
+ */
+export function VoucherImageField({ control, error, imageRef, handleImageRef }) {
 	return (
 		<Controller
 			name="image"
@@ -54,11 +46,7 @@ export function VoucherImageField({
 							{field.value ? (
 								<>
 									<Image
-										src={
-											field.value && field.value[0] instanceof File
-												? URL.createObjectURL(field.value[0])
-												: field.value
-										}
+										src={field.value && field.value[0] instanceof File ? URL.createObjectURL(field.value[0]) : field.value}
 										alt={"voucher image"}
 										aspectRatio={"4/3"}
 										objectFit={"cover"}
@@ -81,9 +69,7 @@ export function VoucherImageField({
 							) : (
 								<>
 									<UploadImageIcon color={error ? "#E53535" : "#828282"} />
-									<Text color={error ? "red.500" : "#828282"}>
-										Unggah Gambar Reward
-									</Text>
+									<Text color={error ? "red.500" : "#828282"}>Unggah Gambar Reward</Text>
 								</>
 							)}
 						</Flex>
@@ -107,6 +93,11 @@ export function VoucherImageField({
 	);
 }
 
+/**
+ * VoucherNameField is a component that is used as a form field for voucher name.
+ * @param {{control: any, error: any}} props - The props object.
+ * @returns {JSX.Element} The VoucherNameField component.
+ */
 export function VoucherNameField({ control, error }) {
 	return (
 		<Controller
@@ -128,6 +119,11 @@ export function VoucherNameField({ control, error }) {
 	);
 }
 
+/**
+ * VoucherPointField is a component that is used as a form field for voucher point.
+ * @param {{control: any, error: any}} props - The props object.
+ * @returns {JSX.Element} The VoucherPointField component.
+ */
 export function VoucherPointField({ control, error }) {
 	return (
 		<Controller
@@ -150,6 +146,11 @@ export function VoucherPointField({ control, error }) {
 	);
 }
 
+/**
+ * VoucherDescriptionField is a component that is used as a form field for voucher description.
+ * @param {{control: any, error: any}} props - The props object.
+ * @returns {JSX.Element} The VoucherDescriptionField component.
+ */
 export function VoucherDescriptionField({ control, error }) {
 	return (
 		<Controller
@@ -170,6 +171,11 @@ export function VoucherDescriptionField({ control, error }) {
 	);
 }
 
+/**
+ * VoucherStartDateField is a component that is used as a form field for voucher start date.
+ * @param {{control: any, error: any}} props - The props object.
+ * @returns {JSX.Element} The VoucherStartDateField component.
+ */
 export function VoucherStartDateField({ control, error }) {
 	return (
 		<Controller
@@ -191,6 +197,11 @@ export function VoucherStartDateField({ control, error }) {
 	);
 }
 
+/**
+ * VoucherEndDateField is a component that is used as a form field for voucher end date.
+ * @param {{control: any, error: any}} props - The props object.
+ * @returns {JSX.Element} The VoucherEndDateField component.
+ */
 export function VoucherEndDateField({ control, error }) {
 	return (
 		<Controller

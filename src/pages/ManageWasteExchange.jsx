@@ -1,50 +1,125 @@
 import { Pagination } from "@/components/pagination/Pagination";
 import { Add } from "iconsax-react";
-import { Flex, Heading, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { SearchBar } from "@/components/navigation";
 import { ModalAddWasteExchangeData } from "@/components/modal";
 import { TableWasteExchange } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
+import {
+	clearCreateRecyclesState,
+	clearDeleteRecyclesState,
+	clearFetchRecycleState,
+	clearFetchRecyclesState,
+	createRecycles,
+	createRecyclesSelector,
+	deleteRecyclesSelector,
+	fetchRecycles,
+	fetchRecyclesSelector,
+  } from "@/store/waste-exchange";
+import { useDispatch, useSelector } from "react-redux";
+import { useCustomToast, useDebounce } from "@/hooks";
+import { Spinner } from "@/components/spinner";
 
 function ManageWasteExchange() {
-	const [isAddData, setIsAddData] = useState(false);
+	const dispatch = useDispatch();
+	const { data = [], status, message } = useSelector(fetchRecyclesSelector);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(
+		deleteRecyclesSelector
+	);
+	const { status: createStatus, message: createMessage } = useSelector(
+		createRecyclesSelector
+	);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [totalItems, setTotalItems] = useState(0);
 
-	const openForm = () => {
-		setIsAddData(true);
-	};
+	const [_searchTerm, setSearchTerm] = useState("");
+  	const searchTerm = useDebounce(_searchTerm, 500);
 
-	const closeForm = () => {
-		setIsAddData(false);
-	};
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const [searchTerm, setSearchTerm] = useState("");
+	const fetchRecycleData = useCallback(() => {
+		dispatch(
+			fetchRecycles({
+				search: searchTerm,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		).then((res) => {
+			if (res.payload) {
+				setTotalItems(res.payload.count_data);
+			}
+		});
+	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
+	
+	useEffect(() => {
+		fetchRecycleData();
+	}, [searchTerm, itemsPerPage, currentPage, fetchRecycleData]);
+
+	useEffect(() => {
+		if (
+			deleteStatus === "success" ||
+			createStatus === "success"
+		) {
+			setSearchTerm("");
+			setCurrentPage(1);
+			fetchRecycleData();
+		}
+	
+		return () => {
+			if (deleteStatus !== "idle") dispatch(clearDeleteRecyclesState());
+			if (createStatus !== "idle") dispatch(clearCreateRecyclesState());
+		};
+	}, [fetchRecycleData, deleteStatus, createStatus, dispatch]);
+	
+	useEffect(() => {
+		if (createStatus === "success") {
+			onClose();
+		}
+	}, [createStatus, onClose]);	
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchRecycleState());
+			dispatch(clearFetchRecyclesState());
+			dispatch(clearDeleteRecyclesState());
+			dispatch(clearCreateRecyclesState());
+		};
+	}, [dispatch]);
+	
+	const filteredData = Object.values(data).filter((recycle) => {
+		return recycle.name.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
 		setCurrentPage(1);
 	};
 
-	const filteredData = DummyData.filter(([username]) =>
-		username.toLowerCase().includes(searchTerm.toLowerCase())
-	);
+	const handleAddModal = () => {
+		onOpen();
+	};
 
-	const paginatedData = filteredData.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	);
+	const handleSubmitAdded = (data) => {
+		dispatch(createRecycles(data)).then((res) => {
+			if (res.payload) {
+				onClose();
+			}
+		});
+	};
+	
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
 
 	return (
 		<LayoutDashboardContent>
-			{isAddData ? (
-				<ModalAddWasteExchangeData
-					isOpen={isAddData}
-					onClose={closeForm}
-					setIsAddData={setIsAddData}
-				/>
-			) : null}
+			<ModalAddWasteExchangeData
+				isOpen={isOpen}
+				onClose={onClose}
+				onSubmit={handleSubmitAdded}
+			/>
 			<Heading
 				as="h1"
 				color={"#201A18"}
@@ -70,7 +145,7 @@ function ManageWasteExchange() {
 						px={"1.5rem"}
 						py={"1.75rem"}
 						marginRight={"20px"}
-						onClick={openForm}
+						onClick={handleAddModal}
 					>
 						Tambah Data
 					</Button>
@@ -81,18 +156,24 @@ function ManageWasteExchange() {
 					p={"0.5rem"}
 					marginTop={"16px"}
 				>
-					<TableWasteExchange
-						data={paginatedData}
-						currentPage={currentPage}
-						itemsPerPage={itemsPerPage}
-					/>
-					<Pagination
-						currentPage={currentPage}
-						itemsPerPage={itemsPerPage}
-						onChangeItemsPerPage={setItemsPerPage}
-						onChangePage={setCurrentPage}
-						totalItems={filteredData.length}
-					/>
+					{status === "loading" && <Spinner />}
+					{status === "failed" && <div>{message}</div>}
+					{status === "success" && (
+					<>
+						<TableWasteExchange
+							data={filteredData}
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+						/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={totalItems}
+						/>
+					</>
+					)}
 				</Flex>
 			</div>
 		</LayoutDashboardContent>
@@ -100,29 +181,3 @@ function ManageWasteExchange() {
 }
 
 export default ManageWasteExchange;
-
-// dummy
-const DummyData = [];
-const names = [
-	"Courtney Henry",
-	"Bessie Cooper",
-	"Brooklyn Simmons",
-	"Theresa Webb",
-	"Jerome Bell",
-	"Cameron Williamson",
-	"Darrell Steward",
-	"Esther Howard",
-	"Jacob Jones",
-	"Eleanor Pena",
-];
-const domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
-
-for (let i = 0; i < 50; i++) {
-	const name = names[Math.floor(Math.random() * names.length)];
-	const email = `${name.replace(" ", ".").toLowerCase()}@${
-		domains[Math.floor(Math.random() * domains.length)]
-	}`;
-	const location = "Drop Point A";
-	DummyData.push([name, email, location]);
-}
-// end dummy
