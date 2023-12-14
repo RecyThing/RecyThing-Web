@@ -1,59 +1,40 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
-import { TruncatedCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
 import { Edit2, Trash } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPrompt,
-	deletePrompt,
-	deletePromptSelector,
-	updatePromptSelector,
-} from '@/store/prompt';
+import { fetchPrompt, deletePrompt, deletePromptSelector, updatePromptSelector } from "@/store/prompt";
+import { formatDateToLocalDateString } from "@/utils";
 import { ModalDelete, ModalEditCustomizationData } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDisclosure } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
-const TableHead = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
+const TABLEHEADS = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
 
-function capitalizeWords(string) {
-	return string.replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-function formatDateToCustomFormat(dateString) {
-	const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-	const date = new Date(dateString);
-	return date.toLocaleDateString('en-GB', options);
-}
-
+/**
+ * TableDataCustomization is a table component that is used to display prompt data.
+ * @param {{data: any[]}} props - The props object.
+ * @returns {JSX.Element} The TableDataCustomization component.
+ */
 export function TableDataCustomization({ data }) {
 	const dispatch = useDispatch();
-	const [id, setId] = useState(null);
 
-	const {
-		isOpen: isOpenEdit,
-		onOpen: onOpenEdit,
-		onClose: onCloseEdit,
-	} = useDisclosure();
+	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
 
-	const {
-		isOpen: isOpenDelete,
-		onOpen: onOpenDelete,
-		onClose: onCloseDelete,
-	} = useDisclosure();
+	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
 	const [selectedQuestion, setSelectedQuestion] = useState(null);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 
 	const handleEditModal = (row) => {
 		const promptId = row.id;
-	  
-		setId(promptId);
+
 		dispatch(fetchPrompt(promptId));
 
 		setSelectedQuestion(row);
 		setSelectedCategory(row.category);
-		
+
 		onOpenEdit();
 	};
 
@@ -66,20 +47,18 @@ export function TableDataCustomization({ data }) {
 	};
 
 	const handleDelete = (row) => {
-		dispatch(deletePrompt(row.id));
+		dispatch(deletePrompt(row.id)).then(() => {
+			if (deleteStatus === "success") {
+				onCloseDelete();
+			}
+		});
 	};
 
 	useEffect(() => {
-		if (updateStatus === "success" || updateStatus === "failed") {
+		if (updateStatus === "success") {
 			onCloseEdit();
 		}
 	}, [updateStatus, onCloseEdit]);
-
-	useEffect(() => {
-		if (deleteStatus === "success" || deleteStatus === "failed") {
-			onCloseDelete();
-		}
-	}, [deleteStatus, onCloseDelete]);
 
 	const sortedData = [...data].sort((a, b) => {
 		const dateA = new Date(a.created_at);
@@ -93,28 +72,36 @@ export function TableDataCustomization({ data }) {
 				isOpen={isOpenEdit}
 				onClose={onCloseEdit}
 				selectedQuestion={selectedQuestion}
-    			selectedCategory={selectedCategory}
+				selectedCategory={selectedCategory}
 			/>
 			<ModalDelete
 				isOpen={isOpenDelete}
 				onClose={onCloseDelete}
 				target={selectedQuestion}
 				onDelete={() => handleDelete(selectedQuestion)}
-				deleteStatus={deleteStatus}
+				isLoading={deleteStatus === "loading"}
 			/>
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{sortedData.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
-						{/* ini buat datenya nanti kamu ganti kalo udah ada response dari BE @Putri-R */}
-						<CenteredCell>{formatDateToCustomFormat(row.created_at)}</CenteredCell>
-						<TextCell content={capitalizeWords(row.category)} />
-						<TruncatedCell content={row.question} />
+						<CenteredCell>{formatDateToLocalDateString(row.created_at)}</CenteredCell>
+						<TextCell
+							content={row.category}
+							maxWidth={"2rem"}
+							casing={"capitalize"}
+						/>
+						<TextCell
+							content={row.question}
+							casing={"capitalize"}
+							maxWidth={"25rem"}
+							isTruncated={true}
+						/>
 
 						<CenteredCell>
 							<CustomIconButton
