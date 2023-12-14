@@ -13,7 +13,7 @@ function InfoCard({ title, count, image, percentage, filter, status }) {
       <p className="text-[32px] font-semibold"><CountUp start={0} end={count} /></p>
 
       <div className={`mt-4 flex ${status === "naik" ? 'text-[#1A9882]' : status === "tetap" ? 'text-[#777980]' : 'text-[#E53535]'}`}>
-        <p className="text-sm font-bold">{percentage}%</p>
+        <p className="text-sm font-bold">{percentage?.toLocaleString()}%</p>
         {status === "naik" ? <FaCaretUp className="my-auto ml-[2px]" /> : status === "tetap" ? <GoDash className="my-auto ml-[2px]" /> : <FaCaretDown className="my-auto ml-[2px]" />}
         <p className="ml-1 text-sm font-medium my-auto text-[#858D9D]">1 {filter === "years" ? 'Tahun' : 'Bulan'} Terakhir</p>
       </div>
