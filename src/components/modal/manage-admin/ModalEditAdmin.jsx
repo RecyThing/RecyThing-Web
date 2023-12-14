@@ -1,185 +1,159 @@
-import { InputWithLogo } from "@/components/inputs";
-import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
-import { Lock, CloseSquare, Show, Hide } from "react-iconly";
-import { useEffect, useRef, useState } from "react";
-import * as Fields from "./AdminFormFields";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./AdminFormSchema";
-import { useSelector } from "react-redux";
+import { Button, Flex, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { CloseSquare } from "react-iconly";
 import { fetchAdminSelector, updateAdminSelector } from "@/store/admin";
+import { schema } from "./AdminFormSchema";
 import { Spinner } from "@/components/spinner";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Fields from "./AdminFormFields";
 
 export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
-  const [passwordType, setPasswordType] = useState("password");
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setValue,
-  } = useForm({ resolver: yupResolver(schema) });
+	const {
+		control,
+		handleSubmit,
+		reset,
+		formState: { errors },
+		setValue,
+	} = useForm({ resolver: yupResolver(schema) });
 
-  const { data, status, message } = useSelector(fetchAdminSelector);
-  const { status: updateStatus } = useSelector(updateAdminSelector);
+	const { data, status, message } = useSelector(fetchAdminSelector);
+	const { status: updateStatus } = useSelector(updateAdminSelector);
 
-  const handleShowPassword = (e) => {
-    e.preventDefault();
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else {
-      setPasswordType("password");
-    }
-  };
+	const imageRef = useRef();
 
-  const imageRef = useRef();
+	const handleImageRef = () => {
+		if (imageRef.current) {
+			imageRef.current.click();
+		}
+	};
 
-  const handleImageRef = () => {
-    if (imageRef.current) {
-      imageRef.current.click();
-    }
-  };
+	useEffect(() => {
+		if (data) {
+			setValue("image", data.image);
+			setValue("fullname", data.fullname);
+			setValue("email", data.email);
+			// setValue("password", data.password);
+			// setValue("confirm_password", data.confirm_password);
+			setValue("status", data.status);
+		}
+	}, [data, setValue]);
 
-  useEffect(() => {
-    if (data) {
-      setValue("image", data.image);
-      setValue("fullname", data.fullname);
-      setValue("email", data.email);
-      // setValue("password", data.password);
-      // setValue("confirm_password", data.confirm_password);
-      setValue("status", data.status);
-    }
-  }, [data, setValue]);
+	const handleOnSubmit = (data) => {
+		onSubmit(data);
+		reset();
+	};
 
-  const handleOnSubmit = (data) => {
-    onSubmit(data);
-    reset();
-  };
+	useEffect(() => {
+		if (!isOpen) {
+			reset();
+		}
+	}, [isOpen, reset]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-    }
-  }, [isOpen, reset]);
+	return (
+		<>
+			<Modal
+				size={"sm"}
+				isOpen={isOpen}
+				onClose={onClose}
+				isCentered
+			>
+				<ModalOverlay
+					bg={"#0000000D"}
+					backdropFilter={"blur(5px)"}
+				/>
+				<ModalContent
+					padding={"10px"}
+					borderRadius={"20px"}
+				>
+					{(status === "loading" || updateStatus === "loading") && <Spinner containerSize={"xl"} />}
+					{status === "failed" && <div>{message}</div>}
+					{status === "success" && updateStatus === "idle" && (
+						<>
+							<ModalHeader fontSize={20}>Edit Data Admin</ModalHeader>
+							<IconButton
+								as={ModalCloseButton}
+								icon={<CloseSquare size={"large"} />}
+								size={"sm"}
+								bg={"transparent"}
+								color={"#828282"}
+								position={"absolute"}
+								right={"1.5rem"}
+								top={"1.5rem"}
+								_hover={{ bg: "transparent", color: "#333333" }}
+								_focus={{ boxShadow: "none" }}
+							/>
 
-  return (
-    <>
-      <Modal size={"sm"} isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
-        <ModalContent padding={"10px"} borderRadius={"20px"}>
-          {(status === "loading" || updateStatus === "loading") && (
-            <Spinner containerSize={"xl"} />
-          )}
-          {status === "failed" && <div>{message}</div>}
-          {status === "success" && updateStatus === "idle" && (
-            <>
-              <ModalHeader fontSize={20}>Edit Data Admin</ModalHeader>
-              <IconButton
-                as={ModalCloseButton}
-                icon={<CloseSquare size={"large"} />}
-                size={"sm"}
-                bg={"transparent"}
-                color={"#828282"}
-                position={"absolute"}
-                right={"1.5rem"}
-                top={"1.5rem"}
-                _hover={{ bg: "transparent", color: "#333333" }}
-                _focus={{ boxShadow: "none" }}
-              />
+							<form onSubmit={handleSubmit(handleOnSubmit)}>
+								<ModalBody
+									as={Flex}
+									direction={"column"}
+									gap={"0.5rem"}
+								>
+									<Fields.AdminImageFields
+										control={control}
+										error={errors.image}
+										imageRef={imageRef}
+										handleImageRef={handleImageRef}
+									/>
+									<Fields.AdminNameFields
+										control={control}
+										error={errors.fullname}
+									/>
+									<Fields.AdminEmailFields
+										control={control}
+										error={errors.email}
+									/>
+									<Fields.AdminPasswordFields
+										name={"password"}
+										control={control}
+										error={errors.password}
+									/>
+									<Fields.AdminPasswordFields
+										name={"confirm_password"}
+										label={"Konfirmasi Password"}
+										control={control}
+										error={errors.confirm_password}
+									/>
+									<Fields.SelectedStatus
+										control={control}
+										error={errors.status}
+									/>
+								</ModalBody>
 
-              <form onSubmit={handleSubmit(handleOnSubmit)}>
-                <ModalBody pb={8}>
-                  <Fields.AdminImageFields
-                    control={control}
-                    error={errors.image}
-                    imageRef={imageRef}
-                    handleImageRef={handleImageRef}
-                  />
-                  <Fields.AdminNameFields
-                    control={control}
-                    error={errors.fullname}
-                  />
-                  <Fields.AdminEmailFields
-                    control={control}
-                    error={errors.email}
-                  />
-                  <div className="relative wrapper my-4">
-                    <Controller
-                      name={"password"}
-                      control={control}
-                      render={({ field }) => (
-                        <FormControl isInvalid={errors.confirm_password}>
-                          <InputWithLogo
-                            label={"Kata sandi"}
-                            id={"password"}
-                            Logo={Lock}
-                            type={passwordType}
-                            error={errors.password}
-                            {...field}
-                          />
-                          <FormErrorMessage>
-                            {errors?.password?.message}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    />
-
-                    {/* Button Hide and Seek */}
-                    <button
-                      className="absolute z-10 inset-y-0 right-5 flex items-center pl-3.5"
-                      onClick={handleShowPassword}
-                    >
-                      {passwordType === "password" ? <Show /> : <Hide />}
-                    </button>
-                  </div>
-
-                  <Fields.SelectedStatus
-                    control={control}
-                    error={errors.status}
-                  />
-                </ModalBody>
-
-                <ModalFooter justifyContent={"center"} gap={"12px"}>
-                  <Button
-                    onClick={onClose}
-                    color={"white"}
-                    bg={"#828282"}
-                    borderRadius={"lg"}
-                    px={"4.5rem"}
-                    py={"1.75rem"}
-                    _hover={{ bg: "#333333" }}
-                  >
-                    Batal
-                  </Button>
-                  <Button
-                    color={"white"}
-                    bg={"#35CC33"}
-                    borderRadius={"lg"}
-                    px={"4rem"}
-                    py={"1.75rem"}
-                    _hover={{ bg: "#2DA22D" }}
-                    type="submit"
-                  >
-                    Simpan
-                  </Button>
-                </ModalFooter>
-              </form>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
-  );
+								<ModalFooter
+									justifyContent={"center"}
+									gap={"12px"}
+								>
+									<Button
+										onClick={onClose}
+										color={"white"}
+										bg={"#828282"}
+										borderRadius={"lg"}
+										px={"4.5rem"}
+										py={"1.75rem"}
+										_hover={{ bg: "#333333" }}
+									>
+										Batal
+									</Button>
+									<Button
+										color={"white"}
+										bg={"#35CC33"}
+										borderRadius={"lg"}
+										px={"4rem"}
+										py={"1.75rem"}
+										_hover={{ bg: "#2DA22D" }}
+										type="submit"
+									>
+										Simpan
+									</Button>
+								</ModalFooter>
+							</form>
+						</>
+					)}
+				</ModalContent>
+			</Modal>
+		</>
+	);
 }
