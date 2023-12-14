@@ -26,7 +26,7 @@ export const APIRecycles = {
 
 	getCategories: async () => {
 		try {
-			const response = await axiosInstance.get("/admins/manage/trashes");
+			const response = await axiosInstance.get('/admins/manage/trashes/categories');
 			return response.data;
 		} catch (error) {
 			if (error instanceof AxiosError) {

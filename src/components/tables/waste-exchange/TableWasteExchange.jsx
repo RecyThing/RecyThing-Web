@@ -33,7 +33,7 @@ export function TableWasteExchange({ data }) {
 	const [id, setId] = useState(null);
 
 	const dispatch = useDispatch();
-	const { status: deletestatus } = useSelector(deleteRecyclesSelector);
+	const { status: deleteStatus } = useSelector(deleteRecyclesSelector);
 
 	const handleViewModal = (target) => {
 		dispatch(fetchRecycle(target));
@@ -50,10 +50,10 @@ export function TableWasteExchange({ data }) {
 	};
 
 	useEffect(() => {
-		if (deletestatus === "success" || deletestatus === "failed") {
+		if (deleteStatus === "success" || deleteStatus === "failed") {
 			onCloseDelete();
 		}
-	}, [deletestatus, onCloseDelete]);
+	}, [deleteStatus, onCloseDelete]);
 
 	return (
 		<>
@@ -68,7 +68,7 @@ export function TableWasteExchange({ data }) {
 				onClose={onCloseDelete}
 				target={id}
 				onDelete={handleDelete}
-				deleteStatus={deletestatus}
+				isLoading={deleteStatus === "loading"}
 			/>
 			<BaseTable
 				data={data}

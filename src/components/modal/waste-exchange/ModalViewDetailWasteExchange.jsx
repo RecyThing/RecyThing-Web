@@ -120,7 +120,6 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 	};
 
 	if (!isOpen) {
-		// Return null if the modal is not open
 		return null;
 	  }
 
@@ -284,14 +283,14 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 										</p>
 									</div>
 									<div className="col-span-1">
-										<p style={{ ...poinStyle, paddingLeft: "40px" }}>
+										<p style={{ ...poinStyle, paddingLeft: "20px", whiteSpace: 'nowrap' }}>
 											+{data?.total_point}
 										</p>
 									</div>
 								</div>
 							</div>
 						</ModalFooter>
-				</>
+					</>
 				)}
 			</ModalContent>
 		</Modal>
