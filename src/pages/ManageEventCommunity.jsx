@@ -1,254 +1,231 @@
-import {
-  ButtonGroup,
-  Flex,
-  Heading,
-  Button,
-  useDisclosure,
-  Spinner,
-} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import { Pagination } from "@/components/pagination";
-import { LayoutDashboardContent } from "@/layout";
-import { ArrowLeftSquare } from "react-iconly";
 import { Add } from "iconsax-react";
-import { FilterButton } from "@/components/buttons";
-import { useCustomToast, useDebounce } from "@/hooks";
-import { ModalAddEventCommunity } from "@/components/modal";
-import { TableManageEventCommunity } from "@/components/tables/manage-event-community/TableManageEventCommunity";
-
+import { ArrowLeftSquare } from "react-iconly";
+import { ButtonGroup, Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import {
-  clearDeleteEventState,
-  clearFetchEventsState,
-  clearFetchEventState,
-  clearUpdateEventState,
-  createEvent,
-  createEventSelector,
-  deleteEventSelector,
-  fetchEvents,
-  fetchEventsSelector,
-  updateEventSelector,
+	clearCreateEventState,
+	clearDeleteEventState,
+	clearFetchEventsState,
+	clearFetchEventState,
+	clearUpdateEventState,
+	createEvent,
+	createEventSelector,
+	deleteEventSelector,
+	fetchEvents,
+	fetchEventsSelector,
+	updateEventSelector,
 } from "@/store/event-community";
+import { FilterButton } from "@/components/buttons";
+import { LayoutDashboardContent } from "@/layout";
+import { ModalAddEventCommunity } from "@/components/modal";
+import { Pagination } from "@/components/pagination";
+import { Spinner } from "@/components/spinner";
+import { TableManageEventCommunity } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
+import { useCustomToast } from "@/hooks";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { format } from "date-fns";
+
+const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
 
 function ManageEventCommunity() {
-  const dispatch = useDispatch();
-  const {
-    data = [],
-    status,
-    message,
-    count_data,
-  } = useSelector(fetchEventsSelector);
+	const id = useParams().id;
+	const navigate = useNavigate();
 
-  const { status: deleteStatus, message: deleteMessage } =
-    useSelector(deleteEventSelector);
-  const { status: updateStatus, message: updateMessage } =
-    useSelector(updateEventSelector);
-  const { status: createStatus, message: createMessage } =
-    useSelector(createEventSelector);
+	const dispatch = useDispatch();
+	const { data = [], status, message, count } = useSelector(fetchEventsSelector);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deleteEventSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(updateEventSelector);
+	const { status: createStatus, message: createMessage } = useSelector(createEventSelector);
 
-  const [_searchTerm, setSearchTerm] = useState("");
-  const searchTerm = useDebounce(_searchTerm, 500);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
-  const [activeFilter, setActiveFilter] = useState({
-    label: "Berjalan",
-    value: "",
-  });
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [refreshData, setRefreshData] = useState(false);
+	const [activeFilter, setActiveFilter] = useState({
+		label: "Berjalan",
+		value: "berjalan",
+	});
 
-  const fetchEventsData = useCallback(() => {
-    dispatch(
-      fetchEvents(
-        {
-          status: activeFilter.value,
-          search: searchTerm,
-          limit: itemsPerPage,
-          page: currentPage,
-        },
-        [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]
-      )
-    );
-  });
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    fetchEventsData();
-  }, [fetchEventsData, searchTerm, itemsPerPage, currentPage]);
+	useCustomToast(createStatus, createMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(updateStatus, updateMessage);
 
-  useEffect(() => {
-    if (
-      deleteStatus === "success" ||
-      updateStatus === "success" ||
-      createStatus === "success"
-    ) {
-      fetchEventsData();
-      setSearchTerm("");
-      setCurrentPage(1);
-    }
+	const fetchEventsData = useCallback(() => {
+		dispatch(
+			fetchEvents({
+				id: id,
+				status: activeFilter.value,
+				limit: itemsPerPage,
+				page: currentPage,
+			})
+		);
+	}, [dispatch, id, activeFilter, itemsPerPage, currentPage]);
 
-    return () => {
-      if (updateStatus !== "idle") dispatch(clearUpdateEventState());
-      if (deleteStatus !== "idle") dispatch(clearDeleteEventState());
-      if (createStatus !== "idle") dispatch(clearDeleteEventState());
-    };
-  }, [fetchEventsData, deleteStatus, updateStatus, createStatus, dispatch]);
+	useEffect(() => {
+		fetchEventsData();
+	}, [fetchEventsData, refreshData]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearFetchEventsState());
-      dispatch(clearFetchEventState());
-      dispatch(clearUpdateEventState());
-      dispatch(clearDeleteEventState());
-    };
-  }, [dispatch]);
+	useEffect(() => {
+		if (deleteStatus === "success" || updateStatus === "success" || createStatus === "success") {
+			setCurrentPage(1);
+			setRefreshData((prev) => !prev);
 
-  const filteredData = Object.values(data).filter((event) => {
-    return event.name?.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+			if (updateStatus !== "idle") dispatch(clearUpdateEventState());
+			if (deleteStatus !== "idle") dispatch(clearDeleteEventState());
+			if (createStatus !== "idle") dispatch(clearCreateEventState());
+		}
+	}, [deleteStatus, updateStatus, createStatus, dispatch]);
 
-  // const handleSearch = (term) => {
-  //   setSearchTerm(term);
-  //   setCurrentPage(1);
-  // };
-  const filteredDataCount = (filter) => {
-    switch (filter) {
-      case "Berjalan":
-        return count_data?.count_data || 1;
-      case "Melewati Tenggat":
-        return count_data?.count_data || 2;
-      default:
-        return count_data?.total_data || 3;
-    }
-  };
-  const handleAddModal = () => {
-    onOpen();
-  };
+	useEffect(() => {
+		return () => {
+			dispatch(clearFetchEventsState());
+			dispatch(clearFetchEventState());
+		};
+	}, [dispatch]);
 
-  // const paginatedData = filteredData().slice(
-  //   (currentPage - 1) * itemsPerPage,
-  //   currentPage * itemsPerPage
-  // );
+	const filteredDataCount = (filter) => {
+		switch (filter) {
+			case "Berjalan":
+				return count?.count_active || 0;
+			case "Belum Berjalan":
+				return count?.count_pending || 0;
+			case "Selesai":
+				return count?.count_finished || 0;
+			default:
+				return count?.total_count || 0;
+		}
+	};
 
-  const handleSubmitAdded = (target) => {
-    target.image = target.image[0];
-    dispatch(createEvent(target)).then(() => {
-      onClose();
-    });
-  };
+	const handleFilterClick = (filter) => {
+		setCurrentPage(1);
+		switch (filter) {
+			case "Berjalan":
+				setActiveFilter({ label: "Berjalan", value: "berjalan" });
+				break;
+			case "Belum Berjalan":
+				setActiveFilter({ label: "Belum Berjalan", value: "belum berjalan" });
+				break;
+			case "Selesai":
+				setActiveFilter({ label: "Selesai", value: "selesai" });
+				break;
+			default:
+				setActiveFilter({ label: "Berjalan", value: "berjalan" });
+				break;
+		}
+	};
 
-  useCustomToast(createStatus, createMessage);
-  useCustomToast(deleteStatus, deleteMessage);
-  useCustomToast(updateStatus, updateMessage);
+	const handleSubmitAdded = (target) => {
+		target.image = target.image[0];
+		target.date = format(new Date(target.date), "yyyy/MM/dd");
+		dispatch(
+			createEvent({
+				data: target,
+				communityId: id,
+			})
+		).then(() => {
+			onClose();
+		});
+	};
 
-  const handleFilterClick = (filter) => {
-    setCurrentPage(1);
-    if (filter === "Aktif") {
-      setActiveFilter({ label: "Berjalan", value: "Berjalan" });
-    } else if (filter === "Belum Berjalan") {
-      setActiveFilter({ label: "Belum Berjalan", value: "melewati tenggat" });
-    } else {
-      setActiveFilter({ label: "Semua", value: "" });
-    }
-  };
+	return (
+		<LayoutDashboardContent>
+			<Heading
+				as="h1"
+				color={"#201A18"}
+				fontSize={"2xl"}
+				fontWeight="bold"
+				mb={"1.5rem"}
+			>
+				Detail Event Community
+			</Heading>
+			<Flex
+				bg={"white"}
+				borderRadius={"xl"}
+				boxShadow={"md"}
+				direction={"column"}
+				gap={"1.5rem"}
+				p={"1.5rem"}
+			>
+				<Flex
+					gap={"1.5rem"}
+					justifyContent={"space-between"}
+					alignItems="center"
+				>
+					<ButtonGroup spacing={0}>
+						{buttonLabels.map((label) => (
+							<FilterButton
+								key={label}
+								label={label}
+								activeFilter={activeFilter.label}
+								handleFilterClick={handleFilterClick}
+								filteredDataCount={filteredDataCount}
+							/>
+						))}
+					</ButtonGroup>
+					<Flex
+						justifyContent="flex-end"
+						alignItems="center"
+					>
+						<Button
+							leftIcon={<ArrowLeftSquare />}
+							_hover={{ bg: "#333333" }}
+							bg={"#828282"}
+							borderRadius={"lg"}
+							color={"white"}
+							fontWeight={"normal"}
+							lineHeight={"1.5rem"}
+							px={"1.5rem"}
+							py={"1.75rem"}
+							marginRight={"20px"}
+							onClick={() => navigate("/dashboard/community")}
+						>
+							Kembali
+						</Button>
+						<Button
+							leftIcon={<Add />}
+							_hover={{ bg: "#2DA22D" }}
+							bg={"#35CC33"}
+							borderRadius={"lg"}
+							color={"white"}
+							fontWeight={"normal"}
+							lineHeight={"1.5rem"}
+							px={"1.5rem"}
+							py={"1.75rem"}
+							onClick={onOpen}
+						>
+							Tambah Data
+						</Button>
+					</Flex>
+				</Flex>
 
-  const navigate = useNavigate();
-
-  return (
-    <LayoutDashboardContent>
-      <Heading
-        as="h1"
-        color={"#201A18"}
-        fontSize={"2xl"}
-        fontWeight="bold"
-        mb={"1.5rem"}
-      >
-        Detail Event Community
-      </Heading>
-      <Flex
-        bg={"white"}
-        borderRadius={"xl"}
-        boxShadow={"md"}
-        direction={"column"}
-        gap={"1.5rem"}
-        p={"1.5rem"}
-      >
-        <Flex
-          gap={"1.5rem"}
-          justifyContent={"space-between"}
-          alignItems="center"
-        >
-          <ButtonGroup spacing={0}>
-            {buttonLabels.map((label) => (
-              <FilterButton
-                key={label}
-                label={label}
-                activeFilter={activeFilter}
-                handleFilterClick={handleFilterClick}
-                filteredDataCount={filteredDataCount}
-              />
-            ))}
-          </ButtonGroup>
-          <Flex justifyContent="flex-end" alignItems="center">
-            <Button
-              leftIcon={<ArrowLeftSquare />}
-              _hover={{ bg: "#333333" }}
-              bg={"#828282"}
-              borderRadius={"lg"}
-              color={"white"}
-              fontWeight={"normal"}
-              lineHeight={"1.5rem"}
-              px={"1.5rem"}
-              py={"1.75rem"}
-              marginRight={"20px"}
-              onClick={() => navigate("/dashboard/community")}
-            >
-              Kembali
-            </Button>
-            <Button
-              leftIcon={<Add />}
-              _hover={{ bg: "#2DA22D" }}
-              bg={"#35CC33"}
-              borderRadius={"lg"}
-              color={"white"}
-              fontWeight={"normal"}
-              lineHeight={"1.5rem"}
-              px={"1.5rem"}
-              py={"1.75rem"}
-              onClick={handleAddModal}
-            >
-              Tambah Data
-            </Button>
-          </Flex>
-        </Flex>
-
-        {status === "loading" && <Spinner />}
-        {status === "failed" && <div>{message}</div>}
-        {status === "success" && (
-          <>
-            {" "}
-            <TableManageEventCommunity
-              currentPage={currentPage}
-              data={filteredData}
-              itemsPerPage={itemsPerPage}
-            />
-            <Pagination
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              onChangeItemsPerPage={setItemsPerPage}
-              onChangePage={setCurrentPage}
-              totalItems={count_data}
-            />
-          </>
-        )}
-      </Flex>
-      <ModalAddEventCommunity
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmitAdded}
-      />
-    </LayoutDashboardContent>
-  );
+				{status === "loading" && <Spinner />}
+				{status === "failed" && <div>{message}</div>}
+				{status === "success" && (
+					<>
+						<TableManageEventCommunity
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							data={data}
+						/>
+						<Pagination
+							currentPage={currentPage}
+							itemsPerPage={itemsPerPage}
+							onChangeItemsPerPage={setItemsPerPage}
+							onChangePage={setCurrentPage}
+							totalItems={filteredDataCount(activeFilter.label)}
+						/>
+					</>
+				)}
+			</Flex>
+			<ModalAddEventCommunity
+				isOpen={isOpen}
+				onClose={onClose}
+				onSubmit={handleSubmitAdded}
+			/>
+		</LayoutDashboardContent>
+	);
 }
 
 export default ManageEventCommunity;

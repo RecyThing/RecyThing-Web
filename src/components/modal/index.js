@@ -14,7 +14,7 @@ export { ModalEditDetailCommunity } from "./community/ModalEditDetailCommunity";
 export { ModalEditDetailTransaction } from "./transaction-list/ModalEditDetailTransaction";
 export { ModalEditRubbishCategory } from "./rubbish-category/ModalEditRubbishCategory";
 export { ModalEditVoucher } from "./voucher-list/ModalEditVoucher";
-export { ModalEditCommunity } from "./event-community/ModalEditCommunity";
+export { ModalEditCommunity } from "./event-community/ModalEditEventCommunity";
 
 export { ModalViewCommunityModal } from "./community/ModalViewDetailCommunity";
 export { ModalViewDetailDataDropPoint } from "./data-drop-point/ModalViewDetailDataDropPoint";

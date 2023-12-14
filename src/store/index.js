@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { loginReducer } from "./auth";
-import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
-import { createVoucherReducer, deleteVoucherReducer, fetchVoucherReducer, fetchVouchersReducer, updateVoucherReducer } from "./voucher";
-import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
-import { createTrashesReducer, deleteTrashesReducer, fetchTrashReducer, fetchTrashesReducer, updateTrashesReducer } from "./trash-category";
-import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
-import { createPromptReducer, deletePromptReducer, fetchPromptReducer, fetchPromptsReducer, updatePromptReducer } from "./prompt";
-import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
 import { createCommunityReducer, deleteCommunityReducer, fetchCommunitiesReducer, fetchCommunityReducer, updateCommunityReducer } from "./community";
-
 import { createEventReducer, deleteEventReducer, fetchEventsReducer, fetchEventReducer, updateEventReducer } from "./event-community";
-import { fetchApprovalReducer, fetchApprovalsReducer, updateApprovalReducer } from "./approval-mission";
 import { createMissionReducer, deleteMissionReducer, fetchMissionReducer, fetchMissionsReducer, updateMissionReducer } from "./mission";
+import { createPromptReducer, deletePromptReducer, fetchPromptReducer, fetchPromptsReducer, updatePromptReducer } from "./prompt";
 import { createRecyclesReducer, deleteRecyclesReducer, fetchCategoriesReducer, fetchRecycleReducer, fetchRecyclesReducer } from "./waste-exchange";
+import { createTrashesReducer, deleteTrashesReducer, fetchTrashReducer, fetchTrashesReducer, updateTrashesReducer } from "./trash-category";
+import { createVoucherReducer, deleteVoucherReducer, fetchVoucherReducer, fetchVouchersReducer, updateVoucherReducer } from "./voucher";
+import { deleteUserReducer, fetchUserReducer, fetchUsersReducer } from "./user";
+import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achievements";
+import { fetchApprovalReducer, fetchApprovalsReducer, updateApprovalReducer } from "./approval-mission";
+import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
+import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
+import { loginReducer } from "./auth";
+
 export const store = configureStore({
 	reducer: {
 		auth: loginReducer,
@@ -66,16 +66,16 @@ export const store = configureStore({
 		fetchApprovals: fetchApprovalsReducer,
 		updateApproval: updateApprovalReducer,
 
-		fetchMissions: fetchMissionsReducer,
-		fetchMission: fetchMissionReducer,
-		updateMission: updateMissionReducer,
-		deleteMission: deleteMissionReducer,
 		createMission: createMissionReducer,
+		deleteMission: deleteMissionReducer,
+		fetchMission: fetchMissionReducer,
+		fetchMissions: fetchMissionsReducer,
+		updateMission: updateMissionReducer,
 
 		createEvent: createEventReducer,
 		deleteEvent: deleteEventReducer,
-		fetchEvents: fetchEventsReducer,
 		fetchEvent: fetchEventReducer,
+		fetchEvents: fetchEventsReducer,
 		updateEvent: updateEventReducer,
 	},
 });

@@ -1,170 +1,170 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell, BadgeCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CustomIconButton } from "@/components/buttons";
-import { Edit2, Eye, Trash } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
-import { formatDateToLocalDate } from "@/utils";
-import { ModalDelete, ModalViewDetailTransaction } from "@/components/modal";
+import { deleteEvent, deleteEventSelector, fetchEvent, updateEvent } from "@/store/event-community";
+import { Eye, Trash } from "iconsax-react";
+import { format } from "date-fns";
+import { formatDateToLocalDate, formatWithCommas } from "@/utils";
+import { ModalDelete } from "@/components/modal";
+import { ModalEditCommunity } from "@/components/modal/event-community/ModalEditEventCommunity";
 import { ModalViewDetailEvent } from "@/components/modal/event-community/ModalViewDetailEvent";
-import { ModalEditCommunity } from "@/components/modal/event-community/ModalEditCommunity";
-import { deleteEvent, fetchEvent, updateEvent } from "@/store/event-community";
-import { useDispatch } from "react-redux";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDisclosure } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-const TableHead = [
-  "No",
-  "Nama Event",
-  "Tanggal Pelaksanaan",
-  "Kuota Event",
-  "Status Event",
-  "Aksi",
-];
+const TABLEHEADS = ["No", "Nama Event", "Tanggal Pelaksanaan", "Kuota Event", "Status Event", "Aksi"];
 
 export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
-  const {
-    isOpen: isOpenView,
-    onOpen: onOpenView,
-    onClose: onCloseView,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenUpdate,
-    onOpen: onOpenUpdate,
-    onClose: onCloseUpdate,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onClose: onCloseDelete,
-  } = useDisclosure();
+	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
+	const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
+	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
-  // const [selectedRow, setSelectedRow] = useState(null);
+	const dispatch = useDispatch();
+	const { status: deleteEventStatus } = useSelector(deleteEventSelector);
+	const [currData, setCurrData] = useState(null);
 
-  const handleTextAlign = (heads) => {
-    return heads.map((head) => {
-      if (head === "No" || head === "Event" || head === "Aksi") {
-        return "center";
-      }
-      return "left";
-    });
-  };
+	const handleTextAlign = (heads) => {
+		return heads.map((head) => {
+			if (head === "No" || head === "Event" || head === "Aksi") {
+				return "center";
+			}
+			return "left";
+		});
+	};
 
-  const handleBadges = (status) => {
-    switch (status) {
-      case "Belum Berjalan":
-        return "blue";
-      case "Berjalan":
-        return "yellow";
-      case "Selesai":
-        return "green";
-      default:
-        return "gray";
-    }
-  };
+	const handleBadges = (status) => {
+		status = status.toLowerCase();
+		switch (status) {
+			case "belum berjalan":
+				return "blue";
+			case "berjalan":
+				return "yellow";
+			case "selesai":
+				return "green";
+			default:
+				return "gray";
+		}
+	};
 
-  const dispatch = useDispatch();
-  const [currData, setCurrData] = useState(null);
+	const handleViewModal = (communityId, eventId) => {
+		dispatch(fetchEvent({ communityId, eventId }));
+		onOpenView();
+	};
 
-  const handleViewModal = (id) => {
-    dispatch(fetchEvent(id)).then((res) => {
-      setCurrData(res.payload.data);
-    });
-    onOpenView();
-  };
+	const handleUpdateModal = (target) => {
+		onCloseView();
+		setCurrData(target);
+		setTimeout(() => {
+			onOpenUpdate();
+		});
+		clearTimeout();
+	};
 
-  const handleUpdateModal = () => {
-    setTimeout(() => {
-      onOpenUpdate();
-    });
-    clearTimeout();
-  };
+	const handleSubmitUpdatedData = (target, communityId, eventId) => {
+		target.image = target.image[0];
+		target.date = format(new Date(target.date), "yyyy/MM/dd");
+		dispatch(
+			updateEvent({
+				data: target,
+				communityId,
+				eventId,
+			})
+		).then(() => {
+			if (updateEvent === "success") {
+				onCloseUpdate();
+			}
+		});
+	};
 
-  const handleSubmitUpdatedData = (target) => {
-    target.image = target.image[0];
-    dispatch(
-      updateEvent({
-        id: currData.id,
-        data: target,
-      })
-    ).then(() => {
-      onCloseUpdate();
-    });
-  };
+	const handleDeleteModal = (target) => {
+		setCurrData(target);
+		onOpenDelete();
+	};
 
-  const handleDeleteModal = (row) => {
-    setCurrData(row);
-    onOpenDelete();
-  };
+	const handleDelete = (target) => {
+		dispatch(
+			deleteEvent({
+				communityId: target.communityId,
+				eventId: target.id,
+			})
+		).then(() => {
+			onCloseDelete();
+		});
+	};
 
-  const handleDelete = (target) => {
-    dispatch(deleteEvent(target.id)).then(() => {
-      onCloseDelete();
-    });
-  };
+	return (
+		<>
+			<ModalViewDetailEvent
+				isOpen={isOpenView}
+				onClose={onCloseView}
+				onOpenUpdate={handleUpdateModal}
+			/>
 
-  const handleUpdate = (row) => {
-    console.log("Updated!", row);
-    onCloseUpdate();
-  };
+			<ModalEditCommunity
+				isOpen={isOpenUpdate}
+				onClose={onCloseUpdate}
+				onUpdate={handleSubmitUpdatedData}
+				data={currData}
+			/>
 
-  return (
-    <>
-      <ModalViewDetailEvent
-        isOpen={isOpenView}
-        onClose={onCloseView}
-        onOpenUpdate={handleUpdateModal}
-      />
+			<ModalDelete
+				isOpen={isOpenDelete}
+				onClose={onCloseDelete}
+				target={currData}
+				onDelete={handleDelete}
+				title={"Anda yakin ingin Menghapus Event Komunitas?"}
+				message={"Event komunitas yang dihapus tidak dapat dipulihkan"}
+				isLoading={deleteEventStatus === "loading"}
+			/>
 
-      <ModalEditCommunity
-        isOpen={isOpenUpdate}
-        onClose={onCloseUpdate}
-        onUpdate={handleSubmitUpdatedData}
-        data={currData}
-      />
-      <ModalDelete
-        isOpen={isOpenDelete}
-        onClose={onCloseDelete}
-        target={currData}
-        onDelete={handleDelete}
-        title={"Anda yakin ingin Menghapus Komunitas?"}
-        message={"Komunitas yang dihapus tidak dapat dipulihkan"}
-      />
+			<BaseTable
+				data={data}
+				heads={TABLEHEADS}
+				textAligns={handleTextAlign(TABLEHEADS)}
+			>
+				{data.map((row, rowIndex) => (
+					<TableBodyRow
+						key={rowIndex}
+						index={rowIndex}
+					>
+						<CenteredCell>{(currentPage - 1) * itemsPerPage + rowIndex + 1}</CenteredCell>
+						<TextCell
+							content={row.title}
+							casing={"capitalize"}
+							isTruncated={true}
+							maxWidth={"20rem"}
+						/>
+						<TextCell
+							content={formatDateToLocalDate(row.date)}
+							isTruncated={true}
+						/>
+						<TextCell
+							content={formatWithCommas(row.quota)}
+							isTruncated={true}
+						/>
 
-      <BaseTable
-        data={data}
-        heads={TableHead}
-        textAligns={handleTextAlign(TableHead)}
-      >
-        {data.map((row, rowIndex) => (
-          <TableBodyRow key={rowIndex} index={rowIndex}>
-            <CenteredCell>
-              {(currentPage - 1) * itemsPerPage + rowIndex + 1}
-            </CenteredCell>
-            <TextCell content={row.title} />
-            <TextCell content={formatDateToLocalDate(row.date)} />
-            <TextCell content={row.quota} />
-
-            <BadgeCell
-              content={row.status}
-              colorScheme={handleBadges(row.status)}
-            />
-            <CenteredCell key={rowIndex}>
-              <CustomIconButton
-                icon={<Eye />}
-                color={"#333333"}
-                hoverColor={"#333333"}
-                onClick={() => handleViewModal(row)}
-              />
-              <CustomIconButton
-                icon={<Trash />}
-                color={"#E53535"}
-                hoverColor={"#333333"}
-                onClick={() => handleDeleteModal(row)}
-              />
-            </CenteredCell>
-          </TableBodyRow>
-        ))}
-      </BaseTable>
-    </>
-  );
+						<BadgeCell
+							content={row.status}
+							colorScheme={handleBadges(row.status)}
+						/>
+						<CenteredCell key={rowIndex}>
+							<CustomIconButton
+								icon={<Eye />}
+								color={"#333333"}
+								hoverColor={"#333333"}
+								onClick={() => handleViewModal(row.communityId, row.id)}
+							/>
+							<CustomIconButton
+								icon={<Trash />}
+								color={"#E53535"}
+								hoverColor={"#333333"}
+								onClick={() => handleDeleteModal(row)}
+							/>
+						</CenteredCell>
+					</TableBodyRow>
+				))}
+			</BaseTable>
+		</>
+	);
 }
