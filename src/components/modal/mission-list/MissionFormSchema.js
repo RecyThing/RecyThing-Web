@@ -60,13 +60,13 @@ export const schema = yup.object().shape({
 		missionTitleStage: yup
 		.string()
 		.required("Tahapan / Tantangan judul misi tidak boleh kosong")
-		.max(100, "Tahapan / Tantangan judul misi tidak boleh lebih dari 100 karakter")
+		.max(25, "Tahapan / Tantangan judul misi tidak boleh lebih dari 25 karakter")
 		.min(5, "Tahapan / Tantangan juduk misi tidak boleh kurang dari 5 karakter")
 		.matches(/^[a-zA-Z0-9 ]*$/, "Tahapan / Tantangan Judul misi tidak boleh mengandung simbol"),
 		missionDescriptionStage: yup
 		.string()
 		.required("Tahapan / Tantangan deskripsi misi tidak boleh kosong")
-		.max(250, "Tahapan / Tantangan deskripsi misi tidak boleh lebih dari 250 karakter")
+		.max(60, "Tahapan / Tantangan deskripsi misi tidak boleh lebih dari 60 karakter")
 		.min(5, "Tahapan / Tantangan deskripsi misi tidak boleh kurang dari 5 karakter")
 		.matches(/^[a-zA-Z0-9 ]*$/, "Tahapan / Tantangan Deskripsi tidak boleh mengandung simbol"),
 });
