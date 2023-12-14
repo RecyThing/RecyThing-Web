@@ -4,37 +4,33 @@ import DatePicker from "react-datepicker";
 import { forwardRef } from "react";
 import { DummyInput } from "./DummyInput";
 import { formatDateToLocalDate } from "@/utils";
-import { parseISO } from "date-fns";
+import { parseISO, startOfDay } from "date-fns";
 
-export const InputDate = forwardRef(
-	({ label, Logo, className, minDate, maxDate, ...props }, ref) => {
-		return (
-			<DatePicker
-				ref={ref}
-				value={props.value ? formatDateToLocalDate(props.value) : null}
-				selected={
-					typeof props.value === "string" ? parseISO(props.value) : props.value
-				}
-				onChange={props.onChange}
-				enableTabLoop={false}
-				placeholderText=" "
-				customInput={
-					<DummyInput
-						label={label}
-						Logo={Logo}
-						className={className}
-						{...props}
-					/>
-				}
-				onKeyDown={(e) => e.preventDefault()}
-				minDate={minDate}
-				maxDate={maxDate}
-				popperPlacement="top"
-				isClearable
-				dateFormat={"yyyy-MM-dd"}
-			/>
-		);
-	}
-);
+export const InputDate = forwardRef(({ label, Logo, className, minDate = startOfDay(new Date()), maxDate, ...props }, ref) => {
+	return (
+		<DatePicker
+			ref={ref}
+			value={props.value ? formatDateToLocalDate(props.value) : null}
+			selected={typeof props.value === "string" ? parseISO(props.value) : props.value}
+			onChange={props.onChange}
+			enableTabLoop={false}
+			placeholderText=" "
+			customInput={
+				<DummyInput
+					label={label}
+					Logo={Logo}
+					className={className}
+					{...props}
+				/>
+			}
+			onKeyDown={(e) => e.preventDefault()}
+			minDate={minDate}
+			maxDate={maxDate}
+			popperPlacement="top"
+			isClearable
+			dateFormat={"yyyy-MM-dd"}
+		/>
+	);
+});
 
 InputDate.displayName = "InputDate";
