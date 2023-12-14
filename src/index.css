@@ -12,3 +12,11 @@
 .hide-scrollbar::-webkit-scrollbar {
 	display: none; /* Safari and Chrome */
 }
+
+.overflow-2-lines {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+}
