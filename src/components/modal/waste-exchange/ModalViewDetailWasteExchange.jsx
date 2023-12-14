@@ -119,9 +119,10 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		onClose();
 	};
 
-	if (!data || !data.trash_exchange_details) {
+	if (!isOpen) {
+		// Return null if the modal is not open
 		return null;
-	}
+	  }
 
 	return (
 		<Modal

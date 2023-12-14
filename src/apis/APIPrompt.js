@@ -1,7 +1,6 @@
 import { axiosInstance } from "@/configs";
 import { AxiosError } from "axios";
 
-// kalo content typenya diminta application/json, gausah ditambah ri, kecuali diminta multipart/form-data @Putri-R
 export const APIPrompt = {
 	getPrompts: async ({ search, limit, page, filter }) => {
 		try {
