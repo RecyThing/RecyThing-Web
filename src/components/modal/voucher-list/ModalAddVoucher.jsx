@@ -22,25 +22,20 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 		resolver: yupResolver(schema),
 	});
 
-	const { status: createStatus } = useSelector(createVoucherSelector);
+  const { status: createStatus } = useSelector(createVoucherSelector);
 
-	const imageRef = useRef();
+  const imageRef = useRef();
 
-	const handleImageRef = () => {
-		if (imageRef.current) {
-			imageRef.current.click();
-		}
-	};
+  const handleImageRef = () => {
+    if (imageRef.current) {
+      imageRef.current.click();
+    }
+  };
 
 	const handleOnSubmit = (data) => {
 		onSubmit(data);
 	};
 
-	useEffect(() => {
-		if (!isOpen) {
-			reset();
-		}
-	}, [isOpen, reset]);
 
 	return (
 		<Modal

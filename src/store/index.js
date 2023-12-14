@@ -11,6 +11,7 @@ import { fetchAchievementsReducer, patchAchievementsReducer } from "@/store/achi
 import { fetchApprovalReducer, fetchApprovalsReducer, updateApprovalReducer } from "./approval-mission";
 import { fetchDataReportReducer, fetchDataReportsReducer, patchDataReportReducer } from "./report";
 import { fetchDataTransactionReducer, fetchDatasTransactionReducer, patchDataTransactionReducer } from "./transaction-list";
+import { createAdminReducer, deleteAdminReducer, fetchAdminReducer, fetchAdminsReducer, updateAdminReducer } from "./admin";
 import { loginReducer } from "./auth";
 
 export const store = configureStore({
@@ -71,6 +72,12 @@ export const store = configureStore({
 		fetchMission: fetchMissionReducer,
 		fetchMissions: fetchMissionsReducer,
 		updateMission: updateMissionReducer,
+
+    fetchAdmins: fetchAdminsReducer,
+    fetchAdmin: fetchAdminReducer,
+    updateAdmin: updateAdminReducer,
+    deleteAdmin: deleteAdminReducer,
+    createAdmin: createAdminReducer,
 
 		createEvent: createEventReducer,
 		deleteEvent: deleteEventReducer,
