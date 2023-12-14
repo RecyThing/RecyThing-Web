@@ -44,11 +44,6 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
     }
   };
 
-  const handleOnSubmit = (data) => {
-    onSubmit(data);
-    reset();
-  };
-
   const imageRef = useRef();
 
   const handleImageRef = () => {
@@ -58,18 +53,26 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
   };
 
   useEffect(() => {
-    if (!isOpen) reset();
-  }, [isOpen, reset]);
-
-  useEffect(() => {
     if (data) {
       setValue("image", data.image);
       setValue("fullname", data.fullname);
       setValue("email", data.email);
-      setValue("password", data.password);
+      // setValue("password", data.password);
+      // setValue("confirm_password", data.confirm_password);
       setValue("status", data.status);
     }
   }, [data, setValue]);
+
+  const handleOnSubmit = (data) => {
+    onSubmit(data);
+    reset();
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen, reset]);
 
   return (
     <>
@@ -119,7 +122,7 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
                       render={({ field }) => (
                         <FormControl isInvalid={errors.confirm_password}>
                           <InputWithLogo
-                            label={"Masukkan kata sandi"}
+                            label={"Kata sandi"}
                             id={"password"}
                             Logo={Lock}
                             type={passwordType}

@@ -1,4 +1,4 @@
-import { APIVoucher } from "@/apis";
+import { APIAdmin } from "@/apis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
 
 export const updateAdmin = createAsyncThunk(
   "PUT /admins/id",
-  APIVoucher.updateAdmin
+  APIAdmin.updateAdmin
 );
 
 export const updateAdminSlice = createSlice({

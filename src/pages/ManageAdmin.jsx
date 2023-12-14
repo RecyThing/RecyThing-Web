@@ -96,6 +96,16 @@ function ManageAdmin() {
     setCurrentPage(1);
   };
 
+  const handleSubmitAdded = (data) => {
+    data.image = data.image[0];
+
+    dispatch(createAdmins(data)).then((res) => {
+      if (res.payload) {
+        onClose();
+      }
+    });
+  };
+
   const handleAddModal = () => {
     onOpen();
   };
@@ -190,6 +200,12 @@ function ManageAdmin() {
         {status === "loading" && <Spinner />}
         {status === "failed" && <div>{message}</div>}
       </Flex>
+
+      <ModalAddAdmin
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={handleSubmitAdded}
+      />
     </LayoutDashboardContent>
   );
 }

@@ -10,12 +10,19 @@ import {
 } from "@chakra-ui/react";
 import { InputWithLogo } from "@/components/inputs";
 import { useState } from "react";
-import { Camera, ChevronDown, ChevronUp, Document, Message } from "react-iconly";
+import {
+  Camera,
+  ChevronDown,
+  ChevronUp,
+  Document,
+  Message,
+} from "react-iconly";
 import { Profile } from "iconsax-react";
 import AdminImage from "@/assets/AdminImage.svg";
+import { useSelector } from "react-redux";
+import { updateAdminSelector } from "@/store/admin";
 
-
-export function AdminImageFields({control, error, imageRef, handleImageRef}) {
+export function AdminImageFields({ control, error, imageRef, handleImageRef }) {
   return (
     <Controller
       name="image"
@@ -50,14 +57,11 @@ export function AdminImageFields({control, error, imageRef, handleImageRef}) {
             className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
             type="button"
           >
-            <Camera/>
+            <Camera />
           </button>
-          <FormErrorMessage
-						justifyContent={"center"}
-						textAlign={"center"}
-					>
-						{error?.message}
-					</FormErrorMessage>
+          <FormErrorMessage justifyContent={"center"} textAlign={"center"}>
+            {error?.message}
+          </FormErrorMessage>
         </div>
       )}
     />
@@ -95,7 +99,7 @@ export function AdminEmailFields({ control, error }) {
       render={({ field }) => (
         <FormControl isInvalid={error}>
           <InputWithLogo
-            label={"Tambahkan Email"}
+            label={field.value ? "Email" : "Tambahkan Email"}
             Logo={Message}
             className={"my-4"}
             autoComplete={"off"}
