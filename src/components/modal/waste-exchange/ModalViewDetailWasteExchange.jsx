@@ -120,7 +120,6 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 	};
 
 	if (!isOpen) {
-		// Return null if the modal is not open
 		return null;
 	  }
 
@@ -291,7 +290,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 								</div>
 							</div>
 						</ModalFooter>
-				</>
+					</>
 				)}
 			</ModalContent>
 		</Modal>
