@@ -6,42 +6,42 @@ import { Link } from "react-scroll";
 import { useInView } from "framer-motion";
 
 export function NavBar() {
-	const [toggleNavbar, setToggleNavbar] = useState(false);
-	const [color, setColor] = useState(false);
-	const [activeSection, setActiveSection] = useState("");
+  const [toggleNavbar, setToggleNavbar] = useState(false);
+  const [color, setColor] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const ref = useRef(null);
-	const isInView = useInView(ref, { once: true });
-	
-	const changeColor = () => {
-		if (window.scrollY >= 72) {
-			setColor(true);
-		} else {
-			setColor(false);
-		}
-	};
+  const isInView = useInView(ref, { once: true });
 
-	useEffect(() => {
-		window.addEventListener("scroll", changeColor);
+  const changeColor = () => {
+    if (window.scrollY >= 72) {
+      setColor(true);
+    } else {
+      setColor(false);
+    }
+  };
 
-		return () => {
-			window.removeEventListener("scroll", changeColor);
-		};
-	}, []);
+  useEffect(() => {
+    window.addEventListener("scroll", changeColor);
 
-	const menuItems = [
-		{ text: "Beranda", link: "jumbotron" },
-		{ text: "Fitur", link: "card" },
-		{ text: "Tentang", link: "framePahlawan" },
-		{ text: "Eksplorasi", link: "frameDaurUlang" },
-		{ text: "FaQ", link: "question" },
-	];
+    return () => {
+      window.removeEventListener("scroll", changeColor);
+    };
+  }, []);
 
-	return (
+  const menuItems = [
+    { text: "Beranda", link: "jumbotron" },
+    { text: "Fitur", link: "card" },
+    { text: "Tentang", link: "framePahlawan" },
+    { text: "Eksplorasi", link: "frameDaurUlang" },
+    { text: "FaQ", link: "question" },
+  ];
+
+  return (
     <>
       <nav
         className={
           "fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
-          (color ? "bg-white shadow" : "bg-transparent ")
+          (color ? "bg-white shadow" : "lg:bg-transparent md:bg-transparent sm:bg-white")
         }
         ref={ref}
         style={{
@@ -98,12 +98,12 @@ export function NavBar() {
           </div>
         </div>
         <div className={`${toggleNavbar ? "block" : "hidden"} lg:hidden`}>
-          <ul className="text-start">
-            <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-3 sm:hidden">
+          <ul className="text-start bg-white p-5">
+            <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-2 sm:hidden">
               Download
             </li>
             {menuItems.map((item, index) => (
-              <li key={index} className="py-2">
+              <li key={index} className="flex">
                 <Link
                   activeClass="active"
                   className={`${

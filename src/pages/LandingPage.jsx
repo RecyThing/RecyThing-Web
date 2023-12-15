@@ -12,7 +12,7 @@ import {
 const LandingPage = () => {
 
 
-	return (
+	return(
 		<div className="overflow-x-hidden">
 			<NavBar/>
 			<HeroSection />
