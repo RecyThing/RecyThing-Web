@@ -5,16 +5,15 @@ export const schema = yup.object().shape({
     .mixed()
     .required("Gambar admin tidak boleh kosong")
     .test("fileFormat", "Format gambar tidak valid", (value) => {
-      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-      if (value[0] instanceof File) {
-        return validTypes.includes(value[0].type);
-      } else if (typeof value === "string") {
-        return validTypes.some((type) =>
-          value.toLowerCase().endsWith(type.slice(6))
-        );
-      }
-      return false;
-    })
+			const validExtensions = [".jpg", ".png"];
+			if (value[0] instanceof File) {
+				const extension = "." + value[0].name.split(".").pop();
+				return validExtensions.includes(extension);
+			} else if (typeof value === "string") {
+				return validExtensions.some((ext) => value.toLowerCase().endsWith(ext));
+			}
+			return false;
+		})
     .test("fileSize", "Ukuran gambar tidak boleh lebih dari 5 MB", (value) => {
       if (value[0] instanceof File) {
         return value[0].size <= 5000000;

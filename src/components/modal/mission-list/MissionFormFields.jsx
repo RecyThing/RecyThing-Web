@@ -73,7 +73,7 @@ export function MissionImageField({
               ref={imageRef}
               accept={".jpg,.png"}
               onInput={(e) => {
-                field.onChange(e.target.files[0]);
+                field.onChange(e.target.files);
               }}
             />
             <Text color={"#828282"}>Gambar Misi</Text>
@@ -94,8 +94,8 @@ export function MissionImageField({
                 <>
                   <Image
                     src={
-                      field.value && field.value instanceof File
-                        ? URL.createObjectURL(field.value)
+                      field.value && field.value[0] instanceof File
+                        ? URL.createObjectURL(field.value[0])
                         : field.value
                     }
                     alt={"mission image"}

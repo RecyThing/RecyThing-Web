@@ -19,8 +19,14 @@ export const schema = yup.object().shape({
 		.mixed()
 		.required("Gambar misi tidak boleh kosong")
 		.test("fileFormat", "Format gambar tidak valid", (value) => {
-			const validTypes = ["image/jpg", "image/png"];
-			return value && validTypes.includes(value.type);
+			const validExtensions = [".jpg", ".png"];
+			if (value[0] instanceof File) {
+				const extension = "." + value[0].name.split(".").pop();
+				return validExtensions.includes(extension);
+			} else if (typeof value === "string") {
+				return validExtensions.some((ext) => value.toLowerCase().endsWith(ext));
+			}
+			return false;
 		})
 		.test("fileSize", "Ukuran gambar tidak boleh lebih dari 5 MB", (value) => {
 			return value && value.size <= 5000000;

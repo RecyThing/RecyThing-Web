@@ -29,7 +29,7 @@ export function AdminImageFields({ control, error, imageRef, handleImageRef }) {
 							className="hidden"
 							ref={imageRef}
 							accept={".jpg,.png"}
-							onChange={(e) => field.onChange(e.target.files)}
+							onChange={(e) => {field.onChange(e.target.files)}}
 						/>
 						<button
 							className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
