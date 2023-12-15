@@ -19,7 +19,7 @@ function AddArticle({ onClose, setToastMessage }) {
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     try {
       if (event.target.files && event.target.files[0]) {
-        if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("File harus image");
+        if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("format file tidak diizinkan");
         if (event.target.files[0].size > 5000000) return setErrorImage("Ukuran gambar terlalu besar");
         const objUrl = URL.createObjectURL(event.target.files[0]);
         setPreviewImage(objUrl);
@@ -41,7 +41,8 @@ function AddArticle({ onClose, setToastMessage }) {
       setToastMessage({ status: "success", message: res.message });
       setIsLoading(false);
       onClose(true);
-    }).finally(() => setIsLoading(false));
+    }).catch((err) => setToastMessage({ status: "failed", message: err.message }))
+      .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
@@ -70,7 +71,7 @@ function AddArticle({ onClose, setToastMessage }) {
             </div>}
           </div>
           <p className="text-sm text-center text-red-500">{errorImage}</p>
-          <p className="mt-2 text-sm text-center text-[#828282]">Max 5 Mb, Format JPG & JPEG</p>
+          <p className="mt-2 text-sm text-center text-[#828282]">Max 5 Mb, Format JPG & PNG</p>
           <div className="mt-auto flex gap-3 justify-between text-white">
             <button disabled={isLoading} onClick={() => onClose()} className="p-4 w-full rounded-lg bg-[#828282] disabled:opacity-50 hover:opacity-90">Batal</button>
             <button disabled={isLoading || !articleData.title || !articleData.image || !articleData.content || !articleData.category_id.length > 0}

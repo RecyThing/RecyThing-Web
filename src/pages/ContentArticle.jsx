@@ -41,6 +41,10 @@ function ContentArticle() {
     getArticleData();
   }, [currentPage, searchTerm, itemsPerPage]);
 
+  // useEffect(() => {
+  //   return () => setToastMessage({ status: "", message: "" });
+  // });
+
   useCustomToast(toastMessage.status, toastMessage.message);
 
   if (showCreateArticle) return <AddArticle setToastMessage={setToastMessage} onClose={(refresh) => {
