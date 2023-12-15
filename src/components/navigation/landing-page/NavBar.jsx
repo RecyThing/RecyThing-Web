@@ -44,11 +44,11 @@ export function NavBar() {
           (color ? "bg-white shadow" : "bg-transparent ")
         }
         ref={ref}
-					style={{
-						transform: isInView ? "none" : "translateY(-50px)",
-						  opacity: isInView ? 1 : 0,
-						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s"
-					}}
+        style={{
+          transform: isInView ? "none" : "translateY(-50px)",
+          opacity: isInView ? 1 : 0,
+          transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s",
+        }}
       >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
@@ -99,11 +99,11 @@ export function NavBar() {
         </div>
         <div className={`${toggleNavbar ? "block" : "hidden"} lg:hidden`}>
           <ul className="text-start">
-            <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-2 sm:hidden">
+            <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-3 sm:hidden">
               Download
             </li>
             {menuItems.map((item, index) => (
-              <li key={index}>
+              <li key={index} className="py-2">
                 <Link
                   activeClass="active"
                   className={`${
