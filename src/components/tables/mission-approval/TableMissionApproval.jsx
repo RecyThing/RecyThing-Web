@@ -1,48 +1,19 @@
 import { useState } from "react";
-import {
-	Button,
-	ButtonGroup,
-	Menu,
-	MenuButton,
-	MenuItemOption,
-	MenuList,
-	MenuOptionGroup,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Button, ButtonGroup, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, useDisclosure } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
 import { ChevronDown } from "react-iconly";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye } from "iconsax-react";
 import { TableBodyRow } from "../base-table/TableRows";
-import {
-	ModalApprove,
-	ModalReject,
-	ModalViewMissionApproval,
-} from "@/components/modal";
+import { ModalApprove, ModalReject, ModalViewMissionApproval } from "@/components/modal";
 import { formatDateToLocalDate } from "@/utils";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	fetchApproval,
-	updateApproval,
-	updateApprovalSelector,
-} from "@/store/approval-mission";
+import { fetchApproval, updateApproval, updateApprovalSelector } from "@/store/approval-mission";
 
-const TableHead = [
-	"ID Misi",
-	"Nama Misi",
-	"Pelaku Misi",
-	"Status",
-	"Tanggal",
-	"View",
-	"Aksi",
-];
+const TableHead = ["ID Misi", "Nama Misi", "Pelaku Misi", "Status", "Tanggal", "View", "Aksi"];
 
-const rejectMenu = [
-	"Bukti tidak jelas",
-	"Bukti kurang lengkap",
-	"Tidak ada detail kejadian",
-];
+const rejectMenu = ["Bukti tidak jelas", "Bukti kurang lengkap", "Tidak ada detail kejadian"];
 
 export function TableMissionApproval({ data }) {
 	const dispatch = useDispatch();
@@ -51,23 +22,11 @@ export function TableMissionApproval({ data }) {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [rejectReason, setRejectReason] = useState(null);
 
-	const {
-		isOpen: isOpenView,
-		onOpen: onOpenView,
-		onClose: onCloseView,
-	} = useDisclosure();
+	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
 
-	const {
-		isOpen: isOpenApprove,
-		onOpen: onOpenApprove,
-		onClose: onCloseApprove,
-	} = useDisclosure();
+	const { isOpen: isOpenApprove, onOpen: onOpenApprove, onClose: onCloseApprove } = useDisclosure();
 
-	const {
-		isOpen: isOpenReject,
-		onOpen: onOpenReject,
-		onClose: onCloseReject,
-	} = useDisclosure();
+	const { isOpen: isOpenReject, onOpen: onOpenReject, onClose: onCloseReject } = useDisclosure();
 
 	const handleBadges = (status) => {
 		status = status.toLowerCase();
@@ -111,8 +70,10 @@ export function TableMissionApproval({ data }) {
 					status: "disetujui",
 				},
 			})
-		).then(() => {
-			onCloseApprove();
+		).then((res) => {
+			if (res.payload && res.payload.status === true) {
+				onCloseApprove();
+			}
 		});
 	};
 
@@ -131,9 +92,11 @@ export function TableMissionApproval({ data }) {
 					reason: rejectReason,
 				},
 			})
-		).then(() => {
-			onCloseReject();
-			setRejectReason(null);
+		).then((res) => {
+			if (res.payload && res.payload.status === true) {
+				onCloseReject();
+				setRejectReason(null);
+			}
 		});
 	};
 

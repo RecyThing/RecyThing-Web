@@ -117,15 +117,17 @@ function ManageEventCommunity() {
 	};
 
 	const handleSubmitAdded = (target) => {
-		target.image = target.image[0];
+		target.image = target.image[0] instanceof File ? target.image[0] : target.image;
 		target.date = format(new Date(target.date), "yyyy/MM/dd");
 		dispatch(
 			createEvent({
 				data: target,
 				communityId: id,
 			})
-		).then(() => {
-			onClose();
+		).then((res) => {
+			if (res.payload && res.payload.status === true) {
+				onClose();
+			}
 		});
 	};
 

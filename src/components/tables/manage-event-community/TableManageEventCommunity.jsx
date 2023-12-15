@@ -62,7 +62,7 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleSubmitUpdatedData = (target, communityId, eventId) => {
-		target.image = target.image[0];
+		target.image = target.image[0] instanceof File ? target.image[0] : target.image;
 		target.date = format(new Date(target.date), "yyyy/MM/dd");
 		dispatch(
 			updateEvent({

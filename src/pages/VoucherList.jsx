@@ -1,17 +1,17 @@
 import { Add } from "iconsax-react";
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import {
-  clearCreateVoucherState,
-  clearDeleteVoucherState,
-  clearFetchVouchersState,
-  clearFetchVoucherState,
-  clearUpdateVoucherState,
-  createVoucher,
-  createVoucherSelector,
-  deleteVoucherSelector,
-  fetchVouchers,
-  fetchVouchersSelector,
-  updateVoucherSelector,
+	clearCreateVoucherState,
+	clearDeleteVoucherState,
+	clearFetchVouchersState,
+	clearFetchVoucherState,
+	clearUpdateVoucherState,
+	createVoucher,
+	createVoucherSelector,
+	deleteVoucherSelector,
+	fetchVouchers,
+	fetchVouchersSelector,
+	updateVoucherSelector,
 } from "@/store/voucher";
 import { formatDateToISOString } from "@/utils";
 import { LayoutDashboardContent } from "@/layout";
@@ -37,11 +37,11 @@ function VoucherList() {
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const [refreshData, setRefreshData] = useState(false);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useCustomToast(updateStatus, updateMessage);
-  useCustomToast(deleteStatus, deleteMessage);
-  useCustomToast(createStatus, createMessage);
+	useCustomToast(updateStatus, updateMessage);
+	useCustomToast(deleteStatus, deleteMessage);
+	useCustomToast(createStatus, createMessage);
 
 	const fetchVouchersData = useCallback(() => {
 		dispatch(
@@ -80,18 +80,18 @@ function VoucherList() {
 		return voucher?.reward_name.toLowerCase().includes(searchTerm.toLowerCase()) || voucher?.point.toString().includes(searchTerm);
 	});
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-    setCurrentPage(1);
-  };
+	const handleSearch = (term) => {
+		setSearchTerm(term);
+		setCurrentPage(1);
+	};
 
 	const handleSubmitAdded = (data) => {
-		data.image = data.image[0];
+		data.image = data.image[0] instanceof File ? data.image[0] : data.image;
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 
-		dispatch(createVoucher(data)).then(() => {
-			if (createStatus === "success") {
+		dispatch(createVoucher(data)).then((res) => {
+			if (res.payload && res.payload.status) {
 				onClose();
 			}
 		});
@@ -159,13 +159,13 @@ function VoucherList() {
 				)}
 			</Flex>
 
-      <ModalAddVoucher
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmitAdded}
-      />
-    </LayoutDashboardContent>
-  );
+			<ModalAddVoucher
+				isOpen={isOpen}
+				onClose={onClose}
+				onSubmit={handleSubmitAdded}
+			/>
+		</LayoutDashboardContent>
+	);
 }
 
 export default VoucherList;
