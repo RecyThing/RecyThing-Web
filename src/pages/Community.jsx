@@ -24,22 +24,11 @@ import { useCustomToast, useDebounce } from "@/hooks";
 
 function Community() {
 	const dispatch = useDispatch();
-	const {
-		data = [],
-		status,
-		message,
-		count_data,
-	} = useSelector(fetchCommunitiesSelector);
+	const { data = [], status, message, count_data } = useSelector(fetchCommunitiesSelector);
 
-	const { status: deleteStatus, message: deleteMessage } = useSelector(
-		deleteCommunitySelector
-	);
-	const { status: updateStatus, message: updateMessage } = useSelector(
-		updateCommunitySelector
-	);
-	const { status: createStatus, message: createMessage } = useSelector(
-		createCommunitySelector
-	);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deleteCommunitySelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(updateCommunitySelector);
+	const { status: createStatus, message: createMessage } = useSelector(createCommunitySelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
@@ -64,11 +53,7 @@ function Community() {
 	}, [fetchCommunitiesData, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
-		if (
-			deleteStatus === "success" ||
-			updateStatus === "success" ||
-			createStatus === "success"
-		) {
+		if (deleteStatus === "success" || updateStatus === "success" || createStatus === "success") {
 			fetchCommunitiesData();
 			setSearchTerm("");
 			setCurrentPage(1);
@@ -79,13 +64,7 @@ function Community() {
 			if (deleteStatus !== "idle") dispatch(clearDeleteCommunityState());
 			if (createStatus !== "idle") dispatch(clearDeleteCommunityState());
 		};
-	}, [
-		deleteStatus,
-		updateStatus,
-		createStatus,
-		dispatch,
-		fetchCommunitiesData,
-	]);
+	}, [deleteStatus, updateStatus, createStatus, dispatch, fetchCommunitiesData]);
 
 	useEffect(() => {
 		return () => {
@@ -110,9 +89,11 @@ function Community() {
 	};
 
 	const handleSubmitAdded = (target) => {
-		target.image = target.image[0];
-		dispatch(createCommunity(target)).then(() => {
-			onClose();
+		target.image = target.image[0] instanceof File ? target.image[0] : target.image;
+		dispatch(createCommunity(target)).then((res) => {
+			if (res.payload && res.payload.status === true) {
+				onClose();
+			}
 		});
 	};
 

@@ -35,6 +35,12 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 		onSubmit(data);
 	};
 
+	useEffect(() => {
+		if (!isOpen) {
+			reset();
+		}
+	}, [isOpen, reset]);
+
 
 	return (
 		<Modal

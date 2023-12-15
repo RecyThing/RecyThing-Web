@@ -19,11 +19,12 @@ export const schema = yup.object().shape({
 		.mixed()
 		.required("Gambar voucher tidak boleh kosong")
 		.test("fileFormat", "Format gambar tidak valid", (value) => {
-			const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+			const validExtensions = [".jpg", ".png"];
 			if (value[0] instanceof File) {
-				return validTypes.includes(value[0].type);
+				const extension = "." + value[0].name.split(".").pop();
+				return validExtensions.includes(extension);
 			} else if (typeof value === "string") {
-				return validTypes.some((type) => value.toLowerCase().endsWith(type.slice(6)));
+				return validExtensions.some((ext) => value.toLowerCase().endsWith(ext));
 			}
 			return false;
 		})

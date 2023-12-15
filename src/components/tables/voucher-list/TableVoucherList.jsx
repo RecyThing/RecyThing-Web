@@ -1,7 +1,7 @@
 import { BaseTable } from "../base-table/BaseTable";
 import { CenteredCell, TextCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
-import { deleteVoucher, deleteVoucherSelector, fetchVoucher, updateVoucher, updateVoucherSelector } from "@/store/voucher";
+import { deleteVoucher, deleteVoucherSelector, fetchVoucher, updateVoucher } from "@/store/voucher";
 import { formatDateToISOString, formatDateToLocalDate, formatWithCommas } from "@/utils";
 import { ModalDelete, ModalEditVoucher } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
@@ -25,7 +25,6 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 
 	const dispatch = useDispatch();
 	const { status: deleteStatus } = useSelector(deleteVoucherSelector);
-	const { status: updateStatus } = useSelector(updateVoucherSelector);
 
 	const handleEditModal = (target) => {
 		setId(target);
@@ -34,12 +33,12 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleSubmitEdited = (data) => {
-		data.image = data.image[0];
+		data.image = data.image[0] instanceof File ? data.image[0] : data.image;
 		data.start_date = formatDateToISOString(data.start_date);
 		data.end_date = formatDateToISOString(data.end_date);
 
-		dispatch(updateVoucher({ id, data })).then(() => {
-			if (updateStatus === "success") {
+		dispatch(updateVoucher({ id, data })).then((res) => {
+			if (res.payload && res.payload.status === true) {
 				onCloseEdit();
 			}
 		});
@@ -51,8 +50,10 @@ export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	};
 
 	const handleDelete = (target) => {
-		dispatch(deleteVoucher(target)).then(() => {
-			onCloseDelete();
+		dispatch(deleteVoucher(target)).then((res) => {
+			if (res.payload && res.payload.status === true) {
+				onCloseDelete();
+			}
 		});
 	};
 

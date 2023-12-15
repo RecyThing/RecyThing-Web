@@ -16,7 +16,7 @@ function AddArticle({ onClose, setToastMessage }) {
 
   function handleImage(event) {
     setErrorImage("");
-    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const validTypes = ["image/jpg", "image/png"];
     try {
       if (event.target.files && event.target.files[0]) {
         if (!validTypes.includes(event.target.files[0].type)) return setErrorImage("format file tidak diizinkan");

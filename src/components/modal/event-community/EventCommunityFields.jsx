@@ -28,7 +28,7 @@ export function EventCommunityImageField({ control, error, imageRef, handleImage
 							type="file"
 							display={"none"}
 							ref={imageRef}
-							accept={".jpg,.jpeg"}
+							accept={".jpg,.png"}
 							onChange={(e) => field.onChange(e.target.files)}
 						/>
 						<Text color={error ? "red.500" : "#828282"}>Gambar Komunitas</Text>
@@ -85,7 +85,7 @@ export function EventCommunityImageField({ control, error, imageRef, handleImage
 							fontSize={"sm"}
 							textAlign={"center"}
 						>
-							Max 5 Mb, Format JPG & JPEG
+							Max 5 Mb, Format JPG & PNG
 						</Text>
 					</Flex>
 					<FormErrorMessage textAlign={"center"}>{error?.message}</FormErrorMessage>
