@@ -18,7 +18,6 @@ import * as Fields from "./MissionFormFields";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { CloseSquare } from "react-iconly";
-import { Spinner } from "@/components/spinner";
 import { createMissionSelector } from "@/store/mission";
 import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,7 +44,6 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
 
   const handleOnSubmit = (data) => {
     onSubmit(data);
-    reset();
   };
 
   useEffect(() => {
@@ -56,11 +54,8 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>
-      <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
+      <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} closeOnOverlayClick={createStatus === "success"}/>
       <ModalContent borderRadius={"3xl"} gap={"1.5rem"} py={"1rem"}>
-        {createStatus === "loading" ? (
-          <Spinner containerSize={"xl"} />
-        ) : (
           <>
             <ModalHeader pb={"0"}>
               <Heading as="h2" fontSize={"2xl"} fontWeight={"bold"}>
@@ -202,6 +197,7 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                   px={"3rem"}
                   py={"1.75rem"}
                   _hover={{ bg: "#333333" }}
+                  isDisabled={createStatus === "loading"}
                   onClick={() => {
                     reset();
                     onClose();
@@ -217,13 +213,13 @@ export function ModalAddMission({ isOpen, onClose, onSubmit }) {
                   py={"1.75rem"}
                   _hover={{ bg: "#2DA22D" }}
                   type="submit"
+                  isLoading={createStatus === "loading"}
                 >
                   Tambah
                 </Button>
               </ModalFooter>
             </form>
           </>
-        )}
       </ModalContent>
     </Modal>
   );

@@ -125,7 +125,7 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
         onClose={onCloseDelete}
         target={id}
         onDelete={handleDelete}
-        deleteStatus={deleteStatus}
+        isLoading={deleteStatus === "loading"}
       />
       <BaseTable data={data} heads={TableHead}>
         {data.map((row, rowIndex) => (

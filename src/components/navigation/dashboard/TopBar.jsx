@@ -55,7 +55,7 @@ export function TopBar({ setCollapse, collapse }) {
 								<div className="flex items-center gap-x-2">
 									<img
 										className="h-9 w-9 rounded-full"
-										src= {image ?? "https://i.ibb.co/4s1Pzd9/image.png"}
+										src= {image || `https://ui-avatars.com/api/?name=${name}&background=0D8ABC&color=fff&size=128`}
 										alt="profile"
 									/>
 									<div className="text-info text-left">
