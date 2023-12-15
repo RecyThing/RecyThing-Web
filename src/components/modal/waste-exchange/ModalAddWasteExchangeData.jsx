@@ -299,16 +299,15 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 							<div
 								className="flex items-center gap-2"
 								style={{ color: "rgba(130, 130, 130, 1)" }}
+								onClick={handleAddData}
 							>
 								<AddSquare
 									size="24"
 									color="rgba(148, 148, 148, 1)"
 									className="cursor-pointer"
-									onClick={handleAddData}
 								/>
 								<button
 									type="button"
-									onClick={handleAddData}
 								>
 									Tambah Data
 								</button>
