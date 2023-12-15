@@ -299,6 +299,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 							<div
 								className="flex items-center gap-2"
 								style={{ color: "rgba(130, 130, 130, 1)" }}
+								onClick={handleAddData}
 							>
 								<AddSquare
 									size="24"
@@ -307,7 +308,6 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 								/>
 								<button
 									type="button"
-									onClick={handleAddData}
 								>
 									Tambah Data
 								</button>
