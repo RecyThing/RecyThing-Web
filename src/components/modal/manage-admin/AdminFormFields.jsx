@@ -16,28 +16,31 @@ export function AdminImageFields({ control, error, imageRef, handleImageRef }) {
 					onClick={handleImageRef}
 				>
 					<FormControl isInvalid={error}>
-						<img
-							src={field.value ? (field.value[0] instanceof File ? URL.createObjectURL(field.value[0]) : field.value) : AdminImage}
-							className="relative mx-auto aspect-square rounded-full object-contain border"
-							width={150}
-							height={150}
-							alt=""
-						/>
-						<input
-							name="image"
-							type="file"
-							className="hidden"
-							ref={imageRef}
-							accept={".jpg,.png"}
-							onChange={(e) => {field.onChange(e.target.files)}}
-						/>
-						<button
-							className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
-							type="button"
-						>
-							<Camera />
-						</button>
+						<div className="my-5 wrapper relative">
+							<img
+								src={field.value ? (field.value[0] instanceof File ? URL.createObjectURL(field.value[0]) : field.value) : AdminImage}
+								className="relative mx-auto aspect-square rounded-full object-contain border"
+								width={150}
+								height={150}
+								alt=""
+							/>
+							<input
+								name="image"
+								type="file"
+								className="hidden"
+								ref={imageRef}
+								accept={".jpg,.png"}
+								onChange={(e) => field.onChange(e.target.files)}
+							/>
+							<button
+								className="rounded-full bg-green-500 p-3 text-white absolute right-7 bottom-1 z-10"
+								type="button"
+							>
+								<Camera />
+							</button>
+						</div>
 						<FormErrorMessage
+							className="relative"
 							justifyContent={"center"}
 							textAlign={"center"}
 						>
