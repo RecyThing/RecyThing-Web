@@ -8,6 +8,7 @@ import { TableCommunityList } from "@/components/tables";
 import { LayoutDashboardContent } from "@/layout";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	clearCreateCommunityState,
 	clearDeleteCommunityState,
 	clearFetchCommunitiesState,
 	clearFetchCommunityState,
@@ -35,6 +36,7 @@ function Community() {
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [refreshData, setRefreshData] = useState(false);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -50,28 +52,26 @@ function Community() {
 
 	useEffect(() => {
 		fetchCommunitiesData();
-	}, [fetchCommunitiesData, searchTerm, itemsPerPage, currentPage]);
+	}, [fetchCommunitiesData, refreshData]);
 
 	useEffect(() => {
 		if (deleteStatus === "success" || updateStatus === "success" || createStatus === "success") {
-			fetchCommunitiesData();
 			setSearchTerm("");
 			setCurrentPage(1);
-		}
+			setRefreshData((prev) => !prev);
 
-		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdateCommunityState());
 			if (deleteStatus !== "idle") dispatch(clearDeleteCommunityState());
-			if (createStatus !== "idle") dispatch(clearDeleteCommunityState());
-		};
+			if (createStatus !== "idle") dispatch(clearCreateCommunityState());
+		}
+
+		return () => {};
 	}, [deleteStatus, updateStatus, createStatus, dispatch, fetchCommunitiesData]);
 
 	useEffect(() => {
 		return () => {
 			dispatch(clearFetchCommunitiesState());
 			dispatch(clearFetchCommunityState());
-			dispatch(clearUpdateCommunityState());
-			dispatch(clearDeleteCommunityState());
 		};
 	}, [dispatch]);
 
