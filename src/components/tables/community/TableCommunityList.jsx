@@ -8,8 +8,8 @@ import { TableBodyRow } from "@/components/tables/base-table/TableRows";
 import { CenteredCell, LinkCell, TextCell } from "@/components/tables/base-table/TableCells";
 import { useNavigate } from "react-router-dom";
 import { formatDateToLocalDate } from "@/utils";
-import { useDispatch } from "react-redux";
-import { deleteCommunity, fetchCommunity, updateCommunity } from "@/store/community";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCommunity, deleteCommunitySelector, fetchCommunity, updateCommunity } from "@/store/community";
 
 const TableHead = ["No", "Nama Komunitas", "Tanggal Dibuat", "Lokasi", "Event", "Aksi"];
 
@@ -31,6 +31,7 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { status: deleteStatus } = useSelector(deleteCommunitySelector);
 
 	const [currData, setCurrData] = useState(null);
 
@@ -97,6 +98,7 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 				onDelete={handleDelete}
 				title={"Anda yakin ingin Menghapus Komunitas?"}
 				message={"Komunitas yang dihapus tidak dapat dipulihkan"}
+				isLoading={deleteStatus === "loading"}
 			/>
 
 			<BaseTable
