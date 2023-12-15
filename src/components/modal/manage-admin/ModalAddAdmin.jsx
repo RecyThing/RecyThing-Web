@@ -39,7 +39,6 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
 
   const handleOnSubmit = (data) => {
     onSubmit(data);
-    reset();
   };
 
   useEffect(() => {
@@ -129,7 +128,7 @@ export function ModalAddAdmin({ isOpen, onClose, onSubmit }) {
                   py={"1.75rem"}
                   _hover={{ bg: "#2DA22D" }}
                   type="submit"
-                  isDisabled={createStatus === "loading"}
+                  isLoading={createStatus === "loading"}
                 >
                   Tambah
                 </Button>

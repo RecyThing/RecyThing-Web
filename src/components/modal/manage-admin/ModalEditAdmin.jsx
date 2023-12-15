@@ -143,7 +143,7 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
                     py={"1.75rem"}
                     _hover={{ bg: "#2DA22D" }}
                     type="submit"
-                    isDisabled={updateStatus === "loading"}
+                    isLoading={updateStatus === "loading"}
                   >
                     Simpan
                   </Button>
