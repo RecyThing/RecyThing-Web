@@ -41,7 +41,7 @@ export function NavBar() {
       <nav
         className={
           "fixed w-full top-0 z-50 transition-all duration-500 ease-in-out " +
-          (color ? "bg-white shadow" : "bg-transparent ")
+          (color ? "bg-white shadow" : "lg:bg-transparent md:bg-transparent sm:bg-white")
         }
         ref={ref}
         style={{
