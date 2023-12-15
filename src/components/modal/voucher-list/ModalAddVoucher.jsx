@@ -17,19 +17,20 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 		control,
 		formState: { errors },
 		handleSubmit,
+		reset,
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
 
-  const { status: createStatus } = useSelector(createVoucherSelector);
+	const { status: createStatus } = useSelector(createVoucherSelector);
 
-  const imageRef = useRef();
+	const imageRef = useRef();
 
-  const handleImageRef = () => {
-    if (imageRef.current) {
-      imageRef.current.click();
-    }
-  };
+	const handleImageRef = () => {
+		if (imageRef.current) {
+			imageRef.current.click();
+		}
+	};
 
 	const handleOnSubmit = (data) => {
 		onSubmit(data);
@@ -40,7 +41,6 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 			reset();
 		}
 	}, [isOpen, reset]);
-
 
 	return (
 		<Modal
