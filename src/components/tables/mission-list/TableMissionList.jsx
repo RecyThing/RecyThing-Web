@@ -13,7 +13,7 @@ import { formatDateToISOString } from "@/utils";
 
 const TableHead = ["ID Misi", "Nama Misi", "Pembuat", "Status", "Aksi"];
 
-export function TableMissionList({ data, currentPage, itemsPerPage }) {
+export function TableMissionList({ data }) {
 	const handleBadges = (status) => {
 		switch (status) {
 			case "Aktif":
@@ -114,7 +114,7 @@ export function TableMissionList({ data, currentPage, itemsPerPage }) {
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>{(currentPage - 1) * itemsPerPage + rowIndex + 1}</CenteredCell>
+						<CenteredCell>{row.id}</CenteredCell>
 						<TextCell
 							casing={"capitalize"}
 							content={row.name}
