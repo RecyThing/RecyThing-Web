@@ -42,7 +42,6 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
 
   const handleOnSubmit = (data) => {
     onSubmit(data);
-    reset();
   };
 
   useEffect(() => {
@@ -65,14 +64,18 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
   }, [isOpen, reset]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"5xl"} isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={"5xl"}
+      isCentered
+      closeOnOverlayClick={updateStatus === "success"}
+    >
       <ModalOverlay bg={"#0000000D"} backdropFilter={"blur(5px)"} />
       <ModalContent borderRadius={"3xl"} gap={"1.5rem"} py={"1rem"}>
-        {(status === "loading" || updateStatus === "loading") && (
-          <Spinner containerSize={"xl"} />
-        )}
+        {status === "loading" && <Spinner containerSize={"xl"} />}
         {status === "failed" && <div>{message}</div>}
-        {status === "success" && updateStatus === "idle" && (
+        {status === "success" && (
           <>
             <ModalHeader pb={"0"}>
               <Heading as="h2" fontSize={"2xl"} fontWeight={"bold"}>
@@ -230,8 +233,8 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
                   px={"3rem"}
                   py={"1.75rem"}
                   _hover={{ bg: "#333333" }}
+                  isDisabled={updateStatus === "loading"}
                   onClick={() => {
-                    reset();
                     onClose();
                   }}
                 >
@@ -245,6 +248,7 @@ export function ModalEditMission({ isOpen, onClose, onSubmit }) {
                   py={"1.75rem"}
                   _hover={{ bg: "#2DA22D" }}
                   type="submit"
+                  isLoading={updateStatus === "loading"}
                 >
                   Perbarui
                 </Button>
