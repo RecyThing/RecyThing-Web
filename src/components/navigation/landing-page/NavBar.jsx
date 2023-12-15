@@ -47,7 +47,7 @@ export function NavBar() {
         style={{
           transform: isInView ? "none" : "translateY(-50px)",
           opacity: isInView ? 1 : 0,
-          transition: "all 0.3s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s",
+          transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s",
         }}
       >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
