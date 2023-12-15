@@ -83,7 +83,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 	useEffect(() => {
 		if (!isOpen) {
 			reset({
-				data: [],
+				data: [{ trash_type: "", amount: "" }],
 				username: "",
 				userEmail: "",
 				dropPointLocation: "",
@@ -95,6 +95,12 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 		const newEntry = { trash_type: "", amount: ""};
 		append(newEntry);
 	};	 
+
+	useEffect(() => {
+		if (isOpen && fields.length === 0) {
+		  	handleAddData();
+		}
+	}, [isOpen, fields]);
 	
 	const calculatePoints = (trashType, unit) => {
 		const selectedCategory = categoriesData.find(
