@@ -78,7 +78,7 @@ export function VoucherImageField({ control, error, imageRef, handleImageRef }) 
 							fontSize={"sm"}
 							textAlign={"center"}
 						>
-							Max 5 Mb, Format JPG & JPEG
+							Max 5 Mb, Format JPG & PNG
 						</Text>
 					</Flex>
 					<FormErrorMessage

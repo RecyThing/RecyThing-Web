@@ -19,7 +19,7 @@ export const schema = yup.object().shape({
 		.mixed()
 		.required("Gambar misi tidak boleh kosong")
 		.test("fileFormat", "Format gambar tidak valid", (value) => {
-			const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+			const validTypes = ["image/jpg", "image/png"];
 			return value && validTypes.includes(value.type);
 		})
 		.test("fileSize", "Ukuran gambar tidak boleh lebih dari 5 MB", (value) => {

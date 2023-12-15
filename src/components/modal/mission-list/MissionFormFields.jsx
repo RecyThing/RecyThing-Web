@@ -71,7 +71,7 @@ export function MissionImageField({
               type="file"
               display={"none"}
               ref={imageRef}
-              accept={".jpg,.jpeg,.png"}
+              accept={".jpg,.png"}
               onInput={(e) => {
                 field.onChange(e.target.files[0]);
               }}
@@ -128,7 +128,7 @@ export function MissionImageField({
 							fontSize={"sm"}
 							textAlign={"center"}
 						>
-							Max 5 Mb, Format JPG & JPEG
+							Max 5 Mb, Format JPG & PNG
 						</Text>
           </Flex>
           <FormErrorMessage>{error?.message}</FormErrorMessage>
