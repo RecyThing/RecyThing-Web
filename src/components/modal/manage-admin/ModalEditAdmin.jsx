@@ -51,7 +51,6 @@ export function ModalEditAdmin({ isOpen, onClose, onSubmit }) {
 
   const handleOnSubmit = (data) => {
     onSubmit(data);
-    reset();
   };
 
   useEffect(() => {

@@ -17,7 +17,6 @@ export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 		control,
 		formState: { errors },
 		handleSubmit,
-		reset,
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
