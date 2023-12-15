@@ -304,6 +304,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 									size="24"
 									color="rgba(148, 148, 148, 1)"
 									className="cursor-pointer"
+									onClick={handleAddData}
 								/>
 								<button
 									type="button"
