@@ -34,6 +34,8 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
 		dispatch(deleteAdmin(id));
 	};
 
+	const { status: deleteStatus } = useSelector(deleteAdminSelector);
+
 	useEffect(() => {
 		if (deleteStatusAdmin === "success" || deleteStatusAdmin === "failed") {
 			onCloseDelete();
@@ -70,6 +72,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
 				target={idAdmin}
 				onDelete={handleDelete}
 				deleteStatus={deleteStatusAdmin}
+				isLoading={deleteStatus === "loading"}
 			/>
 			<BaseTable
 				data={data}
