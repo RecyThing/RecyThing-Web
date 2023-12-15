@@ -15,7 +15,7 @@ export function ModalViewImageReporting({ isOpen, onClose, companyName, currentI
 	};
 
 	const handleNextImage = () => {
-		if (currentImage < 1) {
+		if (currentImage < totalImage) {
 			onChangeImage(currentImage + 1);
 		}
 	};
