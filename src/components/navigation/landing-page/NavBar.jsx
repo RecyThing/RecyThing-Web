@@ -6,37 +6,37 @@ import { Link } from "react-scroll";
 import { useInView } from "framer-motion";
 
 export function NavBar() {
-	const [toggleNavbar, setToggleNavbar] = useState(false);
-	const [color, setColor] = useState(false);
-	const [activeSection, setActiveSection] = useState("");
+  const [toggleNavbar, setToggleNavbar] = useState(false);
+  const [color, setColor] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const ref = useRef(null);
-	const isInView = useInView(ref, { once: true });
-	
-	const changeColor = () => {
-		if (window.scrollY >= 72) {
-			setColor(true);
-		} else {
-			setColor(false);
-		}
-	};
+  const isInView = useInView(ref, { once: true });
 
-	useEffect(() => {
-		window.addEventListener("scroll", changeColor);
+  const changeColor = () => {
+    if (window.scrollY >= 72) {
+      setColor(true);
+    } else {
+      setColor(false);
+    }
+  };
 
-		return () => {
-			window.removeEventListener("scroll", changeColor);
-		};
-	}, []);
+  useEffect(() => {
+    window.addEventListener("scroll", changeColor);
 
-	const menuItems = [
-		{ text: "Beranda", link: "jumbotron" },
-		{ text: "Fitur", link: "card" },
-		{ text: "Tentang", link: "framePahlawan" },
-		{ text: "Eksplorasi", link: "frameDaurUlang" },
-		{ text: "FaQ", link: "question" },
-	];
+    return () => {
+      window.removeEventListener("scroll", changeColor);
+    };
+  }, []);
 
-	return (
+  const menuItems = [
+    { text: "Beranda", link: "jumbotron" },
+    { text: "Fitur", link: "card" },
+    { text: "Tentang", link: "framePahlawan" },
+    { text: "Eksplorasi", link: "frameDaurUlang" },
+    { text: "FaQ", link: "question" },
+  ];
+
+  return (
     <>
       <nav
         className={
@@ -44,11 +44,11 @@ export function NavBar() {
           (color ? "bg-white shadow" : "bg-transparent ")
         }
         ref={ref}
-					style={{
-						transform: isInView ? "none" : "translateY(-50px)",
-						  opacity: isInView ? 1 : 0,
-						  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.1s"
-					}}
+        style={{
+          transform: isInView ? "none" : "translateY(-50px)",
+          opacity: isInView ? 1 : 0,
+          transition: "all 0.6s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s",
+        }}
       >
         <div className="container mx-auto px-4 sm:px-8 lg:px-[72px] flex justify-between items-center py-3 sm:py-4">
           <div className="w-28 order-1 sm:order-2 lg:order-1">
@@ -98,12 +98,12 @@ export function NavBar() {
           </div>
         </div>
         <div className={`${toggleNavbar ? "block" : "hidden"} lg:hidden`}>
-          <ul className="text-start">
+          <ul className="text-start bg-white p-5">
             <li className="bg-[#35CC33] text-white font-semibold px-4 sm:px-8 py-2 sm:hidden">
               Download
             </li>
             {menuItems.map((item, index) => (
-              <li key={index}>
+              <li key={index} className="flex">
                 <Link
                   activeClass="active"
                   className={`${
