@@ -4,19 +4,14 @@ import { CustomIconButton } from "@/components/buttons";
 import { deleteUser, deleteUserSelector, fetchUser } from "@/store/user";
 import { Eye, Trash } from "iconsax-react";
 import { formatWithCommas } from "@/utils";
-import { ModalDelete, ModalViewUserDetail } from "@/components/modal";
 import { TableBodyRow } from "../base-table/TableRows";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import { ModalDelete, ModalViewDetailUser } from "@/components/modal";
 
 const TABLEHEADS = ["No", "Nama Lengkap", "Email", "Total Poin", "Aksi"];
 
-/**
- * TableUserList is a table component that is used to display user data.
- * @param {{data: any[], currentPage: number, itemsPerPage: number}} props - The props object.
- * @returns {JSX.Element} The TableUserList component.
- */
 export function TableUserList({ data, currentPage, itemsPerPage }) {
 	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
@@ -44,7 +39,7 @@ export function TableUserList({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<ModalViewUserDetail
+			<ModalViewDetailUser
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				data={id}

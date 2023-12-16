@@ -1,6 +1,6 @@
 import { Spinner } from "@/components/spinner";
 import { fetchDataTransactionSelector } from "@/store/transaction-list";
-import { formatDateToCustomDate, formatDateToLocalDate } from "@/utils";
+import { formatDateToLocalDate } from "@/utils";
 import { formatTime2DigitHoursMinutes } from "@/utils/format-time/formatTime2DigitHoursMinutes";
 import {
 	Box,
@@ -25,15 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowDown2 } from "iconsax-react";
 import { useState } from "react";
-import {
-	Calendar,
-	CloseSquare,
-	Document,
-	Location,
-	TicketStar,
-	TickSquare,
-	User,
-} from "react-iconly";
+import { Calendar, CloseSquare, Document, Location, TicketStar, TickSquare, User } from "react-iconly";
 import { useSelector } from "react-redux";
 
 const labels = {
@@ -45,12 +37,7 @@ const labels = {
 	status: { title: "Status", icon: <Location /> },
 };
 
-export function ModalEditDetailTransaction({
-	isOpen,
-	onClose,
-	onUpdate,
-	onEdit,
-}) {
+export function ModalEditDetailTransaction({ isOpen, onClose, onUpdate, onEdit }) {
 	const { data, status, message } = useSelector(fetchDataTransactionSelector);
 
 	const handleUpdate = () => {
@@ -133,16 +120,7 @@ export function ModalEditDetailTransaction({
 								Detail Informasi
 							</Text>
 							{Object.entries(labels).map(([key, value]) => {
-								if (
-									[
-										"nama",
-										"tanggal",
-										"waktu",
-										"reward",
-										"goal",
-										"status",
-									].includes(key)
-								) {
+								if (["nama", "tanggal", "waktu", "reward", "goal", "status"].includes(key)) {
 									return (
 										<Grid
 											key={key}
@@ -195,9 +173,7 @@ export function ModalEditDetailTransaction({
 														letterSpacing={"tight"}
 														casing={"capitalize"}
 													>
-														{formatTime2DigitHoursMinutes(
-															data.time_transaction
-														)}
+														{formatTime2DigitHoursMinutes(data.time_transaction)}
 													</Text>
 												) : key === "reward" ? (
 													<Text
@@ -239,9 +215,7 @@ export function ModalEditDetailTransaction({
 																	minWidth={"219px"}
 																	textAlign={"start"}
 																>
-																	<Text casing={"capitalize"}>
-																		{statusData ? statusData : data.status}
-																	</Text>
+																	<Text casing={"capitalize"}>{statusData ? statusData : data.status}</Text>
 																</Box>
 																<Box
 																	flex={"1"}

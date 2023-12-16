@@ -16,13 +16,8 @@ const LABELS = {
 	created_at: { title: "Akun Terdaftar", icon: null },
 };
 
-/**
- * ModalViewUserDetail is a modal component that is used to display user detail.
- * @param {{isOpen: boolean, onClose: () => void}} props - The props object.
- * @returns {JSX.Element} The ModalViewUserDetail component.
- */
-export function ModalViewUserDetail({ isOpen, onClose }) {
-  const { data, status, message } = useSelector(fetchUserSelector);
+export function ModalViewDetailUser({ isOpen, onClose }) {
+	const { data, status, message } = useSelector(fetchUserSelector);
 
 	return (
 		<Modal

@@ -1,5 +1,5 @@
 import { Button, Flex, Grid, GridItem, Heading, IconButton, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
-import { ButtonCopyLink } from "./ButtonCopyLink";
+import { ButtonCopyLink } from "@/components/buttons";
 import { CloseSquare } from "react-iconly";
 import { DetailEventField } from "./DetailEventField";
 import { fetchEventSelector } from "@/store/event-community";
@@ -7,7 +7,7 @@ import { formatDateToLocalDate, formatWithCommas } from "@/utils";
 import { Spinner } from "@/components/spinner";
 import { useSelector } from "react-redux";
 
-export function ModalViewDetailEvent({ isOpen, onClose, onOpenUpdate }) {
+export function ModalViewDetailEventCommunity({ isOpen, onClose, onOpenUpdate }) {
 	const { data, status, message } = useSelector(fetchEventSelector);
 
 	const handleStatus = (status) => {

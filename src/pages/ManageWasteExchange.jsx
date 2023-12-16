@@ -16,7 +16,7 @@ import {
 	deleteRecyclesSelector,
 	fetchRecycles,
 	fetchRecyclesSelector,
-  } from "@/store/waste-exchange";
+} from "@/store/waste-exchange";
 import { useDispatch, useSelector } from "react-redux";
 import { useCustomToast, useDebounce } from "@/hooks";
 import { Spinner } from "@/components/spinner";
@@ -24,19 +24,15 @@ import { Spinner } from "@/components/spinner";
 function ManageWasteExchange() {
 	const dispatch = useDispatch();
 	const { data = [], status, message } = useSelector(fetchRecyclesSelector);
-	const { status: deleteStatus, message: deleteMessage } = useSelector(
-		deleteRecyclesSelector
-	);
-	const { status: createStatus, message: createMessage } = useSelector(
-		createRecyclesSelector
-	);
+	const { status: deleteStatus, message: deleteMessage } = useSelector(deleteRecyclesSelector);
+	const { status: createStatus, message: createMessage } = useSelector(createRecyclesSelector);
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const [totalItems, setTotalItems] = useState(0);
 
 	const [_searchTerm, setSearchTerm] = useState("");
-  	const searchTerm = useDebounce(_searchTerm, 500);
+	const searchTerm = useDebounce(_searchTerm, 500);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -53,32 +49,29 @@ function ManageWasteExchange() {
 			}
 		});
 	}, [dispatch, searchTerm, itemsPerPage, currentPage]);
-	
+
 	useEffect(() => {
 		fetchRecycleData();
 	}, [searchTerm, itemsPerPage, currentPage, fetchRecycleData]);
 
 	useEffect(() => {
-		if (
-			deleteStatus === "success" ||
-			createStatus === "success"
-		) {
+		if (deleteStatus === "success" || createStatus === "success") {
 			setSearchTerm("");
 			setCurrentPage(1);
 			fetchRecycleData();
 		}
-	
+
 		return () => {
 			if (deleteStatus !== "idle") dispatch(clearDeleteRecyclesState());
 			if (createStatus !== "idle") dispatch(clearCreateRecyclesState());
 		};
 	}, [fetchRecycleData, deleteStatus, createStatus, dispatch]);
-	
+
 	useEffect(() => {
 		if (createStatus === "success") {
 			onClose();
 		}
-	}, [createStatus, onClose]);	
+	}, [createStatus, onClose]);
 
 	useEffect(() => {
 		return () => {
@@ -88,7 +81,7 @@ function ManageWasteExchange() {
 			dispatch(clearCreateRecyclesState());
 		};
 	}, [dispatch]);
-	
+
 	const filteredData = Object.values(data).filter((recycle) => {
 		return recycle.name.toLowerCase().includes(searchTerm.toLowerCase());
 	});
@@ -109,7 +102,7 @@ function ManageWasteExchange() {
 			}
 		});
 	};
-	
+
 	useCustomToast(deleteStatus, deleteMessage);
 	useCustomToast(createStatus, createMessage);
 
@@ -132,7 +125,10 @@ function ManageWasteExchange() {
 			<div className="bg-white rounded-lg shadow-md mt-4 p-4 h-90% w-full">
 				<div className="flex justify-between items-center mb-4 ml-2 w-full">
 					<div style={{ width: "35%" }}>
-						<SearchBar onSearch={handleSearch} />
+						<SearchBar
+							onSearch={handleSearch}
+							value={_searchTerm}
+						/>
 					</div>
 					<Button
 						leftIcon={<Add />}
@@ -159,20 +155,20 @@ function ManageWasteExchange() {
 					{status === "loading" && <Spinner />}
 					{status === "failed" && <div>{message}</div>}
 					{status === "success" && (
-					<>
-						<TableWasteExchange
-							data={filteredData}
-							currentPage={currentPage}
-							itemsPerPage={itemsPerPage}
-						/>
-						<Pagination
-							currentPage={currentPage}
-							itemsPerPage={itemsPerPage}
-							onChangeItemsPerPage={setItemsPerPage}
-							onChangePage={setCurrentPage}
-							totalItems={totalItems}
-						/>
-					</>
+						<>
+							<TableWasteExchange
+								data={filteredData}
+								currentPage={currentPage}
+								itemsPerPage={itemsPerPage}
+							/>
+							<Pagination
+								currentPage={currentPage}
+								itemsPerPage={itemsPerPage}
+								onChangeItemsPerPage={setItemsPerPage}
+								onChangePage={setCurrentPage}
+								totalItems={totalItems}
+							/>
+						</>
 					)}
 				</Flex>
 			</div>

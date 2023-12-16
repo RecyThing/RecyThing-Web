@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 
-const buttonLabels = ["Berjalan", "Belum Berjalan", "Selesai"];
+const BUTTONLABELS = ["Berjalan", "Belum Berjalan", "Selesai"];
 
 function ManageEventCommunity() {
 	const id = useParams().id;
@@ -71,11 +71,13 @@ function ManageEventCommunity() {
 		if (deleteStatus === "success" || updateStatus === "success" || createStatus === "success") {
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
+		}
 
+		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdateEventState());
 			if (deleteStatus !== "idle") dispatch(clearDeleteEventState());
 			if (createStatus !== "idle") dispatch(clearCreateEventState());
-		}
+		};
 	}, [deleteStatus, updateStatus, createStatus, dispatch]);
 
 	useEffect(() => {
@@ -156,13 +158,14 @@ function ManageEventCommunity() {
 					alignItems="center"
 				>
 					<ButtonGroup spacing={0}>
-						{buttonLabels.map((label) => (
+						{BUTTONLABELS.map((label) => (
 							<FilterButton
 								key={label}
 								label={label}
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>

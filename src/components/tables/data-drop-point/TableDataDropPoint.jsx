@@ -1,44 +1,23 @@
-import { useState } from "react";
+import { APIDropPoint } from "@/apis/APIDropPoint";
 import { BaseTable } from "../base-table/BaseTable";
-import { TableBodyRow } from "../base-table/TableRows";
 import { CenteredCell, LeftAlignCell } from "../base-table/TableCells";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye, Trash, Edit2 } from "iconsax-react";
+import { ModalDelete, ModalEditDataDropPoint, ModalViewDetailDataDropPoint } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
 import { useDisclosure } from "@chakra-ui/react";
-import {
-	ModalDelete,
-	ModalEditDataDropPoint,
-	ModalViewDetailDataDropPoint,
-} from "@/components/modal";
-import { APIDropPoint } from "@/apis/APIDropPoint";
+import { useState } from "react";
 
 export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, setToastMessage }) {
-	const TableHead = [
-		"No",
-		"Nama & Alamat Drop point",
-		"Jam Operasional",
-		"Aksi",
-	];
-	const {
-		isOpen: isOpenDetail,
-		onOpen: onOpenDetail,
-		onClose: onCloseDetail,
-	} = useDisclosure();
-	const {
-		isOpen: isOpenEdit,
-		onOpen: onOpenEdit,
-		onClose: onCloseEdit,
-	} = useDisclosure();
-	const {
-		isOpen: isOpenDelete,
-		onOpen: onOpenDelete,
-		onClose: onCloseDelete,
-	} = useDisclosure();
+	const TABLEHEADS = ["No", "Nama & Alamat Drop point", "Jam Operasional", "Aksi"];
+	const { isOpen: isOpenDetail, onOpen: onOpenDetail, onClose: onCloseDetail } = useDisclosure();
+	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
+	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
 	function handleOpenDeleteModal(row) {
@@ -54,11 +33,12 @@ export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, s
 	function handleDelete(row) {
 		setIsLoading(true);
 		APIDropPoint.deleteDataDropPoint(row.id)
-		.then(res => {
-			onCloseDelete();
-      setToastMessage({ status: "success", message: res.message });
-			refetch();
-		}).finally(() => setIsLoading(false));
+			.then((res) => {
+				onCloseDelete();
+				setToastMessage({ status: "success", message: res.message });
+				refetch();
+			})
+			.finally(() => setIsLoading(false));
 	}
 
 	return (
@@ -87,7 +67,7 @@ export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, s
 
 			<BaseTable
 				data={data || []}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{data?.map((row, rowIndex) => (
 					<TableBodyRow
@@ -100,15 +80,28 @@ export function TableDataDropPoint({ data, currentPage, itemsPerPage, refetch, s
 							<p className="overflow-hidden text-ellipsis text-sm leading-6 text-[#828282]">{row.address}</p>
 						</LeftAlignCell>
 						<LeftAlignCell maxWidth={"0"}>
-							<p >{row.schedule.filter(item => item.open_time && !item.closed)?.map(item => `${capitalizeFirstLetter(item.day)}`).join(", ")}</p>
-							<p className="text-sm leading-6 text-ellipsis overflow-hidden text-[#828282]">{row.schedule.filter(item => item.open_time && !item.closed)?.map(item => `${item.open_time}-${item.close_time}`).join(", ")}</p>
+							<p>
+								{row.schedule
+									.filter((item) => item.open_time && !item.closed)
+									?.map((item) => `${capitalizeFirstLetter(item.day)}`)
+									.join(", ")}
+							</p>
+							<p className="text-sm leading-6 text-ellipsis overflow-hidden text-[#828282]">
+								{row.schedule
+									.filter((item) => item.open_time && !item.closed)
+									?.map((item) => `${item.open_time}-${item.close_time}`)
+									.join(", ")}
+							</p>
 						</LeftAlignCell>
 
 						<CenteredCell>
 							<div className="flex gap-2">
 								<CustomIconButton
 									icon={<Eye />}
-									onClick={() => {setSelectedRow(row); onOpenDetail();}}
+									onClick={() => {
+										setSelectedRow(row);
+										onOpenDetail();
+									}}
 								/>
 								<CustomIconButton
 									icon={<Edit2 />}

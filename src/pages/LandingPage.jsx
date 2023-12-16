@@ -1,20 +1,10 @@
+import { DownloadSection, ExplorationSection, FeatureSection, Footer, HeroSection, QuestionSection } from "@/components/sections";
 import { NavBar } from "@/components/navigation";
-import {
-	DownloadSection,
-	ExplorationSection,
-	FeatureSection,
-	Footer,
-	HeroSection,
-	QuestionSection,
-} from "@/components/sections";
-
 
 const LandingPage = () => {
-
-
-	return(
+	return (
 		<div className="overflow-x-hidden">
-			<NavBar/>
+			<NavBar />
 			<HeroSection />
 			<FeatureSection />
 			<ExplorationSection />

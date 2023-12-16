@@ -1,5 +1,9 @@
 import { Th, Tr } from "@chakra-ui/react";
 
+/**
+ * Row for table head
+ * @param {{ heads: string[], textAligns: string[] }} props
+ */
 export function TableHeadRow({ heads, textAligns }) {
 	return (
 		<Tr>
@@ -20,6 +24,10 @@ export function TableHeadRow({ heads, textAligns }) {
 	);
 }
 
+/**
+ * Row for table body
+ * @param {{ index: number, children: React.ReactNode }} props
+ */
 export function TableBodyRow({ index, children }) {
 	return (
 		<Tr

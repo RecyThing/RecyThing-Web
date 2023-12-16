@@ -1,24 +1,11 @@
-import { UploadImageIcon } from "@/components/icons";
-import { InputTextArea, InputWithLogo } from "@/components/inputs";
-import {
-	Box,
-	Flex,
-	FormControl,
-	FormErrorMessage,
-	Image,
-	Input,
-	Text,
-} from "@chakra-ui/react";
-import { Edit2 } from "iconsax-react";
+import { Box, Flex, FormControl, FormErrorMessage, Image, Input, Text } from "@chakra-ui/react";
 import { Controller } from "react-hook-form";
+import { Edit2 } from "iconsax-react";
+import { InputTextArea, InputWithLogo } from "@/components/inputs";
 import { Location, People } from "react-iconly";
+import { UploadImageIcon } from "@/components/icons";
 
-export function CommunityImageField({
-	control,
-	error,
-	imageRef,
-	handleImageRef,
-}) {
+export function CommunityImageField({ control, error, imageRef, handleImageRef }) {
 	return (
 		<Controller
 			name="image"
@@ -54,11 +41,7 @@ export function CommunityImageField({
 							{field.value ? (
 								<>
 									<Image
-										src={
-											field.value && field.value[0] instanceof File
-												? URL.createObjectURL(field.value[0])
-												: field.value
-										}
+										src={field.value && field.value[0] instanceof File ? URL.createObjectURL(field.value[0]) : field.value}
 										alt={"community image"}
 										aspectRatio={"4/3"}
 										objectFit={"cover"}
@@ -81,9 +64,7 @@ export function CommunityImageField({
 							) : (
 								<>
 									<UploadImageIcon color={error ? "#E53535" : "#828282"} />
-									<Text color={error ? "red.500" : "#828282"}>
-										Unggah Gambar Komunitas
-									</Text>
+									<Text color={error ? "red.500" : "#828282"}>Unggah Gambar Komunitas</Text>
 								</>
 							)}
 						</Flex>
@@ -95,9 +76,7 @@ export function CommunityImageField({
 							Max 5 Mb, Format JPG & PNG
 						</Text>
 					</Flex>
-					<FormErrorMessage textAlign={"center"}>
-						{error?.message}
-					</FormErrorMessage>
+					<FormErrorMessage textAlign={"center"}>{error?.message}</FormErrorMessage>
 				</FormControl>
 			)}
 		/>

@@ -2,6 +2,10 @@ import { Table, TableContainer, Tbody, Thead } from "@chakra-ui/react";
 import { TableBodyRow, TableHeadRow } from "./TableRows";
 import { NotFoundCell } from "./TableCells";
 
+/**
+ * Base table component
+ * @param {{ data: any[], heads: string[], children: React.ReactNode, textAligns: string[] }} props
+ */
 export function BaseTable({ data, heads, children, textAligns }) {
 	return (
 		<TableContainer>

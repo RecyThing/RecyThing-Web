@@ -12,11 +12,6 @@ import { useState } from "react";
 
 const TABLEHEADS = ["Report ID", "Tipe Laporan", "Pelapor", "Lokasi", "Tanggal", "Status", "View", "Aksi"];
 
-/**
- * TableDataReporting is a table component that is used to display data reporting.
- * @param {{data: any[]}} props - The props object.
- * @returns {JSX.Element} The TableDataReporting component.
- */
 export function TableDataReporting({ data }) {
 	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
 	const { isOpen: isOpenApprove, onOpen: onOpenApprove, onClose: onCloseApprove } = useDisclosure();

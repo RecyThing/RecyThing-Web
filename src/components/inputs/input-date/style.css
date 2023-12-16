@@ -3,6 +3,7 @@
 }
 
 .react-datepicker-wrapper {
+	position: relative;
 	width: 100%;
 }
 
@@ -16,7 +17,7 @@
 
 .react-datepicker__close-icon {
 	z-index: 1000;
-	top: 1rem;
+	top: 0.9rem;
 	right: 0.75rem;
 	padding: 0;
 	width: auto;

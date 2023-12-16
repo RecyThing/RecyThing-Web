@@ -26,19 +26,13 @@ export const schema = yup.object().shape({
 			}
 			return true;
 		}),
-	description: yup
-		.string()
-		.required("Deskripsi komunitas tidak boleh kosong")
-		.max(500, "Deskripsi komunitas tidak boleh lebih dari 500 karakter"),
+	description: yup.string().required("Deskripsi komunitas tidak boleh kosong").max(500, "Deskripsi komunitas tidak boleh lebih dari 500 karakter"),
 	location: yup
 		.string()
 		.required("Lokasi komunitas tidak boleh kosong")
 		.max(50, "Lokasi komunitas tidak boleh lebih dari 50 karakter")
 		.min(5, "Lokasi komunitas tidak boleh kurang dari 5 karakter")
-		.matches(
-			/^[a-zA-Z0-9 ]*$/,
-			"Lokasi komunitas tidak boleh mengandung simbol"
-		),
+		.matches(/^[a-zA-Z0-9 ]*$/, "Lokasi komunitas tidak boleh mengandung simbol"),
 	max_members: yup
 		.number()
 		.transform((value) => (isNaN(value) ? undefined : value))

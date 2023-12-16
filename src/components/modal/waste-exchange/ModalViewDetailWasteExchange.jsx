@@ -1,16 +1,9 @@
-import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { Calendar, Profile, Sms, Location, CloseSquare } from "iconsax-react";
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
-} from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { fetchRecycleSelector } from "@/store/waste-exchange";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
 import { Spinner } from "@/components/spinner";
+import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 const dataTitle = {
 	id: "ID Penukaran",
@@ -24,12 +17,12 @@ const dataTitle = {
 };
 
 function capitalizeWords(string) {
-	if (typeof string !== 'string' || string === undefined) {
-	 	return '';
+	if (typeof string !== "string" || string === undefined) {
+		return "";
 	}
-	
+
 	return string.replace(/\b\w/g, (char) => char.toUpperCase());
-}  
+}
 
 function formatDate(isoDate) {
 	const options = {
@@ -37,11 +30,11 @@ function formatDate(isoDate) {
 		month: "long",
 		year: "numeric",
 	};
-  
+
 	const [datePart] = isoDate.split("T");
 	const formattedDate = new Date(datePart).toLocaleDateString("id-ID", options);
 	return formattedDate;
-}  
+}
 
 export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 	const { data, status, message } = useSelector(fetchRecycleSelector);
@@ -61,7 +54,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 		width: "24px",
 		height: "auto",
 		color: "rgba(148, 148, 148, 1)",
-		flexShrink: 0
+		flexShrink: 0,
 	};
 
 	const detailGroupStyles = {
@@ -121,7 +114,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 
 	if (!isOpen) {
 		return null;
-	  }
+	}
 
 	return (
 		<Modal
@@ -179,9 +172,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											style={{ detailGroupStyles }}
 										>
 											<div style={{ ...thStyles }}>{dataTitle.name}</div>
-											<div style={{ ...tdStyles }}>
-												{capitalizeWords(data?.name)}
-											</div>
+											<div style={{ ...tdStyles }}>{capitalizeWords(data?.name)}</div>
 										</div>
 									</div>
 									<div
@@ -194,9 +185,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											style={{ detailGroupStyles }}
 										>
 											<div style={{ ...thStyles }}>{dataTitle.email}</div>
-											<div style={{ ...tdStyles }}>
-												{data?.email}
-											</div>
+											<div style={{ ...tdStyles }}>{data?.email}</div>
 										</div>
 									</div>
 								</div>
@@ -211,9 +200,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											style={{ detailGroupStyles }}
 										>
 											<div style={{ ...thStyles }}>{dataTitle.created_at}</div>
-											<div style={{ ...tdStyles }}>
-												{formatDate(data?.created_at)}
-											</div>
+											<div style={{ ...tdStyles }}>{formatDate(data?.created_at)}</div>
 										</div>
 									</div>
 									<div
@@ -225,12 +212,8 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											className="items-start"
 											style={{ detailGroupStyles }}
 										>
-											<div style={{ ...thStyles }}>
-												{dataTitle.drop_point_name}
-											</div>
-											<div style={{ ...tdStyles }}>
-												{data?.drop_point_name}
-											</div>
+											<div style={{ ...thStyles }}>{dataTitle.drop_point_name}</div>
+											<div style={{ ...tdStyles }}>{data?.drop_point_name}</div>
 										</div>
 									</div>
 								</div>
@@ -259,7 +242,7 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 											>
 												<Td style={{ ...tdTableStyles }}>{index + 1}</Td>
 												<Td style={{ ...tdTableStyles }}>{detail.trash_type}</Td>
-												<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${capitalizeWords(detail.unit.toLowerCase() === 'kilogram' ? 'Kg' : detail.unit)}`}</Td>
+												<Td style={{ ...tdTableStyles }}>{`${detail.amount} ${capitalizeWords(detail.unit.toLowerCase() === "kilogram" ? "Kg" : detail.unit)}`}</Td>
 												<Td
 													style={{
 														...tdTableStyles,
@@ -278,14 +261,10 @@ export function ModalViewDetailWasteExchange({ isOpen, onClose }) {
 										<p style={{ ...unitStyle, textAlign: "right" }}>Total: </p>
 									</div>
 									<div className="col-span-1">
-										<p style={{ ...unitStyle, paddingLeft: "24px" }}>
-											{data?.total_unit}
-										</p>
+										<p style={{ ...unitStyle, paddingLeft: "24px" }}>{data?.total_unit}</p>
 									</div>
 									<div className="col-span-1">
-										<p style={{ ...poinStyle, paddingLeft: "20px", whiteSpace: 'nowrap' }}>
-											+{data?.total_point}
-										</p>
+										<p style={{ ...poinStyle, paddingLeft: "20px", whiteSpace: "nowrap" }}>+{data?.total_point}</p>
 									</div>
 								</div>
 							</div>

@@ -1,6 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { Trash, Eye } from "iconsax-react";
-import { ModalDelete, ModalEditDetailCommunity, ModalViewCommunityModal } from "@/components/modal";
 import { useState } from "react";
 import { CustomIconButton } from "@/components/buttons";
 import { BaseTable } from "@/components/tables/base-table/BaseTable";
@@ -10,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { formatDateToLocalDate } from "@/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCommunity, deleteCommunitySelector, fetchCommunity, updateCommunity } from "@/store/community";
+import { ModalDelete, ModalEditDetailCommunity, ModalViewDetailCommunity } from "@/components/modal";
 
-const TableHead = ["No", "Nama Komunitas", "Tanggal Dibuat", "Lokasi", "Event", "Aksi"];
+const TABLEHEADS = ["No", "Nama Komunitas", "Tanggal Dibuat", "Lokasi", "Event", "Aksi"];
 
 export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
@@ -78,7 +78,7 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<ModalViewCommunityModal
+			<ModalViewDetailCommunity
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				onOpenUpdate={handleUpdateModal}
@@ -103,8 +103,8 @@ export function TableCommunityList({ data, currentPage, itemsPerPage }) {
 
 			<BaseTable
 				data={data}
-				heads={TableHead}
-				textAligns={handleTextAlign(TableHead)}
+				heads={TABLEHEADS}
+				textAligns={handleTextAlign(TABLEHEADS)}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow

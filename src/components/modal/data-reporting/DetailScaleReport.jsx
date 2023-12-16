@@ -2,11 +2,6 @@ import { Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
 import { ItemField } from "./ItemField";
 import { formatDateToCustomDate } from "@/utils";
 
-/**
- * DetailScaleReport is a component that is used to display the detail of scale type report.
- * @param {{data: any, labels: any, handleImageView: function}} props - The props object.
- * @returns {JSX.Element} The DetailScaleReport component.
- */
 export function DetailScaleReport({ data, labels, handleImageView }) {
 	return (
 		<Grid

@@ -1,6 +1,13 @@
 import { forwardRef, useId } from "react";
 
+/**
+ * Base TextArea Field
+ */
 export const InputTextArea = forwardRef(
+	/**
+	 * @param {{className: string, label: string, props: any}} props
+	 * @param {React.Ref<any>} ref
+	 */
 	({ className, label, ...props }, ref) => {
 		const id = useId();
 

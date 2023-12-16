@@ -1,17 +1,16 @@
-/* eslint-disable react/prop-types */
-import { BaseTable } from "../base-table/BaseTable";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
-import { TableBodyRow } from "../base-table/TableRows";
+import { BaseTable } from "../base-table/BaseTable";
 import { CustomIconButton } from "@/components/buttons";
-import { ModalDelete, ModalViewDetailMission, ModalEditMission } from "@/components/modal";
-import { Edit2, Eye, Trash } from "iconsax-react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { deleteMission, deleteMissionSelector, fetchMission, fetchMissionSelector, updateMission, updateMissionSelector } from "@/store/mission";
+import { Edit2, Eye, Trash } from "iconsax-react";
 import { formatDateToISOString } from "@/utils";
+import { ModalDelete, ModalViewDetailMission, ModalEditMission } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDisclosure } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
-const TableHead = ["ID Misi", "Nama Misi", "Pembuat", "Status", "Aksi"];
+const TABLEHEADS = ["ID Misi", "Nama Misi", "Pembuat", "Status", "Aksi"];
 
 export function TableMissionList({ data }) {
 	const handleBadges = (status) => {
@@ -107,7 +106,7 @@ export function TableMissionList({ data }) {
 			/>
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow

@@ -8,11 +8,6 @@ import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Fields from "./VoucherFormFields";
 
-/**
- * ModalEditVoucher is a modal component that is used to edit voucher data.
- * @param {{isOpen: boolean, onClose: () => void, onSubmit: (data: any) => void}} props - The props object.
- * @returns {JSX.Element} The ModalEditVoucher component.
- */
 export function ModalEditVoucher({ isOpen, onClose, onSubmit }) {
 	const {
 		control,

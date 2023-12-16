@@ -5,11 +5,6 @@ import { Edit2 } from "iconsax-react";
 import { InputDate, InputTextArea, InputWithLogo } from "@/components/inputs";
 import { UploadImageIcon } from "@/components/icons";
 
-/**
- * VoucherImageField is a component that is used as a form field for voucher image.
- * @param {{control: any, error: any, imageRef: ref, handleImageRef: () => void}} props - The props object.
- * @returns {JSX.Element} The VoucherImageField component.
- */
 export function VoucherImageField({ control, error, imageRef, handleImageRef }) {
 	return (
 		<Controller

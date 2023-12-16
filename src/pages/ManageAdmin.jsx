@@ -134,7 +134,10 @@ function ManageAdmin() {
 					justifyContent={"space-between"}
 				>
 					<div className="wrapper w-4/12">
-						<SearchBar onSearch={handleSearch} />
+						<SearchBar
+							onSearch={handleSearch}
+							value={_searchTerm}
+						/>
 					</div>
 					<Button
 						backgroundColor={"#35CC33"}

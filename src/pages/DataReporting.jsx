@@ -1,10 +1,10 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
 import { clearDataReportState, clearDataReportsState, clearPatchDataReportState, fetchDataReports, fetchDataReportsSelector, patchDataReportSelector } from "@/store/report";
+import { FilterButton } from "@/components/buttons";
 import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
 import { Spinner } from "@/components/spinner";
-import { TabButton } from "@/components/buttons";
 import { TableDataReporting } from "@/components/tables";
 import { useCallback, useEffect, useState } from "react";
 import { useCustomToast, useDebounce } from "@/hooks";
@@ -119,16 +119,20 @@ function DataReporting() {
 				<Flex gap={"1.5rem"}>
 					<ButtonGroup spacing={0}>
 						{FILTER_LABELS.map((label) => (
-							<TabButton
+							<FilterButton
 								key={label}
 								label={label}
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar
+						onSearch={handleSearch}
+						value={_searchTerm}
+					/>
 				</Flex>
 				{status === "loading" && <Spinner />}
 				{status === "failed" && <div>{message}</div>}

@@ -12,11 +12,6 @@ import { useState, useEffect } from "react";
 
 const TABLEHEADS = ["Tanggal", "Topik", "Pertanyaan", "Aksi"];
 
-/**
- * TableDataCustomization is a table component that is used to display prompt data.
- * @param {{data: any[]}} props - The props object.
- * @returns {JSX.Element} The TableDataCustomization component.
- */
 export function TableDataCustomization({ data }) {
 	const dispatch = useDispatch();
 

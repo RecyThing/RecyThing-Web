@@ -69,11 +69,13 @@ function DataCustomization() {
 			setSearchTerm("");
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
+		}
 
+		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdatePromptState());
 			if (deleteStatus !== "idle") dispatch(clearDeletePromptState());
 			if (createStatus !== "idle") dispatch(clearCreatePromptState());
-		}
+		};
 	}, [updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {
@@ -170,10 +172,14 @@ function DataCustomization() {
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar
+						onSearch={handleSearch}
+						value={_searchTerm}
+					/>
 				</Flex>
 				<Flex
 					direction={"column"}
