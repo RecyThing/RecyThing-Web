@@ -2,11 +2,6 @@ import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import { CloseSquare } from "react-iconly";
 import { Flex, IconButton, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spacer, Text } from "@chakra-ui/react";
 
-/**
- * ModalViewImageReporting is a modal component that is used to display images for data reporting in carousel.
- * @param {{isOpen: boolean, onClose: function, companyName: string, currentImage: number, data: any[], onChangeImage: function, totalImage: number}} props - The props object.
- * @returns {JSX.Element} The ModalViewImageReporting component.
- */
 export function ModalViewImageReporting({ isOpen, onClose, companyName, currentImage, data, onChangeImage, totalImage }) {
 	const handlePrevImage = () => {
 		if (currentImage + 1 > 1) {

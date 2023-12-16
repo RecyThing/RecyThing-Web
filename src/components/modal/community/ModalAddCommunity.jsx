@@ -1,25 +1,12 @@
-import {
-	Button,
-	Grid,
-	GridItem,
-	Heading,
-	IconButton,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-} from "@chakra-ui/react";
+import { Button, Grid, GridItem, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { CloseSquare } from "react-iconly";
+import { createCommunitySelector } from "@/store/community";
+import { schema } from "./CommunityFormSchema";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { CloseSquare } from "react-iconly";
-import * as Fields from "./CommunityFormFields";
-import { createCommunitySelector } from "@/store/community";
 import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./CommunityFormSchema";
+import * as Fields from "./CommunityFormFields";
 
 export function ModalAddCommunity({ isOpen, onClose, onSubmit }) {
 	const {

@@ -12,11 +12,6 @@ import { useState } from "react";
 
 const TABLEHEADS = ["No", "Nama Reward", "Poin Reward", "Tanggal Mulai", "Tanggal Berakhir", "Aksi"];
 
-/**
- * TableVoucherList is a table component that is used to display voucher data.
- * @param {{data: any[], currentPage: number, itemsPerPage: number}} props - The props object.
- * @returns {JSX.Element} The TableVoucherList component.
- */
 export function TableVoucherList({ data, currentPage, itemsPerPage }) {
 	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();

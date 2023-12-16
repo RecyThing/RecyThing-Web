@@ -1,25 +1,12 @@
-import {
-	Button,
-	Grid,
-	GridItem,
-	Heading,
-	IconButton,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-} from "@chakra-ui/react";
+import { Button, Grid, GridItem, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { CloseSquare } from "react-iconly";
+import { schema } from "./CommunityFormSchema";
+import { updateCommunitySelector } from "@/store/community";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { CloseSquare } from "react-iconly";
-import * as Fields from "./CommunityFormFields";
-import { schema } from "./CommunityFormSchema";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { updateCommunitySelector } from "@/store/community";
 import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Fields from "./CommunityFormFields";
 
 export function ModalEditDetailCommunity({ isOpen, onClose, onUpdate, data }) {
 	const {

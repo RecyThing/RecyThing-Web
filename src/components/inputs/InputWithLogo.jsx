@@ -1,6 +1,13 @@
 import { forwardRef, useId } from "react";
 
+/**
+ * Base Input With Logo Field
+ */
 export const InputWithLogo = forwardRef(
+	/**
+	 * @param {{className: string, label: string, type: string, Logo: any, value: string, props: any}} props
+	 * @param {React.Ref<any>} ref
+	 */
 	({ className, label, type, Logo, value = "", ...props }, ref) => {
 		const id = useId();
 

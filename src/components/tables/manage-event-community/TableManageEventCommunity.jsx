@@ -6,8 +6,8 @@ import { Eye, Trash } from "iconsax-react";
 import { format } from "date-fns";
 import { formatDateToLocalDate, formatWithCommas } from "@/utils";
 import { ModalDelete } from "@/components/modal";
-import { ModalEditCommunity } from "@/components/modal/event-community/ModalEditEventCommunity";
-import { ModalViewDetailEvent } from "@/components/modal/event-community/ModalViewDetailEvent";
+import { ModalEditEventCommunity } from "@/components/modal/event-community/ModalEditEventCommunity";
+import { ModalViewDetailEventCommunity } from "@/components/modal/event-community/ModalViewDetailEventCommunity";
 import { TableBodyRow } from "../base-table/TableRows";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,13 +95,13 @@ export function TableManageEventCommunity({ data, currentPage, itemsPerPage }) {
 
 	return (
 		<>
-			<ModalViewDetailEvent
+			<ModalViewDetailEventCommunity
 				isOpen={isOpenView}
 				onClose={onCloseView}
 				onOpenUpdate={handleUpdateModal}
 			/>
 
-			<ModalEditCommunity
+			<ModalEditEventCommunity
 				isOpen={isOpenUpdate}
 				onClose={onCloseUpdate}
 				onUpdate={handleSubmitUpdatedData}

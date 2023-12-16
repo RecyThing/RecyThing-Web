@@ -1,6 +1,10 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-iconly";
 
+/**
+ * Search bar component
+ * @param {{ onSearch: (value: string) => void, maxLength: number, className: string, value: string }} props
+ */
 export function SearchBar({ onSearch, maxLength = 25, className, value }) {
 	const handleSearch = (e) => {
 		onSearch(e.target.value);

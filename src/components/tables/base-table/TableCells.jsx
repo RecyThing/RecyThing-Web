@@ -1,5 +1,9 @@
 import { Badge, Td, Text } from "@chakra-ui/react";
 
+/**
+ * Cell for showing text content
+ * @param {{ content: string, maxWidth: string, props: any }} props
+ */
 export function TextCell({ content, maxWidth = "8rem", ...props }) {
 	return (
 		<Td
@@ -12,156 +16,61 @@ export function TextCell({ content, maxWidth = "8rem", ...props }) {
 	);
 }
 
+/**
+ * Cell for showing badge content
+ * @param {{ colorScheme: string, content: string }} props
+ */
 export function BadgeCell({ colorScheme, content }) {
-	{
-		switch (colorScheme) {
-			case "green":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#154C3C"}
-							bg={"#C7EBD1"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "yellow":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#5F5207"}
-							bg={"#FBF5D0"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "red":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#76170F"}
-							bg={"#FADCD9"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "blue":
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#19365D"}
-							bg={"#D4E4FA"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "azure":
-				return (
-					<Td>
-						<Badge
-							px={"9px"}
-							py={"5px"}
-							rounded={"2xl"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#fff"}
-							bg={"#5BD4EF"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "gold":
-				return (
-					<Td>
-						<Badge
-							px={"9px"}
-							py={"5px"}
-							rounded={"2xl"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#fff"}
-							bg={"#D4AF35"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "silver":
-				return (
-					<Td>
-						<Badge
-							px={"9px"}
-							py={"5px"}
-							rounded={"2xl"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#fff"}
-							bg={"#BBBBBB"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			case "bronze":
-				return (
-					<Td>
-						<Badge
-							px={"9px"}
-							py={"5px"}
-							rounded={"2xl"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#fff"}
-							bg={"#C97513"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-			default:
-				return (
-					<Td>
-						<Badge
-							px={"8px"}
-							py={"4px"}
-							fontSize={"xs"}
-							fontWeight={"medium"}
-							color={"#828282"}
-							bg={"#E0E0E0"}
-						>
-							{content}
-						</Badge>
-					</Td>
-				);
-		}
+	const badge = (color, bgColor, px = "8px", py = "4px", rounded = null) => (
+		<Td>
+			<Badge
+				px={px}
+				py={py}
+				rounded={rounded}
+				fontSize={"xs"}
+				fontWeight={"medium"}
+				color={color}
+				bg={bgColor}
+			>
+				{content}
+			</Badge>
+		</Td>
+	);
+
+	switch (colorScheme) {
+		case "green":
+			return badge("#154C3C", "#C7EBD1");
+		case "yellow":
+			return badge("#5F5207", "#FBF5D0");
+		case "red":
+			return badge("#76170F", "#FADCD9");
+		case "blue":
+			return badge("#19365D", "#D4E4FA");
+		case "azure":
+			return badge("#fff", "#5BD4EF", "9px", "5px", "2xl");
+		case "gold":
+			return badge("#fff", "#D4AF35", "9px", "5px", "2xl");
+		case "silver":
+			return badge("#fff", "#BBBBBB", "9px", "5px", "2xl");
+		case "bronze":
+			return badge("#fff", "#C97513", "9px", "5px", "2xl");
+		default:
+			return badge("#828282", "#E0E0E0");
 	}
 }
 
+/**
+ * Cell for showing centered content
+ * @param {{ children: React.ReactNode }} props
+ */
 export function CenteredCell({ children }) {
 	return <Td textAlign="center">{children}</Td>;
 }
 
+/**
+ * Cell for showing left-aligned content
+ * @param {{ children: React.ReactNode, maxWidth: string }} props
+ */
 export function LeftAlignCell({ children, maxWidth }) {
 	return (
 		<Td
@@ -173,6 +82,10 @@ export function LeftAlignCell({ children, maxWidth }) {
 	);
 }
 
+/**
+ * Cell for showing link content
+ * @param {{ content: string, textAlign: string, onClick: function }} props
+ */
 export function LinkCell({ content, textAlign, onClick }) {
 	return (
 		<Td
@@ -194,6 +107,10 @@ export function LinkCell({ content, textAlign, onClick }) {
 	);
 }
 
+/**
+ * Cell for showing not found content
+ * @param {{ count: number }} props
+ */
 export function NotFoundCell({ count }) {
 	return (
 		<Td
@@ -205,6 +122,10 @@ export function NotFoundCell({ count }) {
 	);
 }
 
+/**
+ * Cell for showing truncated content
+ * @param {{ content: string, maxCharLength: number, maxWidth: string }} props
+ */
 export function TruncatedCell({ content, maxCharLength, maxWidth }) {
 	const truncatedContent = content.length > maxCharLength ? `${content.substring(0, maxCharLength)}...` : content;
 

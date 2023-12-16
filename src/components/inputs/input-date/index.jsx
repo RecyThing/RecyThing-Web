@@ -1,12 +1,15 @@
-import "react-datepicker/dist/react-datepicker.css";
-import "./style.css";
-import DatePicker from "react-datepicker";
-import { forwardRef } from "react";
 import { DummyInput } from "./DummyInput";
 import { formatDateToLocalDate } from "@/utils";
+import { forwardRef } from "react";
 import { parseISO, startOfDay } from "date-fns";
+import DatePicker from "react-datepicker";
+import "./style.css";
+import "react-datepicker/dist/react-datepicker.css";
 
-export const InputDate = forwardRef(({ label, Logo, className, minDate = startOfDay(new Date()), maxDate, ...props }, ref) => {
+/**
+ * Date Input Field
+ */
+export const InputDate = forwardRef(({ label, Logo, className, minDate = startOfDay(new Date()), maxDate, dateFormat = "yyyy-MM-dd", ...props }, ref) => {
 	return (
 		<DatePicker
 			ref={ref}
@@ -28,7 +31,7 @@ export const InputDate = forwardRef(({ label, Logo, className, minDate = startOf
 			maxDate={maxDate}
 			popperPlacement="top"
 			isClearable
-			dateFormat={"yyyy-MM-dd"}
+			dateFormat={dateFormat}
 		/>
 	);
 });

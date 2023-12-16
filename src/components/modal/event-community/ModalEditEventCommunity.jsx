@@ -1,14 +1,14 @@
 import { Button, Grid, GridItem, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { CloseSquare } from "react-iconly";
+import { schema } from "./CommunityEventFormSchema";
+import { updateEventSelector } from "@/store/event-community";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { updateEventSelector } from "@/store/event-community";
-import { CloseSquare } from "react-iconly";
-import * as Fields from "./EventCommunityFields";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./CommunityEventFormSchema";
 import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Fields from "./EventCommunityFields";
 
-export function ModalEditCommunity({ isOpen, onClose, onUpdate, data }) {
+export function ModalEditEventCommunity({ isOpen, onClose, onUpdate, data }) {
 	const {
 		control,
 		formState: { errors },

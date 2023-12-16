@@ -18,12 +18,11 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
-import { RecyThingWhiteIcon } from "@/components/icons";
-import { TabContent } from "./TabContent";
-import { TabButton } from "./TabButton";
 import { fetchApprovalSelector } from "@/store/approval-mission";
-import { useSelector } from "react-redux";
+import { RecyThingWhiteIcon } from "@/components/icons";
 import { Spinner } from "@/components/spinner";
+import { TabButton, TabContent } from "@/components/tabs";
+import { useSelector } from "react-redux";
 
 export function ModalViewMissionApproval({ isOpen, onClose }) {
 	const { data, status, message } = useSelector(fetchApprovalSelector);

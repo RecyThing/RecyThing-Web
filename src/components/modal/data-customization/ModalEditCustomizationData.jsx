@@ -1,19 +1,14 @@
-import { useState, useEffect } from "react";
-import { InputTextArea } from "@/components/inputs";
-import { CloseSquare } from "iconsax-react";
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./DataCustomizationFormSchema";
+import { CloseSquare } from "iconsax-react";
 import { fetchPromptSelector, updatePromptSelector, updatePrompt } from "@/store/prompt";
-import { useSelector, useDispatch } from "react-redux";
+import { InputTextArea } from "@/components/inputs";
+import { schema } from "./DataCustomizationFormSchema";
 import { Spinner } from "@/components/spinner";
+import { useForm, Controller } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-/**
- * ModalEditCustomizationData is a modal component that is used to edit prompt data.
- * @param {{isOpen: boolean, onClose: () => void, selectedQuestion: string, selectedCategory: string}} props - The props object.
- * @returns {JSX.Element} The ModalEditCustomizationData component.
- */
 export function ModalEditCustomizationData({ isOpen, onClose, selectedQuestion, selectedCategory }) {
 	const dispatch = useDispatch();
 	const [editedCategory, setEditedCategory] = useState("");

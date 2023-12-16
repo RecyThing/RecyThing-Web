@@ -3,8 +3,8 @@ import { Button, Center, Modal, ModalBody, ModalContent, ModalFooter, ModalHeade
 
 /**
  * ModalApprove is a modal component that is used to display approve modal.
- * @param {{isOpen: boolean, onClose: () => void, target: string, title: string, message: string, onApprove: (target: string) => void, approveStatus: string | boolean}} props - The props object.
- * @returns {JSX.Element} The ModalApprove component.
+ * @param {{isOpen: boolean, onClose: function, target: string, title: string, message: string, onApprove: function, approveStatus: string}} props
+ * @returns {JSX.Element}
  */
 export function ModalApprove({ isOpen, onClose, target, title, message, onApprove, approveStatus }) {
 	const handleApprove = () => {

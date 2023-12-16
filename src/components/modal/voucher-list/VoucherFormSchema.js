@@ -1,7 +1,5 @@
 import * as yup from "yup";
-/**
- * Schema for voucher form
- */
+
 export const schema = yup.object().shape({
 	reward_name: yup
 		.string()

@@ -1,10 +1,5 @@
 import { Grid, GridItem, Icon, Text } from "@chakra-ui/react";
 
-/**
- * DetailUserField is a component that is used to display each row of user detail.
- * @param {{icon: JSX.Element, title: string, value: string}} props - The props object.
- * @returns {JSX.Element} The DetailUserField component.
- */
 export function DetailUserField({ icon, title, value, ...textProps }) {
 	return (
 		<Grid

@@ -9,26 +9,12 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
-const TableHead = [
-	"ID Penukaran",
-	"Nama Lengkap",
-	"Email",
-	"Lokasi Drop Point",
-	"Aksi",
-];
+const TABLEHEADS = ["ID Penukaran", "Nama Lengkap", "Email", "Lokasi Drop Point", "Aksi"];
 
 export function TableWasteExchange({ data }) {
-	const {
-		isOpen: isOpenView,
-		onOpen: onOpenView,
-		onClose: onCloseView,
-	} = useDisclosure();
+	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
 
-	const {
-		isOpen: isOpenDelete,
-		onOpen: onOpenDelete,
-		onClose: onCloseDelete,
-	} = useDisclosure();
+	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
 	const [id, setId] = useState(null);
 
@@ -72,23 +58,27 @@ export function TableWasteExchange({ data }) {
 			/>
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow
 						key={rowIndex}
 						index={rowIndex}
 					>
-						<CenteredCell>
-							{row.id}
-						</CenteredCell>
+						<CenteredCell>{row.id}</CenteredCell>
 
 						<TextCell
 							casing={"capitalize"}
 							content={row.name}
 						/>
-						<TextCell content={row.email} className="overflow-hidden text-ellipsis"/>
-						<TextCell content={row.drop_point_name} className="overflow-hidden text-ellipsis"/>
+						<TextCell
+							content={row.email}
+							className="overflow-hidden text-ellipsis"
+						/>
+						<TextCell
+							content={row.drop_point_name}
+							className="overflow-hidden text-ellipsis"
+						/>
 						<CenteredCell>
 							<CustomIconButton
 								icon={<Eye />}

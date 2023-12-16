@@ -1,5 +1,6 @@
-import ImgNotFound from "@/assets/LandingPage/not-found.png";
 import { Link } from "react-router-dom";
+import ImgNotFound from "@/assets/LandingPage/not-found.png";
+
 const PathNotFound = () => {
 	return (
 		<>
@@ -9,13 +10,8 @@ const PathNotFound = () => {
 					alt="not-found"
 					className="mx-auto w-1/4"
 				/>
-				<p className="text-5xl font-bold w-1/3 my-2 text-center mx-auto">
-					Oops, Halaman Tidak Ditemukan
-				</p>
-				<p className="w-1/3 font-bold text-sm text-center mx-auto my-3">
-					Jangan Khawatir, kamu dapat kembali mengakses halaman lainnya melalui
-					halaman beranda
-				</p>
+				<p className="text-5xl font-bold w-1/3 my-2 text-center mx-auto">Oops, Halaman Tidak Ditemukan</p>
+				<p className="w-1/3 font-bold text-sm text-center mx-auto my-3">Jangan Khawatir, kamu dapat kembali mengakses halaman lainnya melalui halaman beranda</p>
 				<Link
 					to={-1}
 					className="p-5 bg-green-500 text-sm mt-4 text-white mx-auto rounded-lg "

@@ -1,27 +1,11 @@
-import { Spinner } from "@/components/spinner";
+import { Button, Flex, Grid, GridItem, Heading, IconButton, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
+import { CloseSquare } from "react-iconly";
 import { fetchCommunitySelector } from "@/store/community";
 import { formatDateToLocalDate } from "@/utils";
-import {
-	Button,
-	Flex,
-	Grid,
-	GridItem,
-	Heading,
-	IconButton,
-	Image,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-} from "@chakra-ui/react";
-import { CloseSquare } from "react-iconly";
+import { Spinner } from "@/components/spinner";
 import { useSelector } from "react-redux";
 
-export function ModalViewCommunityModal({ isOpen, onClose, onOpenUpdate }) {
+export function ModalViewDetailCommunity({ isOpen, onClose, onOpenUpdate }) {
 	const { data, status, message } = useSelector(fetchCommunitySelector);
 
 	const handleUpdate = () => {

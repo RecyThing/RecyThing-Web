@@ -1,33 +1,26 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
-import { SearchBar } from "@/components/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { FilterButton } from "@/components/buttons";
-import { Pagination } from "@/components/pagination";
-import { TableTransactionList } from "@/components/tables";
-import { LayoutDashboardContent } from "@/layout";
-import { useDispatch, useSelector } from "react-redux";
 import { clearDatasTransactionState, clearPatchDataTransactionState, fetchDatasTransaction, fetchDatasTransactionSelector, patchDataTransactionSelector } from "@/store/transaction-list";
-import { useCustomToast, useDebounce } from "@/hooks";
+import { FilterButton } from "@/components/buttons";
+import { LayoutDashboardContent } from "@/layout";
+import { Pagination } from "@/components/pagination";
+import { SearchBar } from "@/components/navigation";
 import { Spinner } from "@/components/spinner";
+import { TableTransactionList } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
+import { useCustomToast, useDebounce } from "@/hooks";
+import { useDispatch, useSelector } from "react-redux";
+
+const BUTTONLABELS = ["Semua", "Terbaru", "Diproses", "Selesai"];
 
 function TransactionList() {
 	const dispatch = useDispatch();
 
-	const {
-		data = [],
-		status,
-		message,
-		count,
-	} = useSelector(fetchDatasTransactionSelector);
+	const { data = [], status, message, count } = useSelector(fetchDatasTransactionSelector);
 
-	const { status: patchStatus, message: patchMessage } = useSelector(
-		patchDataTransactionSelector
-	);
+	const { status: patchStatus, message: patchMessage } = useSelector(patchDataTransactionSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
-
-	const buttonLabels = ["Semua", "Terbaru", "Diproses", "Selesai"];
 	const [activeFilter, setActiveFilter] = useState({
 		label: "Semua",
 		value: "",
@@ -46,12 +39,12 @@ function TransactionList() {
 				limit: itemsPerPage,
 				page: currentPage,
 			})
-		)
+		);
 	}, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
 
 	useEffect(() => {
-	  fectchTransactionData();
-	}, [fectchTransactionData, searchTerm,  itemsPerPage, currentPage])
+		fectchTransactionData();
+	}, [fectchTransactionData, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
 		if (patchStatus === "success") {
@@ -63,7 +56,7 @@ function TransactionList() {
 		return () => {
 			if (patchStatus !== "idle") dispatch(clearPatchDataTransactionState());
 		};
-	}, [patchStatus, dispatch, fetchDatasTransaction]);
+	}, [patchStatus, dispatch, fectchTransactionData]);
 
 	useEffect(() => {
 		return () => {
@@ -128,17 +121,18 @@ function TransactionList() {
 			>
 				<Flex gap={"1.5rem"}>
 					<ButtonGroup spacing={0}>
-						{buttonLabels.map((label) => (
+						{BUTTONLABELS.map((label) => (
 							<FilterButton
 								key={label}
 								label={label}
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar onSearch={handleSearch} value={_searchTerm} />
 				</Flex>
 				{status === "loading" && <Spinner />}
 				{status === "failed" && <div>{message}</div>}

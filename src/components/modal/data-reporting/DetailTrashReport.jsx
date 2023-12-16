@@ -2,11 +2,6 @@ import { Grid, GridItem, Text, Flex, Image } from "@chakra-ui/react";
 import { ItemField } from "./ItemField";
 import { formatDateToCustomDate } from "@/utils";
 
-/**
- * DetailTrashReport is a component that is used to display the detail of trash type report.
- * @param {{data: any, labels: any, handleImageView: function}} props - The props object.
- * @returns {JSX.Element} The DetailTrashReport component.
- */
 export function DetailTrashReport({ data, labels, handleImageView }) {
 	return (
 		<Grid

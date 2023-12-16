@@ -9,7 +9,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-const TableHead = ["No", "Nama Lengkap", "Email", "Status", "Aksi"];
+const TABLEHEADS = ["No", "Nama Lengkap", "Email", "Status", "Aksi"];
 
 export function TableAdminList({ data, currentPage, itemsPerPage }) {
 	const [id, setId] = useState(null);
@@ -76,7 +76,7 @@ export function TableAdminList({ data, currentPage, itemsPerPage }) {
 			/>
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 			>
 				{data.map((row, rowIndex) => (
 					<TableBodyRow

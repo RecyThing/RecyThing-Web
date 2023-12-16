@@ -59,13 +59,13 @@ function Community() {
 			setSearchTerm("");
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
+		}
 
+		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdateCommunityState());
 			if (deleteStatus !== "idle") dispatch(clearDeleteCommunityState());
 			if (createStatus !== "idle") dispatch(clearCreateCommunityState());
-		}
-
-		return () => {};
+		};
 	}, [deleteStatus, updateStatus, createStatus, dispatch, fetchCommunitiesData]);
 
 	useEffect(() => {
@@ -124,7 +124,10 @@ function Community() {
 					justifyContent={"space-between"}
 					alignItems={"center"}
 				>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar
+						onSearch={handleSearch}
+						value={_searchTerm}
+					/>
 					<Box
 						w={"1.5rem"}
 						bg={"transparent"}

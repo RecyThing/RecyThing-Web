@@ -1,30 +1,30 @@
+import { globalRoute } from "@/utils";
 import { LayoutDashboardRoot } from "@/layout";
 import { PrivateRoute } from "./private-route";
 import { ProtectedRoute } from "./protected-route";
+import { RoleBasedRoute } from "./role-based-route";
 import { Route, Routes, useNavigate } from "react-router-dom/dist";
 import Badge from "@/pages/Badge";
 import Community from "@/pages/Community";
+import ContentArticle from "@/pages/ContentArticle";
 import Dashboard from "@/pages/Dashboard";
 import DataCustomization from "@/pages/DataCustomization";
 import DataDropPoint from "@/pages/DataDropPoint";
+import DataReporting from "@/pages/DataReporting";
 import DownloadStatistic from "@/pages/DownloadStatistic";
 import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/Login";
 import ManageAdmin from "@/pages/ManageAdmin";
+import ManageEventCommuntity from "@/pages/ManageEventCommunity";
 import ManageUser from "@/pages/ManageUser";
 import ManageWasteExchange from "@/pages/ManageWasteExchange";
-import MissionList from "@/pages/MissionList";
 import MissionApproval from "@/pages/MissionApproval";
+import MissionList from "@/pages/MissionList";
 import PathNotFound from "@/pages/ErrorNotFound";
 import RubbishCategory from "@/pages/RubbishCategory";
 import TransactionList from "@/pages/TransactionList";
-import VoucherList from "@/pages/VoucherList";
-import DataReporting from "@/pages/DataReporting";
-import ContentArticle from "@/pages/ContentArticle";
-import ManageEventCommuntity from "@/pages/ManageEventCommunity";
-import { globalRoute } from "@/utils";
-import { RoleBasedRoute } from "./role-based-route";
 import Unauthorized from "@/pages/Unauthorized";
+import VoucherList from "@/pages/VoucherList";
 
 export default function AppRoutes() {
 	const navigate = useNavigate();

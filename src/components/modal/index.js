@@ -1,38 +1,16 @@
-export { ModalAddAdmin } from "./manage-admin/ModalAddAdmin";
-export { ModalAddCommunity } from "./community/ModalAddCommunity";
-export { ModalAddCustomizationData } from "./data-customization/ModalAddDataCustomization";
-export { ModalAddDataDropPoint } from "./data-drop-point/ModalAddDataDropPoint";
-export { ModalAddRubbishCategory } from "./rubbish-category/ModalAddRubbishCategory";
-export { ModalAddVoucher } from "./voucher-list/ModalAddVoucher";
-export { ModalAddWasteExchangeData } from "./waste-exchange/ModalAddWasteExchangeData";
-export { ModalAddEventCommunity } from "./event-community/ModalAddEventCommunity";
-
-export { ModalEditAdmin } from "./manage-admin/ModalEditAdmin";
-export { ModalEditCustomizationData } from "./data-customization/ModalEditDataCustomization";
-export { ModalEditDataDropPoint } from "./data-drop-point/ModalEditDataDropPoint";
-export { ModalEditDetailCommunity } from "./community/ModalEditDetailCommunity";
-export { ModalEditDetailTransaction } from "./transaction-list/ModalEditDetailTransaction";
-export { ModalEditRubbishCategory } from "./rubbish-category/ModalEditRubbishCategory";
-export { ModalEditVoucher } from "./voucher-list/ModalEditVoucher";
-export { ModalEditCommunity } from "./event-community/ModalEditEventCommunity";
-
-export { ModalViewCommunityModal } from "./community/ModalViewDetailCommunity";
-export { ModalViewDetailDataDropPoint } from "./data-drop-point/ModalViewDetailDataDropPoint";
-export { ModalViewDetailTransaction } from "./transaction-list/ModalViewDetailTransaction";
-export { ModalViewDetailWasteExchange } from "./waste-exchange/ModalViewDetailWasteExchange";
-export { ModalViewMissionApproval } from "./mission-approval/ModalViewMissionApproval";
-export { ModalViewUserDetail } from "./manage-user/ModalViewUserDetail";
-export { ModalViewReportingApproval } from "./data-reporting/ModalViewReportingApproval";
-export { ModalViewDetailEvent } from "./event-community/ModalViewDetailEvent";
-
-export { ModalApprove } from "./action-feedback/ModalApprove";
-export { ModalDelete } from "./action-feedback/ModalDelete";
-export { ModalReject } from "./action-feedback/ModalReject";
-export { ModalRejectionReason } from "./data-reporting/ModalRejectionReason";
-
-export { ArticleDetail } from "./content-article/ArticleDetail";
-
-export { OperationalSchedule } from "./data-drop-point/OperationalSchedule";
-export { ModalAddMission } from "./mission-list/ModalAddMission";
-export { ModalEditMission } from "./mission-list/ModalEditMission";
-export { ModalViewDetailMission } from "./mission-list/ModalViewDetailMission";
+export * from "./action-feedback";
+export * from "./badge";
+export * from "./community";
+export * from "./content-article";
+export * from "./data-customization";
+export * from "./data-drop-point";
+export * from "./data-reporting";
+export * from "./event-community";
+export * from "./manage-admin";
+export * from "./manage-user";
+export * from "./mission-approval";
+export * from "./mission-list";
+export * from "./rubbish-category";
+export * from "./transaction-list";
+export * from "./voucher-list";
+export * from "./waste-exchange";

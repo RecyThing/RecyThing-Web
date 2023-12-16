@@ -1,35 +1,21 @@
 import { ButtonGroup, Flex, Heading } from "@chakra-ui/react";
-import {
-	clearFetchApprovalState,
-	clearFetchApprovalsState,
-	clearUpdateApprovalState,
-	fetchApprovals,
-	fetchApprovalsSelector,
-	updateApprovalSelector,
-} from "@/store/approval-mission";
+import { clearFetchApprovalState, clearFetchApprovalsState, clearUpdateApprovalState, fetchApprovals, fetchApprovalsSelector, updateApprovalSelector } from "@/store/approval-mission";
 import { FilterButton } from "@/components/buttons";
 import { LayoutDashboardContent } from "@/layout";
 import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/navigation";
+import { Spinner } from "@/components/spinner";
 import { TableMissionApproval } from "@/components/tables";
+import { useCallback, useEffect, useState } from "react";
 import { useCustomToast, useDebounce } from "@/hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
-import { Spinner } from "@/components/spinner";
 
-const buttonLabels = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
+const BUTTONLABELS = ["Semua", "Perlu Tinjauan", "Disetujui", "Ditolak"];
 
 function MissionApproval() {
 	const dispatch = useDispatch();
-	const {
-		data = [],
-		status,
-		message,
-		count,
-	} = useSelector(fetchApprovalsSelector);
-	const { status: updateStatus, message: updateMessage } = useSelector(
-		updateApprovalSelector
-	);
+	const { data = [], status, message, count } = useSelector(fetchApprovalsSelector);
+	const { status: updateStatus, message: updateMessage } = useSelector(updateApprovalSelector);
 
 	const [_searchTerm, setSearchTerm] = useState("");
 	const searchTerm = useDebounce(_searchTerm, 500);
@@ -134,17 +120,21 @@ function MissionApproval() {
 			>
 				<Flex gap={"1.5rem"}>
 					<ButtonGroup spacing={0}>
-						{buttonLabels.map((label) => (
+						{BUTTONLABELS.map((label) => (
 							<FilterButton
 								key={label}
 								label={label}
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar
+						onSearch={handleSearch}
+						value={_searchTerm}
+					/>
 				</Flex>
 				{status === "loading" && <Spinner />}
 				{status === "failed" && <div>{message}</div>}

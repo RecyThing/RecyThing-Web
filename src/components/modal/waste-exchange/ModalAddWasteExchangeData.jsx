@@ -1,28 +1,22 @@
-import * as Fields from "./WasteExchangeFormFields";
-import { Trash } from "iconsax-react";
-import { useEffect, useState } from "react";
 import { AddSquare, CloseSquare } from "iconsax-react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	Button,
-} from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./WasteExchangeFormSchema";
-import { useSelector } from "react-redux";
-import { createRecyclesSelector, createRecycles } from "@/store/waste-exchange";
 import { APIRecycles } from "@/apis/APIWasteExchange";
-import Select from 'react-select';
+import { createRecyclesSelector, createRecycles } from "@/store/waste-exchange";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, Button } from "@chakra-ui/react";
+import { schema } from "./WasteExchangeFormSchema";
+import { Trash } from "iconsax-react";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Fields from "./WasteExchangeFormFields";
+import Select from "react-select";
 
 function capitalizeWords(string) {
-	if (typeof string !== 'string' || string === undefined) {
-	 	return '';
+	if (typeof string !== "string" || string === undefined) {
+		return "";
 	}
-	
+
 	return string.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
@@ -37,7 +31,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 		formState: { errors },
 		reset,
 		setValue,
-		clearErrors
+		clearErrors,
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
@@ -45,8 +39,8 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 	const { status: createStatus } = useSelector(createRecyclesSelector);
 
 	useEffect(() => {
-		APIRecycles.getCategories().then(res => setCategoriesData(res.data));
-	}, [])
+		APIRecycles.getCategories().then((res) => setCategoriesData(res.data));
+	}, []);
 
 	const { fields, append, remove } = useFieldArray({
 		control,
@@ -59,27 +53,26 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 				name: data.username,
 				email: data.userEmail,
 				drop_point_name: data.dropPointLocation,
-				trash_exchange_details: data.data?.map((detail) => {
-					const selectedCategory = categoriesData.find(
-						(category) => category.id === detail.trash_type
-					);
-					const trashTypeName = selectedCategory ? selectedCategory.trash_type : "";
-					
-					return {
-						trash_type: trashTypeName,
-						amount: parseFloat(detail.amount) || 0,
-					};
-				}) || [],
+				trash_exchange_details:
+					data.data?.map((detail) => {
+						const selectedCategory = categoriesData.find((category) => category.id === detail.trash_type);
+						const trashTypeName = selectedCategory ? selectedCategory.trash_type : "";
+
+						return {
+							trash_type: trashTypeName,
+							amount: parseFloat(detail.amount) || 0,
+						};
+					}) || [],
 			};
-		
+
 			console.log("Submitting data:", newData);
 
 			await dispatch(createRecycles(newData));
 		} catch (error) {
 			console.error("Error submitting data:", error);
 		}
-	};		
-	
+	};
+
 	useEffect(() => {
 		if (!isOpen) {
 			reset({
@@ -92,34 +85,29 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 	}, [isOpen, reset]);
 
 	const handleAddData = () => {
-		const newEntry = { trash_type: "", amount: ""};
+		const newEntry = { trash_type: "", amount: "" };
 		append(newEntry);
-	};	 
+	};
 
 	useEffect(() => {
 		if (isOpen && fields.length === 0) {
-		  	handleAddData();
+			handleAddData();
 		}
 	}, [isOpen, fields]);
-	
+
 	const calculatePoints = (trashType, unit) => {
-		const selectedCategory = categoriesData.find(
-			(category) => category.id === trashType
-		);
+		const selectedCategory = categoriesData.find((category) => category.id === trashType);
 		return selectedCategory ? selectedCategory.point * unit : 0;
 	};
 
 	const calculateTotalPoints = () => {
 		let totalPoints = 0;
 		fields.forEach((field, index) => {
-			totalPoints += calculatePoints(
-				watch(`data[${index}].trash_type`),
-				parseFloat(watch(`data[${index}].amount`) || 0)
-			)*90/100;
+			totalPoints += (calculatePoints(watch(`data[${index}].trash_type`), parseFloat(watch(`data[${index}].amount`) || 0)) * 90) / 100;
 		});
 		return totalPoints;
 	};
-	  
+
 	const handleRemoveData = (index) => {
 		remove(index);
 	};
@@ -143,8 +131,8 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 			isOpen={isOpen}
 			onClose={() => {
 				reset();
-                onClose();
-            }}
+				onClose();
+			}}
 			isCentered
 			closeOnOverlayClick={createStatus !== "loading"}
 		>
@@ -157,10 +145,11 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 				borderRadius="12px"
 				className="max-h-[80vh] overflow-y-auto p-8"
 			>
-				<ModalHeader className="flex justify-between mb-6" style={{ padding: 0 }}>
-					<h4 className="text-gray-800 text-2xl font-bold mb-2">
-						Tambah Data Penukaran Sampah
-					</h4>
+				<ModalHeader
+					className="flex justify-between mb-6"
+					style={{ padding: 0 }}
+				>
+					<h4 className="text-gray-800 text-2xl font-bold mb-2">Tambah Data Penukaran Sampah</h4>
 					<CloseSquare
 						size="32"
 						color="rgba(130, 130, 130, 1)"
@@ -202,97 +191,87 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 								</tr>
 							</thead>
 							<tbody>
-							{fields && fields.map((field, index) => (
-								<tr key={field.id}>
-									<td>
-										<div className="relative mt-6 w-52">
-											<div>
-												<Select
-													styles={{
-														menuList: (provided) => ({
-															...provided,
-															maxHeight: "130px",
-														}),
-														control: (provided) => ({
-															...provided,
-															borderRadius: "8px",
-															border: "1px solid #828282",
-														}),
+								{fields &&
+									fields.map((field, index) => (
+										<tr key={field.id}>
+											<td>
+												<div className="relative mt-6 w-52">
+													<div>
+														<Select
+															styles={{
+																menuList: (provided) => ({
+																	...provided,
+																	maxHeight: "130px",
+																}),
+																control: (provided) => ({
+																	...provided,
+																	borderRadius: "8px",
+																	border: "1px solid #828282",
+																}),
+															}}
+															placeholder="Pilih jenis sampah"
+															{...register(`data[${index}].trash_type`)}
+															isSearchable={true}
+															options={categoriesData.map((category) => ({
+																value: category.id,
+																label: capitalizeWords(category.trash_type),
+																unit: category.unit,
+															}))}
+															onChange={(selectedOption) => {
+																setValue(`data[${index}].trash_type`, selectedOption.value);
+																setValue(`data[${index}].unit`, selectedOption.unit);
+																clearErrors(`data[${index}].trash_type`);
+															}}
+														/>
+														{errors?.data && errors.data[index]?.trash_type && <p className="text-red-500 text-sm mt-1">{errors.data[index].trash_type.message}</p>}
+													</div>
+												</div>
+											</td>
+											<td>
+												<input
+													{...register(`data[${index}].amount`, {
+														required: true,
+														min: 0,
+														pattern: /^[0-9]*$/,
+													})}
+													type="number"
+													className="w-28 mt-6"
+													style={{
+														color: "rgba(130, 130, 130, 1)",
+														borderColor: "rgba(130, 130, 130, 1)",
+														...tableInputStyles,
 													}}
-													placeholder="Pilih jenis sampah"
-													{...register(`data[${index}].trash_type`)}
-													isSearchable={true}
-													options={categoriesData.map((category) => ({
-														value: category.id,
-														label: capitalizeWords(category.trash_type),
-														unit: category.unit,
-													}))}
-													onChange={(selectedOption) => {
-														setValue(`data[${index}].trash_type`, selectedOption.value);
-														setValue(`data[${index}].unit`, selectedOption.unit);
-														clearErrors(`data[${index}].trash_type`);
-													}}
+													name={`data[${index}].amount`}
+													min="0"
+													step="1"
+													placeholder={`0 ${watch(`data[${index}].unit`) === "kilogram" ? "kg" : watch(`data[${index}].unit`) || ""}`}
 												/>
-												{errors?.data && errors.data[index]?.trash_type && (
-													<p className="text-red-500 text-sm mt-1">
-														{errors.data[index].trash_type.message}
-													</p>
-												)}
-											</div>
-										</div>
-									</td>
-									<td>
-										<input
-											{...register(`data[${index}].amount`, {
-												required: true,
-												min: 0,
-												pattern: /^[0-9]*$/,
-											})}
-											type="number"
-											className="w-28 mt-6"
-											style={{
-												color: "rgba(130, 130, 130, 1)",
-												borderColor: "rgba(130, 130, 130, 1)",
-												...tableInputStyles,
-											}}
-											name={`data[${index}].amount`}
-											min="0"
-											step="1"
-											placeholder={`0 ${watch(`data[${index}].unit`) === 'kilogram' ? 'kg' : watch(`data[${index}].unit`) || ''}`}
-										/>
-										{errors?.data && errors.data[index]?.amount && (
-											<p className="text-red-500 text-sm mt-1">
-												{errors.data[index].amount.message}
-											</p>
-										)}
-									</td>
-									<td>
-										<div
-										className="mt-6 w-24"
-										style={{
-											color: "rgba(255, 205, 41, 1)",
-											...poinStyles,
-										}}
-										>
-										{calculatePoints(
-											watch(`data[${index}].trash_type`),
-											parseInt(watch(`data[${index}].amount`) || 0)
-										)}
-										</div>
-									</td>
-									<td>
-										<div
-										className="mt-6 cursor-pointer"
-										onClick={() => handleRemoveData(index)}
-										>
-										<Trash
-											size="24"
-											color="rgba(229, 53, 53, 1)"
-										/>
-										</div>
-									</td>
-								</tr>
-							))}
+												{errors?.data && errors.data[index]?.amount && <p className="text-red-500 text-sm mt-1">{errors.data[index].amount.message}</p>}
+											</td>
+											<td>
+												<div
+													className="mt-6 w-24"
+													style={{
+														color: "rgba(255, 205, 41, 1)",
+														...poinStyles,
+													}}
+												>
+													{calculatePoints(watch(`data[${index}].trash_type`), parseInt(watch(`data[${index}].amount`) || 0))}
+												</div>
+											</td>
+											<td>
+												<div
+													className="mt-6 cursor-pointer"
+													onClick={() => handleRemoveData(index)}
+												>
+													<Trash
+														size="24"
+														color="rgba(229, 53, 53, 1)"
+													/>
+												</div>
+											</td>
+										</tr>
+									))}
 							</tbody>
 						</table>
 						<div className="grid grid-cols-3 mt-6">
@@ -306,11 +285,7 @@ export function ModalAddWasteExchangeData({ isOpen, onClose }) {
 									color="rgba(148, 148, 148, 1)"
 									className="cursor-pointer"
 								/>
-								<button
-									type="button"
-								>
-									Tambah Data
-								</button>
+								<button type="button">Tambah Data</button>
 							</div>
 							<p
 								className="text-center mr-1"

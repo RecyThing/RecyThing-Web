@@ -62,11 +62,13 @@ function VoucherList() {
 			setSearchTerm("");
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
+		}
 
+		return () => {
 			if (updateStatus !== "idle") dispatch(clearUpdateVoucherState());
 			if (deleteStatus !== "idle") dispatch(clearDeleteVoucherState());
 			if (createStatus !== "idle") dispatch(clearCreateVoucherState());
-		}
+		};
 	}, [updateStatus, deleteStatus, createStatus, dispatch]);
 
 	useEffect(() => {

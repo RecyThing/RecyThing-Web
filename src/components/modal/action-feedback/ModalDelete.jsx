@@ -1,6 +1,11 @@
 import { Button, Center, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from "@chakra-ui/react";
 import { DangerCircleIcon } from "@/components/icons";
 
+/**
+ * ModalDelete is a modal component that is used to display delete modal.
+ * @param {{isOpen: boolean, onClose: function, target: string, title: string, message: string, onDelete: function, isLoading: boolean}} props
+ * @returns {JSX.Element}
+ */
 export function ModalDelete({ isOpen, onClose, target, onDelete, title, message, isLoading }) {
 	const handleDelete = () => {
 		onDelete(target);

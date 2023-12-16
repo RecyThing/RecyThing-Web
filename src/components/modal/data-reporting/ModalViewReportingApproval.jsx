@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Flex, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { CloseSquare } from "react-iconly";
-import { CustomRoundBadge, CustomSquareBadge } from "@/components/badge";
+import { CustomRoundBadge, CustomSquareBadge } from "@/components/badges";
 import { DetailScaleReport } from "./DetailScaleReport";
 import { DetailTrashReport } from "./DetailTrashReport";
 import { fetchDataReportSelector } from "@/store/report";
@@ -182,7 +182,6 @@ export function ModalViewReportingApproval({ isOpen, onClose }) {
 										<CustomRoundBadge
 											color={"#fff"}
 											bgColor={data.trash_type === "sampah kering" ? "#5B79EF" : "#FDD948"}
-											
 										>
 											{data.trash_type}
 										</CustomRoundBadge>

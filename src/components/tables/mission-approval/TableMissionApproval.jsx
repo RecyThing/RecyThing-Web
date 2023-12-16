@@ -1,19 +1,18 @@
-import { useState } from "react";
-import { Button, ButtonGroup, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, useDisclosure } from "@chakra-ui/react";
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
+import { Button, ButtonGroup, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, useDisclosure } from "@chakra-ui/react";
 import { ChevronDown } from "react-iconly";
 import { CustomIconButton } from "@/components/buttons";
 import { Eye } from "iconsax-react";
-import { TableBodyRow } from "../base-table/TableRows";
-import { ModalApprove, ModalReject, ModalViewMissionApproval } from "@/components/modal";
-import { formatDateToLocalDate } from "@/utils";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchApproval, updateApproval, updateApprovalSelector } from "@/store/approval-mission";
+import { formatDateToLocalDate } from "@/utils";
+import { ModalApprove, ModalReject, ModalViewMissionApproval } from "@/components/modal";
+import { TableBodyRow } from "../base-table/TableRows";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-const TableHead = ["ID Misi", "Nama Misi", "Pelaku Misi", "Status", "Tanggal", "View", "Aksi"];
-
-const rejectMenu = ["Bukti tidak jelas", "Bukti kurang lengkap", "Tidak ada detail kejadian"];
+const TABLEHEADS = ["ID Misi", "Nama Misi", "Pelaku Misi", "Status", "Tanggal", "View", "Aksi"];
+const REJECTMENU = ["Bukti tidak jelas", "Bukti kurang lengkap", "Tidak ada detail kejadian"];
 
 export function TableMissionApproval({ data }) {
 	const dispatch = useDispatch();
@@ -43,7 +42,7 @@ export function TableMissionApproval({ data }) {
 	};
 
 	const handleTextAlign = () => {
-		return TableHead.map((head) => {
+		return TABLEHEADS.map((head) => {
 			if (head === "ID Misi" || head === "View" || head === "Aksi") {
 				return "center";
 			} else {
@@ -127,7 +126,7 @@ export function TableMissionApproval({ data }) {
 
 			<BaseTable
 				data={data}
-				heads={TableHead}
+				heads={TABLEHEADS}
 				textAligns={handleTextAlign()}
 			>
 				{data.map((row, rowIndex) => (
@@ -177,7 +176,7 @@ export function TableMissionApproval({ data }) {
 										</MenuButton>
 										<MenuList py={0}>
 											<MenuOptionGroup type={"radio"}>
-												{rejectMenu.map((reason, index) => (
+												{REJECTMENU.map((reason, index) => (
 													<MenuItemOption
 														key={index}
 														value={reason}

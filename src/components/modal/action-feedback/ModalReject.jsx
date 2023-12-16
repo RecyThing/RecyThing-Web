@@ -3,8 +3,8 @@ import { DangerCircleIcon } from "@/components/icons";
 
 /**
  * ModalReject is a modal component that is used to display reject modal.
- * @param {{isOpen: boolean, onClose: () => void, target: string, title: string, message: string, onReject: (target: string) => void, rejectStatus: string | boolean}} props - The props object.
- * @returns {JSX.Element} The ModalReject component.
+ * @param {{isOpen: boolean, onClose: function, target: string, title: string, message: string, onReject: function, rejectStatus: string}} props
+ * @returns {JSX.Element}
  */
 export function ModalReject({ isOpen, onClose, target, onReject, title, message, rejectStatus }) {
 	const handleReject = () => {

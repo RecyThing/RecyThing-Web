@@ -41,9 +41,11 @@ function ManageUser() {
 			setSearchTerm("");
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
-
-			if (deleteStatus !== "idle") dispatch(clearDeleteUserState());
 		}
+
+		return () => {
+			if (deleteStatus !== "idle") dispatch(clearDeleteUserState());
+		};
 	}, [deleteStatus, dispatch]);
 
 	useEffect(() => {

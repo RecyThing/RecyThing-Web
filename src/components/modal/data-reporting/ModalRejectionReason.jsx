@@ -1,11 +1,6 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 
-/**
- * ModalRejectionReason is a modal component that is used to display rejection reason modal.
- * @param {{isOpen: boolean, onClose: () => void, target: string, onReject: (target: string) => void, rejectStatus: string | boolean}} props - The props object.
- * @returns {JSX.Element} The ModalRejectionReason component.
- */
 export function ModalRejectionReason({ isOpen, onClose, target, onReject, rejectStatus }) {
 	const [rejectionReason, setRejectionReason] = useState("tidak begitu jelas");
 

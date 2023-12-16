@@ -7,11 +7,6 @@ import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Fields from "./VoucherFormFields";
 
-/**
- * ModalAddVoucher is a modal component that is used to add voucher data.
- * @param {{isOpen: boolean, onClose: () => void, onSubmit: (data: any) => void}} props - The props object.
- * @returns {JSX.Element} The ModalAddVoucher component.
- */
 export function ModalAddVoucher({ isOpen, onClose, onSubmit }) {
 	const {
 		control,

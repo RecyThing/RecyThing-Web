@@ -169,10 +169,14 @@ function MissionList() {
 								activeFilter={activeFilter.label}
 								handleFilterClick={handleFilterClick}
 								filteredDataCount={filteredDataCount}
+								isDisabled={status}
 							/>
 						))}
 					</ButtonGroup>
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar
+						onSearch={handleSearch}
+						value={_searchTerm}
+					/>
 					<Button
 						leftIcon={<Add />}
 						_hover={{ bg: "#2DA22D" }}
