@@ -31,7 +31,7 @@ function TransactionList() {
 
 	useCustomToast(patchStatus, patchMessage);
 
-	const fectchTransactionData = useCallback(() => {
+	const fetchTransactionData = useCallback(() => {
 		dispatch(
 			fetchDatasTransaction({
 				status: activeFilter.value,
@@ -43,12 +43,12 @@ function TransactionList() {
 	}, [dispatch, searchTerm, itemsPerPage, currentPage, activeFilter]);
 
 	useEffect(() => {
-		fectchTransactionData();
-	}, [fectchTransactionData, searchTerm, itemsPerPage, currentPage]);
+		fetchTransactionData();
+	}, [fetchTransactionData, searchTerm, itemsPerPage, currentPage]);
 
 	useEffect(() => {
 		if (patchStatus === "success") {
-			fectchTransactionData();
+			fetchTransactionData();
 			setSearchTerm("");
 			setCurrentPage(1);
 		}
@@ -56,7 +56,7 @@ function TransactionList() {
 		return () => {
 			if (patchStatus !== "idle") dispatch(clearPatchDataTransactionState());
 		};
-	}, [patchStatus, dispatch, fectchTransactionData]);
+	}, [patchStatus, dispatch, fetchTransactionData]);
 
 	useEffect(() => {
 		return () => {

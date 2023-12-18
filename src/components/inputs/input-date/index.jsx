@@ -3,8 +3,8 @@ import { formatDateToLocalDate } from "@/utils";
 import { forwardRef } from "react";
 import { parseISO, startOfDay } from "date-fns";
 import DatePicker from "react-datepicker";
-import "./style.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "./style.css";
 
 /**
  * Date Input Field

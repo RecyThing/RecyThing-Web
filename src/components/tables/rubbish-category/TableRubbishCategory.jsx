@@ -69,9 +69,9 @@ export function TableRubbishCategory({ data, currentPage, itemsPerPage }) {
 				onClose={onCloseDelete}
 				target={id}
 				onDelete={handleDelete}
-				deleteStatus={deleteStatus}
 				title={"Anda yakin untuk Mengapus Kategori Sampah ini?"}
 				message={"Kategori yang dihapus tidak dapat dipulihkan"}
+				isLoading={deleteStatus === "loading"}
 			/>
 			<BaseTable
 				data={data}
