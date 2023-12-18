@@ -1,0 +1,1 @@
+export { ModalEditBadge } from "./ModalEditBadge";

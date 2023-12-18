@@ -1,14 +1,7 @@
-import { Container } from "@chakra-ui/react";
+import AppRoutes from "./routes";
 
 function App() {
-	return (
-		<Container
-			maxW="container.xl"
-			centerContent
-		>
-			Recything Web
-		</Container>
-	);
+	return <AppRoutes />;
 }
 
 export default App;

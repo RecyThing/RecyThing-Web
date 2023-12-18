@@ -1,0 +1,1 @@
+export { ModalViewDetailUser } from "./ModalViewDetailUser";
