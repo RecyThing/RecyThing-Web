@@ -50,9 +50,11 @@ function DataReporting() {
 			setSearchTerm("");
 			setCurrentPage(1);
 			setRefreshData((prev) => !prev);
-
-			if (patchStatus !== "idle") dispatch(clearPatchDataReportState());
 		}
+
+		return () => {
+			if (patchStatus !== "idle") dispatch(clearPatchDataReportState());
+		};
 	}, [patchStatus, dispatch]);
 
 	useEffect(() => {

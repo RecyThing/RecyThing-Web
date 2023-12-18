@@ -66,7 +66,7 @@ function Community() {
 			if (deleteStatus !== "idle") dispatch(clearDeleteCommunityState());
 			if (createStatus !== "idle") dispatch(clearCreateCommunityState());
 		};
-	}, [deleteStatus, updateStatus, createStatus, dispatch, fetchCommunitiesData]);
+	}, [deleteStatus, updateStatus, createStatus, dispatch]);
 
 	useEffect(() => {
 		return () => {
