@@ -1,5 +1,5 @@
 import recycle from "@/assets/LandingPage/recycle.png";
-import doll from "@/assets/LandingPage/doll.png";
+import trash from "@/assets/LandingPage/trash.png";
 import star from "@/assets/LandingPage/star.png";
 import stickman from "@/assets/LandingPage/stickman.png";
 
@@ -9,22 +9,24 @@ export const data = [
     image: recycle,
     title: "Daur Ulang sampah milikmu",
     description:
-      "Kamu bisa melaporkan tumpukan sampah yang mengganggu lingkunganmu. Ikut berperan aktif menjaga kebersihan dan keindahan tempat tinggalmu.",
+      "Pelajari cara daur ulang sampah dengan benar melalui fitur ini. Mulai dari memilah hingga mengelola sampah, agar sampahmu bisa bermanfaat.",
   },
 
   {
     id: "2",
-    image: stickman,
-    title: "Lapor Pelanggaran Sampah",
+    image: trash,
+
+    title: "Laporkan Tumpukan Sampah",
     description:
-      "Pelajari cara daur ulang sampah dengan benar melalui fitur ini. Mulai dari memilah hingga mengelola sampah, agar sampahmu bisa bermanfaat.",
+      "Kamu bisa melaporkan tumpukan sampah yang mengganggu lingkunganmu. Ikut berperan aktif menjaga kebersihan dan keindahan tempat tinggalmu.",
   },
   {
     id: "3",
-    image: doll,
+    image: stickman,
+
     title: "Lapor Pelanggaran Sampah",
     description:
-      "Kamu bisa melaporkan tumpukan sampah yang mengganggu lingkunganmu. Ikut berperan aktif menjaga kebersihan dan keindahan tempat tinggalmu.",
+      "Kamu bisa melaporkan Pelanggaran Sampah yang dilakukan oleh perseorangan atau perusahaan yang kamu lihat. agar lingkungan disekitarmu bebas sampah.",
   },
   {
     id: "4",
