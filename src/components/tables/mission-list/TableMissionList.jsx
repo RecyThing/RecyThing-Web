@@ -1,7 +1,7 @@
 import { BadgeCell, CenteredCell, TextCell } from "../base-table/TableCells";
 import { BaseTable } from "../base-table/BaseTable";
 import { CustomIconButton } from "@/components/buttons";
-import { deleteMission, deleteMissionSelector, fetchMission, fetchMissionSelector, updateMission, updateMissionSelector } from "@/store/mission";
+import { deleteMission, deleteMissionSelector, fetchMission, updateMission, updateMissionSelector } from "@/store/mission";
 import { Edit2, Eye, Trash } from "iconsax-react";
 import { formatDateToISOString } from "@/utils";
 import { ModalDelete, ModalViewDetailMission, ModalEditMission } from "@/components/modal";
@@ -28,14 +28,11 @@ export function TableMissionList({ data }) {
 
 	const { status: updateStatus } = useSelector(updateMissionSelector);
 	const { status: deleteStatus } = useSelector(deleteMissionSelector);
-	const { dataRow } = useSelector(fetchMissionSelector);
 	const { isOpen: isOpenView, onOpen: onOpenView, onClose: onCloseView } = useDisclosure();
 	const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
-	const [selectedRow, setSelectedRow] = useState(null);
 
 	const handleViewModal = (target) => {
-		setSelectedRow(target);
 		setId(target.id);
 		dispatch(fetchMission(target));
 		onOpenView();
@@ -44,7 +41,6 @@ export function TableMissionList({ data }) {
 	const handleEditModal = (target) => {
 		setId(target.id);
 		dispatch(fetchMission(target));
-		setSelectedRow(dataRow);
 		onOpenEdit();
 	};
 
@@ -90,7 +86,6 @@ export function TableMissionList({ data }) {
 			<ModalViewDetailMission
 				isOpen={isOpenView}
 				onClose={onCloseView}
-				data={selectedRow}
 			/>
 			<ModalEditMission
 				isOpen={isOpenEdit}
